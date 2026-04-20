@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلتي 🚀</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232563eb'/%3E%3Cpath d='M4 22c3-5 5-7 5-11s-2-6-2-8M20 22c-3-5-5-7-5-11s2-6 2-8M12 22v-2M12 15v-2M12 9V7' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   CSS VARIABLES — DARK (default)
+════════════════════════════════════════ */
+:root {
+  --bg:        #07090f;
+  --bg2:       #0c1018;
+  --bg3:       #111827;
+  --bg4:       #1a2235;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --txt1:      #eef2ff;
+  --txt2:      #8ea6cc;
+  --txt3:      #46607a;
+  --blue:      #3b82f6;
+  --blue2:     #60a5fa;
+  --cyan:      #38bdf8;
+  --green:     #10b981;
+  --green2:    #34d399;
+  --purple:    #8b5cf6;
+  --amber:     #f59e0b;
+  --red:       #ef4444;
+  --shadow:    0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* ════════════════════════════════════════
+   LIGHT MODE
+════════════════════════════════════════ */
+body.light {
+  --bg:    #f1f5fb;
+  --bg2:   #e8edf8;
+  --bg3:   #ffffff;
+  --bg4:   #f8faff;
+  --border:  rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.15);
+  --txt1:  #0f172a;
+  --txt2:  #4a6080;
+  --txt3:  #9ab0cc;
+  --shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+body.light #sidebar { background: linear-gradient(180deg,#fff,#f1f5fb); }
+body.light .glass  { background: rgba(255,255,255,0.9); }
+body.light .task-card { background: #fff; }
+body.light input, body.light textarea, body.light select { color-scheme: light; }
+body.light ::-webkit-calendar-picker-indicator { filter: none; }
+
+/* ════════════════════════════════════════
+   SPECIAL OCCASIONS
+════════════════════════════════════════ */
+
+/* Birthday (June 6) */
+body.birthday { --blue:#e91e8c; --cyan:#ff6eb4; }
+body.birthday::before {
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background: radial-gradient(ellipse at top right, rgba(233,30,140,0.12),transparent 60%),
+              radial-gradient(ellipse at bottom left,rgba(255,110,180,0.08),transparent 60%);
+}
+body.birthday #sidebar { background: linear-gradient(180deg,#1a0a15,#0d0610); }
+body.birthday .logo-icon { background: linear-gradient(135deg,#e91e8c,#ff6eb4); }
+body.birthday .btn-primary { background: linear-gradient(135deg,#e91e8c,#c2185b); box-shadow:0 4px 15px rgba(233,30,140,0.4); }
+body.birthday .confetti-wrap { display:block; }
+
+/* Ramadan */
+body.ramadan { --blue:#c09347; --cyan:#e6c078; --green:#8a9b47; }
+body.ramadan::before {
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background: radial-gradient(ellipse at top, rgba(192,147,71,0.1),transparent 50%),
+              radial-gradient(ellipse at bottom,rgba(138,155,71,0.07),transparent 50%);
+}
+body.ramadan #sidebar { background: linear-gradient(180deg,#0d0c06,#080807); }
+body.ramadan .logo-icon { background: linear-gradient(135deg,#c09347,#8a9b47); }
+body.ramadan .btn-primary { background: linear-gradient(135deg,#c09347,#a07830); box-shadow:0 4px 15px rgba(192,147,71,0.4); }
+body.ramadan .occasion-banner { display:flex; }
+
+/* Eid (Fitr & Adha) */
+body.eid { --blue:#22c55e; --cyan:#86efac; }
+body.eid::before {
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background: radial-gradient(ellipse at top right,rgba(34,197,94,0.1),transparent 50%),
+              radial-gradient(ellipse at bottom left,rgba(134,239,172,0.07),transparent 50%);
+}
+body.eid #sidebar { background: linear-gradient(180deg,#060f0a,#040a06); }
+body.eid .logo-icon { background: linear-gradient(135deg,#22c55e,#15803d); }
+body.eid .btn-primary { background: linear-gradient(135deg,#22c55e,#16a34a); box-shadow:0 4px 15px rgba(34,197,94,0.4); }
+body.eid .occasion-banner { display:flex; }
+
+/* ════════════════════════════════════════
+   BASE
+════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin:0; }
+
+html,body { height:100%; overflow:hidden; }
+
+body {
+  font-family:'Cairo',sans-serif;
+  background:var(--bg);
+  color:var(--txt1);
+  transition:background .4s,color .4s;
+}
+
+/* Ambient glow */
+body::before {
+  content:'';position:fixed;top:-15%;right:-10%;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.06),transparent 70%);
+  pointer-events:none;z-index:0;
+  animation:breathe 9s ease-in-out infinite;
+}
+body::after {
+  content:'';position:fixed;bottom:-15%;left:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(16,185,129,.05),transparent 70%);
+  pointer-events:none;z-index:0;
+  animation:breathe 12s ease-in-out infinite reverse;
+}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+/* Confetti (birthday) */
+.confetti-wrap { display:none; position:fixed;inset:0;pointer-events:none;z-index:1; overflow:hidden; }
+.confetti-piece {
+  position:absolute;top:-20px;width:10px;height:10px;
+  animation:confettiFall linear infinite;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotateZ(0);opacity:1}
+  100%{transform:translateY(110vh) rotateZ(720deg);opacity:0}
+}
+
+/* Occasion Banner */
+.occasion-banner {
+  display:none;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;
+  font-weight:700;
+  font-size:13px;
+  padding:10px 20px;
+  text-align:center;
+  border-bottom:1px solid rgba(255,255,255,.15);
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  shrink-flex:0;
+  z-index:50;
+  position:relative;
+}
+
+/* ════════════════════════════════════════
+   LAYOUT
+════════════════════════════════════════ */
+#app { display:flex; height:100%; position:relative; overflow:hidden; }
+
+/* SIDEBAR */
+#sidebar {
+  width:268px;
+  background:linear-gradient(180deg,#0d1527,#080c18);
+  border-left:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  padding:20px 16px;
+  z-index:100;
+  flex-shrink:0;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+/* Mobile sidebar */
+@media(max-width:767px){
+  #sidebar{
+    position:fixed;top:0;right:0;bottom:0;
+    transform:translateX(100%);
+    box-shadow:-10px 0 40px rgba(0,0,0,.6);
+  }
+  #sidebar.open{transform:translateX(0);}
+}
+
+/* MAIN */
+#main {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  background:var(--bg);
+  position:relative;
+  z-index:1;
+}
+
+#content {
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:20px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  position:relative;
+  z-index:1;
+}
+@media(max-width:767px){
+  #content{padding:14px 14px;}
+}
+
+/* ════════════════════════════════════════
+   SCROLLBAR
+════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2)}
+
+/* ════════════════════════════════════════
+   SIDEBAR COMPONENTS
+════════════════════════════════════════ */
+.logo-icon {
+  background:linear-gradient(135deg,var(--blue),#1d4ed8);
+  border-radius:14px;
+  padding:9px;
+  box-shadow:0 4px 20px rgba(59,130,246,.35);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  transition:background .4s;
+}
+
+.nav-btn {
+  width:100%;text-align:right;
+  padding:11px 14px;
+  border-radius:12px;
+  border:1px solid transparent;
+  color:var(--txt2);
+  font-weight:700;font-size:14px;
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;background:transparent;
+  font-family:'Cairo',sans-serif;
+  transition:all .22s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.nav-btn:hover {
+  background:rgba(59,130,246,.08);
+  border-color:rgba(59,130,246,.2);
+  color:var(--blue2);
+  transform:translateX(-2px);
+}
+.nav-btn.active {
+  background:linear-gradient(135deg,rgba(59,130,246,.18),rgba(59,130,246,.08));
+  border-color:rgba(59,130,246,.35);
+  color:#bfdbfe;
+  box-shadow:0 4px 16px rgba(59,130,246,.12);
+}
+.nav-btn.active::after {
+  content:'';position:absolute;right:0;top:25%;bottom:25%;
+  width:3px;border-radius:3px 0 0 3px;
+  background:linear-gradient(180deg,var(--cyan),var(--blue));
+}
+
+/* ════════════════════════════════════════
+   REUSABLE COMPONENTS
+════════════════════════════════════════ */
+.glass {
+  background:rgba(13,20,36,.82);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  border-radius:20px;
+}
+
+.card {
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:18px;
+  transition:all .25s ease;
+}
+.card:hover{border-color:var(--border2);box-shadow:0 6px 24px rgba(0,0,0,.3);}
+
+.btn-primary {
+  background:linear-gradient(135deg,var(--blue),#1d4ed8);
+  color:#fff;border:none;border-radius:12px;
+  padding:9px 18px;font-weight:700;font-size:13px;
+  cursor:pointer;font-family:'Cairo',sans-serif;
+  box-shadow:0 4px 14px rgba(59,130,246,.3);
+  transition:all .2s;display:inline-flex;align-items:center;gap:6px;
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.4);}
+.btn-primary:active{transform:translateY(0);}
+
+.btn-ghost {
+  background:transparent;color:var(--txt2);
+  border:1px solid var(--border);border-radius:10px;
+  padding:7px 14px;font-weight:600;font-size:12px;
+  cursor:pointer;font-family:'Cairo',sans-serif;
+  transition:all .2s;
+}
+.btn-ghost:hover{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.25);color:var(--blue2);}
+
+.field {
+  background:rgba(0,0,0,.25);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:9px 14px;
+  color:var(--txt1);
+  font-family:'Cairo',sans-serif;
+  font-size:13px;
+  outline:none;
+  width:100%;
+  transition:border-color .2s,box-shadow .2s;
+}
+body.light .field { background:rgba(0,0,0,.04); }
+.field:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.12);}
+.field::placeholder{color:var(--txt3);}
+input[type=date].field{direction:ltr;text-align:right;color-scheme:dark;}
+body.light input[type=date].field{color-scheme:light;}
+::-webkit-calendar-picker-indicator{filter:invert(.6);cursor:pointer;}
+body.light ::-webkit-calendar-picker-indicator{filter:none;}
+input[type=color]{-webkit-appearance:none;border:none;padding:0;background:transparent;cursor:pointer;}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
+input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
+
+.tag-pill {
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:99px;
+  font-size:11px;font-weight:700;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.2);
+}
+
+/* ════════════════════════════════════════
+   TASK CARD (Kanban)
+════════════════════════════════════════ */
+.task-card {
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  position:relative;
+  overflow:hidden;
+  cursor:grab;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+.task-card::before{
+  content:'';position:absolute;right:0;top:0;bottom:0;
+  width:4px;background:var(--tc,#4a6080);
+  border-radius:0 2px 2px 0;
+}
+.task-card:hover{
+  border-color:rgba(99,179,237,.35);
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(0,0,0,.35);
+}
+.task-card.done-card{opacity:.55;filter:grayscale(.3);}
+
+/* ════════════════════════════════════════
+   TODAY ITEM
+════════════════════════════════════════ */
+.today-item {
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+  transition:all .22s;
+  margin-bottom:8px;
+}
+.today-item:hover{border-color:var(--border2);background:var(--bg4);}
+.today-item.done{opacity:.5;}
+
+/* Custom checkbox */
+.cb {
+  appearance:none;
+  width:22px;height:22px;min-width:22px;
+  border:2px solid var(--txt3);
+  border-radius:50%;cursor:pointer;
+  position:relative;background:transparent;
+  transition:all .2s;
+}
+.cb:checked{border-color:var(--blue);background:var(--blue);}
+.cb:checked::after{
+  content:'✔';position:absolute;
+  font-size:11px;color:#fff;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+
+/* ════════════════════════════════════════
+   PROGRESS BAR
+════════════════════════════════════════ */
+.pbar-track{background:rgba(255,255,255,.06);border-radius:99px;height:5px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .8s cubic-bezier(.4,0,.2,1);}
+
+/* ════════════════════════════════════════
+   STAT CARD
+════════════════════════════════════════ */
+.stat-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:16px;padding:16px;
+  position:relative;overflow:hidden;
+  transition:transform .25s;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--sc-grad,linear-gradient(90deg,var(--blue),var(--cyan)));
+}
+.stat-card:hover{transform:translateY(-2px);}
+
+/* ════════════════════════════════════════
+   STREAK BADGE
+════════════════════════════════════════ */
+.streak{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  color:#fff;border-radius:99px;padding:4px 11px;
+  font-size:12px;font-weight:900;
+  box-shadow:0 4px 14px rgba(245,158,11,.4);
+  animation:pulseWarm 2s ease-in-out infinite;
+}
+@keyframes pulseWarm{0%,100%{box-shadow:0 4px 14px rgba(245,158,11,.4)}50%{box-shadow:0 4px 22px rgba(245,158,11,.65)}}
+
+/* ════════════════════════════════════════
+   FOLDER BUTTON
+════════════════════════════════════════ */
+.folder-btn {
+  text-align:right;padding:11px 14px;
+  border-radius:12px;border:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+  color:var(--txt2);font-weight:700;font-size:13px;
+  cursor:pointer;white-space:nowrap;
+  font-family:'Cairo',sans-serif;
+  transition:all .2s;width:100%;
+}
+.folder-btn:hover{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.2);color:var(--blue2);}
+.folder-btn.active{background:rgba(59,130,246,.14);border-color:rgba(59,130,246,.35);color:#bfdbfe;}
+
+/* ════════════════════════════════════════
+   STICKY NOTES
+════════════════════════════════════════ */
+.note-card{
+  position:relative;border-radius:4px 4px 22px 4px;
+  padding:20px;flex-shrink:0;width:260px;
+  box-shadow:3px 5px 18px rgba(0,0,0,.18);
+  transition:transform .25s,box-shadow .25s;
+}
+.note-card:hover{transform:translateY(-5px) rotate(.4deg);box-shadow:5px 10px 28px rgba(0,0,0,.28);z-index:10;}
+.note-card::before{
+  content:'';position:absolute;top:-11px;left:50%;
+  transform:translateX(-50%) rotate(-2deg);
+  width:64px;height:20px;
+  background:rgba(255,255,255,.28);
+  backdrop-filter:blur(2px);
+  border-radius:2px;
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+  pointer-events:none;
+}
+.note-yellow{background:#fef3c7;color:#713f12;border:1px solid #fde68a;}
+.note-blue  {background:#dbeafe;color:#1e3a8a;border:1px solid #bfdbfe;}
+.note-green {background:#d1fae5;color:#064e3b;border:1px solid #a7f3d0;}
+.note-pink  {background:#fce7f3;color:#831843;border:1px solid #fbcfe8;}
+.note-purple{background:#ede9fe;color:#4c1d95;border:1px solid #ddd6fe;}
+.note-palette{opacity:0;visibility:hidden;transition:all .2s;position:absolute;top:44px;left:8px;display:flex;gap:5px;padding:6px 8px;border-radius:10px;background:rgba(0,0,0,.15);backdrop-filter:blur(6px);}
+.note-card:hover .note-palette{opacity:1;visibility:visible;}
+
+/* ════════════════════════════════════════
+   MODAL BACKDROP
+════════════════════════════════════════ */
+.modal-bg{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(4,8,16,.88);
+  backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+  opacity:0;transition:opacity .3s;
+  pointer-events:none;
+}
+.modal-bg.show{opacity:1;pointer-events:all;}
+
+.modal-box{
+  background:linear-gradient(145deg,#0d1527,#080c18);
+  border:1px solid rgba(59,130,246,.15);
+  border-radius:26px;
+  box-shadow:0 30px 90px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04);
+  overflow:hidden;
+  transform:scale(.96);transition:transform .3s;
+}
+.modal-bg.show .modal-box{transform:scale(1);}
+
+/* ════════════════════════════════════════
+   LOADER
+════════════════════════════════════════ */
+.loader{
+  border:3px solid rgba(255,255,255,.08);
+  border-left-color:var(--cyan);
+  border-radius:50%;width:26px;height:26px;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+  padding:10px 20px;border-radius:16px;
+  z-index:9999;opacity:0;pointer-events:none;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:center;gap:8px;
+  font-weight:700;font-size:13px;color:#fff;
+  max-width:90%;white-space:nowrap;
+  box-shadow:0 8px 30px rgba(0,0,0,.4);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ════════════════════════════════════════
+   SECTION VISIBILITY
+════════════════════════════════════════ */
+.section{display:none;flex:1;flex-direction:column;min-height:0;}
+.section.active{display:flex;}
+
+/* ════════════════════════════════════════
+   NOTES PANEL (subtask expand)
+════════════════════════════════════════ */
+.notes-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.notes-panel.open{max-height:1200px;overflow-y:auto;}
+
+/* ════════════════════════════════════════
+   CERT CARD
+════════════════════════════════════════ */
+.cert-card{
+  background:var(--bg3);
+  border:3px solid var(--bg4);
+  outline:2px solid rgba(59,130,246,.08);
+  outline-offset:3px;
+  border-radius:14px;overflow:hidden;
+  position:relative;height:200px;
+  transition:all .3s;
+}
+.cert-card:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(59,130,246,.25);}
+.cert-card::before{content:'';position:absolute;inset:6px;border:1px dashed rgba(255,255,255,.07);border-radius:8px;pointer-events:none;z-index:2;}
+
+/* ════════════════════════════════════════
+   GOAL ITEM
+════════════════════════════════════════ */
+.goal-item{
+  background:rgba(255,255,255,.025);
+  border:1px solid var(--border);
+  border-radius:12px;padding:11px 13px;
+  display:flex;align-items:center;gap:10px;
+  transition:all .2s;margin-bottom:7px;
+}
+.goal-item:hover{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);}
+
+/* ════════════════════════════════════════
+   LIB CARD
+════════════════════════════════════════ */
+.lib-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:18px;padding:18px;
+  position:relative;overflow:hidden;
+  transition:all .25s;height:150px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.lib-card:hover{border-color:rgba(59,130,246,.28);background:var(--bg4);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.28);}
+
+/* ════════════════════════════════════════
+   FADE IN ANIMATION
+════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeUp .4s cubic-bezier(.4,0,.2,1) both;}
+
+/* ════════════════════════════════════════
+   EMPTY STATE
+════════════════════════════════════════ */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;opacity:.55;text-align:center;}
+.empty span{font-size:44px;margin-bottom:12px;}
+.empty p{color:var(--txt2);font-size:13px;font-weight:600;max-width:230px;line-height:1.7;}
+
+/* Birthday sparkle text */
+@keyframes rainbow{0%{color:#f87171}20%{color:#fb923c}40%{color:#facc15}60%{color:#4ade80}80%{color:#60a5fa}100%{color:#f87171}}
+body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite;}
+
+/* ════════════════════════════════════════
+   MOBILE TOP BAR
+════════════════════════════════════════ */
+#topbar{display:none;background:rgba(8,12,24,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;align-items:center;justify-content:space-between;z-index:50;flex-shrink:0;}
+@media(max-width:767px){#topbar{display:flex;}}
+</style>
+</head>
+<body>
+
+<!-- ════ CONFETTI (Birthday) ════ -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- ════ LOGIN OVERLAY ════ -->
+<div id="loginOverlay" style="position:fixed;inset:0;z-index:9999;background:#040810;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .5s;">
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+    <div style="position:absolute;top:20%;right:20%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.08),transparent 70%);"></div>
+    <div style="position:absolute;bottom:20%;left:20%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.06),transparent 70%);"></div>
+  </div>
+  <div style="position:relative;z-index:1;text-align:center;max-width:360px;width:100%;" class="fade-in">
+    <div style="display:flex;justify-content:center;margin-bottom:24px;">
+      <div class="logo-icon" style="padding:18px;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg>
+      </div>
+    </div>
+    <h1 style="font-size:48px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px;">رحلتي</h1>
+    <p style="font-size:14px;color:var(--txt2);margin-bottom:32px;font-weight:600;">مساحتك السحابية للتطور والتعلم 🚀</p>
+    <div class="glass" style="padding:28px;">
+      <button id="gLoginBtn" onclick="window.loginWithGoogle()" style="width:100%;background:#fff;color:#1e293b;border:none;border-radius:14px;padding:14px;font-weight:900;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;font-family:'Cairo',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.3);" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        الدخول بحساب جوجل
+      </button>
+      <div id="loadingRow" style="display:none;margin-top:20px;align-items:center;justify-content:center;gap:10px;flex-direction:column;">
+        <div class="loader"></div>
+        <p style="font-size:12px;color:var(--txt2);font-weight:700;">جاري المزامنة مع السحابة...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ APP ════ -->
+<div id="app">
+
+  <!-- SIDEBAR OVERLAY -->
+  <div id="sbOverlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:90;backdrop-filter:blur(4px);"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <!-- Close btn (mobile) -->
+    <button onclick="closeSidebar()" style="display:none;position:absolute;top:16px;left:16px;background:rgba(255,255,255,.07);border:none;border-radius:10px;width:34px;height:34px;cursor:pointer;color:var(--txt2);font-size:16px;" id="sbClose">✕</button>
+
+    <!-- Logo -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+      <div class="logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg>
+      </div>
+      <div>
+        <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;">رحلتي</div>
+        <div style="font-size:11px;color:var(--txt3);font-weight:600;margin-top:1px;">نحو غد أفضل</div>
+      </div>
+    </div>
+
+    <!-- User card -->
+    <div style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.12);margin-bottom:22px;">
+      <div id="uAvatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1d4ed8);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#fff;flex-shrink:0;">?</div>
+      <div style="min-width:0;">
+        <div id="uName" style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">...</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:var(--green2);animation:pulseWarm 2s ease-in-out infinite;box-shadow:0 0 6px var(--green2);"></div>
+          <span style="font-size:11px;color:var(--green2);font-weight:700;">متصل سحابياً</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav style="flex:1;display:flex;flex-direction:column;gap:3px;">
+      <button class="nav-btn active" id="tab-today"  onclick="switchTab('today')"> <span>🎯</span> يومي </button>
+      <button class="nav-btn" id="tab-goals"  onclick="switchTab('goals')"> <span>🏆</span> أهدافي </button>
+      <button class="nav-btn" id="tab-kanban" onclick="switchTab('kanban')"> <span>📋</span> بورد المهام </button>
+      <button class="nav-btn" id="tab-library" onclick="switchTab('library')"> <span>📚</span> مكتبة المصادر </button>
+      <button class="nav-btn" id="tab-notes"  onclick="switchTab('notes')"> <span>📝</span> الملاحظات </button>
+      <button class="nav-btn" id="tab-certs"  onclick="switchTab('certs')"> <span>🎓</span> شهاداتي </button>
+    </nav>
+
+    <!-- Bottom -->
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+      <button class="btn-ghost" onclick="openSettings()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;">
+        <span>⚙️ الإعدادات</span>
+        <span style="font-size:12px;">›</span>
+      </button>
+      <button onclick="logoutUser()" style="width:100%;background:transparent;border:1px solid transparent;border-radius:11px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;color:var(--red);font-family:'Cairo',sans-serif;transition:all .2s;" onmouseover="this.style.background='rgba(239,68,68,.1)';this.style.borderColor='rgba(239,68,68,.2)'" onmouseout="this.style.background='transparent';this.style.borderColor='transparent'">
+        🚪 تسجيل خروج
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- Occasion Banner -->
+    <div class="occasion-banner" id="occasionBanner">
+      <span id="ocIcon">🌙</span>
+      <span class="oc-text" id="ocText">...</span>
+    </div>
+
+    <!-- Mobile topbar -->
+    <div id="topbar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="logo-icon" style="padding:7px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg>
+        </div>
+        <span style="font-weight:900;color:#fff;font-size:16px;">رحلتي</span>
+      </div>
+      <button onclick="openSidebar()" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;color:var(--txt1);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Search -->
+    <div style="padding:16px 24px 0;flex-shrink:0;position:relative;z-index:1;">
+      <div style="display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 16px;max-width:600px;margin:0 auto;transition:border-color .2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--txt3);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="ابحث..." oninput="handleSearch(this.value)" style="background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;width:100%;" class="placeholder-muted">
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="content">
+
+      <!-- ══════ TODAY ══════ -->
+      <div id="sec-today" class="section active">
+        <!-- Header -->
+        <div style="text-align:center;margin-bottom:18px;" class="fade-in">
+          <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-.5px;margin-bottom:4px;">هنعمل إيه النهارده 🎯</h2>
+          <div id="dateDisplay"></div>
+        </div>
+
+        <!-- Stats row -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;flex-shrink:0;" class="stats-grid">
+          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--blue),var(--cyan));">
+            <div style="font-size:24px;font-weight:900;color:var(--txt1);" id="sTotalToday">0</div>
+            <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">مهام اليوم</div>
+          </div>
+          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--green),var(--green2));">
+            <div style="font-size:24px;font-weight:900;color:var(--green2);" id="sDoneToday">0</div>
+            <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">تم إنجازه</div>
+          </div>
+          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--purple),#a78bfa);">
+            <div style="font-size:24px;font-weight:900;color:#a78bfa;" id="sKanban">0</div>
+            <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">كورسات/مشاريع</div>
+          </div>
+          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--amber),#fbbf24);">
+            <div class="streak" id="streakBadge">🔥 <span id="streakNum">0</span></div>
+            <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:6px;">يوم متتالي</div>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;flex-shrink:0;">
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+              <span style="font-size:12px;font-weight:700;color:var(--txt2);">تقدم اليوم</span>
+              <span style="font-size:12px;font-weight:900;color:var(--txt1);" id="progressPct">0%</span>
+            </div>
+            <div class="pbar-track"><div class="pbar-fill" id="progressBar" style="width:0%"></div></div>
+          </div>
+          <div style="font-size:28px;" id="moodEmoji">😴</div>
+        </div>
+
+        <!-- Add input -->
+        <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color .2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
+          <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
+          <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
+          <button class="btn-primary" onclick="addTodayTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
+        </div>
+
+        <!-- List -->
+        <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px;"></div>
+      </div>
+
+      <!-- ══════ GOALS ══════ -->
+      <div id="sec-goals" class="section">
+        <div style="text-align:center;margin-bottom:18px;" class="fade-in">
+          <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-.5px;margin-bottom:4px;">أهدافي 🏆</h2>
+          <p style="font-size:13px;color:var(--txt2);">خطط للسنة والشهر والأسبوع</p>
+        </div>
+        <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:20px;padding-bottom:20px;">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;" class="goals-grid">
+            <!-- Year -->
+            <div class="glass" style="padding:18px;border-color:rgba(59,130,246,.2);">
+              <h3 id="gyTitle" style="font-size:14px;font-weight:900;color:var(--blue);text-align:center;margin-bottom:14px;">سنة</h3>
+              <div style="display:flex;gap:6px;margin-bottom:12px;">
+                <input type="text" id="gyInput" placeholder="هدف للسنة..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')addGoal('year')">
+                <button class="btn-primary" onclick="addGoal('year')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;">+</button>
+              </div>
+              <div id="lyList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div>
+            </div>
+            <!-- Month -->
+            <div class="glass" style="padding:18px;border-color:rgba(16,185,129,.2);">
+              <h3 id="gmTitle" style="font-size:14px;font-weight:900;color:var(--green);text-align:center;margin-bottom:14px;">شهر</h3>
+              <div style="display:flex;gap:6px;margin-bottom:12px;">
+                <input type="text" id="gmInput" placeholder="هدف للشهر..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')addGoal('month')">
+                <button class="btn-primary" onclick="addGoal('month')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;background:linear-gradient(135deg,var(--green),#059669);">+</button>
+              </div>
+              <div id="gmList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div>
+            </div>
+            <!-- Week -->
+            <div class="glass" style="padding:18px;border-color:rgba(139,92,246,.2);">
+              <h3 id="gwTitle" style="font-size:14px;font-weight:900;color:var(--purple);text-align:center;margin-bottom:14px;">أسبوع</h3>
+              <div style="display:flex;gap:6px;margin-bottom:12px;">
+                <input type="text" id="gwInput" placeholder="هدف للأسبوع..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')addGoal('week')">
+                <button class="btn-primary" onclick="addGoal('week')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;background:linear-gradient(135deg,var(--purple),#7c3aed);">+</button>
+              </div>
+              <div id="gwList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div>
+            </div>
+          </div>
+          <!-- Archive -->
+          <div style="padding-top:20px;border-top:1px solid var(--border);">
+            <h3 style="font-size:16px;font-weight:900;color:var(--txt2);margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+              <span style="background:var(--bg3);padding:6px;border-radius:10px;font-size:13px;">📦</span> أرشيف الإنجازات
+            </h3>
+            <div id="goalsArchive" style="display:flex;flex-direction:column;gap:12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ KANBAN ══════ -->
+      <div id="sec-kanban" class="section">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:12px;flex-shrink:0;">
+          <div>
+            <h2 style="font-size:22px;font-weight:900;color:var(--txt1);margin-bottom:4px;">يا أهلاً يا بطل ✨</h2>
+            <p id="motivQuote" style="font-size:13px;color:var(--txt2);max-width:380px;"></p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px;">
+            <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')addTask()">
+            <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
+            <button class="btn-primary" onclick="addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;flex:1;min-height:0;overflow-x:auto;align-items:flex-start;padding-bottom:12px;">
+          <!-- Todo -->
+          <div style="flex:1;min-width:260px;display:flex;flex-direction:column;height:100%;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
+              <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);">
+                <div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ
+              </div>
+              <span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
+            </div>
+            <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+          </div>
+          <!-- InProgress -->
+          <div style="flex:1;min-width:260px;display:flex;flex-direction:column;height:100%;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
+              <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه
+              </div>
+              <span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,.2);">0</span>
+            </div>
+            <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+          </div>
+          <!-- Done -->
+          <div style="flex:1;min-width:260px;display:flex;flex-direction:column;height:100%;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
+              <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅
+              </div>
+              <span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,.2);">0</span>
+            </div>
+            <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ LIBRARY ══════ -->
+      <div id="sec-library" class="section">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
+          <div>
+            <h2 style="font-size:24px;font-weight:900;color:var(--txt1);letter-spacing:-.5px;">مكتبة المصادر 📚</h2>
+            <p style="font-size:12px;color:var(--txt2);margin-top:2px;">روابطك وملفاتك كلها هنا</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;flex:1;min-height:0;" class="lib-layout">
+          <div id="libFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
+          <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+            <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+              <span id="libActiveTitle" style="font-weight:900;font-size:14px;color:var(--blue);">...</span>
+              <div style="display:flex;gap:8px;">
+                <button class="btn-ghost" onclick="addLibFolder()" style="font-size:11px;color:var(--green2);border-color:rgba(52,211,153,.2);">➕ مجلد</button>
+                <button class="btn-ghost" id="delLibFolderBtn" onclick="delLibFolder()" style="font-size:11px;color:var(--red);border-color:rgba(239,68,68,.2);">🗑️ حذف</button>
+              </div>
+            </div>
+            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex-shrink:0;background:rgba(0,0,0,.15);">
+              <input type="text" id="libTitle" placeholder="الاسم..." class="field" style="flex:1;min-width:90px;font-size:12px;padding:7px 11px;">
+              <input type="text" id="libUrl" placeholder="الرابط..." class="field" style="flex:1;min-width:90px;font-size:12px;padding:7px 11px;">
+              <button class="btn-ghost" onclick="document.getElementById('libFileIn').click()" style="font-size:11px;">☁️ رفع</button>
+              <input type="file" id="libFileIn" class="hidden" onchange="handleLibUpload(this)" style="display:none;">
+              <button class="btn-primary" onclick="addResource()" style="padding:7px 14px;font-size:12px;">حفظ</button>
+            </div>
+            <div id="libList" style="flex:1;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;overflow-y:auto;align-content:start;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ NOTES ══════ -->
+      <div id="sec-notes" class="section">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
+          <div>
+            <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">لوحة الملاحظات 📝</h2>
+            <p style="font-size:12px;color:var(--txt2);margin-top:2px;">رتب أفكارك ولونها زي ما تحب!</p>
+          </div>
+          <button class="btn-primary" onclick="addNote()">➕ إضافة</button>
+        </div>
+        <div style="display:flex;gap:14px;flex:1;min-height:0;" class="lib-layout">
+          <div id="noteFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
+          <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+            <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+              <span id="noteActiveTitle" style="font-weight:900;font-size:14px;color:var(--blue);">...</span>
+              <div style="display:flex;gap:8px;">
+                <button class="btn-ghost" onclick="addNoteFolder()" style="font-size:11px;color:var(--green2);">➕ لوحة</button>
+                <button class="btn-ghost" id="delNoteFolderBtn" onclick="delNoteFolder()" style="font-size:11px;color:var(--red);">🗑️ حذف</button>
+              </div>
+            </div>
+            <div id="notesBoard" style="flex:1;padding:20px;display:flex;flex-wrap:wrap;gap:20px;overflow-y:auto;align-content:flex-start;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ CERTS ══════ -->
+      <div id="sec-certs" class="section">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
+          <div>
+            <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2>
+            <p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك في مكان واحد</p>
+          </div>
+          <button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button>
+          <input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="handleCertUpload(this)">
+        </div>
+        <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;align-content:start;padding-bottom:20px;"></div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ════ SETTINGS MODAL ════ -->
+<div id="settingsModal" class="modal-bg">
+  <div class="modal-box" style="width:100%;max-width:420px;">
+    <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="font-size:18px;font-weight:900;color:#fff;">⚙️ الإعدادات</h3>
+      <button onclick="closeSettings()" style="background:rgba(255,255,255,.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+    <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;max-height:70vh;overflow-y:auto;">
+      <!-- Theme -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--txt1);">مظهر التطبيق</div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:2px;">داكن / فاتح</div>
+        </div>
+        <button class="btn-ghost" onclick="toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button>
+      </div>
+      <!-- Tags -->
+      <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">إدارة الأقسام</div>
+        <div style="display:flex;gap:7px;margin-bottom:10px;">
+          <input type="color" id="newTagColor" value="#3b82f6" style="width:34px;height:34px;border-radius:10px;border:1px solid var(--border);padding:3px;background:var(--bg);cursor:pointer;flex-shrink:0;">
+          <input type="text" id="newTagInput" placeholder="اسم القسم..." class="field" style="flex:1;font-size:12px;padding:7px 11px;">
+          <button class="btn-primary" onclick="addTag()" style="padding:7px 12px;font-size:12px;flex-shrink:0;">إضافة</button>
+        </div>
+        <div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto;"></div>
+      </div>
+      <!-- Backup -->
+      <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-ghost" onclick="exportData()" style="flex:1;justify-content:center;display:flex;gap:6px;padding:10px;">💾 حفظ</button>
+          <button onclick="document.getElementById('importIn').click()" style="flex:1;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;color:var(--green2);font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;font-family:'Cairo',sans-serif;">📂 استرجاع</button>
+          <input type="file" id="importIn" style="display:none;" accept=".json" onchange="importData(this)">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TASK MODAL ════ -->
+<div id="taskModal" class="modal-bg">
+  <div class="modal-box" style="width:95%;max-width:1300px;height:90vh;display:flex;flex-direction:column;">
+    <!-- Header -->
+    <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;">
+        <span id="mIcon" style="font-size:24px;background:var(--bg4);padding:8px;border-radius:14px;">📝</span>
+        <h2 id="mTitle" style="font-size:20px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></h2>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <select id="mType" onchange="handleTypeChange(this.value)" class="field" style="width:auto;font-size:12px;font-weight:700;padding:7px 12px;border-radius:10px;">
+          <option value="general">📝 مهمة عادية</option>
+          <option value="course">🎓 كورس</option>
+          <option value="book">📖 كتاب</option>
+          <option value="lecture">🎤 محاضرة</option>
+          <option value="video">▶️ فيديو</option>
+          <option value="workshop">🛠️ ورشة عمل</option>
+        </select>
+        <button onclick="closeTaskModal()" style="background:rgba(255,255,255,.07);border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;color:var(--txt2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;" onmouseover="this.style.background='rgba(239,68,68,.15)';this.style.color='var(--red)'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='var(--txt2)'">✕</button>
+      </div>
+    </div>
+    <!-- Body -->
+    <div style="flex:1;overflow-y:auto;padding:20px 24px;" class="custom-scroll">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;" class="task-modal-grid">
+        <!-- Left -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;gap:10px;">
+            <label style="flex:1;">
+              <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">البداية 📅</div>
+              <input type="text" id="mStartDate" placeholder="يوم/شهر/سنة" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" onchange="saveTaskDates()" class="field" style="font-size:12px;">
+            </label>
+            <label style="flex:1;">
+              <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">النهاية 🏁</div>
+              <input type="text" id="mEndDate" placeholder="يوم/شهر/سنة" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" onchange="saveTaskDates()" class="field" style="font-size:12px;">
+            </label>
+          </div>
+          <label>
+            <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">الوصف العام</div>
+            <textarea id="mDesc" class="field" style="height:160px;resize:none;border-radius:14px;font-size:13px;" placeholder="اكتب تفاصيل المهمة..."></textarea>
+          </label>
+          <!-- Attachments -->
+          <div style="padding:14px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--border);">
+            <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">مرفقات 📎</div>
+            <div style="display:flex;gap:7px;margin-bottom:10px;">
+              <button class="btn-ghost" onclick="addAttachment('link')" style="flex:1;font-size:11px;color:var(--blue2);">🔗 رابط</button>
+              <button class="btn-ghost" onclick="addAttachment('file')" style="flex:1;font-size:11px;color:var(--green2);">☁️ ملف</button>
+            </div>
+            <div id="mAttachments" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+          </div>
+        </div>
+        <!-- Right -->
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">الدروس / الخطوات</div>
+          <div style="display:flex;gap:8px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:12px;padding:7px;">
+            <input type="text" id="newSubIn" placeholder="أضف درساً..." class="field" style="border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')addSubtask()">
+            <button class="btn-primary" onclick="addSubtask()" style="padding:7px 14px;font-size:12px;flex-shrink:0;">➕</button>
+          </div>
+          <div id="mSubtasks" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TOAST ════ -->
+<div id="toast"><span id="toastIcon"></span><span id="toastText"></span></div>
+
+<script>
+window.loginWithGoogle = () => alert("جاري التحميل...");
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const FB = {
+  apiKey:"AIzaSyBbdeRIp_cbN7LP3dKovOmfCHTxseM-zro",
+  authDomain:"rehlaty-final.firebaseapp.com",
+  projectId:"rehlaty-final",
+  storageBucket:"rehlaty-final.firebasestorage.app",
+  messagingSenderId:"332709629068",
+  appId:"1:332709629068:web:cdfb8f40dfa4c74d31ffa9"
+};
+const fbApp = initializeApp(FB);
+const auth  = getAuth(fbApp);
+const db    = getFirestore(fbApp);
+const gProv = new GoogleAuthProvider();
+
+let user = null;
+let activTask = null;
+let sq = "";
+
+// ──────────────────────────────────────────────────────────
+// DEFAULT STATE
+// ──────────────────────────────────────────────────────────
+let S = {
+  tasks:[],todayTasks:[],goals:[],resources:[],certificates:[],
+  noteFolders:[{id:"nf_gen",name:"لوحة عامة",notes:[]}],
+  activNoteFolder:"nf_gen",
+  libFolders:[{id:"lf_gen",name:"عام"}],
+  activLibFolder:"lf_gen",
+  tags:["تصميم","ويب","تعلم"],
+  tagColors:{"تصميم":"#ec4899","ويب":"#3b82f6","تعلم":"#10b981"},
+  streak:0, lastDate:""
+};
+
+const ICONS = {general:"📝",course:"🎓",book:"📖",lecture:"🎤",video:"▶️",workshop:"🛠️"};
+const QUOTES = ["عافر، حلمك يستاهل التعب! 💪","وما نيل المطالب بالتمني ✨","السعي عبادة والمثابرة فن 🌟","كل خطوة صغيرة بتقربك من حلمك 🚀","اليوم اللي مش بتتعلم فيه مش بيتحسبش! 📚"];
+const el = id => document.getElementById(id);
+
+// ──────────────────────────────────────────────────────────
+// TOAST
+// ──────────────────────────────────────────────────────────
+window.showToast = (msg,type="info") => {
+  const t=el("toast"), ic=el("toastIcon"), tx=el("toastText");
+  const maps={success:["✅","linear-gradient(135deg,#059669,#047857)"],error:["❌","linear-gradient(135deg,#dc2626,#b91c1c)"],loading:["","linear-gradient(135deg,#2563eb,#1d4ed8)"]};
+  const [icon,bg]=maps[type]||["ℹ️","#1e293b"];
+  t.style.background=bg;
+  ic.innerHTML=type==="loading"?`<div class="loader" style="width:16px;height:16px;border-width:2px;"></div>`:icon;
+  tx.textContent=msg;
+  t.classList.add("show");
+  if(type!=="loading") setTimeout(()=>t.classList.remove("show"),3000);
+};
+
+// ──────────────────────────────────────────────────────────
+// SOUND
+// ──────────────────────────────────────────────────────────
+let ctx=null;
+window.playSound = type => {
+  try{
+    if(!ctx) ctx=new(window.AudioContext||window.webkitAudioContext)();
+    if(ctx.state==="suspended") ctx.resume();
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    if(type==="ok"){o.type="sine";o.frequency.setValueAtTime(330,ctx.currentTime);o.frequency.setValueAtTime(440,ctx.currentTime+.1);o.frequency.setValueAtTime(659,ctx.currentTime+.2);g.gain.setValueAtTime(.04,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.45);o.start();o.stop(ctx.currentTime+.45);}
+    else{o.type="sawtooth";o.frequency.setValueAtTime(240,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(90,ctx.currentTime+.22);g.gain.setValueAtTime(.04,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.22);o.start();o.stop(ctx.currentTime+.22);}
+  }catch(e){}
+};
+
+// ──────────────────────────────────────────────────────────
+// SAVE / LOAD
+// ──────────────────────────────────────────────────────────
+window.saveData = async () => {
+  renderAll();
+  localStorage.setItem("rehlaty_v3", JSON.stringify(S));
+  if(user) try{ await setDoc(doc(db,"rehlaty_users",user.uid),S); }catch(e){}
+};
+
+// ──────────────────────────────────────────────────────────
+// OCCASION DETECTION
+// ──────────────────────────────────────────────────────────
+function detectOccasion(){
+  const now = new Date();
+  const m=now.getMonth()+1, d=now.getDate();
+
+  // Remove all occasion classes
+  document.body.classList.remove("birthday","ramadan","eid");
+
+  // Birthday: June 6
+  if(m===6 && d===6){
+    document.body.classList.add("birthday");
+    el("occasionBanner").style.display="flex";
+    el("ocIcon").textContent="🎂";
+    el("ocText").textContent="عيد ميلاد سعيد يا بطل! 🎉 سنة وانت طيب وبتبني مستقبلك بيدك 🎊";
+    spawnConfetti();
+    return;
+  }
+
+  // Hijri calendar approximation (for 2025-2030 range)
+  // Ramadan 2025: Mar 1 - Mar 30
+  // Eid Al-Fitr 2025: Mar 30 - Apr 2
+  // Eid Al-Adha 2025: Jun 6-10
+  // These shift ~11 days/year — we check a range
+  const year=now.getFullYear();
+  // Simplified Hijri check using known Gregorian equivalents
+  const RAMADAN = [
+    {y:2025,sm:3,sd:1,em:3,ed:30},{y:2026,sm:2,sd:18,em:3,ed:19},
+    {y:2027,sm:2,sd:7,em:3,ed:8},{y:2028,sm:1,sd:27,em:2,ed:25},
+  ];
+  const EID_FITR = [
+    {y:2025,sm:3,sd:30,em:4,ed:2},{y:2026,sm:3,sd:20,em:3,ed:23},
+    {y:2027,sm:3,sd:9,em:3,ed:12},{y:2028,sm:2,sd:26,em:2,ed:29},
+  ];
+  const EID_ADHA = [
+    {y:2025,sm:6,sd:6,em:6,ed:10},{y:2026,sm:5,sd:26,em:5,ed:30},
+    {y:2027,sm:5,sd:15,em:5,ed:19},{y:2028,sm:5,sd:4,em:5,ed:8},
+  ];
+
+  function inRange(arr){
+    return arr.some(r=>{
+      if(r.y!==year) return false;
+      const start=new Date(year,r.sm-1,r.sd);
+      const end=new Date(year,r.em-1,r.ed);
+      return now>=start && now<=end;
+    });
+  }
+
+  if(inRange(EID_FITR)||inRange(EID_ADHA)){
+    document.body.classList.add("eid");
+    el("occasionBanner").style.display="flex";
+    el("ocIcon").textContent="🌙";
+    const isAdha=inRange(EID_ADHA);
+    el("ocText").textContent=isAdha?"عيد الأضحى المبارك! كل سنة وانت بخير 🕌":"عيد الفطر المبارك! تقبل الله منا ومنكم 🌙";
+    return;
+  }
+
+  if(inRange(RAMADAN)){
+    document.body.classList.add("ramadan");
+    el("occasionBanner").style.display="flex";
+    el("ocIcon").textContent="🌙";
+    el("ocText").textContent="رمضان كريم! شهر التعلم والتطور الحقيقي 📿";
+    return;
+  }
+
+  el("occasionBanner").style.display="none";
+}
+
+function spawnConfetti(){
+  const wrap=el("confettiWrap");
+  wrap.innerHTML="";
+  const colors=["#f87171","#fb923c","#facc15","#4ade80","#60a5fa","#a78bfa","#f472b6"];
+  for(let i=0;i<60;i++){
+    const p=document.createElement("div");
+    p.className="confetti-piece";
+    const size=Math.random()*8+4;
+    p.style.cssText=`left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[i%colors.length]};border-radius:${Math.random()>.5?"50%":"2px"};animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*3}s;opacity:${Math.random()*.7+.3};`;
+    wrap.appendChild(p);
+  }
+}
+
+// ──────────────────────────────────────────────────────────
+// DATE DISPLAY
+// ──────────────────────────────────────────────────────────
+function updateDate(){
+  const now=new Date();
+  const greg=new Intl.DateTimeFormat("ar-EG",{weekday:"long",year:"numeric",month:"long",day:"numeric"}).format(now);
+  let hijri="";
+  try{ hijri=new Intl.DateTimeFormat("ar-SA-u-ca-islamic",{year:"numeric",month:"long",day:"numeric"}).format(now); }catch(e){}
+  el("dateDisplay").innerHTML=`<div style="font-size:15px;font-weight:700;color:var(--cyan);margin-top:4px;">${greg}</div>${hijri?`<div style="font-size:12px;font-weight:600;color:var(--green2);margin-top:2px;">🌙 ${hijri}</div>`:""}`;
+}
+updateDate();
+
+// ──────────────────────────────────────────────────────────
+// STREAK
+// ──────────────────────────────────────────────────────────
+function updateStreak(){
+  const today=new Date().toDateString();
+  const yest=new Date(Date.now()-86400000).toDateString();
+  if(!S.lastDate) S.streak=1;
+  else if(S.lastDate===today){ /* same day */ }
+  else if(S.lastDate===yest) S.streak=(S.streak||0)+1;
+  else S.streak=1;
+  S.lastDate=today;
+  const sn=el("streakNum");
+  if(sn) sn.textContent=S.streak||0;
+}
+
+// ──────────────────────────────────────────────────────────
+// STATS
+// ──────────────────────────────────────────────────────────
+function updateStats(){
+  const tot=(S.todayTasks||[]).length;
+  const done=(S.todayTasks||[]).filter(t=>t.done).length;
+  const pct=tot>0?Math.round(done/tot*100):0;
+  el("sTotalToday").textContent=tot;
+  el("sDoneToday").textContent=done;
+  el("sKanban").textContent=(S.tasks||[]).length;
+  el("progressBar").style.width=pct+"%";
+  el("progressPct").textContent=pct+"%";
+  el("moodEmoji").textContent=pct===0?"😴":pct<30?"🌱":pct<60?"💪":pct<90?"🔥":"🏆";
+  const sn=el("streakNum");
+  if(sn) sn.textContent=S.streak||0;
+}
+
+// ──────────────────────────────────────────────────────────
+// TABS
+// ──────────────────────────────────────────────────────────
+window.switchTab = tab => {
+  ["today","goals","kanban","library","notes","certs"].forEach(id=>{
+    el("sec-"+id).classList.toggle("active",id===tab);
+    el("tab-"+id).classList.toggle("active",id===tab);
+  });
+  if(window.innerWidth<768) closeSidebar();
+};
+
+window.openSidebar  = ()=>{ el("sidebar").classList.add("open"); el("sbOverlay").style.display="block"; el("sbClose").style.display="flex"; };
+window.closeSidebar = ()=>{ el("sidebar").classList.remove("open"); el("sbOverlay").style.display="none"; el("sbClose").style.display="none"; };
+
+// ──────────────────────────────────────────────────────────
+// THEME
+// ──────────────────────────────────────────────────────────
+window.initTheme = ()=>{
+  const light=localStorage.getItem("rehlaty_theme")==="light";
+  if(light){ document.body.classList.add("light"); el("themeBtn").textContent="☀️ فاتح"; }
+};
+window.toggleTheme = ()=>{
+  document.body.classList.toggle("light");
+  const isL=document.body.classList.contains("light");
+  localStorage.setItem("rehlaty_theme",isL?"light":"dark");
+  el("themeBtn").textContent=isL?"☀️ فاتح":"🌙 داكن";
+};
+
+// ──────────────────────────────────────────────────────────
+// PERIODS (Goals)
+// ──────────────────────────────────────────────────────────
+function periods(){
+  const d=new Date(), y=d.getFullYear().toString();
+  const mN=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+  const mi=d.getMonth(), m=(mi+1).toString().padStart(2,"0");
+  const w=Math.ceil(d.getDate()/7).toString();
+  const wN={"1":"الأول","2":"الثاني","3":"الثالث","4":"الرابع","5":"الخامس"};
+  return{
+    year:y, month:`${y}-${m}`, week:`${y}-${m}-W${w}`,
+    labels:{year:`سنة ${y}`,month:`شهر ${mN[mi]}`,week:`الأسبوع ${wN[w]} (${mN[mi]})`}
+  };
+}
+
+// ──────────────────────────────────────────────────────────
+// FILE UPLOAD
+// ──────────────────────────────────────────────────────────
+async function uploadCloud(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const b64=e.target.result.split(",")[1];
+      const fd=new URLSearchParams();
+      fd.append("filename",Date.now()+"_"+file.name);
+      fd.append("mimetype",file.type);
+      fd.append("data",b64);
+      fetch("https://script.google.com/macros/s/AKfycbzW1neZSMCZ9Yr0jVSE5n7y2FtrUvmjsbDwzw0c3zsBJ8GIbjbZV7xjXtP-yt1ecQFZ/exec",{method:"POST",body:fd})
+        .then(r=>r.json()).then(d=>d.url?res(d.url):rej(d.error)).catch(rej);
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+// ──────────────────────────────────────────────────────────
+// RENDER ALL
+// ──────────────────────────────────────────────────────────
+function renderAll(){
+  renderTodayTasks();
+  renderTasks();
+  renderGoals();
+  renderLib();
+  renderNotes();
+  renderCerts();
+  renderTags();
+  updateStats();
+}
+
+// ──────────────────────────────────────────────────────────
+// TODAY
+// ──────────────────────────────────────────────────────────
+function renderTodayTasks(){
+  const list=el("todayList"); if(!list) return;
+  if(!S.todayTasks) S.todayTasks=[];
+  const items=[...S.todayTasks].sort((a,b)=>a.done===b.done?0:a.done?1:-1);
+  if(!items.length){
+    list.innerHTML=`<div class="empty"><span>🎯</span><p>يومك فاضي لسه.. ضيف مهمة أو اسحب درس من كورساتك!</p></div>`;
+    return;
+  }
+  list.innerHTML=items.filter(t=>t.text.toLowerCase().includes(sq)).map(t=>`
+    <div class="today-item${t.done?" done":""}">
+      <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="toggleTodayTask('${t.id}')">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text}</div>
+        ${t.parentName?`<div style="font-size:10px;font-weight:700;color:var(--blue2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🔗 ${t.parentName}</div>`:""}
+      </div>
+      <button onclick="delTodayTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--txt3);font-size:16px;padding:0 4px;transition:color .2s;flex-shrink:0;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
+    </div>`).join("");
+}
+
+window.addTodayTask = ()=>{
+  const inp=el("newTodayInput"), v=inp.value.trim(); if(!v) return;
+  if(!S.todayTasks) S.todayTasks=[];
+  S.todayTasks.unshift({id:"td"+Date.now(),text:v,done:false});
+  inp.value=""; saveData();
+};
+window.toggleTodayTask = id=>{
+  const t=S.todayTasks.find(x=>x.id===id); if(!t) return;
+  t.done=!t.done;
+  if(t.done){ showToast("عاش يا بطل! 👏","success"); playSound("ok"); updateStreak(); }
+  saveData();
+};
+window.delTodayTask = id=>{ if(confirm("مسح المهمة؟")){ playSound("del"); S.todayTasks=S.todayTasks.filter(x=>x.id!==id); saveData(); }};
+
+// ──────────────────────────────────────────────────────────
+// GOALS
+// ──────────────────────────────────────────────────────────
+function renderGoals(){
+  if(!S.goals) S.goals=[];
+  const P=periods();
+  el("gyTitle").textContent=P.labels.year;
+  el("gmTitle").textContent=P.labels.month;
+  el("gwTitle").textContent=P.labels.week;
+  const lists={year:"",month:"",week:""};
+  const arch={};
+  [...S.goals].sort((a,b)=>a.done===b.done?0:a.done?1:-1).forEach(g=>{
+    const cur=g.periodKey===P.year||g.periodKey===P.month||g.periodKey===P.week;
+    const html=`<div class="goal-item${!cur?" style=\"opacity:.4\"":""}">
+      <input type="checkbox" class="cb" ${g.done?"checked":""} onchange="toggleGoal('${g.id}')" style="width:20px;height:20px;min-width:20px;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;font-weight:700;${g.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${g.text}</div>
+        ${g.parentName?`<div style="font-size:10px;color:var(--purple);font-weight:700;">🔗 ${g.parentName}</div>`:""}
+      </div>
+      <div style="display:flex;gap:5px;opacity:0;transition:opacity .2s;" class="goal-actions">
+        ${cur&&!g.done?`<button onclick="goalToToday('${g.id}')" style="font-size:9px;font-weight:900;padding:4px 7px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯</button>`:""}
+        <button onclick="delGoal('${g.id}')" style="font-size:10px;background:transparent;border:none;cursor:pointer;color:var(--red);">✕</button>
+      </div>
+    </div>`;
+    if(cur){ if(g.periodType==="year") lists.year+=html; else if(g.periodType==="month") lists.month+=html; else lists.week+=html; }
+    else{ if(!arch[g.periodLabel]) arch[g.periodLabel]={order:g.periodKey,html:""}; arch[g.periodLabel].html+=html; }
+  });
+  const emp=`<div style="text-align:center;padding:28px 0;font-size:12px;font-weight:600;color:var(--txt3);">مفيش أهداف لسه..</div>`;
+  el("lyList").innerHTML=lists.year||emp;
+  el("gmList").innerHTML=lists.month||emp;
+  el("gwList").innerHTML=lists.week||emp;
+  let archHTML="";
+  Object.keys(arch).sort((a,b)=>arch[b].order.localeCompare(arch[a].order)).forEach(lbl=>{
+    archHTML+=`<div style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:16px;padding:14px 16px;"><h4 style="font-size:13px;font-weight:900;color:var(--txt2);margin-bottom:10px;padding-right:10px;border-right:3px solid var(--txt3);">${lbl}</h4>${arch[lbl].html}</div>`;
+  });
+  el("goalsArchive").innerHTML=archHTML||`<div class="empty"><span>👻</span><p>مفيش إنجازات قديمة لسه..</p></div>`;
+  // hover on goal actions
+  document.querySelectorAll(".goal-item").forEach(item=>{
+    item.addEventListener("mouseenter",()=>{ const a=item.querySelector(".goal-actions"); if(a) a.style.opacity="1"; });
+    item.addEventListener("mouseleave",()=>{ const a=item.querySelector(".goal-actions"); if(a) a.style.opacity="0"; });
+  });
+}
+window.addGoal = type=>{
+  const mp={year:"gyInput",month:"gmInput",week:"gwInput"};
+  const inp=el(mp[type]); const v=inp.value.trim(); if(!v) return;
+  const P=periods(); let pk,pl;
+  if(type==="year"){pk=P.year;pl=P.labels.year;}
+  else if(type==="month"){pk=P.month;pl=P.labels.month;}
+  else{pk=P.week;pl=P.labels.week;}
+  if(!S.goals) S.goals=[];
+  S.goals.unshift({id:"g"+Date.now(),text:v,done:false,periodType:type,periodKey:pk,periodLabel:pl});
+  inp.value=""; saveData(); renderGoals();
+};
+window.toggleGoal = id=>{ const g=S.goals.find(x=>x.id===id); if(g){g.done=!g.done; if(g.done){showToast("إنجاز عظيم! 🏆","success");playSound("ok");} saveData(); renderGoals(); }};
+window.delGoal = id=>{ if(confirm("مسح الهدف؟")){playSound("del");S.goals=S.goals.filter(x=>x.id!==id);saveData();renderGoals();}};
+window.goalToToday = id=>{ const g=S.goals.find(x=>x.id===id); if(!g) return; if(!S.todayTasks) S.todayTasks=[]; if(S.todayTasks.some(t=>t.text===g.text&&!t.done)){showToast("موجود بالفعل!","error");return;} S.todayTasks.unshift({id:"td"+Date.now(),text:g.text,done:false,parentName:"🏆 "+g.periodLabel}); saveData(); showToast("تم النقل لليومي! 🎯","success"); };
+
+// ──────────────────────────────────────────────────────────
+// KANBAN
+// ──────────────────────────────────────────────────────────
+function renderTasks(){
+  const cols={todo:"",inprogress:"",done:""};
+  let ct=0,ci=0,cd=0;
+  const sel=el("newTaskTag");
+  if(sel) sel.innerHTML=S.tags.map(t=>`<option value="${t}">${t}</option>`).join("");
+  let filtered=[...S.tasks].filter(t=>t.text.toLowerCase().includes(sq)||(t.tag||"").toLowerCase().includes(sq));
+  filtered.sort((a,b)=>a.pinned===b.pinned?0:a.pinned?-1:1);
+  filtered.forEach(t=>{
+    const color=S.tagColors[t.tag]||"#4a6080";
+    if(t.status==="todo") ct++; else if(t.status==="inprogress") ci++; else cd++;
+    const pct=t.subtasks.length?(t.subtasks.filter(s=>s.done).length/t.subtasks.length*100):0;
+    const isDone=t.status==="done";
+    cols[t.status]+=`
+    <div id="${t.id}" class="task-card${isDone?" done-card":""}" draggable="true" ondragstart="drag(event)" style="--tc:${color}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+        <span class="tag-pill" style="color:${color};border-color:rgba(0,0,0,.15);">${ICONS[t.type]||"📝"} ${t.tag||""}</span>
+        <div class="card-actions" style="display:flex;gap:5px;opacity:0;transition:opacity .2s;">
+          <button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','up')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬆️</button>
+          <button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','down')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬇️</button>
+          <button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();togglePin('${t.id}')" style="background:${t.pinned?"rgba(59,130,246,.2)":"rgba(255,255,255,.05)"};border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:${t.pinned?"var(--blue)":"var(--txt3)"};font-size:10px;">📌</button>
+          <button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();delTask('${t.id}')" style="background:rgba(239,68,68,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--red);font-size:12px;">✕</button>
+        </div>
+      </div>
+      <h4 onclick="event.stopPropagation();openTaskModal('${t.id}')" style="font-size:13px;font-weight:700;${isDone?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}cursor:pointer;transition:color .2s;margin-bottom:8px;" onmouseover="this.style.color='var(--blue2)'" onmouseout="this.style.color='${isDone?"var(--txt3)":"var(--txt1)"}';">${t.text}</h4>
+      ${t.startDate||t.endDate?`<div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:5px 10px;margin-bottom:8px;color:var(--txt3);"><span>📅 ${t.startDate||"---"}</span><span>🏁 ${t.endDate||"---"}</span></div>`:""}
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${pct}%"></div></div>
+        <span style="font-size:10px;font-weight:700;color:var(--txt3);flex-shrink:0;">${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span>
+      </div>
+    </div>`;
+  });
+  ["todo","inprogress","done"].forEach(id=>{
+    const c=el(id); if(!c) return;
+    c.innerHTML=cols[id]||`<div class="empty" style="padding:30px 10px;"><span style="font-size:32px;">📭</span><p>اسحب هنا أو ضيف مهمة</p></div>`;
+    c.querySelectorAll(".task-card").forEach(card=>{
+      card.addEventListener("mouseenter",()=>{ const a=card.querySelector(".card-actions"); if(a) a.style.opacity="1"; });
+      card.addEventListener("mouseleave",()=>{ const a=card.querySelector(".card-actions"); if(a) a.style.opacity="0"; });
+    });
+  });
+  el("cntTodo").textContent=ct;
+  el("cntInprogress").textContent=ci;
+  el("cntDone").textContent=cd;
+}
+window.addTask = ()=>{
+  const inp=el("newTaskInput"); const v=inp.value.trim(); if(!v) return;
+  S.tasks.unshift({id:"t"+Date.now(),text:v,status:"todo",tag:el("newTaskTag").value,subtasks:[],files:[],description:"",pinned:false,type:"general",startDate:"",endDate:""});
+  inp.value=""; saveData();
+};
+window.delTask = id=>{ if(confirm("مسح المهمة بالكامل؟")){playSound("del");S.tasks=S.tasks.filter(t=>t.id!==id);saveData();}};
+window.togglePin = id=>{ const t=S.tasks.find(x=>x.id===id); if(t){t.pinned=!t.pinned;saveData();}};
+window.moveTask = (id,dir)=>{
+  const idx=S.tasks.findIndex(t=>t.id===id); if(idx<0) return;
+  const task=S.tasks[idx]; const col=S.tasks.filter(t=>t.status===task.status); const ci=col.findIndex(t=>t.id===id);
+  if(dir==="up"&&ci>0){ const si=S.tasks.findIndex(t=>t.id===col[ci-1].id); [S.tasks[idx],S.tasks[si]]=[S.tasks[si],S.tasks[idx]]; saveData(); }
+  else if(dir==="down"&&ci<col.length-1){ const si=S.tasks.findIndex(t=>t.id===col[ci+1].id); [S.tasks[idx],S.tasks[si]]=[S.tasks[si],S.tasks[idx]]; saveData(); }
+};
+window.drag = ev=>ev.dataTransfer.setData("text",ev.target.closest(".task-card")?.id||"");
+window.allowDrop = ev=>ev.preventDefault();
+window.drop = ev=>{ ev.preventDefault(); const id=ev.dataTransfer.getData("text"); const zone=ev.target.closest(".drop-zone"); if(!zone||!id) return; const t=S.tasks.find(x=>x.id===id); if(t&&t.status!==zone.id){if(zone.id==="done"){showToast("عاش يا بطل! 🏆","success");playSound("ok");} t.status=zone.id; saveData();}};
+
+// ──────────────────────────────────────────────────────────
+// TASK MODAL
+// ──────────────────────────────────────────────────────────
+window.openTaskModal = id=>{
+  try{
+    activTask=id; const t=S.tasks.find(x=>x.id===id);
+    el("mTitle").textContent=t.text;
+    el("mDesc").value=t.description||"";
+    el("mType").value=t.type||"general";
+    el("mIcon").textContent=ICONS[t.type||"general"]||"📝";
+    const sd=el("mStartDate"),ed=el("mEndDate");
+    sd.type=t.startDate?"date":"text"; sd.value=t.startDate||"";
+    ed.type=t.endDate?"date":"text"; ed.value=t.endDate||"";
+    if(!t.files) t.files=[];
+    renderSubtasks(); renderAttachments();
+    const m=el("taskModal"); m.classList.add("show");
+  }catch(e){console.error(e);}
+};
+window.closeTaskModal = ()=>{
+  const t=S.tasks.find(x=>x.id===activTask);
+  if(t) t.description=el("mDesc").value;
+  saveData();
+  el("taskModal").classList.remove("show");
+};
+window.saveTaskDates = ()=>{ const t=S.tasks.find(x=>x.id===activTask); if(t){t.startDate=el("mStartDate").value;t.endDate=el("mEndDate").value;saveData();}};
+window.handleTypeChange = type=>{
+  const t=S.tasks.find(x=>x.id===activTask); t.type=type; el("mIcon").textContent=ICONS[type]||"📝"; saveData();
+  if(type==="course"&&(t.subtasks.length===0||confirm("توليد دروس تلقائياً؟"))){
+    const n=parseInt(prompt("كام درس؟")); if(!isNaN(n)&&n>0){ const si=t.subtasks.length+1; for(let i=0;i<n;i++) t.subtasks.push({text:`الدرس ${si+i}`,done:false,files:[],links:[],summary:""}); saveData();renderSubtasks();showToast(`تم إضافة ${n} دروس! 🎓`,"success");}
+  } else if(type==="book"&&(t.subtasks.length===0||confirm("توليد فصول تلقائياً؟"))){
+    const n=parseInt(prompt("كام فصل؟")); if(!isNaN(n)&&n>0){ const si=t.subtasks.length+1; for(let i=0;i<n;i++) t.subtasks.push({text:`الفصل ${si+i}`,done:false,files:[],links:[],summary:""}); saveData();renderSubtasks();showToast(`تم إضافة ${n} فصول! 📖`,"success");}
+  }
+};
+
+// ──────────────────────────────────────────────────────────
+// SUBTASKS
+// ──────────────────────────────────────────────────────────
+function getYTid(url){ if(!url) return null; const m=url.match(/^.*(youtu.be\/|v\/|embed\/|watch\?v=|&v=)([^#&?]*).*/); return(m&&m[2].length===11)?m[2]:null; }
+function fileIcon(ext,type){ if(type==="link") return "🔗"; if(["jpg","jpeg","png","svg","webp","gif"].includes(ext)) return "🖼️"; if(ext==="pdf") return "📄"; if(["psd","ai","xd"].includes(ext)) return "🎨"; return "📁"; }
+
+function renderSubtasks(){
+  const t=S.tasks.find(x=>x.id===activTask); if(!t) return;
+  el("mSubtasks").innerHTML=(t.subtasks||[]).map((s,i)=>{
+    if(!s.links) s.links=[];
+    if(typeof s.links==="string") s.links=s.links?[s.links]:[];
+    const vids=s.links.map((lk,vi)=>{
+      const ytid=getYTid(lk);
+      return `<div style="margin-bottom:8px;padding:8px;border-radius:12px;background:rgba(0,0,0,.2);border:1px solid var(--border);">
+        <div style="display:flex;gap:6px;"><input type="text" value="${lk}" onchange="updateSubVid(${i},${vi},this.value)" placeholder="رابط يوتيوب..." class="field" style="flex:1;font-size:11px;padding:6px 10px;"><button onclick="delSubVid(${i},${vi})" style="background:rgba(239,68,68,.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 10px;font-size:12px;">✕</button></div>
+        ${ytid?`<div onclick="window.open('${lk}','_blank')" style="margin-top:7px;border-radius:10px;overflow:hidden;position:relative;height:90px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.75;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,.85);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">▶</div></div></div>`:""}
+      </div>`;
+    }).join("");
+    const files=!s.files||!s.files.length?`<span style="font-size:10px;color:var(--txt3);">لا يوجد مرفقات</span>`:s.files.map((f,fi)=>`<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);color:var(--txt2);max-width:110px;overflow:hidden;">${fileIcon(f.ext,f.type)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;" title="${f.name}">${f.name}</span><button onclick="openSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--green2);padding:0;font-size:11px;">👁️</button><button onclick="delSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--red);padding:0;font-size:11px;">✕</button></div>`).join("");
+    return `
+    <div style="border-radius:16px;overflow:hidden;background:var(--bg3);border:1px solid var(--border);">
+      <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <input type="checkbox" class="cb" ${s.done?"checked":""} onchange="toggleSub(${i})">
+          <span style="font-size:13px;font-weight:700;flex:1;${s.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}">${s.text}</span>
+        </label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+          <button onclick="sendSubToGoals(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(139,92,246,.1);color:var(--purple);border:1px solid rgba(139,92,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🏆 للأهداف</button>
+          <button onclick="sendSubToToday(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯 لليوم</button>
+          <button onclick="toggleSubNotes(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">📋 تفاصيل</button>
+          <button onclick="delSub(${i})" style="background:transparent;border:none;cursor:pointer;color:var(--red);font-size:14px;padding:0 4px;">✕</button>
+        </div>
+      </div>
+      <div id="snotes-${i}" class="notes-panel" style="background:rgba(0,0,0,.2);">
+        <div style="padding:14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+              <span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">فيديوهات</span>
+              <button onclick="addSubVid(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ فيديو</button>
+            </div>
+            ${vids}
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+              <span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">ملحقات</span>
+              <button onclick="addSubFile(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ ملف</button>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">${files}</div>
+          </div>
+          <textarea placeholder="الملخص والملاحظات..." oninput="saveSubField(${i},'summary',this.value)" class="field" style="height:80px;resize:none;border-radius:12px;font-size:12px;">${s.summary||""}</textarea>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+window.addSubtask = ()=>{ const v=el("newSubIn").value.trim(); if(!v) return; S.tasks.find(x=>x.id===activTask).subtasks.push({text:v,done:false,files:[],links:[],summary:""}); el("newSubIn").value=""; renderSubtasks(); saveData(); };
+window.toggleSub = i=>{ const s=S.tasks.find(x=>x.id===activTask).subtasks[i]; s.done=!s.done; if(s.done){showToast("خطوة كمان! 💪","success");playSound("ok");} renderSubtasks(); saveData(); };
+window.delSub = i=>{ if(confirm("مسح الدرس؟")){playSound("del");S.tasks.find(x=>x.id===activTask).subtasks.splice(i,1);renderSubtasks();saveData();}};
+window.toggleSubNotes = i=>el(`snotes-${i}`).classList.toggle("open");
+window.saveSubField = (i,f,v)=>{ S.tasks.find(x=>x.id===activTask).subtasks[i][f]=v; saveData(); };
+window.addSubVid = i=>{ const t=S.tasks.find(x=>x.id===activTask); if(!t.subtasks[i].links) t.subtasks[i].links=[]; t.subtasks[i].links.push(""); saveData();renderSubtasks(); };
+window.updateSubVid = (i,vi,v)=>{ S.tasks.find(x=>x.id===activTask).subtasks[i].links[vi]=v; saveData();renderSubtasks(); };
+window.delSubVid = (i,vi)=>{ S.tasks.find(x=>x.id===activTask).subtasks[i].links.splice(vi,1); saveData();renderSubtasks(); };
+window.addSubFile = async i=>{
+  const type=prompt("1: رابط\n2: رفع ملف");
+  if(type==="1"){ const name=prompt("الاسم:"); const url=prompt("الرابط:"); if(name&&url){ S.tasks.find(x=>x.id===activTask).subtasks[i].files.push({type:"link",name,url}); saveData();renderSubtasks(); }}
+  else if(type==="2"){ const inp=document.createElement("input"); inp.type="file"; inp.onchange=async e=>{ const f=e.target.files[0]; if(!f) return; const ext=f.name.split(".").pop().toLowerCase(); showToast("جاري الرفع...","loading"); try{ const url=await uploadCloud(f); S.tasks.find(x=>x.id===activTask).subtasks[i].files.push({type:"file",name:f.name,data:url,ext}); saveData();renderSubtasks();showToast("تم! ✅","success");}catch(e){showToast("فشل الرفع","error");}}; inp.click(); }
+};
+window.openSubFile = (i,fi)=>{ const f=S.tasks.find(x=>x.id===activTask).subtasks[i].files[fi]; window.open(f.type==="link"?(f.url.startsWith("http")?f.url:"https://"+f.url):f.data,"_blank"); };
+window.delSubFile = (i,fi)=>{ if(confirm("مسح المرفق?")){playSound("del");S.tasks.find(x=>x.id===activTask).subtasks[i].files.splice(fi,1);saveData();renderSubtasks();}};
+window.sendSubToToday = i=>{ const t=S.tasks.find(x=>x.id===activTask); const s=t.subtasks[i]; if(!S.todayTasks) S.todayTasks=[]; if(S.todayTasks.some(x=>x.subIdx===i&&x.parentId===activTask&&!x.done)){showToast("موجود بالفعل!","error");return;} S.todayTasks.unshift({id:"td"+Date.now(),text:s.text,done:false,parentId:activTask,subIdx:i,parentName:t.text}); saveData();showToast("تم النقل لليوم! 🎯","success"); };
+window.sendSubToGoals = i=>{ const t=S.tasks.find(x=>x.id===activTask); const s=t.subtasks[i]; if(!S.goals) S.goals=[]; const code=prompt("1: السنة\n2: الشهر\n3: الأسبوع"); if(!["1","2","3"].includes(code)) return; const tm={"1":"year","2":"month","3":"week"}; const type=tm[code]; const P=periods(); let pk,pl; if(type==="year"){pk=P.year;pl=P.labels.year;}else if(type==="month"){pk=P.month;pl=P.labels.month;}else{pk=P.week;pl=P.labels.week;} S.goals.unshift({id:"g"+Date.now(),text:s.text,done:false,periodType:type,periodKey:pk,periodLabel:pl,parentName:t.text}); saveData();showToast("تم الإضافة للأهداف! 🏆","success"); };
+
+// Attachments
+function renderAttachments(){
+  const t=S.tasks.find(x=>x.id===activTask); if(!t.files) t.files=[];
+  el("mAttachments").innerHTML=t.files.map((f,i)=>{
+    const isImg=["jpg","jpeg","png","svg","webp","gif"].includes(f.ext||"");
+    const ytid=f.type==="link"?getYTid(f.url):null;
+    let vis="";
+    if(ytid) vis=`<div onclick="window.open('${f.url}','_blank')" style="width:100%;height:60px;border-radius:9px;overflow:hidden;position:relative;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,.8);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">▶</div></div></div>`;
+    else if(f.type==="link") vis=`<div onclick="window.open('${f.url.startsWith("http")?f.url:"https://"+f.url}','_blank')" style="width:100%;height:60px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;"><span style="font-size:18px;">🔗</span><span style="font-size:9px;font-weight:700;color:var(--blue2);max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</span></div>`;
+    else if(isImg) vis=`<div onclick="window.open('${f.data}','_blank')" style="width:100%;height:60px;border-radius:9px;overflow:hidden;cursor:pointer;background:rgba(0,0,0,.3);"><img src="${f.data}" style="width:100%;height:100%;object-fit:contain;"></div>`;
+    else vis=`<div onclick="window.open('${f.data}','_blank')" style="width:100%;height:60px;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;"><span style="font-size:18px;">${fileIcon(f.ext,f.type)}</span><span style="font-size:9px;color:var(--txt2);font-weight:700;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</span></div>`;
+    return `<div style="position:relative;border:1px solid var(--border);border-radius:12px;padding:6px;background:rgba(0,0,0,.2);" class="att-wrap">${vis}<button onclick="delAttachment(${i})" style="position:absolute;top:-6px;left:-6px;width:18px;height:18px;background:#ef4444;border:none;border-radius:50%;cursor:pointer;color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;" class="att-del">✕</button></div>`;
+  }).join("");
+  document.querySelectorAll(".att-wrap").forEach(w=>{ w.addEventListener("mouseenter",()=>{ const b=w.querySelector(".att-del"); if(b) b.style.display="flex"; }); w.addEventListener("mouseleave",()=>{ const b=w.querySelector(".att-del"); if(b) b.style.display="none"; }); });
+}
+window.addAttachment = async type=>{
+  const t=S.tasks.find(x=>x.id===activTask); if(!t.files) t.files=[];
+  if(type==="link"){ const url=prompt("الرابط:"); if(url){ const name=prompt("الاسم:")||"رابط"; t.files.push({type:"link",name,url}); saveData();renderAttachments(); }}
+  else{ const inp=document.createElement("input"); inp.type="file"; inp.onchange=async e=>{ const f=e.target.files[0]; if(!f) return; const ext=f.name.split(".").pop().toLowerCase(); showToast("جاري الرفع...","loading"); try{const url=await uploadCloud(f); t.files.push({type:"file",name:f.name,data:url,ext}); saveData();renderAttachments();showToast("تم! ✅","success");}catch(e){showToast("فشل","error");}}; inp.click(); }
+};
+window.delAttachment = i=>{ if(confirm("مسح؟")){playSound("del");S.tasks.find(x=>x.id===activTask).files.splice(i,1);saveData();renderAttachments();}};
+
+// ──────────────────────────────────────────────────────────
+// LIBRARY
+// ──────────────────────────────────────────────────────────
+function renderLib(){
+  const flist=el("libFolders"); if(!flist) return;
+  flist.innerHTML=S.libFolders.map(f=>`<button class="folder-btn${S.activLibFolder===f.id?" active":""}" onclick="selLibFolder('${f.id}')">🗂️ ${f.name}</button>`).join("");
+  const act=S.libFolders.find(f=>f.id===S.activLibFolder);
+  if(act){ el("libActiveTitle").textContent="🗂️ "+act.name; el("delLibFolderBtn").style.display=S.libFolders.length>1?"":"none"; }
+  const items=S.resources.filter(r=>r.folderId===S.activLibFolder&&r.title.toLowerCase().includes(sq));
+  const llist=el("libList");
+  if(!items.length){ llist.innerHTML=`<div class="empty" style="grid-column:1/-1;"><span>📭</span><p>المجلد فاضي..</p></div>`; return; }
+  llist.innerHTML=items.map(r=>`
+    <div class="lib-card group">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;opacity:.04;pointer-events:none;">${fileIcon(r.ext,r.type)}</div>
+      <div style="position:relative;">
+        <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.title}">${r.title}</div>
+        <div style="font-size:9px;font-weight:900;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">${r.type==="file"?r.ext||"FILE":"LINK"}</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;position:relative;">
+        <button onclick="openLib(${r.id})" style="font-size:11px;font-weight:900;color:var(--blue);background:transparent;border:none;cursor:pointer;font-family:'Cairo',sans-serif;">فتح ↗</button>
+        <div style="display:flex;gap:8px;">
+          <button onclick="dlLib(${r.id})" style="font-size:11px;color:var(--green2);background:transparent;border:none;cursor:pointer;">⬇️</button>
+          <button onclick="delLib(${r.id})" style="font-size:12px;color:var(--red);background:transparent;border:none;cursor:pointer;opacity:0;transition:opacity .2s;" class="del-btn">✕</button>
+        </div>
+      </div>
+    </div>`).join("");
+  document.querySelectorAll(".lib-card").forEach(c=>{ c.addEventListener("mouseenter",()=>{ const b=c.querySelector(".del-btn"); if(b) b.style.opacity="1"; }); c.addEventListener("mouseleave",()=>{ const b=c.querySelector(".del-btn"); if(b) b.style.opacity="0"; }); });
+}
+window.selLibFolder = id=>{ S.activLibFolder=id; saveData(); };
+window.addLibFolder = ()=>{ const n=prompt("اسم المجلد:"); if(n){ const id="lf"+Date.now(); S.libFolders.push({id,name:n.trim()}); S.activLibFolder=id; saveData(); }};
+window.delLibFolder = ()=>{ if(S.libFolders.length<=1||!confirm("حذف المجلد وكل محتوياته؟")) return; playSound("del"); S.resources=S.resources.filter(r=>r.folderId!==S.activLibFolder); S.libFolders=S.libFolders.filter(f=>f.id!==S.activLibFolder); S.activLibFolder=S.libFolders[0].id; saveData(); };
+window.addResource = ()=>{ const t=el("libTitle").value.trim(); const u=el("libUrl").value.trim(); if(!t) return; S.resources.unshift({id:Date.now(),title:t,url:u,type:"link",folderId:S.activLibFolder}); el("libTitle").value=""; el("libUrl").value=""; saveData();showToast("تم الحفظ! ✅","success"); };
+window.handleLibUpload = async inp=>{ if(!inp.files[0]) return; showToast("جاري الرفع...","loading"); try{ const f=inp.files[0]; const url=await uploadCloud(f); S.resources.unshift({id:Date.now(),title:f.name,data:url,type:"file",ext:f.name.split(".").pop().toLowerCase(),folderId:S.activLibFolder}); inp.value=""; saveData();showToast("تم! ✅","success"); }catch(e){showToast("فشل الرفع","error");}};
+window.openLib = id=>{ const r=S.resources.find(x=>x.id===id); window.open(r.type==="link"?(r.url.startsWith("http")?r.url:"https://"+r.url):r.data,"_blank"); };
+window.dlLib = id=>{ const r=S.resources.find(x=>x.id===id); if(r.type==="link") window.open(r.url.startsWith("http")?r.url:"https://"+r.url,"_blank"); else{ const a=document.createElement("a"); a.href=r.data; a.download=r.title; a.click(); }};
+window.delLib = id=>{ if(confirm("حذف؟")){playSound("del");S.resources=S.resources.filter(r=>r.id!==id);saveData();}};
+
+// ──────────────────────────────────────────────────────────
+// NOTES
+// ──────────────────────────────────────────────────────────
+function renderNotes(){
+  const flist=el("noteFolders"); if(!flist) return;
+  flist.innerHTML=S.noteFolders.map(f=>`<button class="folder-btn${S.activNoteFolder===f.id?" active":""}" onclick="selNoteFolder('${f.id}')">📋 ${f.name}</button>`).join("");
+  const act=S.noteFolders.find(f=>f.id===S.activNoteFolder);
+  if(act){ el("noteActiveTitle").textContent=act.name; el("delNoteFolderBtn").style.display=S.noteFolders.length>1?"":"none"; }
+  const board=el("notesBoard"); if(!act){board.innerHTML="";return;}
+  const notes=act.notes.filter(n=>n.title.toLowerCase().includes(sq)||n.content.toLowerCase().includes(sq));
+  if(!notes.length){ board.innerHTML=`<div class="empty" style="width:100%;"><span>💭</span><p>اللوحة فاضية.. ضيف ملاحظة!</p></div>`; return; }
+  board.innerHTML=notes.map(n=>`
+    <div class="note-card note-${n.color}">
+      <div style="position:absolute;top:18px;left:8px;"><button style="font-size:12px;opacity:.5;cursor:pointer;background:transparent;border:none;padding:0;" title="لون">🎨</button><div class="note-palette">${["yellow","blue","green","pink","purple"].map(c=>`<button onclick="changeNoteColor('${n.id}','${c}')" style="width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.2);cursor:pointer;background:${{"yellow":"#fde047","blue":"#93c5fd","green":"#6ee7b7","pink":"#f9a8d4","purple":"#c4b5fd"}[c]};" title="${c}"></button>`).join("")}</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.1);">
+        <input type="text" value="${n.title}" oninput="updateNote('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:15px;width:calc(100% - 40px);" placeholder="عنوان...">
+        <button onclick="delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:16px;opacity:.5;padding:0;flex-shrink:0;" onmouseover="this.style.opacity='1'">✕</button>
+      </div>
+      <textarea oninput="updateNote('${n.id}','content',this.value)" style="background:transparent;border:none;outline:none;resize:none;width:100%;min-height:150px;font-size:12px;font-weight:600;line-height:1.7;font-family:'Cairo',sans-serif;" placeholder="اكتب أفكارك...">${n.content}</textarea>
+    </div>`).join("");
+}
+window.selNoteFolder = id=>{ S.activNoteFolder=id; saveData(); };
+window.addNoteFolder = ()=>{ const n=prompt("اسم اللوحة:"); if(n){ const id="nf"+Date.now(); S.noteFolders.push({id,name:n.trim(),notes:[]}); S.activNoteFolder=id; saveData(); }};
+window.delNoteFolder = ()=>{ if(S.noteFolders.length<=1||!confirm("حذف اللوحة وكل ملاحظاتها؟")) return; playSound("del"); S.noteFolders=S.noteFolders.filter(f=>f.id!==S.activNoteFolder); S.activNoteFolder=S.noteFolders[0].id; saveData(); };
+window.addNote = ()=>{ const f=S.noteFolders.find(x=>x.id===S.activNoteFolder); if(!f) return; const colors=["yellow","blue","green","pink","purple"]; f.notes.unshift({id:"n"+Date.now(),title:"ملاحظة جديدة",content:"",color:colors[Math.floor(Math.random()*colors.length)]}); saveData();playSound("ok"); };
+window.updateNote = (id,field,val)=>{ const f=S.noteFolders.find(x=>x.id===S.activNoteFolder); const n=f?.notes.find(x=>x.id===id); if(n){n[field]=val;saveData();} };
+window.changeNoteColor = (id,color)=>{ const f=S.noteFolders.find(x=>x.id===S.activNoteFolder); const n=f?.notes.find(x=>x.id===id); if(n){n.color=color;saveData();} };
+window.delNote = id=>{ if(confirm("مسح الملاحظة؟")){playSound("del"); const f=S.noteFolders.find(x=>x.id===S.activNoteFolder); f.notes=f.notes.filter(n=>n.id!==id); saveData();} };
+
+// ──────────────────────────────────────────────────────────
+// CERTIFICATES
+// ──────────────────────────────────────────────────────────
+function renderCerts(){
+  const list=el("certsList"); if(!list) return;
+  const certs=(S.certificates||[]).filter(c=>c.title.toLowerCase().includes(sq));
+  if(!certs.length){ list.innerHTML=`<div class="empty" style="grid-column:1/-1;"><span>🎓</span><p>ارفع أول شهادة وابدأ رحلتك!</p></div>`; return; }
+  list.innerHTML=certs.map(c=>{
+    const isImg=["jpg","jpeg","png","webp"].includes(c.ext);
+    return `<div class="cert-card group">
+      ${isImg?`<img src="${c.data}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.72;z-index:1;">`:""}
+      ${isImg?`<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.55));z-index:1;"></div>`:`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;opacity:.15;">📄</div>`}
+      <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:9px;font-weight:900;padding:3px 7px;border-radius:7px;z-index:3;">${c.ext.toUpperCase()}</div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);z-index:3;text-align:center;">
+        <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
+        <div style="font-size:10px;font-weight:700;color:var(--blue2);margin-top:2px;">${c.date}</div>
+      </div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .25s;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:4;" class="cert-overlay">
+        <button onclick="openCert('${c.id}')" class="btn-primary" style="width:38px;height:38px;padding:0;border-radius:50%;justify-content:center;">👁️</button>
+        <button onclick="dlCert('${c.id}')" style="width:38px;height:38px;border-radius:50%;background:rgba(16,185,129,.85);border:none;cursor:pointer;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;">⬇️</button>
+        <button onclick="delCert('${c.id}')" style="width:38px;height:38px;border-radius:50%;background:rgba(239,68,68,.85);border:none;cursor:pointer;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;">🗑️</button>
+      </div>
+    </div>`;
+  }).join("");
+  document.querySelectorAll(".cert-card").forEach(c=>{ c.addEventListener("mouseenter",()=>{ const o=c.querySelector(".cert-overlay"); if(o) o.style.opacity="1"; }); c.addEventListener("mouseleave",()=>{ const o=c.querySelector(".cert-overlay"); if(o) o.style.opacity="0"; }); });
+}
+window.handleCertUpload = async inp=>{ const f=inp.files[0]; if(!f) return; const name=prompt("اسم الشهادة:",f.name.split(".")[0]); if(!name){inp.value="";return;} showToast("جاري الرفع...","loading"); try{ const url=await uploadCloud(f); if(!S.certificates) S.certificates=[]; S.certificates.unshift({id:"cert"+Date.now(),title:name,data:url,ext:f.name.split(".").pop().toLowerCase(),date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())}); inp.value=""; saveData();showToast("تمت الإضافة! 🎓","success"); }catch(e){showToast("فشل الرفع","error");}};
+window.openCert = id=>window.open(S.certificates.find(x=>x.id===id).data,"_blank");
+window.dlCert = id=>{ const c=S.certificates.find(x=>x.id===id); const a=document.createElement("a"); a.href=c.data; a.download=c.title+"."+c.ext; a.click(); };
+window.delCert = id=>{ if(confirm("مسح الشهادة؟")){playSound("del");S.certificates=S.certificates.filter(x=>x.id!==id);saveData();}};
+
+// ──────────────────────────────────────────────────────────
+// TAGS
+// ──────────────────────────────────────────────────────────
+function renderTags(){
+  const list=el("tagsList"); if(!list) return;
+  list.innerHTML=S.tags.map(t=>{
+    const c=S.tagColors[t]||"#6366f1";
+    return `<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);color:var(--txt2);">
+      <span style="width:9px;height:9px;border-radius:50%;background:${c};flex-shrink:0;"></span>
+      ${t}
+      <button onclick="delTag('${t}')" style="background:transparent;border:none;cursor:pointer;color:var(--red);padding:0;font-size:12px;">✕</button>
+    </span>`;
+  }).join("");
+}
+window.addTag = ()=>{ const v=el("newTagInput").value.trim(); const c=el("newTagColor").value; if(v&&!S.tags.includes(v)){S.tags.push(v);S.tagColors[v]=c;el("newTagInput").value="";saveData();}};
+window.delTag = t=>{ playSound("del");S.tags=S.tags.filter(x=>x!==t);delete S.tagColors[t];saveData(); };
+
+// ──────────────────────────────────────────────────────────
+// SETTINGS
+// ──────────────────────────────────────────────────────────
+window.openSettings  = ()=>{ el("settingsModal").classList.add("show"); };
+window.closeSettings = ()=>{ el("settingsModal").classList.remove("show"); };
+window.exportData = ()=>{ const b=new Blob([JSON.stringify(S)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="rehlaty_backup.json"; a.click(); showToast("تم حفظ النسخة!","success"); };
+window.importData = inp=>{ const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(d&&d.tasks){S=d;saveData();showToast("تم الاسترجاع! 🔄","success");closeSettings();}else showToast("الملف غير صالح!","error");}catch(e){showToast("خطأ في القراءة","error");} inp.value=""; }; r.readAsText(f); };
+
+// ──────────────────────────────────────────────────────────
+// SEARCH
+// ──────────────────────────────────────────────────────────
+window.handleSearch = v=>{ sq=v.toLowerCase().trim(); renderAll(); };
+
+// ──────────────────────────────────────────────────────────
+// AUTH
+// ──────────────────────────────────────────────────────────
+window.loginWithGoogle = ()=>signInWithPopup(auth,gProv);
+window.logoutUser = ()=>{ if(confirm("تسجيل الخروج؟")) signOut(auth); };
+
+onAuthStateChanged(auth, async u=>{
+  const overlay=el("loginOverlay");
+  if(u){
+    user=u;
+    el("uName").textContent=u.displayName||u.email||"مرحباً";
+    el("uAvatar").textContent=(u.displayName||u.email||"?")[0].toUpperCase();
+    el("gLoginBtn").style.display="none";
+    el("loadingRow").style.display="flex";
+    try{
+      const snap=await getDoc(doc(db,"rehlaty_users",u.uid));
+      if(snap.exists()){
+        S={...S,...snap.data()};
+        if(!S.todayTasks) S.todayTasks=[];
+        if(!S.goals) S.goals=[];
+        if(!S.streak) S.streak=0;
+        if(!S.certificates) S.certificates=[];
+        if(!S.tagColors) S.tagColors={"تصميم":"#ec4899","ويب":"#3b82f6","تعلم":"#10b981"};
+      }else{
+        const local=localStorage.getItem("rehlaty_v3");
+        if(local){ try{Object.assign(S,JSON.parse(local));}catch(e){} }
+        await setDoc(doc(db,"rehlaty_users",u.uid),S);
+      }
+    }catch(e){ console.error(e); }
+    updateStreak();
+    renderAll();
+    detectOccasion();
+    el("motivQuote").textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+    overlay.style.opacity="0";
+    setTimeout(()=>overlay.style.display="none",500);
+  }else{
+    user=null;
+    overlay.style.display="flex";
+    overlay.style.opacity="1";
+    el("gLoginBtn").style.display="flex";
+    el("loadingRow").style.display="none";
+  }
+});
+
+// ──────────────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────────────
+window.initTheme();
+switchTab("today");
+
+// Close modals on backdrop click
+el("settingsModal").addEventListener("click",e=>{ if(e.target===el("settingsModal")) closeSettings(); });
+el("taskModal").addEventListener("click",e=>{ if(e.target===el("taskModal")) closeTaskModal(); });
+
+// Responsive grid fixes
+const statsGrid=document.querySelector(".stats-grid");
+const goalsGrid=document.querySelector(".goals-grid");
+const libLayout=document.querySelectorAll(".lib-layout");
+const libSidebar=document.querySelectorAll(".lib-sidebar");
+const taskGrid=document.querySelector(".task-modal-grid");
+function handleResize(){
+  const w=window.innerWidth;
+  if(statsGrid) statsGrid.style.gridTemplateColumns=w<480?"repeat(2,1fr)":"repeat(4,1fr)";
+  if(goalsGrid) goalsGrid.style.gridTemplateColumns=w<768?"1fr":w<1024?"1fr 1fr":"repeat(3,1fr)";
+  libLayout.forEach(el=>{ el.style.flexDirection=w<640?"column":"row"; });
+  libSidebar.forEach(el=>{ el.style.width=w<640?"100%":"200px"; el.style.flexDirection=w<640?"row":"column"; el.style.overflow=w<640?"auto":"auto"; el.style.flexShrink=w<640?"0":"0"; });
+  if(taskGrid) taskGrid.style.gridTemplateColumns=w<900?"1fr":"1fr 2fr";
+}
+handleResize();
+window.addEventListener("resize",handleResize);
+
+</script>
+</body>
+</html>
