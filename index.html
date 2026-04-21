@@ -116,33 +116,25 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;border:1px solid var(--border);background:rgba(0,0,0,.2);}
 
 /* ════════ TASK CARD (KANBAN PREMIUM) ════════ */
-.task-card{
-  background: rgba(30, 41, 59, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+.task-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--border);
-  border-right: 4px solid var(--tc, var(--blue)); /* Solid accent border */
-  border-radius: 14px;
-  padding: 16px;
-  position: relative;
-  overflow: hidden;
+  border-right: 4px solid var(--tc, var(--blue)); 
+  border-radius: 16px;
+  padding: 24px; /* زادت المسافة الداخلية لفك التزاحم */
+  margin-bottom: 24px; /* زادت المسافة الخارجية لفك التزاحم */
+  min-height: 120px; /* ارتفاع أريح للكارت */
+  transition: all 0.3s ease;
   cursor: grab;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
-  min-height: 90px;
   word-break: break-word;
 }
-.task-card:hover{
-  border-color: rgba(99,179,237,.3);
+.task-card:hover {
+  background: rgba(255, 255, 255, 0.05);
   transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0,0,0,.3);
-  background: rgba(30, 41, 59, 0.6);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  border-color: var(--border2);
 }
-.task-card.done-card{
-  background: rgba(16, 185, 129, 0.05);
-  border-color: rgba(16, 185, 129, 0.2);
-  border-right-color: var(--green2);
-}
-.task-card.done-card h4 { color: var(--txt3) !important; text-decoration: line-through; }
 
 /* ════════ TODAY ITEM ════════ */
 .today-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;transition:all .22s;margin-bottom:8px;}
@@ -188,7 +180,7 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 
 /* ════════ MEDIEVAL CERTIFICATES ════════ */
 .cert-card{
-  background: #1c1511; /* Dark wood base */
+  background: #1c1511; 
   border: 12px solid #3e2723;
   border-image: repeating-linear-gradient(45deg, #8a6d3b, #e1c16e 10px, #c5a059 20px, #e1c16e 30px, #8a6d3b 40px) 14;
   box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 25px rgba(0,0,0,0.9);
@@ -267,19 +259,23 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 .cal-day-num{font-size:11px;font-weight:700;color:var(--txt2);}
 .cal-dot{width:5px;height:5px;border-radius:50%;background:var(--green2);margin-top:1px;}
 
-/* ════════ HEATMAP (100% LTR) ════════ */
-#heatmapWidget{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:20px; overflow:hidden;}
-#heatmapTitle{font-size:16px;font-weight:900;color:var(--txt1);margin-bottom:14px; display:flex; align-items:center; justify-content:space-between;}
-.heatmap-scroll-container { direction: ltr; overflow-x: auto; width: 100%; padding-bottom: 10px; }
-#heatmapMonthLabels{display:grid; grid-auto-flow:column; font-size:10px; color:var(--txt3); margin-bottom:8px; min-width:max-content; font-weight:700;}
-#heatmapGrid{display:grid; grid-template-rows:repeat(7, 13px); grid-auto-flow:column; gap:4px; min-width:max-content;}
-.hm-col-wrapper { display:grid; grid-template-rows:repeat(7, 13px); gap:4px; }
-.hm-month-sep { border-left: 1px dashed rgba(255,255,255,0.1); padding-left: 4px; margin-left: 2px; }
-.hm-cell{width:13px;height:13px;border-radius:3px;background:var(--green);cursor:pointer;transition:transform .15s, outline .2s;}
-.hm-cell:hover{transform:scale(1.5);outline:1px solid var(--cyan);z-index:2; position:relative;}
-.hm-today{outline:2px solid var(--amber)!important;border-radius:3px;}
-#heatmapLegend{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--txt3);margin-top:16px; direction: rtl;}
-.hm-swatch{width:12px;height:12px;border-radius:3px;background:var(--green);display:inline-block;}
+/* ════════ HEATMAP (FULL WIDTH, NO SCROLL) ════════ */
+#heatmapWidget { background:var(--bg3); border:1px solid var(--border); border-radius:20px; padding:24px; width: 100%; overflow: hidden; }
+#heatmapTitle { font-size:18px; font-weight:900; color:var(--txt1); display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; }
+.heatmap-wrapper { direction: ltr; width: 100%; }
+#heatmapGrid {
+  display: grid;
+  grid-template-columns: repeat(53, 1fr);
+  gap: 3px;
+  width: 100%;
+  padding-top: 25px; /* Room for month labels */
+}
+.hm-col { display: grid; grid-template-rows: repeat(7, 1fr); gap: 3px; position: relative; }
+.hm-cell { width: 100%; aspect-ratio: 1 / 1; border-radius: 2px; transition: transform .15s, outline .2s; }
+.hm-cell:hover { transform: scale(1.5); outline: 1px solid var(--cyan); z-index: 10; position: relative; }
+.hm-today { outline: 2px solid var(--amber) !important; border-radius: 2px; }
+#heatmapLegend { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--txt3); margin-top:20px; direction: rtl; font-weight: 700; }
+.hm-swatch { width:12px; height:12px; border-radius:2px; background:var(--green); display:inline-block; }
 
 /* ════════ ANALYTICS (Charts) ════════ */
 #analyticsWidget{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;}
@@ -290,8 +286,6 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 .chart-label{font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;}
 .chart-canvas-container { height: 220px; position: relative; } /* Fixed max-height */
 
-/* ════════ EXTRAS SECTION ════════ */
-#sec-extras .extras-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; align-content:start; }
 </style>
 </head>
 <body>
@@ -417,10 +411,10 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
             <button class="btn-primary" onclick="addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
           </div>
         </div>
-        <div style="display:flex;gap:14px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
-          <div style="flex:1 1 0;min-width:260px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div><span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span></div><div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
-          <div style="flex:1 1 0;min-width:260px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه</div><span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,.2);">0</span></div><div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
-          <div style="flex:1 1 0;min-width:260px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div><span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,.2);">0</span></div><div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
+        <div style="display:flex;gap:24px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
+          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div><span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span></div><div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
+          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه</div><span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,.2);">0</span></div><div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
+          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div><span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,.2);">0</span></div><div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
         </div>
       </div>
 
@@ -442,32 +436,72 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
           <div id="noteFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
           <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
             <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;"><span id="noteActiveTitle" style="font-weight:900;font-size:14px;color:var(--blue);">...</span><div style="display:flex;gap:8px;"><button class="btn-ghost" onclick="addNoteFolder()" style="font-size:11px;color:var(--green2);">➕ لوحة</button><button class="btn-ghost" id="delNoteFolderBtn" onclick="delNoteFolder()" style="font-size:11px;color:var(--red);">🗑️ حذف</button></div></div>
-            <div id="notesBoard" style="flex:1;padding:20px;display:flex;flex-wrap:wrap;gap:20px;overflow-y:auto;align-content:flex-start;"></div>
+            <div id="notesBoard" style="flex:1;padding:24px;display:flex;flex-wrap:wrap;gap:24px;overflow-y:auto;align-content:flex-start;"></div>
           </div>
         </div>
       </div>
 
       <div id="sec-certs" class="section">
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك في مكان واحد (اضغط للفتح في درايف)</p></div><button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button><input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="handleCertUpload(this)"></div>
-        <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;align-content:start;padding-bottom:20px;"></div>
+        <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;align-content:start;padding-bottom:20px;"></div>
       </div>
 
       <div id="sec-extras" class="section">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
-          <div>
-            <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
-            <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقويم، هيتماب، وتحليلات</p>
-          </div>
+        <div style="margin-bottom:20px;flex-shrink:0;">
+          <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
+          <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقويم، هيتماب، وتحليلات</p>
         </div>
-        <div class="extras-grid">
+        
+        <div class="extras-grid" style="display:flex; flex-direction:column; gap:20px;">
+          
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
+            <div id="pomodoroWidget">
+              <svg width="0" height="0" style="position:absolute;"><defs><linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg>
+              <div class="pomo-ring">
+                <svg viewBox="0 0 120 120" width="120" height="120">
+                  <circle class="pomo-ring-bg" cx="60" cy="60" r="52"/>
+                  <circle class="pomo-ring-fill" id="pomoRingFill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                  <div id="pomodoroDisplay" style="font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">25:00</div>
+                  <div id="pomodoroLabel" style="font-size:10px;font-weight:700;color:var(--txt3);margin-top:2px;">تركيز 🧠</div>
+                </div>
+              </div>
+              <div class="pomo-modes">
+                <button class="pomo-mode-btn active" id="pm-focus"  onclick="pomodoroSetMode('focus')">تركيز</button>
+                <button class="pomo-mode-btn"         id="pm-short"  onclick="pomodoroSetMode('short')">استراحة قصيرة</button>
+                <button class="pomo-mode-btn"         id="pm-long"   onclick="pomodoroSetMode('long')">استراحة طويلة</button>
+              </div>
+              <div class="pomo-controls">
+                <button class="btn-primary" onclick="pomodoroStart()" style="padding:8px 18px;font-size:12px;">▶ ابدأ</button>
+                <button class="btn-ghost"   onclick="pomodoroPause()" style="padding:8px 14px;font-size:12px;">⏸ وقفة</button>
+                <button class="btn-ghost"   onclick="pomodoroReset()" style="padding:8px 14px;font-size:12px;">↺ إعادة</button>
+              </div>
+            </div>
 
-          <div id="heatmapWidget" style="grid-column: 1 / -1;">
+            <div id="calendarWidget">
+              <div style="font-size:13px;font-weight:900;color:var(--txt1);margin-bottom:12px;">📅 التقويم</div>
+              <div id="calendarHeader">
+                <button class="cal-nav" onclick="calendarNav(-1)">›</button>
+                <span id="calendarTitle"></span>
+                <button class="cal-nav" onclick="calendarNav(1)">‹</button>
+              </div>
+              <div id="calendarDayNames"></div>
+              <div id="calendarGrid"></div>
+              <div style="display:flex;gap:6px;margin-top:12px;">
+                <input type="date" id="newEvDate" class="field" style="flex:1;font-size:11px;padding:6px 10px;">
+                <input type="text" id="newEvTitle" placeholder="اسم الحدث..." class="field" style="flex:2;font-size:11px;padding:6px 10px;" onkeypress="if(event.key==='Enter')addCalEvent()">
+                <button class="btn-primary" onclick="addCalEvent()" style="padding:6px 12px;font-size:11px;flex-shrink:0;">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="heatmapWidget">
             <div id="heatmapTitle">
               <span>🟩 نشاطك السنوي <span id="currentYearDisplay" style="font-size:12px; color:var(--txt3); font-weight:normal; margin-right:8px;"></span></span>
               <button class="btn-ghost" onclick="openArchiveModal('years')" style="background:var(--bg3); border-color:var(--border);">📂 سجل السنين</button>
             </div>
-            <div class="heatmap-scroll-container">
-              <div id="heatmapMonthLabels"></div>
+            <div class="heatmap-wrapper">
               <div id="heatmapGrid"></div>
             </div>
             <div id="heatmapLegend">
@@ -481,47 +515,7 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
             </div>
           </div>
 
-          <div id="calendarWidget">
-            <div style="font-size:13px;font-weight:900;color:var(--txt1);margin-bottom:12px;">📅 التقويم</div>
-            <div id="calendarHeader">
-              <button class="cal-nav" onclick="calendarNav(-1)">›</button>
-              <span id="calendarTitle"></span>
-              <button class="cal-nav" onclick="calendarNav(1)">‹</button>
-            </div>
-            <div id="calendarDayNames"></div>
-            <div id="calendarGrid"></div>
-            <div style="display:flex;gap:6px;margin-top:12px;">
-              <input type="date" id="newEvDate" class="field" style="flex:1;font-size:11px;padding:6px 10px;">
-              <input type="text" id="newEvTitle" placeholder="اسم الحدث..." class="field" style="flex:2;font-size:11px;padding:6px 10px;" onkeypress="if(event.key==='Enter')addCalEvent()">
-              <button class="btn-primary" onclick="addCalEvent()" style="padding:6px 12px;font-size:11px;flex-shrink:0;">+</button>
-            </div>
-          </div>
-
-          <div id="pomodoroWidget">
-            <svg width="0" height="0" style="position:absolute;"><defs><linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg>
-            <div class="pomo-ring">
-              <svg viewBox="0 0 120 120" width="120" height="120">
-                <circle class="pomo-ring-bg" cx="60" cy="60" r="52"/>
-                <circle class="pomo-ring-fill" id="pomoRingFill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/>
-              </svg>
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-                <div id="pomodoroDisplay" style="font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">25:00</div>
-                <div id="pomodoroLabel" style="font-size:10px;font-weight:700;color:var(--txt3);margin-top:2px;">تركيز 🧠</div>
-              </div>
-            </div>
-            <div class="pomo-modes">
-              <button class="pomo-mode-btn active" id="pm-focus"  onclick="pomodoroSetMode('focus')">تركيز</button>
-              <button class="pomo-mode-btn"         id="pm-short"  onclick="pomodoroSetMode('short')">استراحة قصيرة</button>
-              <button class="pomo-mode-btn"         id="pm-long"   onclick="pomodoroSetMode('long')">استراحة طويلة</button>
-            </div>
-            <div class="pomo-controls">
-              <button class="btn-primary" onclick="pomodoroStart()" style="padding:8px 18px;font-size:12px;">▶ ابدأ</button>
-              <button class="btn-ghost"   onclick="pomodoroPause()" style="padding:8px 14px;font-size:12px;">⏸ وقفة</button>
-              <button class="btn-ghost"   onclick="pomodoroReset()" style="padding:8px 14px;font-size:12px;">↺ إعادة</button>
-            </div>
-          </div>
-
-          <div id="analyticsWidget" style="grid-column: 1 / -1;">
+          <div id="analyticsWidget">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
               <div id="analyticsTitle">📊 تحليلات الأداء</div>
               <button class="btn-ghost" onclick="renderCharts()" style="font-size:11px;">🔄 تحديث</button>
@@ -657,9 +651,8 @@ window.saveDataSilently=async()=>{
   if(user)try{await setDoc(doc(db,"rehlaty_users",user.uid),S);}catch(e){}
 };
 
-// AUTO-ARCHIVE CHECK (Yearly & Daily overlap logic)
+// AUTO-ARCHIVE CHECK (Yearly)
 function checkAutoArchive(){
-  const todayStr = new Date().toDateString();
   const curYear = new Date().getFullYear();
   if(!S.archive) S.archive = {today:[], goals:[], years:{}};
   
@@ -667,7 +660,7 @@ function checkAutoArchive(){
       S.archive.years[S.lastYearChecked] = { history: { ...S.history }, tasks: [...S.tasks] };
       S.history = {}; S.lastYearChecked = curYear;
       saveDataSilently();
-      showToast(`سنة سعيدة! تم حفظ بيانات ${curYear-1} وبدء سنة جديدة 🎆`, "success");
+      showToast(`سنة سعيدة! تم حفظ بيانات ${curYear-1} في الأرشيف 🎆`, "success");
   }
 }
 
@@ -789,7 +782,7 @@ function renderGoals(){
   const lists={year:"",month:"",week:""};
   [...S.goals].sort((a,b)=>a.done===b.done?0:a.done?1:-1).forEach(g=>{
     const cur=g.periodKey===P.year||g.periodKey===P.month||g.periodKey===P.week;
-    if(!cur) return; // Keep old non-archived out or handle in archive. Assuming they auto-archived.
+    if(!cur) return; // Hide non-current or let them be archived automatically
     const html=`<div class="goal-item"><input type="checkbox" class="cb" ${g.done?"checked":""} onchange="toggleGoal('${g.id}')" style="width:20px;height:20px;min-width:20px;"><div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;${g.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${g.text}</div>${g.parentName?`<div style="font-size:10px;color:var(--purple);font-weight:700;">🔗 ${g.parentName}</div>`:""}</div><div style="display:flex;gap:5px;opacity:0;transition:opacity .2s;" class="goal-actions">${!g.done?`<button onclick="goalToToday('${g.id}')" style="font-size:9px;font-weight:900;padding:4px 7px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;">🎯</button>`:""}<button onclick="delGoal('${g.id}')" style="font-size:10px;background:transparent;border:none;cursor:pointer;color:var(--red);">✕</button></div></div>`;
     if(g.periodType==="year")lists.year+=html;else if(g.periodType==="month")lists.month+=html;else lists.week+=html;
   });
@@ -803,6 +796,7 @@ window.toggleGoal=id=>{
     g.done=!g.done;
     if(g.done){
       showToast("إنجاز عظيم! 🏆","success");playSound("ok");
+      // Auto archive goals
       setTimeout(()=>{
         if(g.done){ S.archive.goals.push({...g, archDate:new Date().toLocaleDateString('ar-EG')}); S.goals=S.goals.filter(x=>x.id!==id); saveDataSilently(); renderGoals(); }
       }, 1500);
@@ -989,7 +983,7 @@ window.pomodoroReset=()=>{clearInterval(pomoInterval);pomoRunning=false;pomoRema
 window.pomodoroSetMode=mode=>{pomoMode=mode;document.querySelectorAll(".pomo-mode-btn").forEach(b=>b.classList.remove("active"));const mb=el("pm-"+mode);if(mb)mb.classList.add("active");pomodoroReset();};
 pomodoroRender();
 
-/* ════════ 9. EXTRAS: HEATMAP (LTR) & CHARTS ════════ */
+/* ════════ 9. EXTRAS: HEATMAP (NO SCROLL) & CHARTS ════════ */
 window.renderHeatmap=()=>{
   const gridEl=el("heatmapGrid"),labelsEl=el("heatmapMonthLabels");
   if(!gridEl)return;
@@ -999,31 +993,42 @@ window.renderHeatmap=()=>{
   
   const start=new Date(year, 0, 1);
   const end=new Date(year, 11, 31);
-  let html="", mLabels="", colIdx=0;
+  let html="";
   const cursor=new Date(start);
   cursor.setDate(cursor.getDate() - cursor.getDay()); // Align to Sunday
   
-  while(cursor<=end || cursor.getDay()!==0){
-    if(cursor.getDay()===0){
-      let isMonthStart=false, mName="";
-      for(let i=0; i<7; i++){
-        let d = new Date(cursor.getTime() + i*86400000);
-        if(d.getDate()===1 && d.getFullYear()===year){ isMonthStart=true; mName=new Intl.DateTimeFormat("ar-EG",{month:"short"}).format(d); }
+  const months=["يناير","فبراير","مارس","إبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+  let lastMonth = -1;
+
+  for(let w=0; w<53; w++){
+    let colHtml = `<div class="hm-col">`;
+    let showMonth = false;
+
+    for(let d=0; d<7; d++){
+      const ds = cursor.toISOString().split("T")[0];
+      const inYear = cursor.getFullYear() === year;
+      
+      if(inYear && cursor.getMonth() !== lastMonth && cursor.getDate() <= 7) {
+        showMonth = true;
+        lastMonth = cursor.getMonth();
       }
-      let cClass="hm-col";
-      if(isMonthStart){ cClass+=" hm-month-sep"; mLabels+=`<div class="hm-month-label" style="grid-column:${colIdx+1}">${mName}</div>`; }
-      html+=`<div class="${cClass}">`;
+
+      const pct = history[ds] ?? -1;
+      let bg = "transparent";
+      if(inYear){ bg=pct===-1?"rgba(255,255,255,0.05)":pct<30?"#064e3b":pct<60?"#065f46":pct<90?"#047857":"#10b981"; }
+      
+      colHtml += `<div class="hm-cell" style="background:${bg}" title="${inYear?ds+' : '+(pct===-1?'0':pct)+'%':''}"></div>`;
+      cursor.setDate(cursor.getDate() + 1);
     }
-    const dateStr=cursor.toISOString().split("T")[0];
-    const inYear=cursor.getFullYear()===year;
-    const pct=history[dateStr]??-1;
-    let bg="transparent";
-    if(inYear){ bg=pct===-1?"rgba(255,255,255,0.05)":pct<30?"#064e3b":pct<60?"#065f46":pct<90?"#047857":"#10b981"; }
-    html+=`<div class="hm-cell" style="background:${bg}" title="${inYear?dateStr+' : '+(pct===-1?'0':pct)+'%':''}"></div>`;
-    if(cursor.getDay()===6){ html+=`</div>`; colIdx++; }
-    cursor.setDate(cursor.getDate()+1);
+    
+    if(showMonth){
+      // Insert Label inside the column to guarantee alignment
+      colHtml = `<div class="hm-col"><div style="position:absolute; top:-22px; right:0; font-size:10px; font-weight:900; color:var(--txt3); white-space:nowrap;">${months[lastMonth]}</div>` + colHtml.substring(22);
+    }
+    
+    html += colHtml + `</div>`;
   }
-  gridEl.innerHTML=html; if(labelsEl)labelsEl.innerHTML=mLabels;
+  gridEl.innerHTML=html; 
 };
 
 let lineInst=null,pieInst=null;
