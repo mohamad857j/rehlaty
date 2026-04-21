@@ -118,8 +118,19 @@ input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
 input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;border:1px solid var(--border);background:rgba(0,0,0,.2);}
 
-/* ════════ TASK CARD ════════ */
-.task-card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:16px;position:relative;overflow:hidden;cursor:grab;transition:all .25s cubic-bezier(.4,0,.2,1);}
+/* ════════ TASK CARD (Kanban Fix) ════════ */
+.task-card{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  position:relative;
+  cursor:grab;
+  transition:all .25s ease;
+  margin-bottom: 12px;
+  display: block;
+  width: 100%;
+}
 .task-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--tc,#4a6080);border-radius:0 2px 2px 0;}
 .task-card:hover{border-color:rgba(99,179,237,.35);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35);}
 .task-card.done-card{opacity:.55;filter:grayscale(.3);}
@@ -145,7 +156,11 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .folder-btn{text-align:right;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--txt2);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;font-family:'Cairo',sans-serif;transition:all .2s;width:100%;}
 .folder-btn:hover{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.2);color:var(--blue2);}
 .folder-btn.active{background:rgba(59,130,246,.14);border-color:rgba(59,130,246,.35);color:#bfdbfe;}
-.note-card{position:relative;border-radius:4px 4px 22px 4px;padding:20px;flex-shrink:0;width:260px;box-shadow:3px 5px 18px rgba(0,0,0,.18);transition:transform .25s,box-shadow .25s;}
+
+.note-card{
+  position:relative;border-radius:4px 4px 22px 4px;padding:20px;flex-shrink:0;width:260px;
+  box-shadow:3px 5px 18px rgba(0,0,0,.18);transition:transform .25s,box-shadow .25s;
+}
 .note-card:hover{transform:translateY(-5px) rotate(.4deg);box-shadow:5px 10px 28px rgba(0,0,0,.28);z-index:10;}
 .note-card::before{content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%) rotate(-2deg);width:64px;height:20px;background:rgba(255,255,255,.28);backdrop-filter:blur(2px);border-radius:2px;pointer-events:none;}
 
@@ -165,31 +180,21 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .notes-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;}
 .notes-panel.open{max-height:1200px;overflow-y:auto;}
 
-/* ════════ CERT CARD (WOODEN FRAME PRO) ════════ */
+/* ════════ CERT CARD (WOODEN FRAME) ════════ */
 .cert-card {
-  background: #fdfbf7; /* Matboard */
-  border: 10px solid #2e1d15; /* Dark Wood */
-  outline: 2px solid #57331c; /* Outer wood highlight */
+  background: #fdfbf7;
+  border: 12px solid #2e1d15;
+  outline: 2px solid #57331c;
   border-radius: 4px;
   position: relative;
   height: 220px;
   transition: transform .3s, box-shadow .3s;
   box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
   overflow: hidden;
-  padding: 8px; /* Matboard width */
+  padding: 8px;
 }
-.cert-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.8);
-}
-.cert-card img {
-  border: 1px solid rgba(0,0,0,0.2);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  border-radius: 2px;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.cert-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.8); }
+.cert-card img { border: 1px solid rgba(0,0,0,0.2); box-shadow: 0 2px 10px rgba(0,0,0,0.15); border-radius: 2px; width: 100%; height: 100%; object-fit: cover; }
 
 .goal-item{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;transition:all .2s;margin-bottom:7px;}
 .goal-item:hover{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);}
@@ -377,28 +382,28 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
         
         <div style="display:flex;gap:14px;flex:1;min-height:0;overflow-x:auto;align-items:flex-start;padding-bottom:12px; width:100%;">
           
-          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+          <div style="flex:1; min-width:280px; display:flex; flex-direction:column; height:100%;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
               <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div>
               <span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
             </div>
-            <div id="todo" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+            <div id="todo" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
           </div>
           
-          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+          <div style="flex:1; min-width:280px; display:flex; flex-direction:column; height:100%;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
               <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه</div>
               <span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,.2);">0</span>
             </div>
-            <div id="inprogress" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+            <div id="inprogress" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
           </div>
           
-          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+          <div style="flex:1; min-width:280px; display:flex; flex-direction:column; height:100%;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
               <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div>
               <span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,.2);">0</span>
             </div>
-            <div id="done" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+            <div id="done" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
           </div>
           
         </div>
@@ -667,6 +672,10 @@ function updateStreak(){
   S.lastDate=today;
   const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
 }
+function getLocalYYYYMMDD() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
+}
 function updateStats(){
   const tot=(S.todayTasks||[]).length,done=(S.todayTasks||[]).filter(t=>t.done).length,pct=tot>0?Math.round(done/tot*100):0;
   el("sTotalToday").textContent=tot;el("sDoneToday").textContent=done;el("sKanban").textContent=(S.tasks||[]).length;
@@ -674,7 +683,7 @@ function updateStats(){
   el("moodEmoji").textContent=pct===0?"😴":pct<30?"🌱":pct<60?"💪":pct<90?"🔥":"🏆";
   const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
   
-  const today=new Date().toISOString().split("T")[0];
+  const today = getLocalYYYYMMDD();
   if(tot>0){if(!S.history)S.history={};S.history[today]=pct;}
 }
 
@@ -685,7 +694,6 @@ const ALL_TABS=["today","goals","kanban","library","notes","certs","extras"];
 window.switchTab=tab=>{
   ALL_TABS.forEach(id=>{el("sec-"+id).classList.toggle("active",id===tab);el("tab-"+id).classList.toggle("active",id===tab);});
   if(tab==="extras"){
-      // تأخير بسيط عشان الشاشات تاخد مقاسها الحقيقي قبل رسم الشارت
       setTimeout(()=>{ renderCharts(); renderHeatmap(); renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear()); }, 50);
   }
   if(window.innerWidth<768)closeSidebar();
@@ -737,7 +745,7 @@ function renderTodayTasks(){
   if(!list)return;
   if(!S.todayTasks)S.todayTasks=[];
   
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getLocalYYYYMMDD();
   let activeHtml = "", archiveHtml = "", archCount = 0;
 
   const items=[...S.todayTasks].sort((a,b)=>a.done===b.done?0:a.done?1:-1);
@@ -768,7 +776,7 @@ window.toggleTodayTask=id=>{
     const t=S.todayTasks.find(x=>x.id===id);if(!t)return;
     t.done=!t.done;
     if(t.done){
-        t.completedAt = new Date().toISOString().split('T')[0];
+        t.completedAt = getLocalYYYYMMDD();
         showToast("عاش يا بطل! 👏","success");playSound("ok");updateStreak();
     } else {
         t.completedAt = null;
@@ -816,7 +824,7 @@ function renderTasks(){
     if(t.status==="todo")ct++;else if(t.status==="inprogress")ci++;else cd++;
     const pct=t.subtasks.length?(t.subtasks.filter(s=>s.done).length/t.subtasks.length*100):0;
     const isDone=t.status==="done";
-    cols[t.status]+=`<div id="${t.id}" class="task-card${isDone?" done-card":""}" draggable="true" ondragstart="drag(event)" style="--tc:${color}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><span class="tag-pill" style="color:${color};border-color:rgba(0,0,0,.15);">${ICONS[t.type]||"📝"} ${t.tag||""}</span><div class="card-actions" style="display:flex;gap:5px;opacity:0;transition:opacity .2s;"><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','up')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬆️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','down')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬇️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();togglePin('${t.id}')" style="background:${t.pinned?"rgba(59,130,246,.2)":"rgba(255,255,255,.05)"};border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:${t.pinned?"var(--blue)":"var(--txt3)"};font-size:10px;">📌</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();delTask('${t.id}')" style="background:rgba(239,68,68,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--red);font-size:12px;">✕</button></div></div><h4 onclick="event.stopPropagation();openTaskModal('${t.id}')" style="font-size:13px;font-weight:700;word-break:break-word;white-space:normal;${isDone?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}cursor:pointer;transition:color .2s;margin-bottom:8px;" onmouseover="this.style.color='var(--blue2)'" onmouseout="this.style.color='${isDone?"var(--txt3)":"var(--txt1)"}';">${t.text}</h4>${t.startDate||t.endDate?`<div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:5px 10px;margin-bottom:8px;color:var(--txt3);"><span>📅 ${t.startDate||"---"}</span><span>🏁 ${t.endDate||"---"}</span></div>`:""}<div style="display:flex;align-items:center;gap:8px;"><div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:10px;font-weight:700;color:var(--txt3);flex-shrink:0;">${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span></div></div>`;
+    cols[t.status]+=`<div id="${t.id}" class="task-card${isDone?" done-card":""}" draggable="true" ondragstart="drag(event)" style="--tc:${color}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><span class="tag-pill" style="color:${color};border-color:rgba(0,0,0,.15);">${ICONS[t.type]||"📝"} ${t.tag||""}</span><div class="card-actions" style="display:flex;gap:5px;opacity:0;transition:opacity .2s;"><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','up')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬆️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','down')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬇️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();togglePin('${t.id}')" style="background:${t.pinned?"rgba(59,130,246,.2)":"rgba(255,255,255,.05)"};border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:${t.pinned?"var(--blue)":"var(--txt3)"};font-size:10px;">📌</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();delTask('${t.id}')" style="background:rgba(239,68,68,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--red);font-size:12px;">✕</button></div></div><h4 onclick="event.stopPropagation();openTaskModal('${t.id}')" style="font-size:13px;font-weight:700;color:${isDone?'var(--txt3)':'var(--txt1)'};text-decoration:${isDone?'line-through':'none'};cursor:pointer;transition:color .2s;margin-bottom:8px;line-height:1.5;">${t.text}</h4>${t.startDate||t.endDate?`<div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:5px 10px;margin-bottom:8px;color:var(--txt3);"><span>📅 ${t.startDate||"---"}</span><span>🏁 ${t.endDate||"---"}</span></div>`:""}<div style="display:flex;align-items:center;gap:8px;"><div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:10px;font-weight:700;color:var(--txt3);flex-shrink:0;">${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span></div></div>`;
   });
   ["todo","inprogress","done"].forEach(id=>{
     const c=el(id);if(!c)return;
@@ -921,11 +929,15 @@ function renderNotes(){
   const notes=act.notes.filter(n=>n.title.toLowerCase().includes(sq)||n.content.toLowerCase().includes(sq));
   if(!notes.length){board.innerHTML=`<div class="empty" style="width:100%;"><span>💭</span><p>اللوحة فاضية.. ضيف ملاحظة!</p></div>`;return;}
   
+  const colMap = {yellow:"#fde047", blue:"#93c5fd", green:"#6ee7b7", pink:"#f9a8d4", purple:"#c4b5fd"};
+  
   board.innerHTML=notes.map(n=>{
-    let bg = n.color || "#fde047";
-    return `<div id="note-card-${n.id}" class="note-card" style="background:${bg}; border:1px solid rgba(0,0,0,0.1);">
+    let mappedColor = colMap[n.color] || n.color || "#fde047";
+    let validHex = /^#[0-9A-F]{6}$/i.test(mappedColor) ? mappedColor : "#fde047";
+
+    return `<div id="note-card-${n.id}" class="note-card" style="background:${mappedColor}; border:1px solid rgba(0,0,0,0.1);">
       <div style="position:absolute;top:15px;left:15px; z-index:20;">
-         <input type="color" value="${bg}" onchange="changeNoteColor('${n.id}', this.value)" style="width:24px;height:24px;border:none;border-radius:50%;cursor:pointer;padding:0;background:transparent;box-shadow:0 2px 5px rgba(0,0,0,0.2);" title="تغيير اللون">
+         <input type="color" value="${validHex}" onchange="changeNoteColor('${n.id}', this.value)" style="width:24px;height:24px;border:none;border-radius:50%;cursor:pointer;padding:0;background:transparent;box-shadow:0 2px 5px rgba(0,0,0,0.2);" title="تغيير اللون">
       </div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.1);">
         <input type="text" value="${n.title}" oninput="updateNote('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:15px;width:calc(100% - 40px); color:#000;" placeholder="عنوان...">
@@ -1101,7 +1113,7 @@ window.renderCharts=()=>{
   const pLabels=Object.keys(tagCounts),pData=Object.values(tagCounts);
   const pColors=pLabels.map(tag=>S.tagColors?.[tag]||"#64748b");
   if(pieInst)pieInst.destroy();
-  if(!pData.length){el("pieChart").parentElement.innerHTML=`<div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">توزيع المهام بالأقسام</div><div style="text-align:center;padding:30px;font-size:12px;color:var(--txt3);">مفيش مهام لسه..</div>`;return;}
+  if(!pData.length){el("pieChart").parentElement.innerHTML=`<div class="chart-label" style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">توزيع المهام بالأقسام</div><div style="text-align:center;padding:30px;font-size:12px;color:var(--txt3);">مفيش مهام لسه..</div>`;return;}
   pieInst=new Chart(pieCtx,{
     type:"doughnut",
     data:{labels:pLabels,datasets:[{data:pData,backgroundColor:pColors,borderColor:"#0d1424",borderWidth:3}]},
@@ -1130,7 +1142,6 @@ window.renderHeatmap=()=>{
     const isToday=dateStr===today.toISOString().split("T")[0];
     const pct=history[dateStr]??-1;
 
-    // وضع اسم الشهر بداية من كل شهر جديد (بما إن الـ dir="ltr" فكلوم 1 هو أقصى اليسار)
     if(inRange&&cursor.getDate()===1){
       const mName=new Intl.DateTimeFormat("ar-EG",{month:"short"}).format(cursor);
       monthHtml+=`<span style="grid-column:${Math.floor(colIdx/7)+1}; text-align:left;">${mName}</span>`;
