@@ -110,9 +110,6 @@ body.light .field{background:rgba(0,0,0,.04);}
 .field::placeholder{color:var(--txt3);}
 input[type=date].field{direction:ltr;text-align:right;color-scheme:dark;}
 body.light input[type=date].field{color-scheme:light;}
-input[type=color]{-webkit-appearance:none;border:none;padding:0;background:transparent;cursor:pointer;}
-input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
-input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;border:1px solid var(--border);background:rgba(0,0,0,.2);}
 
 /* ════════ TASK CARD (KANBAN PREMIUM) ════════ */
@@ -174,9 +171,6 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
   font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.6;
 }
 .note-card input[type="text"] { color: inherit; }
-.note-palette-btn { font-size:14px; opacity:0.5; cursor:pointer; background:transparent; border:none; padding:0; transition:opacity .2s; position: relative; }
-.note-palette-btn:hover { opacity:1; }
-.note-color-picker { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
 
 /* ════════ MEDIEVAL CERTIFICATES ════════ */
 .cert-card{
@@ -609,6 +603,8 @@ window.playSound=type=>{
     const o=ctx.createOscillator(),g=ctx.createGain();
     o.connect(g);g.connect(ctx.destination);
     if(type==="ok"){o.type="sine";o.frequency.setValueAtTime(330,ctx.currentTime);o.frequency.setValueAtTime(440,ctx.currentTime+.1);o.frequency.setValueAtTime(659,ctx.currentTime+.2);g.gain.setValueAtTime(.04,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.45);o.start();o.stop(ctx.currentTime+.45);}
+    else if(type==="pomo-start"){o.type="sine";o.frequency.setValueAtTime(800,ctx.currentTime);g.gain.setValueAtTime(.05,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.15);o.start();o.stop(ctx.currentTime+.15);}
+    else if(type==="pomo-end"){o.type="sine";o.frequency.setValueAtTime(500,ctx.currentTime);o.frequency.setValueAtTime(700,ctx.currentTime+.2);o.frequency.setValueAtTime(900,ctx.currentTime+.4);g.gain.setValueAtTime(.05,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.8);o.start();o.stop(ctx.currentTime+.8);}
     else{o.type="sawtooth";o.frequency.setValueAtTime(240,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(90,ctx.currentTime+.22);g.gain.setValueAtTime(.04,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.22);o.start();o.stop(ctx.currentTime+.22);}
   }catch(e){}
 };
@@ -881,7 +877,7 @@ window.openLib=id=>{const r=S.resources.find(x=>x.id===id);window.open(r.type===
 window.dlLib=id=>{const r=S.resources.find(x=>x.id===id);if(r.type==="link")window.open(r.url.startsWith("http")?r.url:"https://"+r.url,"_blank");else{const a=document.createElement("a");a.href=r.data;a.download=r.title;a.click();}};
 window.delLib=id=>{if(confirm("حذف؟")){playSound("del");S.resources=S.resources.filter(r=>r.id!==id);saveData();}};
 
-/* ════════ 6. NOTES (Minimal & Custom Color) ════════ */
+/* ════════ 6. NOTES (Minimal & Custom Color FIX) ════════ */
 function renderNotes(){
   const flist=el("noteFolders");if(!flist)return;
   flist.innerHTML=S.noteFolders.map(f=>`<button class="folder-btn${S.activNoteFolder===f.id?" active":""}" onclick="selNoteFolder('${f.id}')">📋 ${f.name}</button>`).join("");
@@ -890,14 +886,14 @@ function renderNotes(){
   const board=el("notesBoard");if(!act){board.innerHTML="";return;}
   const notes=act.notes.filter(n=>n.title.toLowerCase().includes(sq)||n.content.toLowerCase().includes(sq));
   if(!notes.length){board.innerHTML=`<div class="empty" style="width:100%;"><span>💭</span><p>اللوحة فاضية.. ضيف ملاحظة!</p></div>`;return;}
-  board.innerHTML=notes.map(n=>`<div class="note-card" style="--note-bg:${n.color||'#fde047'};"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div class="color-picker-wrapper"><span class="note-palette-btn" title="تغيير اللون">🎨</span><input type="color" class="custom-color-input" value="${n.color||'#fde047'}" onchange="changeNoteColor('${n.id}',this.value)"></div><button onclick="delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:14px;opacity:0.5;padding:0;transition:0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">✕</button></div><input type="text" value="${n.title}" oninput="updateNoteSilently('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:16px;width:100%;margin-bottom:8px;color:inherit;" placeholder="عنوان..."><textarea oninput="updateNoteSilently('${n.id}','content',this.value)" placeholder="اكتب أفكارك...">${n.content}</textarea></div>`).join("");
+  board.innerHTML=notes.map(n=>`<div id="note-${n.id}" class="note-card" style="--note-bg:${n.color||'#fde047'};"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div style="position:relative;display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;"><span title="تغيير اللون" style="cursor:pointer;opacity:0.5;font-size:14px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">🎨</span><input type="color" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" value="${n.color||'#fde047'}" oninput="changeNoteColor('${n.id}',this.value)"></div><button onclick="delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:14px;opacity:0.5;padding:0;transition:0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">✕</button></div><input type="text" value="${n.title}" oninput="updateNoteSilently('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:16px;width:100%;margin-bottom:8px;color:inherit;" placeholder="عنوان..."><textarea oninput="updateNoteSilently('${n.id}','content',this.value)" placeholder="اكتب أفكارك...">${n.content}</textarea></div>`).join("");
 }
 window.selNoteFolder=id=>{S.activNoteFolder=id;saveData();};
 window.addNoteFolder=()=>{const n=prompt("اسم اللوحة:");if(n){const id="nf"+Date.now();S.noteFolders.push({id,name:n.trim(),notes:[]});S.activNoteFolder=id;saveData();}};
 window.delNoteFolder=()=>{if(S.noteFolders.length<=1||!confirm("حذف اللوحة وكل ملاحظاتها؟"))return;playSound("del");S.noteFolders=S.noteFolders.filter(f=>f.id!==S.activNoteFolder);S.activNoteFolder=S.noteFolders[0].id;saveData();};
 window.addNote=()=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);if(!f)return;const colors=["#fde047","#93c5fd","#6ee7b7","#f9a8d4","#c4b5fd"];f.notes.unshift({id:"n"+Date.now(),title:"",content:"",color:colors[Math.floor(Math.random()*colors.length)]});saveData();playSound("ok");};
 window.updateNoteSilently=(id,field,val)=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);if(n){n[field]=val;saveDataSilently();}};
-window.changeNoteColor=(id,color)=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);if(n){n.color=color;saveData();}};
+window.changeNoteColor=(id,color)=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);if(n){n.color=color;saveDataSilently();const c=el('note-'+id);if(c)c.style.setProperty('--note-bg',color);}};
 window.delNote=id=>{if(confirm("مسح الملاحظة؟")){playSound("del");const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);f.notes=f.notes.filter(n=>n.id!==id);saveData();}};
 
 /* ════════ 7. CERTIFICATES (Medieval Frame) ════════ */
@@ -910,7 +906,7 @@ function renderCerts(){
 window.handleCertUpload=async inp=>{const f=inp.files[0];if(!f)return;showToast("جاري المعالجة...","loading");const r=new FileReader();r.onload=e=>{const name=prompt("اسم الشهادة:",f.name.split(".")[0]);if(!name){inp.value="";return;}const url=prompt("الرابط المباشر للملف (Drive Link):");if(!S.certificates)S.certificates=[];S.certificates.unshift({id:"cert"+Date.now(),title:name,data:e.target.result,url:url,ext:f.name.split(".").pop().toLowerCase(),date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())});inp.value="";saveData();showToast("تمت الإضافة! 🎓","success");};r.readAsDataURL(f);};
 window.delCert=id=>{if(confirm("مسح الشهادة؟")){playSound("del");S.certificates=S.certificates.filter(x=>x.id!==id);saveData();}};
 
-/* ════════ 8. POMODORO (No Calendar) ════════ */
+/* ════════ 8. POMODORO (With Sounds) ════════ */
 const POMO_MODES={focus:{label:"تركيز 🧠",sec:25*60},short:{label:"استراحة قصيرة ☕",sec:5*60},long:{label:"استراحة طويلة 🛋️",sec:15*60}};
 let pomoInterval=null,pomoRemaining=POMO_MODES.focus.sec,pomoMode="focus",pomoRunning=false;
 const POMO_CIRC=2*Math.PI*52;
@@ -920,7 +916,20 @@ function pomodoroRender(){
   const pct=pomoRemaining/POMO_MODES[pomoMode].sec;
   const ring=el("pomoRingFill"); if(ring){ring.style.strokeDasharray=POMO_CIRC;ring.style.strokeDashoffset=POMO_CIRC*(1-pct);}
 }
-window.pomodoroStart=()=>{if(pomoRunning)return;pomoRunning=true;pomoInterval=setInterval(()=>{pomoRemaining--;pomodoroRender();if(pomoRemaining<=0){clearInterval(pomoInterval);pomoRunning=false;playSound("ok");showToast("انتهى الوقت! 🎉","success");pomodoroSetMode(pomoMode==="focus"?"short":"focus");}},1000);};
+window.pomodoroStart=()=>{
+  if(pomoRunning)return;
+  pomoRunning=true;
+  playSound("pomo-start"); // Sound when starting!
+  pomoInterval=setInterval(()=>{
+    pomoRemaining--;pomodoroRender();
+    if(pomoRemaining<=0){
+      clearInterval(pomoInterval);pomoRunning=false;
+      playSound("pomo-end"); // Stronger sound when finishing!
+      showToast("انتهى الوقت! 🎉","success");
+      pomodoroSetMode(pomoMode==="focus"?"short":"focus");
+    }
+  },1000);
+};
 window.pomodoroPause=()=>{clearInterval(pomoInterval);pomoRunning=false;};
 window.pomodoroReset=()=>{clearInterval(pomoInterval);pomoRunning=false;pomoRemaining=POMO_MODES[pomoMode].sec;pomodoroRender();};
 window.pomodoroSetMode=mode=>{pomoMode=mode;document.querySelectorAll(".pomo-mode-btn").forEach(b=>b.classList.remove("active"));const mb=el("pm-"+mode);if(mb)mb.classList.add("active");pomodoroReset();};
