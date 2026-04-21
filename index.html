@@ -118,19 +118,8 @@ input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
 input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;border:1px solid var(--border);background:rgba(0,0,0,.2);}
 
-/* ════════ TASK CARD (Kanban Fix) ════════ */
-.task-card{
-  background:var(--bg3);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-  position:relative;
-  cursor:grab;
-  transition:all .25s ease;
-  margin-bottom: 12px;
-  display: block;
-  width: 100%;
-}
+/* ════════ TASK CARD ════════ */
+.task-card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:16px;position:relative;overflow:hidden;cursor:grab;transition:all .25s cubic-bezier(.4,0,.2,1); margin-bottom: 12px; width: 100%;}
 .task-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--tc,#4a6080);border-radius:0 2px 2px 0;}
 .task-card:hover{border-color:rgba(99,179,237,.35);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35);}
 .task-card.done-card{opacity:.55;filter:grayscale(.3);}
@@ -156,11 +145,7 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .folder-btn{text-align:right;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--txt2);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;font-family:'Cairo',sans-serif;transition:all .2s;width:100%;}
 .folder-btn:hover{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.2);color:var(--blue2);}
 .folder-btn.active{background:rgba(59,130,246,.14);border-color:rgba(59,130,246,.35);color:#bfdbfe;}
-
-.note-card{
-  position:relative;border-radius:4px 4px 22px 4px;padding:20px;flex-shrink:0;width:260px;
-  box-shadow:3px 5px 18px rgba(0,0,0,.18);transition:transform .25s,box-shadow .25s;
-}
+.note-card{position:relative;border-radius:4px 4px 22px 4px;padding:20px;flex-shrink:0;width:260px;box-shadow:3px 5px 18px rgba(0,0,0,.18);transition:transform .25s,box-shadow .25s;}
 .note-card:hover{transform:translateY(-5px) rotate(.4deg);box-shadow:5px 10px 28px rgba(0,0,0,.28);z-index:10;}
 .note-card::before{content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%) rotate(-2deg);width:64px;height:20px;background:rgba(255,255,255,.28);backdrop-filter:blur(2px);border-radius:2px;pointer-events:none;}
 
@@ -189,12 +174,12 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
   position: relative;
   height: 220px;
   transition: transform .3s, box-shadow .3s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 30px rgba(0,0,0,0.4);
   overflow: hidden;
-  padding: 8px;
+  padding: 10px;
 }
-.cert-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,0,0,0.8); }
-.cert-card img { border: 1px solid rgba(0,0,0,0.2); box-shadow: 0 2px 10px rgba(0,0,0,0.15); border-radius: 2px; width: 100%; height: 100%; object-fit: cover; }
+.cert-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 0 30px rgba(0,0,0,0.5); }
+.cert-card img { border: 1px solid rgba(0,0,0,0.3); box-shadow: 0 2px 10px rgba(0,0,0,0.2); border-radius: 2px; width: 100%; height: 100%; object-fit: cover; }
 
 .goal-item{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;transition:all .2s;margin-bottom:7px;}
 .goal-item:hover{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);}
@@ -211,12 +196,6 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 @media(max-width:767px){#topbar{display:flex;}}
 
 /* ════════ EXTRAS UI ════════ */
-.extras-card {
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-}
 #pomodoroDisplay {
   font-size: 48px; font-weight: 900; letter-spacing: -2px;
   background: linear-gradient(135deg, var(--blue), var(--cyan));
@@ -239,7 +218,6 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 .hm-cell:hover{transform:scale(1.4);outline:1px solid var(--cyan);z-index:1;}
 .hm-today{outline:2px solid var(--amber)!important;border-radius:3px;}
 .hm-swatch{width:12px;height:12px;border-radius:2px;background:var(--green);display:inline-block;}
-
 </style>
 </head>
 <body>
@@ -310,7 +288,7 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
     <div style="padding:16px 24px 0;flex-shrink:0;position:relative;z-index:1;">
       <div style="display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 16px;max-width:600px;margin:0 auto;transition:border-color .2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--txt3);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" id="searchInput" placeholder="ابحث عن مهام، لوحات، روابط..." oninput="handleSearch(this.value)" style="background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;width:100%;">
+        <input type="text" id="searchInput" placeholder="ابحث عن مهام، أهداف، أو روابط..." oninput="handleSearch(this.value)" style="background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;width:100%;">
       </div>
     </div>
 
@@ -336,8 +314,7 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
           <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
           <button class="btn-primary" onclick="addTodayTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
         </div>
-        
-        <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px; min-height: 100px;"></div>
+        <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px; min-height:100px;"></div>
 
         <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border); flex-shrink:0;">
           <button onclick="el('todayArchiveList').style.display = el('todayArchiveList').style.display === 'none' ? 'flex' : 'none'" class="btn-ghost" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
@@ -381,31 +358,18 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
         </div>
         
         <div style="display:flex;gap:14px;flex:1;min-height:0;overflow-x:auto;align-items:flex-start;padding-bottom:12px; width:100%;">
-          
-          <div style="flex:1; min-width:280px; display:flex; flex-direction:column; height:100%;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
-              <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div>
-              <span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
-            </div>
-            <div id="todo" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div><span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span></div>
+            <div id="todo" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
           </div>
-          
-          <div style="flex:1; min-width:280px; display:flex; flex-direction:column; height:100%;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
-              <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه</div>
-              <span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,.2);">0</span>
-            </div>
-            <div id="inprogress" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه</div><span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,.2);">0</span></div>
+            <div id="inprogress" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
           </div>
-          
-          <div style="flex:1; min-width:280px; display:flex; flex-direction:column; height:100%;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;">
-              <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div>
-              <span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,.2);">0</span>
-            </div>
-            <div id="done" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div><span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,.2);">0</span></div>
+            <div id="done" class="drop-zone custom-scrollbar" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
           </div>
-          
         </div>
       </div>
 
@@ -422,7 +386,7 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
       </div>
 
       <div id="sec-notes" class="section">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">لوحة الملاحظات 📝</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">اكتب أفكارك، واختر أي لون يعجبك لكل ملاحظة براحتك</p></div><button class="btn-primary" onclick="addNote()">➕ إضافة</button></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">لوحة الملاحظات 📝</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">اكتب أفكارك واختر أي لون يعجبك للملاحظة</p></div><button class="btn-primary" onclick="addNote()">➕ إضافة</button></div>
         <div style="display:flex;gap:14px;flex:1;min-height:0;" class="lib-layout">
           <div id="noteFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
           <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
@@ -433,8 +397,8 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
       </div>
 
       <div id="sec-certs" class="section">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك متعلقة في برواز على الحيطة</p></div><button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button><input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="handleCertUpload(this)"></div>
-        <div id="certsList" class="custom-scrollbar" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;align-content:start;padding-bottom:30px; padding-top: 10px;"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك في برواز شيك على الحيطة</p></div><button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button><input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="handleCertUpload(this)"></div>
+        <div id="certsList" class="custom-scrollbar" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;align-content:start;padding-bottom:30px; padding-top:10px;"></div>
       </div>
 
       <div id="sec-extras" class="section" style="display:none; flex-direction:column; height:100%;">
@@ -443,80 +407,80 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
           <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقويم، وتحليلات نشاطك</p>
         </div>
         
-        <div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:16px; flex-shrink:0; align-items:stretch;">
-          
-          <div class="extras-card" style="flex:2; min-width:320px; display:flex; flex-direction:column;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-              <div style="font-size:14px;font-weight:900;color:var(--txt1);">📊 تحليلات الأداء</div>
-              <button class="btn-ghost" onclick="renderCharts()" style="font-size:11px;">🔄 تحديث</button>
-            </div>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; flex:1;">
-              <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px; position:relative; min-height:180px; display:flex; flex-direction:column;">
-                  <div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">إنجاز آخر 7 أيام</div>
-                  <div style="flex:1; position:relative;"><canvas id="lineChart"></canvas></div>
+        <div style="display:flex; flex-direction:column; gap:16px; flex:1; min-height:0; overflow-y:auto; padding-bottom:20px;" class="custom-scrollbar">
+            
+            <div style="display:flex; flex-wrap:wrap; gap:16px; flex-shrink:0; align-items:stretch;">
+              <div style="flex:2; min-width:320px; background:var(--bg3); border:1px solid var(--border); border-radius:20px; padding:16px; display:flex; flex-direction:column;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                  <div style="font-size:14px;font-weight:900;color:var(--txt1);">📊 تحليلات الأداء</div>
+                  <button class="btn-ghost" onclick="renderCharts()" style="font-size:11px;">🔄 تحديث</button>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; flex:1;">
+                  <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px; position:relative; min-height:180px; display:flex; flex-direction:column;">
+                      <div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">إنجاز آخر 7 أيام</div>
+                      <div style="flex:1; position:relative;"><canvas id="lineChart"></canvas></div>
+                  </div>
+                  <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px; position:relative; min-height:180px; display:flex; flex-direction:column;">
+                      <div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">توزيع المهام بالأقسام</div>
+                      <div style="flex:1; position:relative;"><canvas id="pieChart"></canvas></div>
+                  </div>
+                </div>
               </div>
-              <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px; position:relative; min-height:180px; display:flex; flex-direction:column;">
-                  <div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">توزيع المهام بالأقسام</div>
-                  <div style="flex:1; position:relative;"><canvas id="pieChart"></canvas></div>
+              
+              <div style="flex:1.5; min-width:280px; background:var(--bg3); border:1px solid var(--border); border-radius:20px; padding:16px; display:flex; flex-direction:column;">
+                <div style="font-size:14px;font-weight:900;color:var(--txt1);margin-bottom:12px;">📅 التقويم</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                  <button class="cal-nav" onclick="calendarNav(-1)">›</button>
+                  <span id="calendarTitle" style="font-size:13px;font-weight:900;color:var(--txt1);"></span>
+                  <button class="cal-nav" onclick="calendarNav(1)">‹</button>
+                </div>
+                <div id="calendarDayNames" style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;"></div>
+                <div id="calendarGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px; flex:1; align-content:start;"></div>
+                <div style="display:flex;gap:6px;margin-top:12px; flex-shrink:0;">
+                  <input type="date" id="newEvDate" class="field" style="flex:1;font-size:11px;padding:6px 10px;">
+                  <input type="text" id="newEvTitle" placeholder="حدث جديد..." class="field" style="flex:2;font-size:11px;padding:6px 10px;" onkeypress="if(event.key==='Enter')addCalEvent()">
+                  <button class="btn-primary" onclick="addCalEvent()" style="padding:6px 12px;font-size:11px;flex-shrink:0;">+</button>
+                </div>
+              </div>
+
+              <div style="flex:1; min-width:250px; background:var(--bg3); border:1px solid var(--border); border-radius:20px; padding:20px; display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+                <div class="pomo-ring">
+                  <svg viewBox="0 0 120 120" width="120" height="120"><circle class="pomo-ring-bg" cx="60" cy="60" r="52"/><circle class="pomo-ring-fill" id="pomoRingFill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div id="pomodoroDisplay">25:00</div><div id="pomodoroLabel">تركيز 🧠</div></div>
+                </div>
+                <div class="pomo-modes">
+                  <button class="pomo-mode-btn active" id="pm-focus"  onclick="pomodoroSetMode('focus')">تركيز</button>
+                  <button class="pomo-mode-btn"        id="pm-short"  onclick="pomodoroSetMode('short')">قصير</button>
+                  <button class="pomo-mode-btn"        id="pm-long"   onclick="pomodoroSetMode('long')">طويل</button>
+                </div>
+                <div class="pomo-controls">
+                  <button class="btn-primary" onclick="pomodoroStart()" style="padding:8px 18px;font-size:12px;">▶ ابدأ</button>
+                  <button class="btn-ghost"   onclick="pomodoroPause()" style="padding:8px 14px;font-size:12px;">⏸ وقفة</button>
+                  <button class="btn-ghost"   onclick="pomodoroReset()" style="padding:8px 14px;font-size:12px;">↺ إعادة</button>
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div class="extras-card" style="flex:1.5; min-width:280px; display:flex; flex-direction:column;">
-            <div style="font-size:14px;font-weight:900;color:var(--txt1);margin-bottom:12px;">📅 التقويم</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-              <button class="cal-nav" onclick="calendarNav(-1)">›</button>
-              <span id="calendarTitle" style="font-size:13px;font-weight:900;color:var(--txt1);"></span>
-              <button class="cal-nav" onclick="calendarNav(1)">‹</button>
-            </div>
-            <div id="calendarDayNames" style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;"></div>
-            <div id="calendarGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px; flex:1; align-content:start;"></div>
-            <div style="display:flex;gap:6px;margin-top:12px; flex-shrink:0;">
-              <input type="date" id="newEvDate" class="field" style="flex:1;font-size:11px;padding:6px 10px;">
-              <input type="text" id="newEvTitle" placeholder="حدث جديد..." class="field" style="flex:2;font-size:11px;padding:6px 10px;" onkeypress="if(event.key==='Enter')addCalEvent()">
-              <button class="btn-primary" onclick="addCalEvent()" style="padding:6px 12px;font-size:11px;flex-shrink:0;">+</button>
-            </div>
-          </div>
 
-          <div class="extras-card" style="flex:1; min-width:250px; display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
-            <svg width="0" height="0" style="position:absolute;"><defs><linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg>
-            <div class="pomo-ring">
-              <svg viewBox="0 0 120 120" width="120" height="120"><circle class="pomo-ring-bg" cx="60" cy="60" r="52"/><circle class="pomo-ring-fill" id="pomoRingFill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg>
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div id="pomodoroDisplay">25:00</div><div id="pomodoroLabel">تركيز 🧠</div></div>
+            <div style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:20px; padding:24px; display:flex; flex-direction:column; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-shrink:0;">
+                 <div style="font-size:16px;font-weight:900;color:var(--txt1);">🟩 نشاطك السنوي المجمع</div>
+                 <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt3);">
+                    <span>أقل إنجاز</span>
+                    <div class="hm-swatch" style="opacity:.15;"></div>
+                    <div class="hm-swatch" style="opacity:.35;"></div>
+                    <div class="hm-swatch" style="opacity:.6;"></div>
+                    <div class="hm-swatch" style="opacity:.85;"></div>
+                    <div class="hm-swatch" style="opacity:1;"></div>
+                    <span>أكثر إنجاز</span>
+                 </div>
+              </div>
+              <div id="heatmapScrollArea" class="custom-scrollbar" dir="ltr" style="flex:1; overflow-x:auto; overflow-y:hidden; display:flex; flex-direction:column; justify-content:center; padding-bottom:10px;">
+                 <div id="heatmapMonthLabels" style="display:grid;grid-auto-flow:column;font-size:11px;font-weight:700;color:var(--txt3);margin-bottom:8px;min-width:max-content; gap:4px;"></div>
+                 <div id="heatmapGrid" style="display:grid;grid-template-rows:repeat(7,14px);grid-auto-flow:column;gap:4px;min-width:max-content;"></div>
+              </div>
             </div>
-            <div class="pomo-modes">
-              <button class="pomo-mode-btn active" id="pm-focus"  onclick="pomodoroSetMode('focus')">تركيز</button>
-              <button class="pomo-mode-btn"        id="pm-short"  onclick="pomodoroSetMode('short')">قصير</button>
-              <button class="pomo-mode-btn"        id="pm-long"   onclick="pomodoroSetMode('long')">طويل</button>
-            </div>
-            <div class="pomo-controls">
-              <button class="btn-primary" onclick="pomodoroStart()" style="padding:8px 18px;font-size:12px;">▶ ابدأ</button>
-              <button class="btn-ghost"   onclick="pomodoroPause()" style="padding:8px 14px;font-size:12px;">⏸ وقفة</button>
-              <button class="btn-ghost"   onclick="pomodoroReset()" style="padding:8px 14px;font-size:12px;">↺ إعادة</button>
-            </div>
-          </div>
-          
+
         </div>
-
-        <div class="extras-card" style="flex:1; width:100%; display:flex; flex-direction:column; min-height: 200px; padding:24px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-shrink:0;">
-             <div style="font-size:16px;font-weight:900;color:var(--txt1);">🟩 نشاطك السنوي المجمع</div>
-             <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt3);">
-                <span>أقل إنجاز</span>
-                <div class="hm-swatch" style="opacity:.15;"></div>
-                <div class="hm-swatch" style="opacity:.35;"></div>
-                <div class="hm-swatch" style="opacity:.6;"></div>
-                <div class="hm-swatch" style="opacity:.85;"></div>
-                <div class="hm-swatch" style="opacity:1;"></div>
-                <span>أكثر إنجاز</span>
-             </div>
-          </div>
-          <div id="heatmapScrollArea" class="custom-scrollbar" dir="ltr" style="flex:1; overflow-x:auto; overflow-y:hidden; display:flex; flex-direction:column; justify-content:center; padding-bottom:10px;">
-             <div id="heatmapMonthLabels" style="display:grid;grid-auto-flow:column;font-size:11px;font-weight:700;color:var(--txt3);margin-bottom:8px;min-width:max-content; gap:4px;"></div>
-             <div id="heatmapGrid" style="display:grid;grid-template-rows:repeat(7,14px);grid-auto-flow:column;gap:4px;min-width:max-content;"></div>
-          </div>
-        </div>
-
       </div></div></div></div><div id="settingsModal" class="modal-bg">
   <div class="modal-box" style="width:100%;max-width:420px;">
     <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><h3 style="font-size:18px;font-weight:900;color:#fff;">⚙️ الإعدادات</h3><button onclick="closeSettings()" style="background:rgba(255,255,255,.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button></div>
@@ -627,7 +591,7 @@ window.saveData=async()=>{
   if(user)try{await setDoc(doc(db,"rehlaty_users",user.uid),S);}catch(e){}
 };
 
-// دالة الحفظ الصامت بدون فقد التركيز أثناء الكتابة
+// للحفظ الصامت (للملاحظات) عشان التركيز مايضيعش وقت الكتابة
 window.saveDataSilently=async()=>{
   localStorage.setItem("rehlaty_v3",JSON.stringify(S));
   if(user)try{await setDoc(doc(db,"rehlaty_users",user.uid),S);}catch(e){}
@@ -683,8 +647,8 @@ function updateStats(){
   el("moodEmoji").textContent=pct===0?"😴":pct<30?"🌱":pct<60?"💪":pct<90?"🔥":"🏆";
   const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
   
-  const today = getLocalYYYYMMDD();
-  if(tot>0){if(!S.history)S.history={};S.history[today]=pct;}
+  const todayStr = getLocalYYYYMMDD();
+  if(tot>0){if(!S.history)S.history={};S.history[todayStr]=pct;}
 }
 
 /* ═══════════════════════════════════════
@@ -824,7 +788,7 @@ function renderTasks(){
     if(t.status==="todo")ct++;else if(t.status==="inprogress")ci++;else cd++;
     const pct=t.subtasks.length?(t.subtasks.filter(s=>s.done).length/t.subtasks.length*100):0;
     const isDone=t.status==="done";
-    cols[t.status]+=`<div id="${t.id}" class="task-card${isDone?" done-card":""}" draggable="true" ondragstart="drag(event)" style="--tc:${color}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><span class="tag-pill" style="color:${color};border-color:rgba(0,0,0,.15);">${ICONS[t.type]||"📝"} ${t.tag||""}</span><div class="card-actions" style="display:flex;gap:5px;opacity:0;transition:opacity .2s;"><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','up')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬆️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','down')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬇️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();togglePin('${t.id}')" style="background:${t.pinned?"rgba(59,130,246,.2)":"rgba(255,255,255,.05)"};border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:${t.pinned?"var(--blue)":"var(--txt3)"};font-size:10px;">📌</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();delTask('${t.id}')" style="background:rgba(239,68,68,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--red);font-size:12px;">✕</button></div></div><h4 onclick="event.stopPropagation();openTaskModal('${t.id}')" style="font-size:13px;font-weight:700;color:${isDone?'var(--txt3)':'var(--txt1)'};text-decoration:${isDone?'line-through':'none'};cursor:pointer;transition:color .2s;margin-bottom:8px;line-height:1.5;">${t.text}</h4>${t.startDate||t.endDate?`<div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:5px 10px;margin-bottom:8px;color:var(--txt3);"><span>📅 ${t.startDate||"---"}</span><span>🏁 ${t.endDate||"---"}</span></div>`:""}<div style="display:flex;align-items:center;gap:8px;"><div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:10px;font-weight:700;color:var(--txt3);flex-shrink:0;">${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span></div></div>`;
+    cols[t.status]+=`<div id="${t.id}" class="task-card${isDone?" done-card":""}" draggable="true" ondragstart="drag(event)" style="--tc:${color}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><span class="tag-pill" style="color:${color};border-color:rgba(0,0,0,.15);">${ICONS[t.type]||"📝"} ${t.tag||""}</span><div class="card-actions" style="display:flex;gap:5px;opacity:0;transition:opacity .2s;"><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','up')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬆️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','down')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬇️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();togglePin('${t.id}')" style="background:${t.pinned?"rgba(59,130,246,.2)":"rgba(255,255,255,.05)"};border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:${t.pinned?"var(--blue)":"var(--txt3)"};font-size:10px;">📌</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();delTask('${t.id}')" style="background:rgba(239,68,68,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--red);font-size:12px;">✕</button></div></div><h4 onclick="event.stopPropagation();openTaskModal('${t.id}')" style="font-size:13px;font-weight:700;word-break:break-word;white-space:normal;${isDone?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}cursor:pointer;transition:color .2s;margin-bottom:8px;line-height:1.5;">${t.text}</h4>${t.startDate||t.endDate?`<div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:5px 10px;margin-bottom:8px;color:var(--txt3);"><span>📅 ${t.startDate||"---"}</span><span>🏁 ${t.endDate||"---"}</span></div>`:""}<div style="display:flex;align-items:center;gap:8px;"><div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:10px;font-weight:700;color:var(--txt3);flex-shrink:0;">${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span></div></div>`;
   });
   ["todo","inprogress","done"].forEach(id=>{
     const c=el(id);if(!c)return;
@@ -920,6 +884,16 @@ window.delLib=id=>{if(confirm("حذف؟")){playSound("del");S.resources=S.resour
 /* ═══════════════════════════════════════
    NOTES
 ═══════════════════════════════════════ */
+// دالة لتحديث المتغيرات صامتاً بدون Render كامل
+window.updateNoteSilent = (id, field, val) => {
+    const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
+    const n = f?.notes.find(x => x.id === id);
+    if (n) { 
+        n[field] = val; 
+        saveDataSilently(); 
+    }
+};
+
 function renderNotes(){
   const flist=el("noteFolders");if(!flist)return;
   flist.innerHTML=S.noteFolders.map(f=>`<button class="folder-btn${S.activNoteFolder===f.id?" active":""}" onclick="selNoteFolder('${f.id}')">📋 ${f.name}</button>`).join("");
@@ -929,36 +903,35 @@ function renderNotes(){
   const notes=act.notes.filter(n=>n.title.toLowerCase().includes(sq)||n.content.toLowerCase().includes(sq));
   if(!notes.length){board.innerHTML=`<div class="empty" style="width:100%;"><span>💭</span><p>اللوحة فاضية.. ضيف ملاحظة!</p></div>`;return;}
   
-  const colMap = {yellow:"#fde047", blue:"#93c5fd", green:"#6ee7b7", pink:"#f9a8d4", purple:"#c4b5fd"};
-  
   board.innerHTML=notes.map(n=>{
-    let mappedColor = colMap[n.color] || n.color || "#fde047";
-    let validHex = /^#[0-9A-F]{6}$/i.test(mappedColor) ? mappedColor : "#fde047";
-
-    return `<div id="note-card-${n.id}" class="note-card" style="background:${mappedColor}; border:1px solid rgba(0,0,0,0.1);">
-      <div style="position:absolute;top:15px;left:15px; z-index:20;">
-         <input type="color" value="${validHex}" onchange="changeNoteColor('${n.id}', this.value)" style="width:24px;height:24px;border:none;border-radius:50%;cursor:pointer;padding:0;background:transparent;box-shadow:0 2px 5px rgba(0,0,0,0.2);" title="تغيير اللون">
+    let bg = n.color || "#fde047";
+    // التأكد إن اللون بصيغة Hex عشان الـ Color Picker يقراه
+    let validHex = /^#[0-9A-F]{6}$/i.test(bg) ? bg : "#fde047";
+    
+    return `<div id="note-card-${n.id}" class="note-card" style="background-color:${validHex}; border:1px solid rgba(0,0,0,0.1);">
+      <div style="position:absolute;top:15px;left:15px; z-index:20; background:rgba(255,255,255,0.4); border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+         <input type="color" value="${validHex}" onchange="changeNoteColor('${n.id}', this.value)" style="width:30px;height:30px;border:none;cursor:pointer;padding:0;background:transparent; outline:none;" title="تغيير اللون">
       </div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.1);">
-        <input type="text" value="${n.title}" oninput="updateNote('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:15px;width:calc(100% - 40px); color:#000;" placeholder="عنوان...">
+        <input type="text" value="${n.title}" oninput="updateNoteSilent('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:15px;width:calc(100% - 40px); color:#000;" placeholder="عنوان...">
         <button onclick="delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:16px;opacity:.5;padding:0;flex-shrink:0;color:#000;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.5'">✕</button>
       </div>
-      <textarea oninput="updateNote('${n.id}','content',this.value)" style="background:transparent;border:none;outline:none;resize:none;width:100%;min-height:150px;font-size:12px;font-weight:600;line-height:1.7;font-family:'Cairo',sans-serif; color:#000;" placeholder="اكتب أفكارك...">${n.content}</textarea>
+      <textarea oninput="updateNoteSilent('${n.id}','content',this.value)" style="background:transparent;border:none;outline:none;resize:none;width:100%;min-height:150px;font-size:12px;font-weight:600;line-height:1.7;font-family:'Cairo',sans-serif; color:#000;" placeholder="اكتب أفكارك...">${n.content}</textarea>
     </div>`;
   }).join("");
 }
+
 window.selNoteFolder=id=>{S.activNoteFolder=id;saveData();};
 window.addNoteFolder=()=>{const n=prompt("اسم اللوحة:");if(n){const id="nf"+Date.now();S.noteFolders.push({id,name:n.trim(),notes:[]});S.activNoteFolder=id;saveData();}};
 window.delNoteFolder=()=>{if(S.noteFolders.length<=1||!confirm("حذف اللوحة وكل ملاحظاتها؟"))return;playSound("del");S.noteFolders=S.noteFolders.filter(f=>f.id!==S.activNoteFolder);S.activNoteFolder=S.noteFolders[0].id;saveData();};
-window.addNote=()=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);if(!f)return;f.notes.unshift({id:"n"+Date.now(),title:"ملاحظة جديدة",content:"",color:"#fef3c7"});saveData();playSound("ok");};
-window.updateNote=(id,field,val)=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);if(n){n[field]=val;saveDataSilently();}};
+window.addNote=()=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);if(!f)return;f.notes.unshift({id:"n"+Date.now(),title:"ملاحظة جديدة",content:"",color:"#fde047"});saveData();playSound("ok");};
 window.changeNoteColor=(id,color)=>{
     const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);
     if(n){
         n.color=color;
         saveDataSilently();
         const card = document.getElementById(`note-card-${id}`);
-        if(card) card.style.background = color;
+        if(card) card.style.backgroundColor = color;
     }
 };
 window.delNote=id=>{if(confirm("مسح الملاحظة؟")){playSound("del");const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);f.notes=f.notes.filter(n=>n.id!==id);saveData();}};
@@ -1151,7 +1124,7 @@ window.renderHeatmap=()=>{
     if(!inRange){color="transparent";opacity=0;}
     else if(pct>0){opacity=0.15+(pct/100)*0.85;}
     else if(pct===0){opacity=0.08;}
-    else{opacity=0.06;} // no data
+    else{opacity=0.06;}
 
     const title=inRange?(pct>=0?`${dateStr}: ${pct}%`:`${dateStr}: لا بيانات`):"";
     html+=`<div class="hm-cell${isToday?" hm-today":""}" title="${title}" style="background:${color};opacity:${opacity.toFixed(2)};${!inRange?"cursor:default;":""}"></div>`;
