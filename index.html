@@ -110,6 +110,9 @@ body.light .field{background:rgba(0,0,0,.04);}
 .field::placeholder{color:var(--txt3);}
 input[type=date].field{direction:ltr;text-align:right;color-scheme:dark;}
 body.light input[type=date].field{color-scheme:light;}
+input[type=color]{-webkit-appearance:none;border:none;padding:0;background:transparent;cursor:pointer;}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
+input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;border:1px solid var(--border);background:rgba(0,0,0,.2);}
 
 /* ════════ TASK CARD (KANBAN PREMIUM) ════════ */
@@ -171,6 +174,9 @@ body.light input[type=date].field{color-scheme:light;}
   font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.6;
 }
 .note-card input[type="text"] { color: inherit; }
+.note-palette-btn { font-size:14px; opacity:0.5; cursor:pointer; background:transparent; border:none; padding:0; transition:opacity .2s; position: relative; }
+.note-palette-btn:hover { opacity:1; }
+.note-color-picker { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
 
 /* ════════ MEDIEVAL CERTIFICATES ════════ */
 .cert-card{
@@ -551,7 +557,6 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 
 <div id="toast"><span id="toastIcon"></span><span id="toastText"></span></div>
 
-<script>window.loginWithGoogle=()=>alert("جاري التحميل...");</script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import{getAuth,signInWithPopup,GoogleAuthProvider,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
@@ -609,22 +614,31 @@ window.playSound=type=>{
   }catch(e){}
 };
 
-/* ════════ SAVE LOGIC ════════ */
-window.saveData=async()=>{
+/* ════════ SAVE LOGIC (DEBOUNCED) ════════ */
+let syncTimeout = null;
+window.saveData = () => {
   renderAll();
-  localStorage.setItem("rehlaty_v3",JSON.stringify(S));
-  if(user)try{await setDoc(doc(db,"rehlaty_users",user.uid),S);}catch(e){}
-};
-window.saveDataSilently=async()=>{
-  localStorage.setItem("rehlaty_v3",JSON.stringify(S));
-  if(user)try{await setDoc(doc(db,"rehlaty_users",user.uid),S);}catch(e){}
-};
+  localStorage.setItem("rehlaty_v3", JSON.stringify(S));
+  if(user){
+      clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => {
+          setDoc(doc(db,"rehlaty_users",user.uid),S).catch(e=>console.error(e));
+      }, 2000);
+  }
+}
+window.saveDataSilently = () => {
+  localStorage.setItem("rehlaty_v3", JSON.stringify(S));
+  if(user){
+      clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => {
+          setDoc(doc(db,"rehlaty_users",user.uid),S).catch(e=>console.error(e));
+      }, 2000);
+  }
+}
 
-// AUTO-ARCHIVE CHECK (Yearly)
 function checkAutoArchive(){
   const curYear = new Date().getFullYear();
   if(!S.archive) S.archive = {today:[], goals:[], years:{}};
-  
   if (S.lastYearChecked && S.lastYearChecked < curYear) {
       S.archive.years[S.lastYearChecked] = { history: { ...S.history }, tasks: [...S.tasks] };
       S.history = {}; S.lastYearChecked = curYear;
@@ -675,7 +689,6 @@ function updateStats(){
   el("progressBar").style.width=pct+"%";el("progressPct").textContent=pct+"%";
   el("moodEmoji").textContent=pct===0?"😴":pct<30?"🌱":pct<60?"💪":pct<90?"🔥":"🏆";
   const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
-  // History Record
   const today=new Date().toISOString().split("T")[0];
   if(tot>0){if(!S.history)S.history={};S.history[today]=pct;}
 }
@@ -689,7 +702,6 @@ window.switchTab=tab=>{
 };
 window.openSidebar=()=>{el("sidebar").classList.add("open");el("sbOverlay").style.display="block";el("sbClose").style.display="flex";};
 window.closeSidebar=()=>{el("sidebar").classList.remove("open");el("sbOverlay").style.display="none";el("sbClose").style.display="none";};
-
 window.initTheme=()=>{const light=localStorage.getItem("rehlaty_theme")==="light";if(light){document.body.classList.add("light");el("themeBtn").textContent="☀️ فاتح";}};
 window.toggleTheme=()=>{document.body.classList.toggle("light");const isL=document.body.classList.contains("light");localStorage.setItem("rehlaty_theme",isL?"light":"dark");el("themeBtn").textContent=isL?"☀️ فاتح":"🌙 داكن";};
 
@@ -700,8 +712,6 @@ function periods(){
   const wN={"1":"الأول","2":"الثاني","3":"الثالث","4":"الرابع","5":"الخامس"};
   return{year:y,month:`${y}-${m}`,week:`${y}-${m}-W${w}`,labels:{year:`سنة ${y}`,month:`شهر ${mN[mi]}`,week:`الأسبوع ${wN[w]} (${mN[mi]})`}};
 }
-
-/* ════════ UPLOAD ════════ */
 async function uploadCloud(file){
   return new Promise((res,rej)=>{
     const r=new FileReader();
@@ -710,10 +720,7 @@ async function uploadCloud(file){
   });
 }
 
-function renderAll(){
-  renderTodayTasks();renderTasks();renderGoals();
-  renderLib();renderNotes();renderCerts();renderTags();updateStats();
-}
+function renderAll(){ renderTodayTasks();renderTasks();renderGoals(); renderLib();renderNotes();renderCerts();renderTags();updateStats(); }
 
 /* ════════ 1. TODAY ════════ */
 function renderTodayTasks(){
@@ -732,11 +739,24 @@ window.addTodayTask=()=>{const inp=el("newTodayInput"),v=inp.value.trim();if(!v)
 window.toggleTodayTask=id=>{
   const t=S.todayTasks.find(x=>x.id===id);if(!t)return;
   t.done=!t.done;
+  
+  // SYNC WITH KANBAN
+  if(t.parentId && t.subIdx !== undefined){
+    const parent = S.tasks.find(x=>x.id === t.parentId);
+    if(parent && parent.subtasks && parent.subtasks[t.subIdx]){
+        parent.subtasks[t.subIdx].done = t.done;
+    }
+  }
+
   if(t.done){
     showToast("عاش يا بطل! 👏","success");playSound("ok");updateStreak();
-    // Auto-archive after 1.5s
     setTimeout(()=>{
-      if(t.done){ S.archive.today.push({...t, archDate:new Date().toLocaleDateString('ar-EG')}); S.todayTasks=S.todayTasks.filter(x=>x.id!==id); saveDataSilently(); renderTodayTasks(); updateStats();}
+      const checkT = S.todayTasks.find(x=>x.id===id);
+      if(checkT && checkT.done){
+         S.archive.today.push({...checkT, archDate:new Date().toLocaleDateString('ar-EG')}); 
+         S.todayTasks=S.todayTasks.filter(x=>x.id!==id); 
+         saveDataSilently(); renderTodayTasks(); updateStats();
+      }
     }, 1500);
   }
   saveData();
@@ -751,7 +771,7 @@ function renderGoals(){
   const lists={year:"",month:"",week:""};
   [...S.goals].sort((a,b)=>a.done===b.done?0:a.done?1:-1).forEach(g=>{
     const cur=g.periodKey===P.year||g.periodKey===P.month||g.periodKey===P.week;
-    if(!cur) return; // Hide non-current or let them be archived automatically
+    if(!cur) return;
     const html=`<div class="goal-item"><input type="checkbox" class="cb" ${g.done?"checked":""} onchange="toggleGoal('${g.id}')" style="width:20px;height:20px;min-width:20px;"><div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;${g.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${g.text}</div>${g.parentName?`<div style="font-size:10px;color:var(--purple);font-weight:700;">🔗 ${g.parentName}</div>`:""}</div><div style="display:flex;gap:5px;opacity:0;transition:opacity .2s;" class="goal-actions">${!g.done?`<button onclick="goalToToday('${g.id}')" style="font-size:9px;font-weight:900;padding:4px 7px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;">🎯</button>`:""}<button onclick="delGoal('${g.id}')" style="font-size:10px;background:transparent;border:none;cursor:pointer;color:var(--red);">✕</button></div></div>`;
     if(g.periodType==="year")lists.year+=html;else if(g.periodType==="month")lists.month+=html;else lists.week+=html;
   });
@@ -765,7 +785,6 @@ window.toggleGoal=id=>{
     g.done=!g.done;
     if(g.done){
       showToast("إنجاز عظيم! 🏆","success");playSound("ok");
-      // Auto archive goals
       setTimeout(()=>{
         if(g.done){ S.archive.goals.push({...g, archDate:new Date().toLocaleDateString('ar-EG')}); S.goals=S.goals.filter(x=>x.id!==id); saveDataSilently(); renderGoals(); }
       }, 1500);
@@ -817,7 +836,7 @@ function renderSubtasks(){
   const t=S.tasks.find(x=>x.id===activTask);if(!t)return;
   el("mSubtasks").innerHTML=(t.subtasks||[]).map((s,i)=>{
     if(!s.links)s.links=[];if(typeof s.links==="string")s.links=s.links?[s.links]:[];
-    if(!s.notes)s.notes=[]; // Dynamic Notes Array
+    if(!s.notes)s.notes=[]; 
     const vids=s.links.map((lk,vi)=>{const ytid=getYTid(lk);return`<div style="margin-bottom:8px;padding:8px;border-radius:12px;background:rgba(0,0,0,.2);border:1px solid var(--border);"><div style="display:flex;gap:6px;"><input type="text" value="${lk}" onchange="updateSubVid(${i},${vi},this.value)" placeholder="رابط يوتيوب..." class="field" style="flex:1;font-size:11px;padding:6px 10px;"><button onclick="delSubVid(${i},${vi})" style="background:rgba(239,68,68,.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 10px;font-size:12px;">✕</button></div>${ytid?`<div onclick="window.open('${lk}','_blank')" style="margin-top:7px;border-radius:10px;overflow:hidden;position:relative;height:90px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.75;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,.85);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">▶</div></div></div>`:""}</div>`;}).join("");
     const notes=s.notes.map((n,ni)=>`<div style="display:flex;gap:6px;margin-bottom:6px;"><textarea oninput="updateSubNote(${i},${ni},this.value)" class="field" style="flex:1;height:60px;resize:none;border-radius:8px;font-size:12px;" placeholder="ملاحظة...">${n}</textarea><button onclick="delSubNote(${i},${ni})" style="background:rgba(239,68,68,.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 8px;font-size:12px;">✕</button></div>`).join("");
     const files=!s.files||!s.files.length?`<span style="font-size:10px;color:var(--txt3);">لا يوجد مرفقات</span>`:s.files.map((f,fi)=>`<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);color:var(--txt2);max-width:110px;overflow:hidden;">${fileIcon(f.ext,f.type)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;" title="${f.name}">${f.name}</span><button onclick="openSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--green2);padding:0;font-size:11px;">👁️</button><button onclick="delSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--red);padding:0;font-size:11px;">✕</button></div>`).join("");
@@ -825,7 +844,18 @@ function renderSubtasks(){
   }).join("");
 }
 window.addSubtask=()=>{const v=el("newSubIn").value.trim();if(!v)return;S.tasks.find(x=>x.id===activTask).subtasks.push({text:v,done:false,files:[],links:[],notes:[]});el("newSubIn").value="";renderSubtasks();saveDataSilently();};
-window.toggleSub=i=>{const s=S.tasks.find(x=>x.id===activTask).subtasks[i];s.done=!s.done;if(s.done){showToast("خطوة كمان! 💪","success");playSound("ok");}renderSubtasks();saveDataSilently();};
+window.toggleSub=i=>{
+  const parent = S.tasks.find(x=>x.id===activTask);
+  const s = parent.subtasks[i];
+  s.done = !s.done;
+  if(s.done){showToast("خطوة كمان! 💪","success");playSound("ok");}
+  
+  // SYNC WITH TODAY TASKS
+  const todayEq = S.todayTasks.find(x => x.parentId === activTask && x.subIdx === i);
+  if (todayEq) { todayEq.done = s.done; }
+  
+  renderSubtasks(); saveDataSilently();
+};
 window.delSub=i=>{if(confirm("مسح الدرس؟")){playSound("del");S.tasks.find(x=>x.id===activTask).subtasks.splice(i,1);renderSubtasks();saveDataSilently();}};
 window.toggleSubNotes=i=>el(`snotes-${i}`).classList.toggle("open");
 window.addSubVid=i=>{const t=S.tasks.find(x=>x.id===activTask);if(!t.subtasks[i].links)t.subtasks[i].links=[];t.subtasks[i].links.push("");saveDataSilently();renderSubtasks();};
@@ -906,9 +936,9 @@ function renderCerts(){
 window.handleCertUpload=async inp=>{const f=inp.files[0];if(!f)return;showToast("جاري المعالجة...","loading");const r=new FileReader();r.onload=e=>{const name=prompt("اسم الشهادة:",f.name.split(".")[0]);if(!name){inp.value="";return;}const url=prompt("الرابط المباشر للملف (Drive Link):");if(!S.certificates)S.certificates=[];S.certificates.unshift({id:"cert"+Date.now(),title:name,data:e.target.result,url:url,ext:f.name.split(".").pop().toLowerCase(),date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())});inp.value="";saveData();showToast("تمت الإضافة! 🎓","success");};r.readAsDataURL(f);};
 window.delCert=id=>{if(confirm("مسح الشهادة؟")){playSound("del");S.certificates=S.certificates.filter(x=>x.id!==id);saveData();}};
 
-/* ════════ 8. POMODORO (With Sounds) ════════ */
+/* ════════ 8. POMODORO (With Background Fix & Sounds) ════════ */
 const POMO_MODES={focus:{label:"تركيز 🧠",sec:25*60},short:{label:"استراحة قصيرة ☕",sec:5*60},long:{label:"استراحة طويلة 🛋️",sec:15*60}};
-let pomoInterval=null,pomoRemaining=POMO_MODES.focus.sec,pomoMode="focus",pomoRunning=false;
+let pomoInterval=null,pomoRemaining=POMO_MODES.focus.sec,pomoMode="focus",pomoRunning=false,pomoTargetTime=0;
 const POMO_CIRC=2*Math.PI*52;
 function pomodoroRender(){
   const m=String(Math.floor(pomoRemaining/60)).padStart(2,"0"),s=String(pomoRemaining%60).padStart(2,"0");
@@ -919,12 +949,14 @@ function pomodoroRender(){
 window.pomodoroStart=()=>{
   if(pomoRunning)return;
   pomoRunning=true;
-  playSound("pomo-start"); // Sound when starting!
+  playSound("pomo-start");
+  pomoTargetTime = Date.now() + (pomoRemaining * 1000);
   pomoInterval=setInterval(()=>{
-    pomoRemaining--;pomodoroRender();
+    pomoRemaining = Math.max(0, Math.round((pomoTargetTime - Date.now()) / 1000));
+    pomodoroRender();
     if(pomoRemaining<=0){
       clearInterval(pomoInterval);pomoRunning=false;
-      playSound("pomo-end"); // Stronger sound when finishing!
+      playSound("pomo-end");
       showToast("انتهى الوقت! 🎉","success");
       pomodoroSetMode(pomoMode==="focus"?"short":"focus");
     }
@@ -933,6 +965,7 @@ window.pomodoroStart=()=>{
 window.pomodoroPause=()=>{clearInterval(pomoInterval);pomoRunning=false;};
 window.pomodoroReset=()=>{clearInterval(pomoInterval);pomoRunning=false;pomoRemaining=POMO_MODES[pomoMode].sec;pomodoroRender();};
 window.pomodoroSetMode=mode=>{pomoMode=mode;document.querySelectorAll(".pomo-mode-btn").forEach(b=>b.classList.remove("active"));const mb=el("pm-"+mode);if(mb)mb.classList.add("active");pomodoroReset();};
+document.addEventListener("visibilitychange",()=>{if(!document.hidden && pomoRunning){pomoRemaining=Math.max(0,Math.round((pomoTargetTime-Date.now())/1000));pomodoroRender();}});
 pomodoroRender();
 
 /* ════════ 9. EXTRAS: HEATMAP (FULL LTR GRID) & CHARTS ════════ */
@@ -1059,7 +1092,7 @@ window.exportData=()=>{const b=new Blob([JSON.stringify(S)],{type:"application/j
 window.importData=inp=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d&&d.tasks){S=d;saveData();showToast("تم الاسترجاع! 🔄","success");closeSettings();}else showToast("الملف غير صالح!","error");}catch(e){showToast("خطأ في القراءة","error");}inp.value="";};r.readAsText(f);};
 window.handleSearch=v=>{sq=v.toLowerCase().trim();renderAll();};
 
-/* ════════ AUTH & INIT ════════ */
+/* ════════ FAST LOAD & SYNC ════════ */
 window.loginWithGoogle=()=>signInWithPopup(auth,gProv);
 window.logoutUser=()=>{if(confirm("تسجيل الخروج؟"))signOut(auth);};
 
@@ -1068,20 +1101,30 @@ onAuthStateChanged(auth,async u=>{
   if(u){
     user=u; el("uName").textContent=u.displayName||u.email||"مرحباً"; el("uAvatar").textContent=(u.displayName||u.email||"?")[0].toUpperCase();
     el("gLoginBtn").style.display="none"; el("loadingRow").style.display="flex";
+    
+    // FAST LOCAL LOAD (Zero Lag)
+    const local=localStorage.getItem("rehlaty_v3");
+    if(local){
+      try{Object.assign(S,JSON.parse(local));}catch(e){}
+      renderAll(); detectOccasion();
+      overlay.style.opacity="0"; setTimeout(()=>overlay.style.display="none",500);
+    }
+
+    // BACKGROUND SYNC
     try{
       const snap=await getDoc(doc(db,"rehlaty_users",u.uid));
       if(snap.exists()){
         S={...S,...snap.data()};
         if(!S.archive)S.archive={today:[],goals:[],years:{}};
+        saveDataSilently(); renderAll();
       }else{
-        const local=localStorage.getItem("rehlaty_v3");
-        if(local){try{Object.assign(S,JSON.parse(local));}catch(e){}}
         await setDoc(doc(db,"rehlaty_users",u.uid),S);
       }
+      if(!local){ overlay.style.opacity="0"; setTimeout(()=>overlay.style.display="none",500); }
     }catch(e){console.error(e);}
-    updateStreak(); renderAll(); detectOccasion();
+    
+    updateStreak();
     el("motivQuote").textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
-    overlay.style.opacity="0"; setTimeout(()=>overlay.style.display="none",500);
   }else{
     user=null;overlay.style.display="flex";overlay.style.opacity="1";
     el("gLoginBtn").style.display="flex";el("loadingRow").style.display="none";
