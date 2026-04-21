@@ -19,7 +19,6 @@
   --blue:#3b82f6; --blue2:#60a5fa; --cyan:#38bdf8;
   --green:#10b981; --green2:#34d399; --purple:#8b5cf6;
   --amber:#f59e0b; --red:#ef4444;
-  --shadow:0 8px 32px rgba(0,0,0,0.5);
 }
 
 /* ════════ LIGHT MODE ════════ */
@@ -27,7 +26,6 @@ body.light {
   --bg:#f1f5fb; --bg2:#e8edf8; --bg3:#ffffff; --bg4:#f8faff;
   --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.15);
   --txt1:#0f172a; --txt2:#4a6080; --txt3:#9ab0cc;
-  --shadow:0 4px 20px rgba(0,0,0,0.1);
 }
 body.light #sidebar{background:linear-gradient(180deg,#fff,#f1f5fb);}
 body.light .glass{background:rgba(255,255,255,0.9);}
@@ -69,192 +67,107 @@ body::after{content:'';position:fixed;bottom:-15%;left:-10%;width:500px;height:5
 .confetti-wrap{display:none;position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
 .confetti-piece{position:absolute;top:-20px;width:10px;height:10px;animation:confettiFall linear infinite;}
 @keyframes confettiFall{0%{transform:translateY(0) rotateZ(0);opacity:1}100%{transform:translateY(110vh) rotateZ(720deg);opacity:0}}
-
 .occasion-banner{display:none;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:700;font-size:13px;padding:10px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.15);align-items:center;justify-content:center;gap:8px;z-index:50;position:relative;flex-shrink:0;}
 
 /* ════════ LAYOUT ════════ */
 #app{display:flex;height:100%;position:relative;overflow:hidden;}
-
 #sidebar{width:268px;background:linear-gradient(180deg,#0d1527,#080c18);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:20px 16px;z-index:100;flex-shrink:0;transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden;}
 @media(max-width:767px){#sidebar{position:fixed;top:0;right:0;bottom:0;transform:translateX(100%);box-shadow:-10px 0 40px rgba(0,0,0,.6);}#sidebar.open{transform:translateX(0);}}
-
 #main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;background:var(--bg);position:relative;z-index:1;}
 #content{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 24px;display:flex;flex-direction:column;gap:0;position:relative;z-index:1;}
 @media(max-width:767px){#content{padding:14px;}}
 
 /* ════════ SCROLLBAR ════════ */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
-::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:rgba(0,0,0,0.1); border-radius:10px;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.25)}
 
-/* ════════ SIDEBAR COMPONENTS ════════ */
-.logo-icon{background:linear-gradient(135deg,var(--blue),#1d4ed8);border-radius:14px;padding:9px;box-shadow:0 4px 20px rgba(59,130,246,.35);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .4s;}
-.nav-btn{width:100%;text-align:right;padding:11px 14px;border-radius:12px;border:1px solid transparent;color:var(--txt2);font-weight:700;font-size:14px;display:flex;align-items:center;gap:10px;cursor:pointer;background:transparent;font-family:'Cairo',sans-serif;transition:all .22s cubic-bezier(.4,0,.2,1);position:relative;}
+/* ════════ COMPONENTS ════════ */
+.logo-icon{background:linear-gradient(135deg,var(--blue),#1d4ed8);border-radius:14px;padding:9px;box-shadow:0 4px 20px rgba(59,130,246,.35);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-btn{width:100%;text-align:right;padding:11px 14px;border-radius:12px;border:1px solid transparent;color:var(--txt2);font-weight:700;font-size:14px;display:flex;align-items:center;gap:10px;cursor:pointer;background:transparent;transition:all .22s cubic-bezier(.4,0,.2,1);position:relative;}
 .nav-btn:hover{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.2);color:var(--blue2);transform:translateX(-2px);}
 .nav-btn.active{background:linear-gradient(135deg,rgba(59,130,246,.18),rgba(59,130,246,.08));border-color:rgba(59,130,246,.35);color:#bfdbfe;box-shadow:0 4px 16px rgba(59,130,246,.12);}
 .nav-btn.active::after{content:'';position:absolute;right:0;top:25%;bottom:25%;width:3px;border-radius:3px 0 0 3px;background:linear-gradient(180deg,var(--cyan),var(--blue));}
 
-/* ════════ REUSABLE ════════ */
 .glass{background:rgba(13,20,36,.82);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;}
-.card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;transition:all .25s ease;}
-.card:hover{border-color:var(--border2);box-shadow:0 6px 24px rgba(0,0,0,.3);}
-.btn-primary{background:linear-gradient(135deg,var(--blue),#1d4ed8);color:#fff;border:none;border-radius:12px;padding:9px 18px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Cairo',sans-serif;box-shadow:0 4px 14px rgba(59,130,246,.3);transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:linear-gradient(135deg,var(--blue),#1d4ed8);color:#fff;border:none;border-radius:12px;padding:9px 18px;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 14px rgba(59,130,246,.3);transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.4);}
 .btn-primary:active{transform:translateY(0);}
-.btn-ghost{background:transparent;color:var(--txt2);border:1px solid var(--border);border-radius:10px;padding:7px 14px;font-weight:600;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s;}
+.btn-ghost{background:transparent;color:var(--txt2);border:1px solid var(--border);border-radius:10px;padding:7px 14px;font-weight:600;font-size:12px;cursor:pointer;transition:all .2s;}
 .btn-ghost:hover{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.25);color:var(--blue2);}
 .field{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:12px;padding:9px 14px;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;outline:none;width:100%;transition:border-color .2s,box-shadow .2s;}
 body.light .field{background:rgba(0,0,0,.04);}
 .field:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.12);}
-.field::placeholder{color:var(--txt3);}
-input[type=date].field{direction:ltr;text-align:right;color-scheme:dark;}
-body.light input[type=date].field{color-scheme:light;}
-::-webkit-calendar-picker-indicator{filter:invert(.6);cursor:pointer;}
-body.light ::-webkit-calendar-picker-indicator{filter:none;}
-input[type=color]{-webkit-appearance:none;border:none;padding:0;background:transparent;cursor:pointer;}
-input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
-input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
-.tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;border:1px solid var(--border);background:rgba(0,0,0,.2);}
+input[type=date].field{direction:ltr;text-align:right;}
 
-/* ════════ TASK CARD ════════ */
+/* ════════ KANBAN CARD ════════ */
 .task-card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:16px;position:relative;overflow:hidden;cursor:grab;transition:all .25s cubic-bezier(.4,0,.2,1);}
 .task-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--tc,#4a6080);border-radius:0 2px 2px 0;}
 .task-card:hover{border-color:rgba(99,179,237,.35);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35);}
 .task-card.done-card{opacity:.55;filter:grayscale(.3);}
 
-/* ════════ TODAY ITEM ════════ */
-.today-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;transition:all .22s;margin-bottom:8px;}
-.today-item:hover{border-color:var(--border2);background:var(--bg4);}
-.today-item.done{opacity:.5;}
-.cb{appearance:none;width:22px;height:22px;min-width:22px;border:2px solid var(--txt3);border-radius:50%;cursor:pointer;position:relative;background:transparent;transition:all .2s;}
-.cb:checked{border-color:var(--blue);background:var(--blue);}
-.cb:checked::after{content:'✔';position:absolute;font-size:11px;color:#fff;top:50%;left:50%;transform:translate(-50%,-50%);}
-
-/* ════════ PROGRESS / STAT ════════ */
-.pbar-track{background:rgba(255,255,255,.06);border-radius:99px;height:5px;overflow:hidden;}
-.pbar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .8s cubic-bezier(.4,0,.2,1);}
-.stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;position:relative;overflow:hidden;transition:transform .25s;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--sc-grad,linear-gradient(90deg,var(--blue),var(--cyan)));}
-.stat-card:hover{transform:translateY(-2px);}
-.streak{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:99px;padding:4px 11px;font-size:12px;font-weight:900;box-shadow:0 4px 14px rgba(245,158,11,.4);animation:pulseWarm 2s ease-in-out infinite;}
-@keyframes pulseWarm{0%,100%{box-shadow:0 4px 14px rgba(245,158,11,.4)}50%{box-shadow:0 4px 22px rgba(245,158,11,.65)}}
-
-/* ════════ FOLDER / NOTE ════════ */
-.folder-btn{text-align:right;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--txt2);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;font-family:'Cairo',sans-serif;transition:all .2s;width:100%;}
-.folder-btn:hover{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.2);color:var(--blue2);}
-.folder-btn.active{background:rgba(59,130,246,.14);border-color:rgba(59,130,246,.35);color:#bfdbfe;}
+/* ════════ NOTES ════════ */
 .note-card{position:relative;border-radius:4px 4px 22px 4px;padding:20px;flex-shrink:0;width:260px;box-shadow:3px 5px 18px rgba(0,0,0,.18);transition:transform .25s,box-shadow .25s;}
 .note-card:hover{transform:translateY(-5px) rotate(.4deg);box-shadow:5px 10px 28px rgba(0,0,0,.28);z-index:10;}
 .note-card::before{content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%) rotate(-2deg);width:64px;height:20px;background:rgba(255,255,255,.28);backdrop-filter:blur(2px);border-radius:2px;pointer-events:none;}
-
-/* ════════ MODALS ════════ */
-.modal-bg{position:fixed;inset:0;z-index:200;background:rgba(4,8,16,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .3s;pointer-events:none;}
-.modal-bg.show{opacity:1;pointer-events:all;}
-.modal-box{background:linear-gradient(145deg,#0d1527,#080c18);border:1px solid rgba(59,130,246,.15);border-radius:26px;box-shadow:0 30px 90px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden;transform:scale(.96);transition:transform .3s;}
-.modal-bg.show .modal-box{transform:scale(1);}
-
-/* ════════ MISC ════════ */
-.loader{border:3px solid rgba(255,255,255,.08);border-left-color:var(--cyan);border-radius:50%;width:26px;height:26px;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:16px;z-index:9999;opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:#fff;max-width:90%;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.4);}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.section{display:none;flex:1;flex-direction:column;min-height:0;}
-.section.active{display:flex;}
-.notes-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;}
-.notes-panel.open{max-height:1200px;overflow-y:auto;}
+input[type="color"].note-color-picker {
+  -webkit-appearance: none; border: none; padding: 0;
+  width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
+  background: transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+input[type="color"].note-color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"].note-color-picker::-webkit-color-swatch { border: none; border-radius: 50%; }
 
 /* ════════ CERT CARD (WOODEN FRAME) ════════ */
 .cert-card{
-  background: #f4eadd; /* Matboard color */
+  background: #f4eadd;
   border: 12px solid #3e2723; /* Dark Wood Frame */
   border-radius: 8px;
   position: relative;
   height: 200px;
   transition: transform .3s, box-shadow .3s;
-  box-shadow: 2px 8px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.7);
+  box-shadow: 2px 8px 20px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.8);
   overflow: hidden;
   padding: 6px;
 }
-.cert-card:hover{transform:translateY(-4px);box-shadow:5px 12px 30px rgba(0,0,0,.6), inset 0 0 15px rgba(0,0,0,0.7);}
+.cert-card:hover{transform:translateY(-4px);box-shadow:5px 12px 30px rgba(0,0,0,.6), inset 0 0 20px rgba(0,0,0,0.9);}
 .cert-card img {
-  border: 1px solid rgba(0,0,0,0.2);
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,0.3);
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
   border-radius: 2px;
 }
 
-.goal-item{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;transition:all .2s;margin-bottom:7px;}
-.goal-item:hover{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2);}
-.lib-card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:18px;position:relative;overflow:hidden;transition:all .25s;height:150px;display:flex;flex-direction:column;justify-content:space-between;}
-.lib-card:hover{border-color:rgba(59,130,246,.28);background:var(--bg4);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.28);}
+/* ════════ MISC ════════ */
+.section{display:none;flex:1;flex-direction:column;min-height:0;}
+.section.active{display:flex;}
+.today-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;transition:all .22s;margin-bottom:8px;}
+.today-item.done{opacity:.5;}
+.cb{appearance:none;width:22px;height:22px;min-width:22px;border:2px solid var(--txt3);border-radius:50%;cursor:pointer;position:relative;transition:all .2s;}
+.cb:checked{border-color:var(--blue);background:var(--blue);}
+.cb:checked::after{content:'✔';position:absolute;font-size:11px;color:#fff;top:50%;left:50%;transform:translate(-50%,-50%);}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;opacity:.55;text-align:center;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .fade-in{animation:fadeUp .4s cubic-bezier(.4,0,.2,1) both;}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;opacity:.55;text-align:center;}
-.empty span{font-size:44px;margin-bottom:12px;}
-.empty p{color:var(--txt2);font-size:13px;font-weight:600;max-width:230px;line-height:1.7;}
-@keyframes rainbow{0%{color:#f87171}20%{color:#fb923c}40%{color:#facc15}60%{color:#4ade80}80%{color:#60a5fa}100%{color:#f87171}}
-body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite;}
-#topbar{display:none;background:rgba(8,12,24,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;align-items:center;justify-content:space-between;z-index:50;flex-shrink:0;}
-@media(max-width:767px){#topbar{display:flex;}}
+.modal-bg{position:fixed;inset:0;z-index:200;background:rgba(4,8,16,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-bg.show{opacity:1;pointer-events:all;}
+.modal-box{background:linear-gradient(145deg,#0d1527,#080c18);border:1px solid rgba(59,130,246,.15);border-radius:26px;box-shadow:0 30px 90px rgba(0,0,0,.7);overflow:hidden;transform:scale(.96);transition:transform .3s;}
+.modal-bg.show .modal-box{transform:scale(1);}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:16px;z-index:9999;opacity:0;pointer-events:none;transition:all .3s;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:#fff;box-shadow:0 8px 30px rgba(0,0,0,.4);}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.loader{border:3px solid rgba(255,255,255,.08);border-left-color:var(--cyan);border-radius:50%;width:26px;height:26px;animation:spin .8s linear infinite;}
 
 /* ════════ POMODORO ════════ */
-#pomodoroWidget{
-  background:var(--bg3);border:1px solid var(--border);border-radius:20px;
-  padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-}
-#pomodoroDisplay{
-  font-size:48px;font-weight:900;letter-spacing:-2px;
-  background:linear-gradient(135deg,var(--blue),var(--cyan));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;line-height:1;
-}
-#pomodoroLabel{font-size:13px;font-weight:700;color:var(--txt2);}
+#pomodoroWidget{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px; height:100%;}
 .pomo-modes{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
-.pomo-mode-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:11px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s;}
+.pomo-mode-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;}
 .pomo-mode-btn:hover,.pomo-mode-btn.active{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.4);color:var(--blue2);}
-.pomo-controls{display:flex;gap:8px;}
-.pomo-ring{position:relative;width:120px;height:120px;flex-shrink:0;}
-.pomo-ring svg{transform:rotate(-90deg);}
-.pomo-ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:6;}
-.pomo-ring-fill{fill:none;stroke:url(#pomoGrad);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .9s linear;}
-
-/* ════════ CALENDAR ════════ */
-#calendarWidget{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;overflow:hidden;}
-#calendarHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-#calendarTitle{font-size:14px;font-weight:900;color:var(--txt1);}
-.cal-nav{background:transparent;border:1px solid var(--border);border-radius:8px;width:28px;height:28px;cursor:pointer;color:var(--txt2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Cairo',sans-serif;}
-.cal-nav:hover{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:var(--blue2);}
-#calendarDayNames{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;}
-.cal-day-name{font-size:10px;font-weight:700;color:var(--txt3);text-align:center;padding:4px 0;}
-#calendarGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.cal-cell{min-height:32px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;border:1px solid transparent;}
-.cal-cell:hover{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.25);}
-.cal-empty{cursor:default;}
-.cal-today{background:rgba(59,130,246,.18);border-color:rgba(59,130,246,.5)!important;}
-.cal-today .cal-day-num{color:var(--blue2);font-weight:900;}
-.cal-has-event{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3)!important;}
-.cal-day-num{font-size:11px;font-weight:700;color:var(--txt2);}
-.cal-dot{width:5px;height:5px;border-radius:50%;background:var(--green2);margin-top:1px;}
+.pomo-ring-fill{fill:none;stroke:url(#pomoGrad);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1s linear;}
 
 /* ════════ HEATMAP ════════ */
-#heatmapWidget{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;overflow-x:auto;}
-#heatmapTitle{font-size:13px;font-weight:900;color:var(--txt1);margin-bottom:10px;}
-#heatmapMonthLabels{display:grid;grid-auto-flow:column;font-size:9px;color:var(--txt3);margin-bottom:4px;min-width:max-content;}
-#heatmapGrid{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;gap:3px;min-width:max-content;}
 .hm-cell{width:12px;height:12px;border-radius:3px;background:var(--green);cursor:pointer;transition:transform .15s;}
 .hm-cell:hover{transform:scale(1.4);outline:1px solid var(--cyan);z-index:1;}
 .hm-today{outline:2px solid var(--amber)!important;border-radius:3px;}
-#heatmapLegend{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);margin-top:8px;}
-.hm-swatch{width:11px;height:11px;border-radius:2px;background:var(--green);display:inline-block;}
-
-/* ════════ ANALYTICS ════════ */
-#analyticsWidget{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;}
-#analyticsTitle{font-size:13px;font-weight:900;color:var(--txt1);margin-bottom:14px;}
-.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-@media(max-width:640px){.charts-grid{grid-template-columns:1fr;}}
-.chart-wrap{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px;position:relative;}
-.chart-label{font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;}
-
 </style>
 </head>
 <body>
@@ -262,43 +175,32 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 <div class="confetti-wrap" id="confettiWrap"></div>
 
 <div id="loginOverlay" style="position:fixed;inset:0;z-index:9999;background:#040810;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .5s;">
-  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
-    <div style="position:absolute;top:20%;right:20%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.08),transparent 70%);"></div>
-    <div style="position:absolute;bottom:20%;left:20%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.06),transparent 70%);"></div>
-  </div>
   <div style="position:relative;z-index:1;text-align:center;max-width:360px;width:100%;" class="fade-in">
-    <div style="display:flex;justify-content:center;margin-bottom:24px;">
-      <div class="logo-icon" style="padding:18px;">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg>
-      </div>
-    </div>
+    <div style="display:flex;justify-content:center;margin-bottom:24px;"><div class="logo-icon" style="padding:18px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg></div></div>
     <h1 style="font-size:48px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px;">رحلتي</h1>
-    <p style="font-size:14px;color:var(--txt2);margin-bottom:32px;font-weight:600;">مساحتك السحابية للتطور والتعلم 🚀</p>
+    <p style="font-size:14px;color:var(--txt2);margin-bottom:32px;">مساحتك السحابية للتطور والتعلم 🚀</p>
     <div class="glass" style="padding:28px;">
-      <button id="gLoginBtn" onclick="window.loginWithGoogle()" style="width:100%;background:#fff;color:#1e293b;border:none;border-radius:14px;padding:14px;font-weight:900;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;font-family:'Cairo',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.3);" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <button id="gLoginBtn" onclick="window.loginWithGoogle()" style="width:100%;background:#fff;color:#1e293b;border:none;border-radius:14px;padding:14px;font-weight:900;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
         <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         الدخول بحساب جوجل
       </button>
-      <div id="loadingRow" style="display:none;margin-top:20px;align-items:center;justify-content:center;gap:10px;flex-direction:column;">
-        <div class="loader"></div>
-        <p style="font-size:12px;color:var(--txt2);font-weight:700;">جاري المزامنة مع السحابة...</p>
-      </div>
+      <div id="loadingRow" style="display:none;margin-top:20px;align-items:center;justify-content:center;gap:10px;flex-direction:column;"><div class="loader"></div><p style="font-size:12px;color:var(--txt2);">جاري المزامنة مع السحابة...</p></div>
     </div>
   </div>
 </div>
 
 <div id="app">
-  <div id="sbOverlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:90;backdrop-filter:blur(4px);"></div>
+  <div id="sbOverlay" onclick="closeSidebar()"></div>
 
   <aside id="sidebar">
-    <button onclick="closeSidebar()" style="display:none;position:absolute;top:16px;left:16px;background:rgba(255,255,255,.07);border:none;border-radius:10px;width:34px;height:34px;cursor:pointer;color:var(--txt2);font-size:16px;" id="sbClose">✕</button>
+    <button onclick="closeSidebar()" style="display:none;position:absolute;top:16px;left:16px;background:rgba(255,255,255,.07);border:none;border-radius:10px;width:34px;height:34px;color:var(--txt2);" id="sbClose">✕</button>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
-      <div class="logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg></div>
-      <div><div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;">رحلتي</div><div style="font-size:11px;color:var(--txt3);font-weight:600;margin-top:1px;">نحو غد أفضل</div></div>
+      <div class="logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg></div>
+      <div><div style="font-size:20px;font-weight:900;color:#fff;">رحلتي</div><div style="font-size:11px;color:var(--txt3);">نحو غد أفضل</div></div>
     </div>
     <div style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.12);margin-bottom:22px;">
-      <div id="uAvatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1d4ed8);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#fff;flex-shrink:0;">?</div>
-      <div style="min-width:0;"><div id="uName" style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">...</div><div style="display:flex;align-items:center;gap:6px;margin-top:2px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--green2);animation:pulseWarm 2s ease-in-out infinite;box-shadow:0 0 6px var(--green2);"></div><span style="font-size:11px;color:var(--green2);font-weight:700;">متصل سحابياً</span></div></div>
+      <div id="uAvatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1d4ed8);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#fff;">?</div>
+      <div style="min-width:0;"><div id="uName" style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">...</div><div style="display:flex;align-items:center;gap:6px;margin-top:2px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--green2);box-shadow:0 0 6px var(--green2);"></div><span style="font-size:11px;color:var(--green2);">متصل سحابياً</span></div></div>
     </div>
     <nav style="flex:1;display:flex;flex-direction:column;gap:3px;">
       <button class="nav-btn active" id="tab-today"   onclick="switchTab('today')">  <span>🎯</span> يومي </button>
@@ -311,20 +213,20 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
     </nav>
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
       <button class="btn-ghost" onclick="openSettings()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;"><span>⚙️ الإعدادات</span><span style="font-size:12px;">›</span></button>
-      <button onclick="logoutUser()" style="width:100%;background:transparent;border:1px solid transparent;border-radius:11px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;color:var(--red);font-family:'Cairo',sans-serif;transition:all .2s;" onmouseover="this.style.background='rgba(239,68,68,.1)';this.style.borderColor='rgba(239,68,68,.2)'" onmouseout="this.style.background='transparent';this.style.borderColor='transparent'">🚪 تسجيل خروج</button>
+      <button onclick="logoutUser()" class="btn-ghost" style="color:var(--red);border-color:transparent;">🚪 تسجيل خروج</button>
     </div>
   </aside>
 
   <div id="main">
     <div class="occasion-banner" id="occasionBanner"><span id="ocIcon">🌙</span><span class="oc-text" id="ocText">...</span></div>
     <div id="topbar">
-      <div style="display:flex;align-items:center;gap:8px;"><div class="logo-icon" style="padding:7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg></div><span style="font-weight:900;color:#fff;font-size:16px;">رحلتي</span></div>
-      <button onclick="openSidebar()" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;color:var(--txt1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div style="display:flex;align-items:center;gap:8px;"><div class="logo-icon" style="padding:7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg></div><span style="font-weight:900;color:#fff;">رحلتي</span></div>
+      <button onclick="openSidebar()" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;color:var(--txt1);">☰</button>
     </div>
 
-    <div style="padding:16px 24px 0;flex-shrink:0;position:relative;z-index:1;">
-      <div style="display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 16px;max-width:600px;margin:0 auto;transition:border-color .2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--txt3);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <div style="padding:16px 24px 0;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 16px;max-width:600px;margin:0 auto;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--txt3);"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" id="searchInput" placeholder="ابحث..." oninput="handleSearch(this.value)" style="background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;width:100%;">
       </div>
     </div>
@@ -333,32 +235,30 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 
       <div id="sec-today" class="section active">
         <div style="text-align:center;margin-bottom:18px;" class="fade-in">
-          <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-.5px;margin-bottom:4px;">هنعمل إيه النهارده 🎯</h2>
+          <h2 style="font-size:28px;font-weight:900;color:var(--txt1);">هنعمل إيه النهارده 🎯</h2>
           <div id="dateDisplay"></div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;flex-shrink:0;" class="stats-grid">
-          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--blue),var(--cyan));"><div style="font-size:24px;font-weight:900;color:var(--txt1);" id="sTotalToday">0</div><div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">مهام اليوم</div></div>
-          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--green),var(--green2));"><div style="font-size:24px;font-weight:900;color:var(--green2);" id="sDoneToday">0</div><div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">تم إنجازه</div></div>
-          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--purple),#a78bfa);"><div style="font-size:24px;font-weight:900;color:#a78bfa;" id="sKanban">0</div><div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">كورسات/مشاريع</div></div>
-          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--amber),#fbbf24);"><div class="streak" id="streakBadge">🔥 <span id="streakNum">0</span></div><div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:6px;">يوم متتالي</div></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;" class="stats-grid">
+          <div class="stat-card"><div style="font-size:24px;font-weight:900;" id="sTotalToday">0</div><div style="font-size:11px;color:var(--txt2);">مهام اليوم</div></div>
+          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--green),var(--green2));"><div style="font-size:24px;font-weight:900;color:var(--green2);" id="sDoneToday">0</div><div style="font-size:11px;color:var(--txt2);">تم إنجازه</div></div>
+          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--purple),#a78bfa);"><div style="font-size:24px;font-weight:900;color:#a78bfa;" id="sKanban">0</div><div style="font-size:11px;color:var(--txt2);">كورسات/مشاريع</div></div>
+          <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--amber),#fbbf24);"><div class="streak" id="streakBadge">🔥 <span id="streakNum">0</span></div><div style="font-size:11px;color:var(--txt2);margin-top:6px;">يوم متتالي</div></div>
         </div>
-        <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;flex-shrink:0;">
-          <div style="flex:1;"><div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:12px;font-weight:700;color:var(--txt2);">تقدم اليوم</span><span style="font-size:12px;font-weight:900;color:var(--txt1);" id="progressPct">0%</span></div><div class="pbar-track"><div class="pbar-fill" id="progressBar" style="width:0%"></div></div></div>
+        <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;">
+          <div style="flex:1;"><div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:12px;font-weight:700;color:var(--txt2);">تقدم اليوم</span><span style="font-size:12px;font-weight:900;" id="progressPct">0%</span></div><div class="pbar-track"><div class="pbar-fill" id="progressBar" style="width:0%"></div></div></div>
           <div style="font-size:28px;" id="moodEmoji">😴</div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color .2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;">
           <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
-          <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
-          <button class="btn-primary" onclick="addTodayTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
+          <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')addTodayTask()" class="field" style="border:none;background:transparent;">
+          <button class="btn-primary" onclick="addTodayTask()" style="padding:8px 16px;">إضافة</button>
         </div>
         
         <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px; min-height: 100px;"></div>
 
         <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border); flex-shrink:0;">
-          <button onclick="el('todayArchiveList').style.display = el('todayArchiveList').style.display === 'none' ? 'flex' : 'none'" class="btn-ghost" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:14px;font-weight:900;display:flex;align-items:center;gap:8px;">
-                  <span style="background:var(--bg3);padding:6px;border-radius:10px;font-size:13px;">📦</span> أرشيف الأيام السابقة
-              </span>
+          <button onclick="toggleTodayArchive()" class="btn-ghost" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:14px;font-weight:900;display:flex;align-items:center;gap:8px;"><span style="background:var(--bg3);padding:6px;border-radius:10px;">📦</span> أرشيف الأيام السابقة</span>
               <span id="todayArchiveCount" style="background:rgba(0,0,0,0.2); padding:2px 8px; border-radius:10px; font-weight:bold;">0</span>
           </button>
           <div id="todayArchiveList" style="display:none; flex-direction:column; gap:8px; margin-top:12px; max-height:250px; overflow-y:auto; opacity:0.6;"></div>
@@ -366,18 +266,16 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
       </div>
 
       <div id="sec-goals" class="section">
-        <div style="text-align:center;margin-bottom:18px;" class="fade-in"><h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-.5px;margin-bottom:4px;">أهدافي 🏆</h2><p style="font-size:13px;color:var(--txt2);">خطط للسنة والشهر والأسبوع</p></div>
+        <div style="text-align:center;margin-bottom:18px;" class="fade-in"><h2 style="font-size:28px;font-weight:900;">أهدافي 🏆</h2><p style="font-size:13px;color:var(--txt2);">خطط للسنة والشهر والأسبوع</p></div>
         <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:20px;padding-bottom:20px;">
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;" class="goals-grid">
-            <div class="glass" style="padding:18px;border-color:rgba(59,130,246,.2);"><h3 id="gyTitle" style="font-size:14px;font-weight:900;color:var(--blue);text-align:center;margin-bottom:14px;">سنة</h3><div style="display:flex;gap:6px;margin-bottom:12px;"><input type="text" id="gyInput" placeholder="هدف للسنة..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')addGoal('year')"><button class="btn-primary" onclick="addGoal('year')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;">+</button></div><div id="lyList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div></div>
-            <div class="glass" style="padding:18px;border-color:rgba(16,185,129,.2);"><h3 id="gmTitle" style="font-size:14px;font-weight:900;color:var(--green);text-align:center;margin-bottom:14px;">شهر</h3><div style="display:flex;gap:6px;margin-bottom:12px;"><input type="text" id="gmInput" placeholder="هدف للشهر..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')addGoal('month')"><button class="btn-primary" onclick="addGoal('month')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;background:linear-gradient(135deg,var(--green),#059669);">+</button></div><div id="gmList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div></div>
-            <div class="glass" style="padding:18px;border-color:rgba(139,92,246,.2);"><h3 id="gwTitle" style="font-size:14px;font-weight:900;color:var(--purple);text-align:center;margin-bottom:14px;">أسبوع</h3><div style="display:flex;gap:6px;margin-bottom:12px;"><input type="text" id="gwInput" placeholder="هدف للأسبوع..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')addGoal('week')"><button class="btn-primary" onclick="addGoal('week')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;background:linear-gradient(135deg,var(--purple),#7c3aed);">+</button></div><div id="gwList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;" class="goals-grid">
+            <div class="glass" style="padding:18px;border-color:rgba(59,130,246,.2);"><h3 id="gyTitle" style="font-size:14px;font-weight:900;color:var(--blue);text-align:center;margin-bottom:14px;">سنة</h3><div style="display:flex;gap:6px;margin-bottom:12px;"><input type="text" id="gyInput" placeholder="هدف للسنة..." class="field" onkeypress="if(event.key==='Enter')addGoal('year')"><button class="btn-primary" onclick="addGoal('year')" style="padding:0 12px;font-size:16px;">+</button></div><div id="lyList" style="max-height:280px;overflow-y:auto;"></div></div>
+            <div class="glass" style="padding:18px;border-color:rgba(16,185,129,.2);"><h3 id="gmTitle" style="font-size:14px;font-weight:900;color:var(--green);text-align:center;margin-bottom:14px;">شهر</h3><div style="display:flex;gap:6px;margin-bottom:12px;"><input type="text" id="gmInput" placeholder="هدف للشهر..." class="field" onkeypress="if(event.key==='Enter')addGoal('month')"><button class="btn-primary" onclick="addGoal('month')" style="padding:0 12px;font-size:16px;background:linear-gradient(135deg,var(--green),#059669);">+</button></div><div id="gmList" style="max-height:280px;overflow-y:auto;"></div></div>
+            <div class="glass" style="padding:18px;border-color:rgba(139,92,246,.2);"><h3 id="gwTitle" style="font-size:14px;font-weight:900;color:var(--purple);text-align:center;margin-bottom:14px;">أسبوع</h3><div style="display:flex;gap:6px;margin-bottom:12px;"><input type="text" id="gwInput" placeholder="هدف للأسبوع..." class="field" onkeypress="if(event.key==='Enter')addGoal('week')"><button class="btn-primary" onclick="addGoal('week')" style="padding:0 12px;font-size:16px;background:linear-gradient(135deg,var(--purple),#7c3aed);">+</button></div><div id="gwList" style="max-height:280px;overflow-y:auto;"></div></div>
           </div>
           <div style="padding-top:20px;border-top:1px solid var(--border);">
-            <button onclick="el('goalsArchive').style.display = el('goalsArchive').style.display === 'none' ? 'flex' : 'none'" class="btn-ghost" style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-              <span style="font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px;">
-                  <span style="background:var(--bg3);padding:6px;border-radius:10px;font-size:13px;">📦</span> أرشيف الإنجازات
-              </span>
+            <button onclick="toggleGoalArchive()" class="btn-ghost" style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <span style="font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px;"><span style="background:var(--bg3);padding:6px;border-radius:10px;">📦</span> أرشيف الإنجازات</span>
               <span style="font-size:12px;">إظهار / إخفاء</span>
             </button>
             <div id="goalsArchive" style="display:none;flex-direction:column;gap:12px;"></div>
@@ -387,125 +285,127 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 
       <div id="sec-kanban" class="section">
         <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:12px;flex-shrink:0;">
-          <div><h2 style="font-size:22px;font-weight:900;color:var(--txt1);margin-bottom:4px;">يا أهلاً يا بطل ✨</h2><p id="motivQuote" style="font-size:13px;color:var(--txt2);max-width:380px;"></p></div>
+          <div><h2 style="font-size:22px;font-weight:900;">يا أهلاً يا بطل ✨</h2><p id="motivQuote" style="font-size:13px;color:var(--txt2);"></p></div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px;">
-            <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')addTask()">
-            <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
-            <button class="btn-primary" onclick="addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
+            <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="border:none;background:transparent;" onkeypress="if(event.key==='Enter')addTask()">
+            <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;"></select>
+            <button class="btn-primary" onclick="addTask()">إضافة</button>
           </div>
         </div>
-        <div style="display:flex;gap:14px;flex:1;min-height:0;overflow-x:auto;align-items:flex-start;padding-bottom:12px; width:100%;">
-          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div><span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span></div><div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
-          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه</div><span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,.2);">0</span></div><div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
-          <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:0 2px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div><span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,.2);">0</span></div><div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 40px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
+        <div style="overflow-x:auto; flex:1; min-height:0; padding-bottom:12px;">
+          <div style="display:grid; grid-template-columns:repeat(3, minmax(300px, 1fr)); gap:16px; height:100%; min-width:950px;">
+            <div style="display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div><span id="cntTodo" style="background:rgba(74,96,128,.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span></div><div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
+            <div style="display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);"></div> شغال عليه</div><span id="cntInprogress" style="background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span></div><div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
+            <div style="display:flex;flex-direction:column;height:100%;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div><span id="cntDone" style="background:rgba(16,185,129,.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span></div><div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px;" ondragover="allowDrop(event)" ondrop="drop(event)"></div></div>
+          </div>
         </div>
       </div>
 
       <div id="sec-library" class="section">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);letter-spacing:-.5px;">مكتبة المصادر 📚</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">روابطك وملفاتك كلها هنا</p></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;">مكتبة المصادر 📚</h2><p style="font-size:12px;color:var(--txt2);">روابطك وملفاتك كلها هنا</p></div></div>
         <div style="display:flex;gap:14px;flex:1;min-height:0;" class="lib-layout">
           <div id="libFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
           <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
-            <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;"><span id="libActiveTitle" style="font-weight:900;font-size:14px;color:var(--blue);">...</span><div style="display:flex;gap:8px;"><button class="btn-ghost" onclick="addLibFolder()" style="font-size:11px;color:var(--green2);border-color:rgba(52,211,153,.2);">➕ مجلد</button><button class="btn-ghost" id="delLibFolderBtn" onclick="delLibFolder()" style="font-size:11px;color:var(--red);border-color:rgba(239,68,68,.2);">🗑️ حذف</button></div></div>
-            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex-shrink:0;background:rgba(0,0,0,.15);"><input type="text" id="libTitle" placeholder="الاسم..." class="field" style="flex:1;min-width:90px;font-size:12px;padding:7px 11px;"><input type="text" id="libUrl" placeholder="الرابط..." class="field" style="flex:1;min-width:90px;font-size:12px;padding:7px 11px;"><button class="btn-ghost" onclick="document.getElementById('libFileIn').click()" style="font-size:11px;">☁️ رفع</button><input type="file" id="libFileIn" class="hidden" onchange="handleLibUpload(this)" style="display:none;"><button class="btn-primary" onclick="addResource()" style="padding:7px 14px;font-size:12px;">حفظ</button></div>
+            <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><span id="libActiveTitle" style="font-weight:900;color:var(--blue);">...</span><div><button class="btn-ghost" onclick="addLibFolder()">➕ مجلد</button> <button class="btn-ghost" id="delLibFolderBtn" onclick="delLibFolder()" style="color:var(--red);">🗑️ حذف</button></div></div>
+            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;background:rgba(0,0,0,.15);"><input type="text" id="libTitle" placeholder="الاسم..." class="field" style="flex:1;"><input type="text" id="libUrl" placeholder="الرابط..." class="field" style="flex:1;"><button class="btn-ghost" onclick="document.getElementById('libFileIn').click()">☁️ رفع</button><input type="file" id="libFileIn" class="hidden" onchange="handleLibUpload(this)" style="display:none;"><button class="btn-primary" onclick="addResource()">حفظ</button></div>
             <div id="libList" style="flex:1;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;overflow-y:auto;align-content:start;"></div>
           </div>
         </div>
       </div>
 
       <div id="sec-notes" class="section">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">لوحة الملاحظات 📝</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">اكتب أفكارك واختر لونك المفضل لكل ملاحظة</p></div><button class="btn-primary" onclick="addNote()">➕ إضافة</button></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;">لوحة الملاحظات 📝</h2><p style="font-size:12px;color:var(--txt2);">اكتب أفكارك واختر لونك المفضل</p></div><button class="btn-primary" onclick="addNote()">➕ إضافة</button></div>
         <div style="display:flex;gap:14px;flex:1;min-height:0;" class="lib-layout">
           <div id="noteFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
           <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
-            <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;"><span id="noteActiveTitle" style="font-weight:900;font-size:14px;color:var(--blue);">...</span><div style="display:flex;gap:8px;"><button class="btn-ghost" onclick="addNoteFolder()" style="font-size:11px;color:var(--green2);">➕ لوحة</button><button class="btn-ghost" id="delNoteFolderBtn" onclick="delNoteFolder()" style="font-size:11px;color:var(--red);">🗑️ حذف</button></div></div>
+            <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><span id="noteActiveTitle" style="font-weight:900;color:var(--blue);">...</span><div><button class="btn-ghost" onclick="addNoteFolder()">➕ لوحة</button> <button class="btn-ghost" id="delNoteFolderBtn" onclick="delNoteFolder()" style="color:var(--red);">🗑️ حذف</button></div></div>
             <div id="notesBoard" style="flex:1;padding:20px;display:flex;flex-wrap:wrap;gap:20px;overflow-y:auto;align-content:flex-start;"></div>
           </div>
         </div>
       </div>
 
       <div id="sec-certs" class="section">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك في برواز على الحيطة</p></div><button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button><input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="handleCertUpload(this)"></div>
-        <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;align-content:start;padding-bottom:30px; padding-top: 10px;"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;">شهاداتي 🎓</h2><p style="font-size:12px;color:var(--txt2);">إنجازاتك في برواز على الحيطة</p></div><button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button><input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="handleCertUpload(this)"></div>
+        <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;align-content:start;padding-bottom:30px; padding-top:10px;"></div>
       </div>
 
       <div id="sec-extras" class="section">
         <div style="margin-bottom:16px;flex-shrink:0;">
-          <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
-          <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقويم، وتحليلات</p>
+          <h2 style="font-size:24px;font-weight:900;">أدوات وإحصائيات ✨</h2>
+          <p style="font-size:12px;color:var(--txt2);">بومودورو، تقويم، وتحليلات</p>
         </div>
         
-        <div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:16px; flex-shrink:0; align-items: stretch;">
-          
-          <div id="analyticsWidget" style="flex:2; min-width:320px; background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:16px; flex-shrink:0;">
+          <div id="analyticsWidget" style="background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px; grid-column: span 2;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-              <div id="analyticsTitle" style="font-size:14px;font-weight:900;color:var(--txt1);">📊 تحليلات الأداء</div>
+              <div style="font-size:14px;font-weight:900;">📊 تحليلات الأداء</div>
               <button class="btn-ghost" onclick="renderCharts()" style="font-size:11px;">🔄 تحديث</button>
             </div>
-            <div class="charts-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;">
-              <div class="chart-wrap" style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px;"><div class="chart-label" style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">إنجاز آخر 7 أيام</div><canvas id="lineChart" height="140"></canvas></div>
-              <div class="chart-wrap" style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px;"><div class="chart-label" style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">توزيع المهام بالأقسام</div><canvas id="pieChart" height="140"></canvas></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;">
+              <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px;"><div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">إنجاز آخر 7 أيام</div><canvas id="lineChart" height="140"></canvas></div>
+              <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px;"><div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;">توزيع المهام بالأقسام</div><canvas id="pieChart" height="140"></canvas></div>
             </div>
           </div>
           
-          <div id="calendarWidget" style="flex:1; min-width:280px; background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;overflow:hidden;">
-            <div style="font-size:14px;font-weight:900;color:var(--txt1);margin-bottom:12px;">📅 التقويم</div>
-            <div id="calendarHeader" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-              <button class="cal-nav" onclick="calendarNav(-1)">›</button>
-              <span id="calendarTitle" style="font-size:13px;font-weight:900;color:var(--txt1);"></span>
-              <button class="cal-nav" onclick="calendarNav(1)">‹</button>
-            </div>
-            <div id="calendarDayNames" style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;"></div>
-            <div id="calendarGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
-            <div style="display:flex;gap:6px;margin-top:12px;">
-              <input type="date" id="newEvDate" class="field" style="flex:1;font-size:11px;padding:6px 10px;">
-              <input type="text" id="newEvTitle" placeholder="حدث جديد..." class="field" style="flex:2;font-size:11px;padding:6px 10px;" onkeypress="if(event.key==='Enter')addCalEvent()">
-              <button class="btn-primary" onclick="addCalEvent()" style="padding:6px 12px;font-size:11px;flex-shrink:0;">+</button>
-            </div>
-          </div>
+          <div style="display:flex; flex-direction:column; gap:16px;">
+              <div id="calendarWidget" style="background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px; flex:1;">
+                <div style="font-size:14px;font-weight:900;margin-bottom:12px;">📅 التقويم</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                  <button class="btn-ghost" style="padding:2px 10px;" onclick="calendarNav(-1)">›</button>
+                  <span id="calendarTitle" style="font-size:13px;font-weight:900;"></span>
+                  <button class="btn-ghost" style="padding:2px 10px;" onclick="calendarNav(1)">‹</button>
+                </div>
+                <div id="calendarDayNames" style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;"></div>
+                <div id="calendarGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
+                <div style="display:flex;gap:6px;margin-top:12px;">
+                  <input type="date" id="newEvDate" class="field" style="flex:1;padding:6px;">
+                  <input type="text" id="newEvTitle" placeholder="حدث جديد..." class="field" style="flex:2;padding:6px;" onkeypress="if(event.key==='Enter')addCalEvent()">
+                  <button class="btn-primary" onclick="addCalEvent()" style="padding:6px 10px;">+</button>
+                </div>
+              </div>
 
-          <div id="pomodoroWidget" style="flex:1; min-width:250px; background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
-            <svg width="0" height="0" style="position:absolute;"><defs><linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg>
-            <div class="pomo-ring">
-              <svg viewBox="0 0 120 120" width="120" height="120"><circle class="pomo-ring-bg" cx="60" cy="60" r="52"/><circle class="pomo-ring-fill" id="pomoRingFill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg>
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div id="pomodoroDisplay">25:00</div><div id="pomodoroLabel">تركيز 🧠</div></div>
-            </div>
-            <div class="pomo-modes">
-              <button class="pomo-mode-btn active" id="pm-focus"  onclick="pomodoroSetMode('focus')">تركيز</button>
-              <button class="pomo-mode-btn"        id="pm-short"  onclick="pomodoroSetMode('short')">قصير</button>
-              <button class="pomo-mode-btn"        id="pm-long"   onclick="pomodoroSetMode('long')">طويل</button>
-            </div>
-            <div class="pomo-controls" style="margin-top: 10px;">
-              <button class="btn-primary" onclick="pomodoroStart()" style="padding:8px 18px;font-size:12px;">▶ ابدأ</button>
-              <button class="btn-ghost"   onclick="pomodoroPause()" style="padding:8px 14px;font-size:12px;">⏸ وقفة</button>
-              <button class="btn-ghost"   onclick="pomodoroReset()" style="padding:8px 14px;font-size:12px;">↺ إعادة</button>
-            </div>
+              <div id="pomodoroWidget">
+                <svg width="0" height="0" style="position:absolute;"><defs><linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg>
+                <div style="position:relative;width:120px;height:120px;">
+                  <svg viewBox="0 0 120 120" width="120" height="120" style="transform:rotate(-90deg);"><circle fill="none" stroke="rgba(255,255,255,.06)" stroke-width="6" cx="60" cy="60" r="52"/><circle class="pomo-ring-fill" id="pomoRingFill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:32px;font-weight:900;color:var(--blue2);" id="pomodoroDisplay">25:00</div><div style="font-size:10px;color:var(--txt3);" id="pomodoroLabel">تركيز 🧠</div></div>
+                </div>
+                <div class="pomo-modes">
+                  <button class="pomo-mode-btn active" id="pm-focus" onclick="pomodoroSetMode('focus')">تركيز</button>
+                  <button class="pomo-mode-btn" id="pm-short" onclick="pomodoroSetMode('short')">قصير</button>
+                  <button class="pomo-mode-btn" id="pm-long" onclick="pomodoroSetMode('long')">طويل</button>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                  <button class="btn-primary" onclick="pomodoroStart()">▶ ابدأ</button>
+                  <button class="btn-ghost" onclick="pomodoroPause()">⏸ وقفة</button>
+                  <button class="btn-ghost" onclick="pomodoroReset()">↺</button>
+                </div>
+              </div>
           </div>
-          
         </div>
 
         <div id="heatmapWidget" style="width:100%; background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;overflow-x:auto;">
-          <div id="heatmapTitle" style="font-size:14px;font-weight:900;color:var(--txt1);margin-bottom:12px;">🟩 نشاطك السنوي المجمع</div>
+          <div style="font-size:14px;font-weight:900;margin-bottom:12px;">🟩 نشاطك السنوي המجمع</div>
           <div id="heatmapMonthLabels" style="display:grid;grid-auto-flow:column;font-size:9px;color:var(--txt3);margin-bottom:4px;min-width:max-content;"></div>
           <div id="heatmapGrid" style="display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;gap:3px;min-width:max-content;"></div>
-          <div id="heatmapLegend" style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);margin-top:12px;">
-            <span>أقل إنجاز</span>
-            <div class="hm-swatch" style="opacity:.15;"></div>
-            <div class="hm-swatch" style="opacity:.35;"></div>
-            <div class="hm-swatch" style="opacity:.6;"></div>
-            <div class="hm-swatch" style="opacity:.85;"></div>
-            <div class="hm-swatch" style="opacity:1;"></div>
-            <span>أكثر إنجاز</span>
+          <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);margin-top:12px;">
+            <span>أقل</span>
+            <div class="hm-cell" style="opacity:.15; cursor:default;"></div>
+            <div class="hm-cell" style="opacity:.35; cursor:default;"></div>
+            <div class="hm-cell" style="opacity:.6; cursor:default;"></div>
+            <div class="hm-cell" style="opacity:.85; cursor:default;"></div>
+            <div class="hm-cell" style="opacity:1; cursor:default;"></div>
+            <span>أكثر</span>
           </div>
         </div>
 
       </div></div></div></div><div id="settingsModal" class="modal-bg">
   <div class="modal-box" style="width:100%;max-width:420px;">
-    <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><h3 style="font-size:18px;font-weight:900;color:#fff;">⚙️ الإعدادات</h3><button onclick="closeSettings()" style="background:rgba(255,255,255,.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button></div>
+    <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><h3 style="font-size:18px;font-weight:900;">⚙️ الإعدادات</h3><button onclick="closeSettings()" class="btn-ghost" style="padding:4px 8px;">✕</button></div>
     <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;max-height:70vh;overflow-y:auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);"><div><div style="font-size:13px;font-weight:700;color:var(--txt1);">مظهر التطبيق</div><div style="font-size:11px;color:var(--txt3);margin-top:2px;">داكن / فاتح</div></div><button class="btn-ghost" onclick="toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button></div>
-      <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);"><div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">إدارة الأقسام</div><div style="display:flex;gap:7px;margin-bottom:10px;"><input type="color" id="newTagColor" value="#3b82f6" style="width:34px;height:34px;border-radius:10px;border:1px solid var(--border);padding:3px;background:var(--bg);cursor:pointer;flex-shrink:0;"><input type="text" id="newTagInput" placeholder="اسم القسم..." class="field" style="flex:1;font-size:12px;padding:7px 11px;"><button class="btn-primary" onclick="addTag()" style="padding:7px 12px;font-size:12px;flex-shrink:0;">إضافة</button></div><div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto;"></div></div>
-      <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);"><div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div><div style="display:flex;gap:8px;"><button class="btn-ghost" onclick="exportData()" style="flex:1;justify-content:center;display:flex;gap:6px;padding:10px;">💾 حفظ</button><button onclick="document.getElementById('importIn').click()" style="flex:1;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;color:var(--green2);font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;font-family:'Cairo',sans-serif;">📂 استرجاع</button><input type="file" id="importIn" style="display:none;" accept=".json" onchange="importData(this)"></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);"><div><div style="font-size:13px;font-weight:700;">مظهر التطبيق</div></div><button class="btn-ghost" onclick="toggleTheme()" id="themeBtn">🌙 داكن</button></div>
+      <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);"><div style="font-size:13px;font-weight:700;margin-bottom:10px;">إدارة الأقسام</div><div style="display:flex;gap:7px;margin-bottom:10px;"><input type="color" id="newTagColor" value="#3b82f6" style="width:34px;height:34px;border-radius:10px;border:1px solid var(--border);padding:3px;background:var(--bg);cursor:pointer;"><input type="text" id="newTagInput" placeholder="اسم القسم..." class="field" style="flex:1;"><button class="btn-primary" onclick="addTag()">إضافة</button></div><div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;"></div></div>
+      <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);"><div style="font-size:13px;font-weight:700;margin-bottom:10px;">النسخ الاحتياطي</div><div style="display:flex;gap:8px;"><button class="btn-ghost" onclick="exportData()" style="flex:1;">💾 حفظ</button><button onclick="document.getElementById('importIn').click()" class="btn-ghost" style="flex:1;color:var(--green2);">📂 استرجاع</button><input type="file" id="importIn" style="display:none;" accept=".json" onchange="importData(this)"></div></div>
     </div>
   </div>
 </div>
@@ -513,25 +413,25 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 <div id="taskModal" class="modal-bg">
   <div class="modal-box" style="width:95%;max-width:1300px;height:90vh;display:flex;flex-direction:column;">
     <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;flex-shrink:0;">
-      <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;"><span id="mIcon" style="font-size:24px;background:var(--bg4);padding:8px;border-radius:14px;">📝</span><h2 id="mTitle" style="font-size:20px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></h2></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;"><span id="mIcon" style="font-size:24px;background:var(--bg4);padding:8px;border-radius:14px;">📝</span><h2 id="mTitle" style="font-size:20px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></h2></div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <select id="mType" onchange="handleTypeChange(this.value)" class="field" style="width:auto;font-size:12px;font-weight:700;padding:7px 12px;border-radius:10px;"><option value="general">📝 مهمة عادية</option><option value="course">🎓 كورس</option><option value="book">📖 كتاب</option><option value="lecture">🎤 محاضرة</option><option value="video">▶️ فيديو</option><option value="workshop">🛠️ ورشة عمل</option></select>
-        <button onclick="closeTaskModal()" style="background:rgba(255,255,255,.07);border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;color:var(--txt2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;" onmouseover="this.style.background='rgba(239,68,68,.15)';this.style.color='var(--red)'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='var(--txt2)'">✕</button>
+        <select id="mType" onchange="handleTypeChange(this.value)" class="field" style="width:auto;"><option value="general">📝 عادية</option><option value="course">🎓 كورس</option><option value="book">📖 كتاب</option><option value="lecture">🎤 محاضرة</option><option value="video">▶️ فيديو</option><option value="workshop">🛠️ ورشة</option></select>
+        <button onclick="closeTaskModal()" class="btn-ghost" style="padding:6px 12px; color:var(--red);">✕</button>
       </div>
     </div>
     <div style="flex:1;overflow-y:auto;padding:20px 24px;">
-      <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;" class="task-modal-grid">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:20px;">
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div style="display:flex;gap:10px;">
-            <label style="flex:1;"><div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">البداية 📅</div><input type="text" id="mStartDate" placeholder="يوم/شهر/سنة" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" onchange="saveTaskDates()" class="field" style="font-size:12px;"></label>
-            <label style="flex:1;"><div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">النهاية 🏁</div><input type="text" id="mEndDate" placeholder="يوم/شهر/سنة" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" onchange="saveTaskDates()" class="field" style="font-size:12px;"></label>
+            <label style="flex:1;"><div style="font-size:10px;font-weight:700;color:var(--txt3);margin-bottom:6px;">البداية</div><input type="date" id="mStartDate" onchange="saveTaskDates()" class="field"></label>
+            <label style="flex:1;"><div style="font-size:10px;font-weight:700;color:var(--txt3);margin-bottom:6px;">النهاية</div><input type="date" id="mEndDate" onchange="saveTaskDates()" class="field"></label>
           </div>
-          <label><div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">الوصف العام</div><textarea id="mDesc" class="field" style="height:160px;resize:none;border-radius:14px;font-size:13px;" placeholder="اكتب تفاصيل المهمة..."></textarea></label>
-          <div style="padding:14px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--border);"><div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">مرفقات 📎</div><div style="display:flex;gap:7px;margin-bottom:10px;"><button class="btn-ghost" onclick="addAttachment('link')" style="flex:1;font-size:11px;color:var(--blue2);">🔗 رابط</button><button class="btn-ghost" onclick="addAttachment('file')" style="flex:1;font-size:11px;color:var(--green2);">☁️ ملف</button></div><div id="mAttachments" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div></div>
+          <label><div style="font-size:10px;font-weight:700;color:var(--txt3);margin-bottom:6px;">الوصف</div><textarea id="mDesc" class="field" style="height:160px;resize:none;"></textarea></label>
+          <div style="padding:14px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--border);"><div style="font-size:10px;font-weight:700;color:var(--txt3);margin-bottom:10px;">مرفقات 📎</div><div style="display:flex;gap:7px;margin-bottom:10px;"><button class="btn-ghost" onclick="addAttachment('link')" style="flex:1;">🔗 رابط</button><button class="btn-ghost" onclick="addAttachment('file')" style="flex:1;">☁️ ملف</button></div><div id="mAttachments" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">الدروس / الخطوات</div>
-          <div style="display:flex;gap:8px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:12px;padding:7px;"><input type="text" id="newSubIn" placeholder="أضف درساً..." class="field" style="border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')addSubtask()"><button class="btn-primary" onclick="addSubtask()" style="padding:7px 14px;font-size:12px;flex-shrink:0;">➕</button></div>
+          <div style="font-size:10px;font-weight:700;color:var(--txt3);margin-bottom:4px;">الدروس / الخطوات</div>
+          <div style="display:flex;gap:8px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:12px;padding:7px;"><input type="text" id="newSubIn" placeholder="أضف درساً..." class="field" style="border:none;background:transparent;" onkeypress="if(event.key==='Enter')addSubtask()"><button class="btn-primary" onclick="addSubtask()">➕</button></div>
           <div id="mSubtasks" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
       </div>
@@ -564,17 +464,13 @@ let S={
   tags:["تصميم","ويب","تعلم"],
   tagColors:{"تصميم":"#ec4899","ويب":"#3b82f6","تعلم":"#10b981"},
   streak:0,lastDate:"",
-  events:[],
-  history:{}
+  events:[], history:{}
 };
 
 const ICONS={general:"📝",course:"🎓",book:"📖",lecture:"🎤",video:"▶️",workshop:"🛠️"};
 const QUOTES=["عافر، حلمك يستاهل التعب! 💪","وما نيل المطالب بالتمني ✨","السعي عبادة والمثابرة فن 🌟","كل خطوة صغيرة بتقربك من حلمك 🚀","اليوم اللي مش بتتعلم فيه مش بيتحسبش! 📚"];
 const el=id=>document.getElementById(id);
 
-/* ═══════════════════════════════════════
-   TOAST
-═══════════════════════════════════════ */
 window.showToast=(msg,type="info")=>{
   const t=el("toast"),ic=el("toastIcon"),tx=el("toastText");
   const maps={success:["✅","linear-gradient(135deg,#059669,#047857)"],error:["❌","linear-gradient(135deg,#dc2626,#b91c1c)"],loading:["","linear-gradient(135deg,#2563eb,#1d4ed8)"]};
@@ -585,9 +481,6 @@ window.showToast=(msg,type="info")=>{
   if(type!=="loading")setTimeout(()=>t.classList.remove("show"),3000);
 };
 
-/* ═══════════════════════════════════════
-   SOUND
-═══════════════════════════════════════ */
 let ctx=null;
 window.playSound=type=>{
   try{
@@ -600,34 +493,21 @@ window.playSound=type=>{
   }catch(e){}
 };
 
-/* ═══════════════════════════════════════
-   SAVE (SILENT vs FULL RENDER)
-═══════════════════════════════════════ */
 window.saveData=async()=>{
   renderAll();
   localStorage.setItem("rehlaty_v3",JSON.stringify(S));
   if(user)try{await setDoc(doc(db,"rehlaty_users",user.uid),S);}catch(e){}
 };
 
-// للحفظ بدون تدمير الـ Focus أثناء الكتابة
 window.saveDataSilently=async()=>{
   localStorage.setItem("rehlaty_v3",JSON.stringify(S));
   if(user)try{await setDoc(doc(db,"rehlaty_users",user.uid),S);}catch(e){}
 };
 
-/* ═══════════════════════════════════════
-   OCCASIONS
-═══════════════════════════════════════ */
 function detectOccasion(){
   const now=new Date(),m=now.getMonth()+1,d=now.getDate(),year=now.getFullYear();
   document.body.classList.remove("birthday","ramadan","eid");
-  if(m===6&&d===6){document.body.classList.add("birthday");el("occasionBanner").style.display="flex";el("ocIcon").textContent="🎂";el("ocText").textContent="عيد ميلاد سعيد يا بطل! 🎉 سنة وانت طيب وبتبني مستقبلك بيدك 🎊";spawnConfetti();return;}
-  const RAMADAN=[{y:2025,sm:3,sd:1,em:3,ed:30},{y:2026,sm:2,sd:18,em:3,ed:19},{y:2027,sm:2,sd:7,em:3,ed:8}];
-  const EID_FITR=[{y:2025,sm:3,sd:30,em:4,ed:2},{y:2026,sm:3,sd:20,em:3,ed:23},{y:2027,sm:3,sd:9,em:3,ed:12}];
-  const EID_ADHA=[{y:2025,sm:6,sd:6,em:6,ed:10},{y:2026,sm:5,sd:26,em:5,ed:30},{y:2027,sm:5,sd:15,em:5,ed:19}];
-  const inRange=arr=>arr.some(r=>{if(r.y!==year)return false;return now>=new Date(year,r.sm-1,r.sd)&&now<=new Date(year,r.em-1,r.ed);});
-  if(inRange(EID_FITR)||inRange(EID_ADHA)){document.body.classList.add("eid");el("occasionBanner").style.display="flex";el("ocIcon").textContent="🌙";el("ocText").textContent=inRange(EID_ADHA)?"عيد الأضحى المبارك! كل سنة وانت بخير 🕌":"عيد الفطر المبارك! تقبل الله منا ومنكم 🌙";return;}
-  if(inRange(RAMADAN)){document.body.classList.add("ramadan");el("occasionBanner").style.display="flex";el("ocIcon").textContent="🌙";el("ocText").textContent="رمضان كريم! شهر التعلم والتطور الحقيقي 📿";return;}
+  if(m===6&&d===6){document.body.classList.add("birthday");el("occasionBanner").style.display="flex";el("ocIcon").textContent="🎂";el("ocText").textContent="عيد ميلاد سعيد يا بطل! 🎉";spawnConfetti();return;}
   el("occasionBanner").style.display="none";
 }
 function spawnConfetti(){
@@ -636,67 +516,42 @@ function spawnConfetti(){
   for(let i=0;i<60;i++){const p=document.createElement("div");p.className="confetti-piece";const size=Math.random()*8+4;p.style.cssText=`left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[i%colors.length]};border-radius:${Math.random()>.5?"50%":"2px"};animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*3}s;opacity:${Math.random()*.7+.3};`;wrap.appendChild(p);}
 }
 
-/* ═══════════════════════════════════════
-   DATE / STREAK / STATS
-═══════════════════════════════════════ */
 function updateDate(){
   const now=new Date();
   const greg=new Intl.DateTimeFormat("ar-EG",{weekday:"long",year:"numeric",month:"long",day:"numeric"}).format(now);
-  let hijri="";try{hijri=new Intl.DateTimeFormat("ar-SA-u-ca-islamic",{year:"numeric",month:"long",day:"numeric"}).format(now);}catch(e){}
-  el("dateDisplay").innerHTML=`<div style="font-size:15px;font-weight:700;color:var(--cyan);margin-top:4px;">${greg}</div>${hijri?`<div style="font-size:12px;font-weight:600;color:var(--green2);margin-top:2px;">🌙 ${hijri}</div>`:""}`;
+  el("dateDisplay").innerHTML=`<div style="font-size:15px;font-weight:700;color:var(--cyan);margin-top:4px;">${greg}</div>`;
 }
 function updateStreak(){
   const today=new Date().toDateString(),yest=new Date(Date.now()-86400000).toDateString();
-  if(!S.lastDate)S.streak=1;
-  else if(S.lastDate===today){}
-  else if(S.lastDate===yest)S.streak=(S.streak||0)+1;
-  else S.streak=1;
-  S.lastDate=today;
-  const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
+  if(!S.lastDate)S.streak=1;else if(S.lastDate===today){}else if(S.lastDate===yest)S.streak=(S.streak||0)+1;else S.streak=1;
+  S.lastDate=today;if(el("streakNum"))el("streakNum").textContent=S.streak||0;
 }
 function updateStats(){
   const tot=(S.todayTasks||[]).length,done=(S.todayTasks||[]).filter(t=>t.done).length,pct=tot>0?Math.round(done/tot*100):0;
   el("sTotalToday").textContent=tot;el("sDoneToday").textContent=done;el("sKanban").textContent=(S.tasks||[]).length;
   el("progressBar").style.width=pct+"%";el("progressPct").textContent=pct+"%";
   el("moodEmoji").textContent=pct===0?"😴":pct<30?"🌱":pct<60?"💪":pct<90?"🔥":"🏆";
-  const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
-  
   const today=new Date().toISOString().split("T")[0];
   if(tot>0){if(!S.history)S.history={};S.history[today]=pct;}
 }
 
-/* ═══════════════════════════════════════
-   TABS / SIDEBAR
-═══════════════════════════════════════ */
 const ALL_TABS=["today","goals","kanban","library","notes","certs","extras"];
 window.switchTab=tab=>{
   ALL_TABS.forEach(id=>{el("sec-"+id).classList.toggle("active",id===tab);el("tab-"+id).classList.toggle("active",id===tab);});
   if(tab==="extras"){renderCharts();renderHeatmap();renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear());}
   if(window.innerWidth<768)closeSidebar();
 };
-window.openSidebar=()=>{el("sidebar").classList.add("open");el("sbOverlay").style.display="block";el("sbClose").style.display="flex";};
-window.closeSidebar=()=>{el("sidebar").classList.remove("open");el("sbOverlay").style.display="none";el("sbClose").style.display="none";};
+window.openSidebar=()=>{el("sidebar").classList.add("open");el("sbOverlay").style.display="block";};
+window.closeSidebar=()=>{el("sidebar").classList.remove("open");el("sbOverlay").style.display="none";};
 
-/* ═══════════════════════════════════════
-   THEME
-═══════════════════════════════════════ */
-window.initTheme=()=>{const light=localStorage.getItem("rehlaty_theme")==="light";if(light){document.body.classList.add("light");el("themeBtn").textContent="☀️ فاتح";}};
-window.toggleTheme=()=>{document.body.classList.toggle("light");const isL=document.body.classList.contains("light");localStorage.setItem("rehlaty_theme",isL?"light":"dark");el("themeBtn").textContent=isL?"☀️ فاتح":"🌙 داكن";};
+window.initTheme=()=>{if(localStorage.getItem("rehlaty_theme")==="light"){document.body.classList.add("light");el("themeBtn").textContent="☀️ فاتح";}};
+window.toggleTheme=()=>{document.body.classList.toggle("light");localStorage.setItem("rehlaty_theme",document.body.classList.contains("light")?"light":"dark");el("themeBtn").textContent=document.body.classList.contains("light")?"☀️ فاتح":"🌙 داكن";};
 
-/* ═══════════════════════════════════════
-   PERIODS
-═══════════════════════════════════════ */
 function periods(){
-  const d=new Date(),y=d.getFullYear().toString();
-  const mN=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-  const mi=d.getMonth(),m=(mi+1).toString().padStart(2,"0"),w=Math.ceil(d.getDate()/7).toString();
-  const wN={"1":"الأول","2":"الثاني","3":"الثالث","4":"الرابع","5":"الخامس"};
-  return{year:y,month:`${y}-${m}`,week:`${y}-${m}-W${w}`,labels:{year:`سنة ${y}`,month:`شهر ${mN[mi]}`,week:`الأسبوع ${wN[w]} (${mN[mi]})`}};
+  const d=new Date(),y=d.getFullYear().toString(),mi=d.getMonth(),m=(mi+1).toString().padStart(2,"0"),w=Math.ceil(d.getDate()/7).toString();
+  return{year:y,month:`${y}-${m}`,week:`${y}-${m}-W${w}`,labels:{year:`سنة ${y}`,month:`شهر ${mi+1}`,week:`الأسبوع ${w}`}};
 }
 
-/* ═══════════════════════════════════════
-   UPLOAD
-═══════════════════════════════════════ */
 async function uploadCloud(file){
   return new Promise((res,rej)=>{
     const r=new FileReader();
@@ -705,504 +560,242 @@ async function uploadCloud(file){
   });
 }
 
-/* ═══════════════════════════════════════
-   RENDER ALL
-═══════════════════════════════════════ */
 function renderAll(){
-  renderTodayTasks();renderTasks();renderGoals();
-  renderLib();renderNotes();renderCerts();renderTags();updateStats();
+  renderTodayTasks();renderTasks();renderGoals();renderLib();renderNotes();renderCerts();renderTags();updateStats();
 }
 
-/* ═══════════════════════════════════════
-   TODAY
-═══════════════════════════════════════ */
+/* ═════ TODAY ARCHIVE LOGIC ═════ */
+window.toggleTodayArchive = () => {
+    const elArc = el("todayArchiveList");
+    if(elArc) elArc.style.display = elArc.style.display === 'none' ? 'flex' : 'none';
+}
 function renderTodayTasks(){
-  const list=el("todayList"), archList=el("todayArchiveList");
-  if(!list)return;
+  const list=el("todayList"), archList=el("todayArchiveList"); if(!list)return;
   if(!S.todayTasks)S.todayTasks=[];
-  
   const todayStr = new Date().toISOString().split('T')[0];
   let activeHtml = "", archiveHtml = "", archCount = 0;
 
-  const items=[...S.todayTasks].sort((a,b)=>a.done===b.done?0:a.done?1:-1);
-  
-  items.filter(t=>t.text.toLowerCase().includes(sq)).forEach(t=>{
+  [...S.todayTasks].sort((a,b)=>a.done===b.done?0:a.done?1:-1).forEach(t=>{
+    if(!t.text.toLowerCase().includes(sq)) return;
     const isPastDone = t.done && t.completedAt && t.completedAt !== todayStr;
-    const dateTag = isPastDone ? `<span style="font-size:9px;color:var(--txt3);font-weight:normal;margin-right:5px;">(اكتملت: ${t.completedAt})</span>` : "";
-    
-    const html = `
-    <div class="today-item${t.done?" done":""}">
-      <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="toggleTodayTask('${t.id}')">
-      <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text} ${dateTag}</div>${t.parentName?`<div style="font-size:10px;font-weight:700;color:var(--blue2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🔗 ${t.parentName}</div>`:""}</div>
-      <button onclick="delTodayTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--txt3);font-size:16px;padding:0 4px;transition:color .2s;flex-shrink:0;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
-    </div>`;
-
-    if(isPastDone) { archiveHtml += html; archCount++; }
-    else { activeHtml += html; }
+    const html = `<div class="today-item${t.done?" done":""}"><input type="checkbox" class="cb" ${t.done?"checked":""} onchange="toggleTodayTask('${t.id}')"><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text} ${isPastDone?`<span style="font-size:9px;color:var(--txt3);">(اكتمل: ${t.completedAt})</span>`:""}</div>${t.parentName?`<div style="font-size:10px;color:var(--blue2);">🔗 ${t.parentName}</div>`:""}</div><button onclick="delTodayTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--txt3);">✕</button></div>`;
+    if(isPastDone) { archiveHtml += html; archCount++; } else { activeHtml += html; }
   });
-
-  list.innerHTML = activeHtml || `<div class="empty"><span>🎯</span><p>قائمة النهارده فاضية، ضيف مهمة جديدة!</p></div>`;
-  if(archList){
-      archList.innerHTML = archiveHtml || `<div style="text-align:center;font-size:12px;color:var(--txt3);padding:10px;">لا يوجد مهام سابقة</div>`;
-      el("todayArchiveCount").textContent = archCount;
-  }
+  list.innerHTML = activeHtml || `<div class="empty"><span>🎯</span><p>قائمة اليوم فارغة</p></div>`;
+  if(archList){ archList.innerHTML = archiveHtml || `<div style="text-align:center;font-size:12px;color:var(--txt3);">لا يوجد مهام سابقة</div>`; el("todayArchiveCount").textContent = archCount; }
 }
-window.addTodayTask=()=>{const inp=el("newTodayInput"),v=inp.value.trim();if(!v)return;if(!S.todayTasks)S.todayTasks=[];S.todayTasks.unshift({id:"td"+Date.now(),text:v,done:false});inp.value="";saveData();};
-window.toggleTodayTask=id=>{
-    const t=S.todayTasks.find(x=>x.id===id);if(!t)return;
-    t.done=!t.done;
-    if(t.done){
-        t.completedAt = new Date().toISOString().split('T')[0];
-        showToast("عاش يا بطل! 👏","success");playSound("ok");updateStreak();
-    } else {
-        t.completedAt = null;
-    }
-    saveData();
-};
-window.delTodayTask=id=>{if(confirm("مسح المهمة؟")){playSound("del");S.todayTasks=S.todayTasks.filter(x=>x.id!==id);saveData();}};
+window.addTodayTask=()=>{const v=el("newTodayInput").value.trim();if(v){if(!S.todayTasks)S.todayTasks=[];S.todayTasks.unshift({id:"td"+Date.now(),text:v,done:false});el("newTodayInput").value="";saveData();}};
+window.toggleTodayTask=id=>{const t=S.todayTasks.find(x=>x.id===id);if(t){t.done=!t.done;t.completedAt=t.done?new Date().toISOString().split('T')[0]:null;if(t.done){showToast("عاش! 👏","success");playSound("ok");updateStreak();}saveData();}};
+window.delTodayTask=id=>{if(confirm("مسح؟")){playSound("del");S.todayTasks=S.todayTasks.filter(x=>x.id!==id);saveData();}};
 
-/* ═══════════════════════════════════════
-   GOALS
-═══════════════════════════════════════ */
+/* ═════ GOALS ARCHIVE LOGIC ═════ */
+window.toggleGoalArchive = () => {
+    const elArc = el("goalsArchive");
+    if(elArc) elArc.style.display = elArc.style.display === 'none' ? 'flex' : 'none';
+}
 function renderGoals(){
   if(!S.goals)S.goals=[];
-  const P=periods();
-  el("gyTitle").textContent=P.labels.year;el("gmTitle").textContent=P.labels.month;el("gwTitle").textContent=P.labels.week;
-  const lists={year:"",month:"",week:""};const arch={};
+  const P=periods(), lists={year:"",month:"",week:""}, arch={};
   [...S.goals].sort((a,b)=>a.done===b.done?0:a.done?1:-1).forEach(g=>{
     const cur=g.periodKey===P.year||g.periodKey===P.month||g.periodKey===P.week;
-    const html=`<div class="goal-item${!cur?' style="opacity:.4"':""}"><input type="checkbox" class="cb" ${g.done?"checked":""} onchange="toggleGoal('${g.id}')" style="width:20px;height:20px;min-width:20px;"><div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;${g.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${g.text}</div>${g.parentName?`<div style="font-size:10px;color:var(--purple);font-weight:700;">🔗 ${g.parentName}</div>`:""}</div><div style="display:flex;gap:5px;opacity:0;transition:opacity .2s;" class="goal-actions">${cur&&!g.done?`<button onclick="goalToToday('${g.id}')" style="font-size:9px;font-weight:900;padding:4px 7px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯</button>`:""}<button onclick="delGoal('${g.id}')" style="font-size:10px;background:transparent;border:none;cursor:pointer;color:var(--red);">✕</button></div></div>`;
+    const html=`<div class="goal-item${!cur?' style="opacity:.4"':""}"><input type="checkbox" class="cb" ${g.done?"checked":""} onchange="toggleGoal('${g.id}')"><div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;${g.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}">${g.text}</div>${g.parentName?`<div style="font-size:10px;color:var(--purple);">🔗 ${g.parentName}</div>`:""}</div><div style="display:flex;gap:5px;">${cur&&!g.done?`<button onclick="goalToToday('${g.id}')" class="btn-ghost" style="padding:2px 6px;">🎯</button>`:""}<button onclick="delGoal('${g.id}')" class="btn-ghost" style="padding:2px 6px;color:var(--red);">✕</button></div></div>`;
     if(cur){if(g.periodType==="year")lists.year+=html;else if(g.periodType==="month")lists.month+=html;else lists.week+=html;}
     else{if(!arch[g.periodLabel])arch[g.periodLabel]={order:g.periodKey,html:""};arch[g.periodLabel].html+=html;}
   });
-  const emp=`<div style="text-align:center;padding:28px 0;font-size:12px;font-weight:600;color:var(--txt3);">مفيش أهداف لسه..</div>`;
-  el("lyList").innerHTML=lists.year||emp;el("gmList").innerHTML=lists.month||emp;el("gwList").innerHTML=lists.week||emp;
-  let archHTML="";
-  Object.keys(arch).sort((a,b)=>arch[b].order.localeCompare(arch[a].order)).forEach(lbl=>{archHTML+=`<div style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:16px;padding:14px 16px;"><h4 style="font-size:13px;font-weight:900;color:var(--txt2);margin-bottom:10px;padding-right:10px;border-right:3px solid var(--txt3);">${lbl}</h4>${arch[lbl].html}</div>`;});
-  el("goalsArchive").innerHTML=archHTML||`<div class="empty"><span>👻</span><p>مفيش إنجازات قديمة لسه..</p></div>`;
-  document.querySelectorAll(".goal-item").forEach(item=>{item.addEventListener("mouseenter",()=>{const a=item.querySelector(".goal-actions");if(a)a.style.opacity="1";});item.addEventListener("mouseleave",()=>{const a=item.querySelector(".goal-actions");if(a)a.style.opacity="0";});});
+  el("lyList").innerHTML=lists.year||`<div style="text-align:center;font-size:12px;color:var(--txt3);">فارغ</div>`;
+  el("gmList").innerHTML=lists.month||`<div style="text-align:center;font-size:12px;color:var(--txt3);">فارغ</div>`;
+  el("gwList").innerHTML=lists.week||`<div style="text-align:center;font-size:12px;color:var(--txt3);">فارغ</div>`;
+  let archHTML=""; Object.keys(arch).sort((a,b)=>arch[b].order.localeCompare(arch[a].order)).forEach(lbl=>{archHTML+=`<div style="background:rgba(0,0,0,.15);border:1px solid var(--border);border-radius:12px;padding:12px;"><h4 style="font-size:13px;font-weight:900;color:var(--txt2);margin-bottom:8px;">${lbl}</h4>${arch[lbl].html}</div>`;});
+  el("goalsArchive").innerHTML=archHTML||`<div class="empty"><p>لا توجد إنجازات سابقة</p></div>`;
 }
-window.addGoal=type=>{const mp={year:"gyInput",month:"gmInput",week:"gwInput"};const inp=el(mp[type]);const v=inp.value.trim();if(!v)return;const P=periods();let pk,pl;if(type==="year"){pk=P.year;pl=P.labels.year;}else if(type==="month"){pk=P.month;pl=P.labels.month;}else{pk=P.week;pl=P.labels.week;}if(!S.goals)S.goals=[];S.goals.unshift({id:"g"+Date.now(),text:v,done:false,periodType:type,periodKey:pk,periodLabel:pl});inp.value="";saveData();renderGoals();};
-window.toggleGoal=id=>{const g=S.goals.find(x=>x.id===id);if(g){g.done=!g.done;if(g.done){showToast("إنجاز عظيم! 🏆","success");playSound("ok");}saveData();renderGoals();}};
-window.delGoal=id=>{if(confirm("مسح الهدف؟")){playSound("del");S.goals=S.goals.filter(x=>x.id!==id);saveData();renderGoals();}};
-window.goalToToday=id=>{const g=S.goals.find(x=>x.id===id);if(!g)return;if(!S.todayTasks)S.todayTasks=[];if(S.todayTasks.some(t=>t.text===g.text&&!t.done)){showToast("موجود بالفعل!","error");return;}S.todayTasks.unshift({id:"td"+Date.now(),text:g.text,done:false,parentName:"🏆 "+g.periodLabel});saveData();showToast("تم النقل لليومي! 🎯","success");};
+window.addGoal=type=>{const inp=el({year:"gyInput",month:"gmInput",week:"gwInput"}[type]),v=inp.value.trim();if(v){const P=periods(),pk={year:P.year,month:P.month,week:P.week}[type],pl={year:P.labels.year,month:P.labels.month,week:P.labels.week}[type];S.goals.unshift({id:"g"+Date.now(),text:v,done:false,periodType:type,periodKey:pk,periodLabel:pl});inp.value="";saveData();}};
+window.toggleGoal=id=>{const g=S.goals.find(x=>x.id===id);if(g){g.done=!g.done;if(g.done){showToast("إنجاز! 🏆","success");playSound("ok");}saveData();}};
+window.delGoal=id=>{if(confirm("مسح؟")){playSound("del");S.goals=S.goals.filter(x=>x.id!==id);saveData();}};
+window.goalToToday=id=>{const g=S.goals.find(x=>x.id===id);if(g){S.todayTasks.unshift({id:"td"+Date.now(),text:g.text,done:false,parentName:"🏆 "+g.periodLabel});saveData();showToast("تم النقل! 🎯","success");}};
 
-/* ═══════════════════════════════════════
-   KANBAN
-═══════════════════════════════════════ */
+/* ═════ KANBAN ═════ */
 function renderTasks(){
   const cols={todo:"",inprogress:"",done:""};let ct=0,ci=0,cd=0;
-  const sel=el("newTaskTag");if(sel)sel.innerHTML=S.tags.map(t=>`<option value="${t}">${t}</option>`).join("");
-  let filtered=[...S.tasks].filter(t=>t.text.toLowerCase().includes(sq)||(t.tag||"").toLowerCase().includes(sq));
-  filtered.sort((a,b)=>a.pinned===b.pinned?0:a.pinned?-1:1);
-  filtered.forEach(t=>{
-    const color=S.tagColors[t.tag]||"#4a6080";
-    if(t.status==="todo")ct++;else if(t.status==="inprogress")ci++;else cd++;
+  if(el("newTaskTag"))el("newTaskTag").innerHTML=S.tags.map(t=>`<option value="${t}">${t}</option>`).join("");
+  [...S.tasks].filter(t=>t.text.toLowerCase().includes(sq)).forEach(t=>{
+    const color=S.tagColors[t.tag]||"#4a6080"; if(t.status==="todo")ct++;else if(t.status==="inprogress")ci++;else cd++;
     const pct=t.subtasks.length?(t.subtasks.filter(s=>s.done).length/t.subtasks.length*100):0;
-    const isDone=t.status==="done";
-    cols[t.status]+=`<div id="${t.id}" class="task-card${isDone?" done-card":""}" draggable="true" ondragstart="drag(event)" style="--tc:${color}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><span class="tag-pill" style="color:${color};border-color:rgba(0,0,0,.15);">${ICONS[t.type]||"📝"} ${t.tag||""}</span><div class="card-actions" style="display:flex;gap:5px;opacity:0;transition:opacity .2s;"><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','up')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬆️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();moveTask('${t.id}','down')" style="background:rgba(59,130,246,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--blue2);font-size:10px;display:flex;align-items:center;justify-content:center;">⬇️</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();togglePin('${t.id}')" style="background:${t.pinned?"rgba(59,130,246,.2)":"rgba(255,255,255,.05)"};border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:${t.pinned?"var(--blue)":"var(--txt3)"};font-size:10px;">📌</button><button onmousedown="event.stopPropagation()" onclick="event.stopPropagation();delTask('${t.id}')" style="background:rgba(239,68,68,.1);border:none;border-radius:7px;width:24px;height:24px;cursor:pointer;color:var(--red);font-size:12px;">✕</button></div></div><h4 onclick="event.stopPropagation();openTaskModal('${t.id}')" style="font-size:13px;font-weight:700;word-break:break-word;${isDone?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}cursor:pointer;transition:color .2s;margin-bottom:8px;" onmouseover="this.style.color='var(--blue2)'" onmouseout="this.style.color='${isDone?"var(--txt3)":"var(--txt1)"}';">${t.text}</h4>${t.startDate||t.endDate?`<div style="display:flex;justify-content:space-between;font-size:9px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:5px 10px;margin-bottom:8px;color:var(--txt3);"><span>📅 ${t.startDate||"---"}</span><span>🏁 ${t.endDate||"---"}</span></div>`:""}<div style="display:flex;align-items:center;gap:8px;"><div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:10px;font-weight:700;color:var(--txt3);flex-shrink:0;">${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span></div></div>`;
+    cols[t.status]+=`<div id="${t.id}" class="task-card${t.status==="done"?" done-card":""}" draggable="true" ondragstart="drag(event)" style="--tc:${color}"><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span class="tag-pill" style="color:${color};">${ICONS[t.type]||"📝"} ${t.tag||""}</span><div style="display:flex;gap:4px;"><button onclick="moveTask('${t.id}','up')" style="background:transparent;border:none;cursor:pointer;">⬆️</button><button onclick="delTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--red);">✕</button></div></div><h4 onclick="openTaskModal('${t.id}')" style="font-size:13px;font-weight:700;word-break:break-word;cursor:pointer;color:${t.status==="done"?"var(--txt3)":"var(--txt1)"};">${t.text}</h4><div style="display:flex;align-items:center;gap:8px;margin-top:10px;"><div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:10px;color:var(--txt3);">${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span></div></div>`;
   });
-  ["todo","inprogress","done"].forEach(id=>{
-    const c=el(id);if(!c)return;
-    c.innerHTML=cols[id]||`<div class="empty" style="padding:30px 10px;"><span style="font-size:32px;">📭</span><p>اسحب هنا أو ضيف مهمة</p></div>`;
-    c.querySelectorAll(".task-card").forEach(card=>{card.addEventListener("mouseenter",()=>{const a=card.querySelector(".card-actions");if(a)a.style.opacity="1";});card.addEventListener("mouseleave",()=>{const a=card.querySelector(".card-actions");if(a)a.style.opacity="0";});});
-  });
+  ["todo","inprogress","done"].forEach(id=>{if(el(id))el(id).innerHTML=cols[id]||`<div class="empty" style="padding:20px 0;"><p>اسحب هنا</p></div>`;});
   el("cntTodo").textContent=ct;el("cntInprogress").textContent=ci;el("cntDone").textContent=cd;
 }
-window.addTask=()=>{const inp=el("newTaskInput");const v=inp.value.trim();if(!v)return;S.tasks.unshift({id:"t"+Date.now(),text:v,status:"todo",tag:el("newTaskTag").value,subtasks:[],files:[],description:"",pinned:false,type:"general",startDate:"",endDate:""});inp.value="";saveData();};
-window.delTask=id=>{if(confirm("مسح المهمة بالكامل؟")){playSound("del");S.tasks=S.tasks.filter(t=>t.id!==id);saveData();}};
-window.togglePin=id=>{const t=S.tasks.find(x=>x.id===id);if(t){t.pinned=!t.pinned;saveData();}};
-window.moveTask=(id,dir)=>{const idx=S.tasks.findIndex(t=>t.id===id);if(idx<0)return;const task=S.tasks[idx];const col=S.tasks.filter(t=>t.status===task.status);const ci=col.findIndex(t=>t.id===id);if(dir==="up"&&ci>0){const si=S.tasks.findIndex(t=>t.id===col[ci-1].id);[S.tasks[idx],S.tasks[si]]=[S.tasks[si],S.tasks[idx]];saveData();}else if(dir==="down"&&ci<col.length-1){const si=S.tasks.findIndex(t=>t.id===col[ci+1].id);[S.tasks[idx],S.tasks[si]]=[S.tasks[si],S.tasks[idx]];saveData();}};
+window.addTask=()=>{const v=el("newTaskInput").value.trim();if(v){S.tasks.unshift({id:"t"+Date.now(),text:v,status:"todo",tag:el("newTaskTag").value,subtasks:[],files:[],description:"",type:"general"});el("newTaskInput").value="";saveData();}};
+window.delTask=id=>{if(confirm("مسح؟")){playSound("del");S.tasks=S.tasks.filter(t=>t.id!==id);saveData();}};
+window.moveTask=(id,dir)=>{const idx=S.tasks.findIndex(t=>t.id===id);if(idx<0)return;const col=S.tasks.filter(t=>t.status===S.tasks[idx].status),ci=col.findIndex(t=>t.id===id);if(dir==="up"&&ci>0){const si=S.tasks.findIndex(t=>t.id===col[ci-1].id);[S.tasks[idx],S.tasks[si]]=[S.tasks[si],S.tasks[idx]];saveData();}};
 window.drag=ev=>ev.dataTransfer.setData("text",ev.target.closest(".task-card")?.id||"");
 window.allowDrop=ev=>ev.preventDefault();
-window.drop=ev=>{ev.preventDefault();const id=ev.dataTransfer.getData("text");const zone=ev.target.closest(".drop-zone");if(!zone||!id)return;const t=S.tasks.find(x=>x.id===id);if(t&&t.status!==zone.id){if(zone.id==="done"){showToast("عاش يا بطل! 🏆","success");playSound("ok");}t.status=zone.id;saveData();}};
+window.drop=ev=>{ev.preventDefault();const id=ev.dataTransfer.getData("text"),zone=ev.target.closest(".drop-zone");if(zone&&id){const t=S.tasks.find(x=>x.id===id);if(t&&t.status!==zone.id){t.status=zone.id;saveData();}}};
 
-/* ═══════════════════════════════════════
-   TASK MODAL
-═══════════════════════════════════════ */
-window.openTaskModal=id=>{try{activTask=id;const t=S.tasks.find(x=>x.id===id);el("mTitle").textContent=t.text;el("mDesc").value=t.description||"";el("mType").value=t.type||"general";el("mIcon").textContent=ICONS[t.type||"general"]||"📝";const sd=el("mStartDate"),ed=el("mEndDate");sd.type=t.startDate?"date":"text";sd.value=t.startDate||"";ed.type=t.endDate?"date":"text";ed.value=t.endDate||"";if(!t.files)t.files=[];renderSubtasks();renderAttachments();el("taskModal").classList.add("show");}catch(e){console.error(e);}};
+window.openTaskModal=id=>{activTask=id;const t=S.tasks.find(x=>x.id===id);el("mTitle").textContent=t.text;el("mDesc").value=t.description||"";el("mType").value=t.type||"general";el("mStartDate").value=t.startDate||"";el("mEndDate").value=t.endDate||"";renderSubtasks();renderAttachments();el("taskModal").classList.add("show");};
 window.closeTaskModal=()=>{const t=S.tasks.find(x=>x.id===activTask);if(t)t.description=el("mDesc").value;saveData();el("taskModal").classList.remove("show");};
-window.saveTaskDates=()=>{const t=S.tasks.find(x=>x.id===activTask);if(t){t.startDate=el("mStartDate").value;t.endDate=el("mEndDate").value;saveData();}};
-window.handleTypeChange=type=>{const t=S.tasks.find(x=>x.id===activTask);t.type=type;el("mIcon").textContent=ICONS[type]||"📝";saveData();if(type==="course"&&(t.subtasks.length===0||confirm("توليد دروس تلقائياً؟"))){const n=parseInt(prompt("كام درس؟"));if(!isNaN(n)&&n>0){const si=t.subtasks.length+1;for(let i=0;i<n;i++)t.subtasks.push({text:`الدرس ${si+i}`,done:false,files:[],links:[],summary:""});saveData();renderSubtasks();showToast(`تم إضافة ${n} دروس! 🎓`,"success");}}else if(type==="book"&&(t.subtasks.length===0||confirm("توليد فصول تلقائياً؟"))){const n=parseInt(prompt("كام فصل؟"));if(!isNaN(n)&&n>0){const si=t.subtasks.length+1;for(let i=0;i<n;i++)t.subtasks.push({text:`الفصل ${si+i}`,done:false,files:[],links:[],summary:""});saveData();renderSubtasks();showToast(`تم إضافة ${n} فصول! 📖`,"success");}}};
+window.saveTaskDates=()=>{const t=S.tasks.find(x=>x.id===activTask);if(t){t.startDate=el("mStartDate").value;t.endDate=el("mEndDate").value;saveDataSilently();}};
+window.handleTypeChange=type=>{S.tasks.find(x=>x.id===activTask).type=type;saveData();};
 
-/* ═══════════════════════════════════════
-   SUBTASKS
-═══════════════════════════════════════ */
 function getYTid(url){if(!url)return null;const m=url.match(/^.*(youtu.be\/|v\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);return(m&&m[2].length===11)?m[2]:null;}
-function fileIcon(ext,type){if(type==="link")return"🔗";if(["jpg","jpeg","png","svg","webp","gif"].includes(ext))return"🖼️";if(ext==="pdf")return"📄";if(["psd","ai","xd"].includes(ext))return"🎨";return"📁";}
+function fileIcon(ext,type){if(type==="link")return"🔗";if(["jpg","png","webp"].includes(ext))return"🖼️";return"📄";}
 function renderSubtasks(){
   const t=S.tasks.find(x=>x.id===activTask);if(!t)return;
-  el("mSubtasks").innerHTML=(t.subtasks||[]).map((s,i)=>{
-    if(!s.links)s.links=[];if(typeof s.links==="string")s.links=s.links?[s.links]:[];
-    const vids=s.links.map((lk,vi)=>{const ytid=getYTid(lk);return`<div style="margin-bottom:8px;padding:8px;border-radius:12px;background:rgba(0,0,0,.2);border:1px solid var(--border);"><div style="display:flex;gap:6px;"><input type="text" value="${lk}" onchange="updateSubVid(${i},${vi},this.value)" placeholder="رابط يوتيوب..." class="field" style="flex:1;font-size:11px;padding:6px 10px;"><button onclick="delSubVid(${i},${vi})" style="background:rgba(239,68,68,.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 10px;font-size:12px;">✕</button></div>${ytid?`<div onclick="window.open('${lk}','_blank')" style="margin-top:7px;border-radius:10px;overflow:hidden;position:relative;height:90px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.75;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,.85);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">▶</div></div></div>`:""}</div>`;}).join("");
-    const files=!s.files||!s.files.length?`<span style="font-size:10px;color:var(--txt3);">لا يوجد مرفقات</span>`:s.files.map((f,fi)=>`<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);color:var(--txt2);max-width:110px;overflow:hidden;">${fileIcon(f.ext,f.type)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;" title="${f.name}">${f.name}</span><button onclick="openSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--green2);padding:0;font-size:11px;">👁️</button><button onclick="delSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--red);padding:0;font-size:11px;">✕</button></div>`).join("");
-    return`<div style="border-radius:16px;overflow:hidden;background:var(--bg3);border:1px solid var(--border);"><div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;"><label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" class="cb" ${s.done?"checked":""} onchange="toggleSub(${i})"><span style="font-size:13px;font-weight:700;flex:1;${s.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}">${s.text}</span></label><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;"><button onclick="sendSubToGoals(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(139,92,246,.1);color:var(--purple);border:1px solid rgba(139,92,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🏆 للأهداف</button><button onclick="sendSubToToday(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯 لليوم</button><button onclick="toggleSubNotes(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">📋 تفاصيل</button><button onclick="delSub(${i})" style="background:transparent;border:none;cursor:pointer;color:var(--red);font-size:14px;padding:0 4px;">✕</button></div></div><div id="snotes-${i}" class="notes-panel" style="background:rgba(0,0,0,.2);"><div style="padding:14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;"><div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">فيديوهات</span><button onclick="addSubVid(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ فيديو</button></div>${vids}</div><div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">ملحقات</span><button onclick="addSubFile(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ ملف</button></div><div style="display:flex;flex-wrap:wrap;gap:5px;">${files}</div></div><textarea placeholder="الملخص والملاحظات..." oninput="saveSubField(${i},'summary',this.value)" class="field" style="height:80px;resize:none;border-radius:12px;font-size:12px;">${s.summary||""}</textarea></div></div></div>`;
-  }).join("");
+  el("mSubtasks").innerHTML=(t.subtasks||[]).map((s,i)=>`<div style="background:rgba(0,0,0,.15);border:1px solid var(--border);border-radius:12px;padding:10px;"><div style="display:flex;align-items:center;gap:10px;"><input type="checkbox" class="cb" ${s.done?"checked":""} onchange="toggleSub(${i})"><span style="flex:1;font-size:13px;${s.done?"text-decoration:line-through;color:var(--txt3);":""}">${s.text}</span><button onclick="delSub(${i})" style="background:transparent;border:none;color:var(--red);">✕</button></div></div>`).join("");
 }
-window.addSubtask=()=>{const v=el("newSubIn").value.trim();if(!v)return;S.tasks.find(x=>x.id===activTask).subtasks.push({text:v,done:false,files:[],links:[],summary:""});el("newSubIn").value="";renderSubtasks();saveData();};
-window.toggleSub=i=>{const s=S.tasks.find(x=>x.id===activTask).subtasks[i];s.done=!s.done;if(s.done){showToast("خطوة كمان! 💪","success");playSound("ok");}renderSubtasks();saveData();};
-window.delSub=i=>{if(confirm("مسح الدرس؟")){playSound("del");S.tasks.find(x=>x.id===activTask).subtasks.splice(i,1);renderSubtasks();saveData();}};
-window.toggleSubNotes=i=>el(`snotes-${i}`).classList.toggle("open");
-window.saveSubField=(i,f,v)=>{S.tasks.find(x=>x.id===activTask).subtasks[i][f]=v;saveDataSilently();};
-window.addSubVid=i=>{const t=S.tasks.find(x=>x.id===activTask);if(!t.subtasks[i].links)t.subtasks[i].links=[];t.subtasks[i].links.push("");saveData();renderSubtasks();};
-window.updateSubVid=(i,vi,v)=>{S.tasks.find(x=>x.id===activTask).subtasks[i].links[vi]=v;saveDataSilently();};
-window.delSubVid=(i,vi)=>{S.tasks.find(x=>x.id===activTask).subtasks[i].links.splice(vi,1);saveData();renderSubtasks();};
-window.addSubFile=async i=>{const type=prompt("1: رابط\n2: رفع ملف");if(type==="1"){const name=prompt("الاسم:");const url=prompt("الرابط:");if(name&&url){S.tasks.find(x=>x.id===activTask).subtasks[i].files.push({type:"link",name,url});saveData();renderSubtasks();}}else if(type==="2"){const inp=document.createElement("input");inp.type="file";inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;const ext=f.name.split(".").pop().toLowerCase();showToast("جاري الرفع...","loading");try{const url=await uploadCloud(f);S.tasks.find(x=>x.id===activTask).subtasks[i].files.push({type:"file",name:f.name,data:url,ext});saveData();renderSubtasks();showToast("تم! ✅","success");}catch(e){showToast("فشل الرفع","error");}};inp.click();}};
-window.openSubFile=(i,fi)=>{const f=S.tasks.find(x=>x.id===activTask).subtasks[i].files[fi];window.open(f.type==="link"?(f.url.startsWith("http")?f.url:"https://"+f.url):f.data,"_blank");};
-window.delSubFile=(i,fi)=>{if(confirm("مسح المرفق?")){playSound("del");S.tasks.find(x=>x.id===activTask).subtasks[i].files.splice(fi,1);saveData();renderSubtasks();}};
-window.sendSubToToday=i=>{const t=S.tasks.find(x=>x.id===activTask);const s=t.subtasks[i];if(!S.todayTasks)S.todayTasks=[];if(S.todayTasks.some(x=>x.subIdx===i&&x.parentId===activTask&&!x.done)){showToast("موجود بالفعل!","error");return;}S.todayTasks.unshift({id:"td"+Date.now(),text:s.text,done:false,parentId:activTask,subIdx:i,parentName:t.text});saveData();showToast("تم النقل لليوم! 🎯","success");};
-window.sendSubToGoals=i=>{const t=S.tasks.find(x=>x.id===activTask);const s=t.subtasks[i];if(!S.goals)S.goals=[];const code=prompt("1: السنة\n2: الشهر\n3: الأسبوع");if(!["1","2","3"].includes(code))return;const tm={"1":"year","2":"month","3":"week"};const type=tm[code];const P=periods();let pk,pl;if(type==="year"){pk=P.year;pl=P.labels.year;}else if(type==="month"){pk=P.month;pl=P.labels.month;}else{pk=P.week;pl=P.labels.week;}S.goals.unshift({id:"g"+Date.now(),text:s.text,done:false,periodType:type,periodKey:pk,periodLabel:pl,parentName:t.text});saveData();showToast("تم الإضافة للأهداف! 🏆","success");};
+window.addSubtask=()=>{const v=el("newSubIn").value.trim();if(v){S.tasks.find(x=>x.id===activTask).subtasks.push({text:v,done:false});el("newSubIn").value="";renderSubtasks();saveData();}};
+window.toggleSub=i=>{S.tasks.find(x=>x.id===activTask).subtasks[i].done=!S.tasks.find(x=>x.id===activTask).subtasks[i].done;renderSubtasks();saveData();};
+window.delSub=i=>{S.tasks.find(x=>x.id===activTask).subtasks.splice(i,1);renderSubtasks();saveData();};
 
-/* ═══ ATTACHMENTS ═══ */
 function renderAttachments(){
   const t=S.tasks.find(x=>x.id===activTask);if(!t.files)t.files=[];
-  el("mAttachments").innerHTML=t.files.map((f,i)=>{
-    const isImg=["jpg","jpeg","png","svg","webp","gif"].includes(f.ext||""),ytid=f.type==="link"?getYTid(f.url):null;
-    let vis="";
-    if(ytid)vis=`<div onclick="window.open('${f.url}','_blank')" style="width:100%;height:60px;border-radius:9px;overflow:hidden;position:relative;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,.8);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">▶</div></div></div>`;
-    else if(f.type==="link")vis=`<div onclick="window.open('${f.url.startsWith("http")?f.url:"https://"+f.url}','_blank')" style="width:100%;height:60px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;"><span style="font-size:18px;">🔗</span><span style="font-size:9px;font-weight:700;color:var(--blue2);max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</span></div>`;
-    else if(isImg)vis=`<div onclick="window.open('${f.data}','_blank')" style="width:100%;height:60px;border-radius:9px;overflow:hidden;cursor:pointer;background:rgba(0,0,0,.3);"><img src="${f.data}" style="width:100%;height:100%;object-fit:contain;"></div>`;
-    else vis=`<div onclick="window.open('${f.data}','_blank')" style="width:100%;height:60px;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;"><span style="font-size:18px;">${fileIcon(f.ext,f.type)}</span><span style="font-size:9px;color:var(--txt2);font-weight:700;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</span></div>`;
-    return`<div style="position:relative;border:1px solid var(--border);border-radius:12px;padding:6px;background:rgba(0,0,0,.2);" class="att-wrap">${vis}<button onclick="delAttachment(${i})" style="position:absolute;top:-6px;left:-6px;width:18px;height:18px;background:#ef4444;border:none;border-radius:50%;cursor:pointer;color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;" class="att-del">✕</button></div>`;
-  }).join("");
-  document.querySelectorAll(".att-wrap").forEach(w=>{w.addEventListener("mouseenter",()=>{const b=w.querySelector(".att-del");if(b)b.style.display="flex";});w.addEventListener("mouseleave",()=>{const b=w.querySelector(".att-del");if(b)b.style.display="none";});});
+  el("mAttachments").innerHTML=t.files.map((f,i)=>`<div style="background:rgba(0,0,0,.2);border-radius:8px;padding:5px;position:relative;"><div style="font-size:10px;text-align:center;overflow:hidden;text-overflow:ellipsis;">${f.name}</div><button onclick="S.tasks.find(x=>x.id===activTask).files.splice(${i},1);saveData();renderAttachments();" style="position:absolute;top:0;left:0;color:red;background:none;border:none;">✕</button></div>`).join("");
 }
-window.addAttachment=async type=>{const t=S.tasks.find(x=>x.id===activTask);if(!t.files)t.files=[];if(type==="link"){const url=prompt("الرابط:");if(url){const name=prompt("الاسم:")||"رابط";t.files.push({type:"link",name,url});saveData();renderAttachments();}}else{const inp=document.createElement("input");inp.type="file";inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;const ext=f.name.split(".").pop().toLowerCase();showToast("جاري الرفع...","loading");try{const url=await uploadCloud(f);t.files.push({type:"file",name:f.name,data:url,ext});saveData();renderAttachments();showToast("تم! ✅","success");}catch(e){showToast("فشل","error");}};inp.click();}};
-window.delAttachment=i=>{if(confirm("مسح؟")){playSound("del");S.tasks.find(x=>x.id===activTask).files.splice(i,1);saveData();renderAttachments();}};
+window.addAttachment=type=>{const t=S.tasks.find(x=>x.id===activTask);if(type==="link"){const url=prompt("الرابط:");if(url){t.files.push({type:"link",name:"رابط",url});saveData();renderAttachments();}}};
 
-/* ═══════════════════════════════════════
-   LIBRARY
-═══════════════════════════════════════ */
+/* ═════ LIBRARY ═════ */
 function renderLib(){
   const flist=el("libFolders");if(!flist)return;
   flist.innerHTML=S.libFolders.map(f=>`<button class="folder-btn${S.activLibFolder===f.id?" active":""}" onclick="selLibFolder('${f.id}')">🗂️ ${f.name}</button>`).join("");
-  const act=S.libFolders.find(f=>f.id===S.activLibFolder);
-  if(act){el("libActiveTitle").textContent="🗂️ "+act.name;el("delLibFolderBtn").style.display=S.libFolders.length>1?"":"none";}
-  const items=S.resources.filter(r=>r.folderId===S.activLibFolder&&r.title.toLowerCase().includes(sq));
-  const llist=el("libList");
-  if(!items.length){llist.innerHTML=`<div class="empty" style="grid-column:1/-1;"><span>📭</span><p>المجلد فاضي..</p></div>`;return;}
-  llist.innerHTML=items.map(r=>`<div class="lib-card group"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;opacity:.04;pointer-events:none;">${fileIcon(r.ext,r.type)}</div><div style="position:relative;"><div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.title}">${r.title}</div><div style="font-size:9px;font-weight:900;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">${r.type==="file"?r.ext||"FILE":"LINK"}</div></div><div style="display:flex;justify-content:space-between;align-items:center;position:relative;"><button onclick="openLib(${r.id})" style="font-size:11px;font-weight:900;color:var(--blue);background:transparent;border:none;cursor:pointer;font-family:'Cairo',sans-serif;">فتح ↗</button><div style="display:flex;gap:8px;"><button onclick="dlLib(${r.id})" style="font-size:11px;color:var(--green2);background:transparent;border:none;cursor:pointer;">⬇️</button><button onclick="delLib(${r.id})" style="font-size:12px;color:var(--red);background:transparent;border:none;cursor:pointer;opacity:0;transition:opacity .2s;" class="del-btn">✕</button></div></div></div>`).join("");
-  document.querySelectorAll(".lib-card").forEach(c=>{c.addEventListener("mouseenter",()=>{const b=c.querySelector(".del-btn");if(b)b.style.opacity="1";});c.addEventListener("mouseleave",()=>{const b=c.querySelector(".del-btn");if(b)b.style.opacity="0";});});
+  const act=S.libFolders.find(f=>f.id===S.activLibFolder); if(act){el("libActiveTitle").textContent="🗂️ "+act.name;}
+  const items=S.resources.filter(r=>r.folderId===S.activLibFolder);
+  el("libList").innerHTML=items.length?items.map(r=>`<div class="lib-card"><div style="font-size:13px;font-weight:700;">${r.title}</div><button onclick="window.open('${r.url||r.data}','_blank')" class="btn-ghost" style="margin-top:10px;">فتح</button></div>`).join("") : `<div class="empty"><p>فارغ</p></div>`;
 }
 window.selLibFolder=id=>{S.activLibFolder=id;saveData();};
 window.addLibFolder=()=>{const n=prompt("اسم المجلد:");if(n){const id="lf"+Date.now();S.libFolders.push({id,name:n.trim()});S.activLibFolder=id;saveData();}};
-window.delLibFolder=()=>{if(S.libFolders.length<=1||!confirm("حذف المجلد وكل محتوياته؟"))return;playSound("del");S.resources=S.resources.filter(r=>r.folderId!==S.activLibFolder);S.libFolders=S.libFolders.filter(f=>f.id!==S.activLibFolder);S.activLibFolder=S.libFolders[0].id;saveData();};
-window.addResource=()=>{const t=el("libTitle").value.trim(),u=el("libUrl").value.trim();if(!t)return;S.resources.unshift({id:Date.now(),title:t,url:u,type:"link",folderId:S.activLibFolder});el("libTitle").value="";el("libUrl").value="";saveData();showToast("تم الحفظ! ✅","success");};
-window.handleLibUpload=async inp=>{if(!inp.files[0])return;showToast("جاري الرفع...","loading");try{const f=inp.files[0];const url=await uploadCloud(f);S.resources.unshift({id:Date.now(),title:f.name,data:url,type:"file",ext:f.name.split(".").pop().toLowerCase(),folderId:S.activLibFolder});inp.value="";saveData();showToast("تم! ✅","success");}catch(e){showToast("فشل الرفع","error");}};
-window.openLib=id=>{const r=S.resources.find(x=>x.id===id);window.open(r.type==="link"?(r.url.startsWith("http")?r.url:"https://"+r.url):r.data,"_blank");};
-window.dlLib=id=>{const r=S.resources.find(x=>x.id===id);if(r.type==="link")window.open(r.url.startsWith("http")?r.url:"https://"+r.url,"_blank");else{const a=document.createElement("a");a.href=r.data;a.download=r.title;a.click();}};
-window.delLib=id=>{if(confirm("حذف؟")){playSound("del");S.resources=S.resources.filter(r=>r.id!==id);saveData();}};
+window.delLibFolder=()=>{if(S.libFolders.length>1&&confirm("حذف؟")){S.libFolders=S.libFolders.filter(f=>f.id!==S.activLibFolder);S.activLibFolder=S.libFolders[0].id;saveData();}};
+window.addResource=()=>{const t=el("libTitle").value,u=el("libUrl").value;if(t){S.resources.unshift({id:Date.now(),title:t,url:u,type:"link",folderId:S.activLibFolder});saveData();}};
 
-/* ═══════════════════════════════════════
-   NOTES
-═══════════════════════════════════════ */
+/* ═════ NOTES (DEBOUNCE FIX) ═════ */
 function renderNotes(){
   const flist=el("noteFolders");if(!flist)return;
   flist.innerHTML=S.noteFolders.map(f=>`<button class="folder-btn${S.activNoteFolder===f.id?" active":""}" onclick="selNoteFolder('${f.id}')">📋 ${f.name}</button>`).join("");
-  const act=S.noteFolders.find(f=>f.id===S.activNoteFolder);
-  if(act){el("noteActiveTitle").textContent=act.name;el("delNoteFolderBtn").style.display=S.noteFolders.length>1?"":"none";}
-  const board=el("notesBoard");if(!act){board.innerHTML="";return;}
-  const notes=act.notes.filter(n=>n.title.toLowerCase().includes(sq)||n.content.toLowerCase().includes(sq));
-  if(!notes.length){board.innerHTML=`<div class="empty" style="width:100%;"><span>💭</span><p>اللوحة فاضية.. ضيف ملاحظة!</p></div>`;return;}
-  
-  const colMap = {yellow:"#fde047", blue:"#93c5fd", green:"#6ee7b7", pink:"#f9a8d4", purple:"#c4b5fd"};
-  
-  board.innerHTML=notes.map(n=>{
-    let bg = colMap[n.color] || n.color || "#fde047";
-    return `<div id="note-card-${n.id}" class="note-card" style="background-color:${bg}; border:1px solid rgba(0,0,0,0.1);">
+  const act=S.noteFolders.find(f=>f.id===S.activNoteFolder);if(act)el("noteActiveTitle").textContent=act.name;
+  const notes=act?.notes.filter(n=>n.title.toLowerCase().includes(sq)||n.content.toLowerCase().includes(sq)) || [];
+  el("notesBoard").innerHTML=notes.length?notes.map(n=>`
+    <div id="note-card-${n.id}" class="note-card" style="background-color:${n.color||"#fde047"}; border:1px solid rgba(0,0,0,0.1);">
       <div style="position:absolute;top:15px;left:15px; z-index:20;">
-         <input type="color" value="${bg.startsWith('#')?bg:'#fde047'}" onchange="changeNoteColor('${n.id}', this.value)" style="width:24px;height:24px;border:none;border-radius:50%;cursor:pointer;padding:0;background:transparent;box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+         <input type="color" value="${n.color||"#fde047"}" onchange="changeNoteColor('${n.id}', this.value)" class="note-color-picker" title="اختر لون">
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.1);">
-        <input type="text" value="${n.title}" oninput="updateNote('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:15px;width:calc(100% - 40px); color:#000;" placeholder="عنوان...">
-        <button onclick="delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:16px;opacity:.5;padding:0;flex-shrink:0;color:#000;" onmouseover="this.style.opacity='1'">✕</button>
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.1);">
+        <input type="text" value="${n.title}" oninput="updateNoteContent('${n.id}','title',this.value)" style="background:transparent;border:none;outline:none;font-weight:900;font-size:15px;width:calc(100% - 40px);color:#111;" placeholder="عنوان...">
+        <button onclick="delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:16px;color:#111;">✕</button>
       </div>
-      <textarea oninput="updateNote('${n.id}','content',this.value)" style="background:transparent;border:none;outline:none;resize:none;width:100%;min-height:150px;font-size:12px;font-weight:600;line-height:1.7;font-family:'Cairo',sans-serif; color:#000;" placeholder="اكتب أفكارك...">${n.content}</textarea>
-    </div>`;
-  }).join("");
+      <textarea oninput="updateNoteContent('${n.id}','content',this.value)" style="background:transparent;border:none;outline:none;resize:none;width:100%;height:150px;font-size:13px;font-weight:600;font-family:'Cairo',sans-serif;color:#111;" placeholder="اكتب...">${n.content}</textarea>
+    </div>`).join("") : `<div class="empty"><p>لا يوجد ملاحظات</p></div>`;
 }
 window.selNoteFolder=id=>{S.activNoteFolder=id;saveData();};
-window.addNoteFolder=()=>{const n=prompt("اسم اللوحة:");if(n){const id="nf"+Date.now();S.noteFolders.push({id,name:n.trim(),notes:[]});S.activNoteFolder=id;saveData();}};
-window.delNoteFolder=()=>{if(S.noteFolders.length<=1||!confirm("حذف اللوحة وكل ملاحظاتها؟"))return;playSound("del");S.noteFolders=S.noteFolders.filter(f=>f.id!==S.activNoteFolder);S.activNoteFolder=S.noteFolders[0].id;saveData();};
-window.addNote=()=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);if(!f)return;f.notes.unshift({id:"n"+Date.now(),title:"ملاحظة جديدة",content:"",color:"#fef3c7"});saveData();playSound("ok");};
-// Silent save for typing
-window.updateNote=(id,field,val)=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);if(n){n[field]=val;saveDataSilently();}};
+window.addNoteFolder=()=>{const n=prompt("الاسم:");if(n){S.noteFolders.push({id:"nf"+Date.now(),name:n,notes:[]});saveData();}};
+window.addNote=()=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);if(f){f.notes.unshift({id:"n"+Date.now(),title:"جديدة",content:"",color:"#fef3c7"});saveData();}};
+window.delNote=id=>{if(confirm("مسح؟")){S.noteFolders.find(x=>x.id===S.activNoteFolder).notes=S.noteFolders.find(x=>x.id===S.activNoteFolder).notes.filter(n=>n.id!==id);saveData();}};
 window.changeNoteColor=(id,color)=>{
-    const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);
+    const n=S.noteFolders.find(x=>x.id===S.activNoteFolder)?.notes.find(x=>x.id===id);
+    if(n){ n.color=color; saveDataSilently(); const c=el(`note-card-${id}`); if(c)c.style.backgroundColor=color; }
+};
+// Debounce logic for notes
+let noteSaveTimeout;
+window.updateNoteContent=(id,field,val)=>{
+    const n=S.noteFolders.find(x=>x.id===S.activNoteFolder)?.notes.find(x=>x.id===id);
     if(n){
-        n.color=color;
-        saveDataSilently();
-        const card = document.getElementById(`note-card-${id}`);
-        if(card) card.style.backgroundColor = color;
+        n[field]=val;
+        clearTimeout(noteSaveTimeout);
+        noteSaveTimeout=setTimeout(()=>{ saveDataSilently(); }, 1000);
     }
 };
-window.delNote=id=>{if(confirm("مسح الملاحظة؟")){playSound("del");const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);f.notes=f.notes.filter(n=>n.id!==id);saveData();}};
 
-/* ═══════════════════════════════════════
-   CERTIFICATES
-═══════════════════════════════════════ */
+/* ═════ CERTS ═════ */
 function renderCerts(){
   const list=el("certsList");if(!list)return;
   const certs=(S.certificates||[]).filter(c=>c.title.toLowerCase().includes(sq));
-  if(!certs.length){list.innerHTML=`<div class="empty" style="grid-column:1/-1;"><span>🎓</span><p>ارفع أول شهادة وابدأ رحلتك!</p></div>`;return;}
-  list.innerHTML=certs.map(c=>{
-    const isImg=["jpg","jpeg","png","webp"].includes(c.ext);
-    return`<div class="cert-card group">${isImg?`<img src="${c.data}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9;z-index:1;">`:""} ${isImg?`<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.05),rgba(0,0,0,.6));z-index:1;"></div>`:`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;opacity:.15;">📄</div>`}<div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:9px;font-weight:900;padding:3px 7px;border-radius:7px;z-index:3;">${c.ext.toUpperCase()}</div><div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);z-index:3;text-align:center;"><div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div><div style="font-size:10px;font-weight:700;color:var(--blue2);margin-top:2px;">${c.date}</div></div><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .25s;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:4;" class="cert-overlay"><button onclick="openCert('${c.id}')" class="btn-primary" style="width:38px;height:38px;padding:0;border-radius:50%;justify-content:center;">👁️</button><button onclick="dlCert('${c.id}')" style="width:38px;height:38px;border-radius:50%;background:rgba(16,185,129,.85);border:none;cursor:pointer;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;">⬇️</button><button onclick="delCert('${c.id}')" style="width:38px;height:38px;border-radius:50%;background:rgba(239,68,68,.85);border:none;cursor:pointer;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;">🗑️</button></div></div>`;
-  }).join("");
-  document.querySelectorAll(".cert-card").forEach(c=>{c.addEventListener("mouseenter",()=>{const o=c.querySelector(".cert-overlay");if(o)o.style.opacity="1";});c.addEventListener("mouseleave",()=>{const o=c.querySelector(".cert-overlay");if(o)o.style.opacity="0";});});
+  list.innerHTML=certs.length?certs.map(c=>`<div class="cert-card"><img src="${c.data}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9;"><div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:rgba(0,0,0,.8);text-align:center;color:#fff;font-size:12px;font-weight:bold;">${c.title}</div><button onclick="S.certificates=S.certificates.filter(x=>x.id!=='${c.id}');saveData();" style="position:absolute;top:5px;right:5px;background:red;color:#fff;border:none;border-radius:50%;width:25px;height:25px;cursor:pointer;">✕</button></div>`).join("") : `<div class="empty"><p>لا توجد شهادات</p></div>`;
 }
-window.handleCertUpload=async inp=>{const f=inp.files[0];if(!f)return;const name=prompt("اسم الشهادة:",f.name.split(".")[0]);if(!name){inp.value="";return;}showToast("جاري الرفع...","loading");try{const url=await uploadCloud(f);if(!S.certificates)S.certificates=[];S.certificates.unshift({id:"cert"+Date.now(),title:name,data:url,ext:f.name.split(".").pop().toLowerCase(),date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())});inp.value="";saveData();showToast("تمت الإضافة! 🎓","success");}catch(e){showToast("فشل الرفع","error");}};
-window.openCert=id=>window.open(S.certificates.find(x=>x.id===id).data,"_blank");
-window.dlCert=id=>{const c=S.certificates.find(x=>x.id===id);const a=document.createElement("a");a.href=c.data;a.download=c.title+"."+c.ext;a.click();};
-window.delCert=id=>{if(confirm("مسح الشهادة؟")){playSound("del");S.certificates=S.certificates.filter(x=>x.id!==id);saveData();}};
 
-/* ═══════════════════════════════════════
-   TAGS
-═══════════════════════════════════════ */
+/* ═════ SETTINGS & MISC ═════ */
 function renderTags(){
-  const list=el("tagsList");if(!list)return;
-  list.innerHTML=S.tags.map(t=>{const c=S.tagColors[t]||"#6366f1";return`<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);color:var(--txt2);"><span style="width:9px;height:9px;border-radius:50%;background:${c};flex-shrink:0;"></span>${t}<button onclick="delTag('${t}')" style="background:transparent;border:none;cursor:pointer;color:var(--red);padding:0;font-size:12px;">✕</button></span>`;}).join("");
+  if(el("tagsList"))el("tagsList").innerHTML=S.tags.map(t=>`<span class="tag-pill" style="background:rgba(0,0,0,.2);">${t} <button onclick="S.tags=S.tags.filter(x=>x!=='${t}');saveData();" style="background:none;border:none;color:red;">✕</button></span>`).join("");
 }
-window.addTag=()=>{const v=el("newTagInput").value.trim(),c=el("newTagColor").value;if(v&&!S.tags.includes(v)){S.tags.push(v);S.tagColors[v]=c;el("newTagInput").value="";saveData();}};
-window.delTag=t=>{playSound("del");S.tags=S.tags.filter(x=>x!==t);delete S.tagColors[t];saveData();};
-
-/* ═══════════════════════════════════════
-   SETTINGS / BACKUP
-═══════════════════════════════════════ */
+window.addTag=()=>{const v=el("newTagInput").value;if(v){S.tags.push(v);S.tagColors[v]=el("newTagColor").value;saveData();}};
 window.openSettings=()=>el("settingsModal").classList.add("show");
 window.closeSettings=()=>el("settingsModal").classList.remove("show");
-window.exportData=()=>{const b=new Blob([JSON.stringify(S)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="rehlaty_backup.json";a.click();showToast("تم حفظ النسخة!","success");};
-window.importData=inp=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d&&d.tasks){S=d;saveData();showToast("تم الاسترجاع! 🔄","success");closeSettings();}else showToast("الملف غير صالح!","error");}catch(e){showToast("خطأ في القراءة","error");}inp.value="";};r.readAsText(f);};
-window.handleSearch=v=>{sq=v.toLowerCase().trim();renderAll();};
+window.handleSearch=v=>{sq=v;renderAll();};
+window.exportData=()=>{const b=new Blob([JSON.stringify(S)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="backup.json";a.click();};
+window.importData=inp=>{const f=inp.files[0];if(f){const r=new FileReader();r.onload=e=>{try{S=JSON.parse(e.target.result);saveData();closeSettings();}catch(e){}};r.readAsText(f);}};
 
-/* ══════════════════════════════════════════════════════
-   ① POMODORO TIMER
-══════════════════════════════════════════════════════ */
-const POMO_MODES={
-  focus:{label:"تركيز 🧠",sec:25*60},
-  short:{label:"استراحة قصيرة ☕",sec:5*60},
-  long :{label:"استراحة طويلة 🛋️",sec:15*60}
-};
-let pomoInterval=null,pomoRemaining=POMO_MODES.focus.sec,pomoMode="focus",pomoRunning=false;
-const POMO_CIRC=2*Math.PI*52; // r=52
-
-function pomodoroRender(){
-  const m=String(Math.floor(pomoRemaining/60)).padStart(2,"0");
-  const s=String(pomoRemaining%60).padStart(2,"0");
-  el("pomodoroDisplay").textContent=`${m}:${s}`;
-  el("pomodoroLabel").textContent=POMO_MODES[pomoMode].label;
-  const total=POMO_MODES[pomoMode].sec;
-  const pct=pomoRemaining/total;
-  const ring=el("pomoRingFill");
-  if(ring){ring.style.strokeDasharray=POMO_CIRC;ring.style.strokeDashoffset=POMO_CIRC*(1-pct);}
+/* ═════ POMODORO ═════ */
+const POMO_MODES={focus:{l:"تركيز 🧠",s:25*60},short:{l:"استراحة ☕",s:5*60},long:{l:"طويل 🛋️",s:15*60}};
+let pInt=null,pRem=POMO_MODES.focus.s,pMode="focus",pRun=false;
+function renderPomo(){
+  el("pomodoroDisplay").textContent=`${String(Math.floor(pRem/60)).padStart(2,"0")}:${String(pRem%60).padStart(2,"0")}`;
+  el("pomodoroLabel").textContent=POMO_MODES[pMode].l;
+  const ring=el("pomoRingFill"); if(ring)ring.style.strokeDashoffset=(2*Math.PI*52)*(1-(pRem/POMO_MODES[pMode].s));
 }
-window.pomodoroStart=()=>{
-  if(pomoRunning)return;
-  pomoRunning=true;
-  pomoInterval=setInterval(()=>{
-    pomoRemaining--;
-    pomodoroRender();
-    if(pomoRemaining<=0){
-      clearInterval(pomoInterval);pomoRunning=false;
-      playSound("ok");showToast("انتهى الوقت! 🎉","success");
-      pomodoroSetMode(pomoMode==="focus"?"short":"focus");
-    }
-  },1000);
-};
-window.pomodoroPause=()=>{clearInterval(pomoInterval);pomoRunning=false;};
-window.pomodoroReset=()=>{clearInterval(pomoInterval);pomoRunning=false;pomoRemaining=POMO_MODES[pomoMode].sec;pomodoroRender();};
-window.pomodoroSetMode=mode=>{
-  pomoMode=mode;
-  document.querySelectorAll(".pomo-mode-btn").forEach(b=>b.classList.remove("active"));
-  const mb=el("pm-"+mode);if(mb)mb.classList.add("active");
-  pomodoroReset();
-};
-pomodoroRender();
+window.pomodoroStart=()=>{if(!pRun){pRun=true;pInt=setInterval(()=>{pRem--;renderPomo();if(pRem<=0){clearInterval(pInt);pRun=false;playSound("ok");pomodoroSetMode(pMode==="focus"?"short":"focus");}},1000);}};
+window.pomodoroPause=()=>{clearInterval(pInt);pRun=false;};
+window.pomodoroReset=()=>{clearInterval(pInt);pRun=false;pRem=POMO_MODES[pMode].s;renderPomo();};
+window.pomodoroSetMode=m=>{pMode=m;document.querySelectorAll(".pomo-mode-btn").forEach(b=>b.classList.remove("active"));el("pm-"+m)?.classList.add("active");pomodoroReset();};
 
-/* ══════════════════════════════════════════════════════
-   ② SMART CALENDAR
-══════════════════════════════════════════════════════ */
+/* ═════ CALENDAR ═════ */
 let calCurrent=new Date();
-window.renderCalendar=(month,year)=>{
-  const DAY_NAMES=["أحد","اثن","ثلا","أرب","خمس","جمع","سبت"];
-  const today=new Date();
-  const titleEl=el("calendarTitle"),dayNamesEl=el("calendarDayNames"),gridEl=el("calendarGrid");
-  if(!titleEl||!gridEl)return;
-
-  const evMap={};
-  (S.events||[]).forEach(ev=>{if(!evMap[ev.date])evMap[ev.date]=[];evMap[ev.date].push(ev.title);});
-
-  titleEl.textContent=new Intl.DateTimeFormat("ar-EG",{month:"long",year:"numeric"}).format(new Date(year,month));
-  dayNamesEl.innerHTML=DAY_NAMES.map(d=>`<div class="cal-day-name">${d}</div>`).join("");
-
-  const firstDay=new Date(year,month,1).getDay();
-  const daysInMonth=new Date(year,month+1,0).getDate();
-  let html="";
-  for(let i=0;i<firstDay;i++)html+=`<div class="cal-cell cal-empty"></div>`;
-  for(let day=1;day<=daysInMonth;day++){
-    const dateStr=`${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-    const isToday=day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear();
-    const hasEv=!!evMap[dateStr];
-    const titles=hasEv?evMap[dateStr].join(", "):"";
-    html+=`<div class="cal-cell${isToday?" cal-today":""}${hasEv?" cal-has-event":""}" title="${titles}" onclick="calDayClick('${dateStr}','${titles.replace(/'/g,"\\'")}')"><span class="cal-day-num">${day}</span>${hasEv?`<div class="cal-dot"></div>`:""}</div>`;
+window.renderCalendar=(m,y)=>{
+  const grid=el("calendarGrid");if(!grid)return;
+  el("calendarTitle").textContent=new Intl.DateTimeFormat("ar-EG",{month:"long",year:"numeric"}).format(new Date(y,m));
+  el("calendarDayNames").innerHTML=["أحد","اثن","ثلا","أرب","خمس","جمع","سبت"].map(d=>`<div style="font-size:10px;text-align:center;color:var(--txt3);">${d}</div>`).join("");
+  const fd=new Date(y,m,1).getDay(), dim=new Date(y,m+1,0).getDate(), evMap={};
+  (S.events||[]).forEach(e=>{evMap[e.date]=e.title;});
+  let html="".padEnd(fd*34,'<div style="min-height:32px;"></div>');
+  for(let d=1;d<=dim;d++){
+    const str=`${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`, isTd=d===new Date().getDate()&&m===new Date().getMonth();
+    html+=`<div style="min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;${isTd?"background:var(--blue);color:#fff;":""}${evMap[str]?"border:1px solid var(--green2);":""}" title="${evMap[str]||''}">${d}</div>`;
   }
-  gridEl.innerHTML=html;
+  grid.innerHTML=html;
 };
 window.calendarNav=dir=>{calCurrent.setMonth(calCurrent.getMonth()+dir);renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear());};
-window.calDayClick=(dateStr,titles)=>{if(titles)showToast(`📅 ${dateStr}: ${titles}`,"success");};
-window.addCalEvent=()=>{
-  const d=el("newEvDate").value,t=el("newEvTitle").value.trim();
-  if(!d||!t){showToast("اختار تاريخ وكتب اسم الحدث","error");return;}
-  if(!S.events)S.events=[];
-  S.events.push({date:d,title:t});
-  el("newEvDate").value="";el("newEvTitle").value="";
-  saveData();
-  renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear());
-  showToast("تم إضافة الحدث! 📅","success");
-};
+window.addCalEvent=()=>{const d=el("newEvDate").value,t=el("newEvTitle").value;if(d&&t){S.events.push({date:d,title:t});saveData();renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear());}};
 
-/* ══════════════════════════════════════════════════════
-   ③ CHART.JS ANALYTICS
-══════════════════════════════════════════════════════ */
-let lineInst=null,pieInst=null;
+/* ═════ CHARTS ═════ */
+let lineInst,pieInst;
 window.renderCharts=()=>{
-  const lineCtx=el("lineChart"),pieCtx=el("pieChart");
-  if(!lineCtx||!pieCtx||typeof Chart==="undefined")return;
-
-  const labels=[],data=[];
-  for(let i=6;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const key=d.toISOString().split("T")[0];
-    labels.push(new Intl.DateTimeFormat("ar-EG",{weekday:"short"}).format(d));
-    data.push((S.history&&S.history[key])??0);
-  }
+  if(typeof Chart==="undefined")return;
+  const lLabels=[],lData=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);lLabels.push(new Intl.DateTimeFormat("ar-EG",{weekday:"short"}).format(d));lData.push((S.history&&S.history[d.toISOString().split("T")[0]])||0);}
   if(lineInst)lineInst.destroy();
-  lineInst=new Chart(lineCtx,{
-    type:"line",
-    data:{labels,datasets:[{label:"نسبة الإنجاز %",data,borderColor:"#3b82f6",backgroundColor:"rgba(59,130,246,0.1)",borderWidth:2.5,pointBackgroundColor:"#38bdf8",pointRadius:4,tension:0.4,fill:true}]},
-    options:{responsive:true, maintainAspectRatio: false, plugins:{legend:{labels:{color:"#8ea6cc",font:{family:"Cairo",size:11}}}},scales:{y:{min:0,max:100,ticks:{color:"#46607a",font:{family:"Cairo"}},grid:{color:"rgba(255,255,255,0.04)"}},x:{ticks:{color:"#46607a",font:{family:"Cairo"}},grid:{color:"rgba(255,255,255,0.04)"}}}}
-  });
-
-  const tagCounts={};
-  (S.tasks||[]).forEach(t=>{const tag=t.tag||"بدون قسم";tagCounts[tag]=(tagCounts[tag]||0)+1;});
-  const pLabels=Object.keys(tagCounts),pData=Object.values(tagCounts);
-  const pColors=pLabels.map(tag=>S.tagColors?.[tag]||"#64748b");
+  lineInst=new Chart(el("lineChart"),{type:"line",data:{labels:lLabels,datasets:[{label:"نسبة الإنجاز %",data:lData,borderColor:"#3b82f6",tension:0.4}]},options:{responsive:true,maintainAspectRatio:false}});
+  const tCount={};(S.tasks||[]).forEach(t=>{tCount[t.tag||"بدون"]=(tCount[t.tag||"بدون"]||0)+1;});
   if(pieInst)pieInst.destroy();
-  if(!pData.length){el("pieChart").parentElement.innerHTML=`<div class="chart-label">توزيع المهام</div><div style="text-align:center;padding:30px;font-size:12px;color:var(--txt3);">مفيش مهام لسه..</div>`;return;}
-  pieInst=new Chart(pieCtx,{
-    type:"doughnut",
-    data:{labels:pLabels,datasets:[{data:pData,backgroundColor:pColors,borderColor:"#0d1424",borderWidth:3}]},
-    options:{responsive:true, maintainAspectRatio: false, cutout:"65%",plugins:{legend:{position:"right",labels:{color:"#8ea6cc",font:{family:"Cairo",size:11},padding:12}}}}
-  });
+  pieInst=new Chart(el("pieChart"),{type:"doughnut",data:{labels:Object.keys(tCount),datasets:[{data:Object.values(tCount),backgroundColor:["#3b82f6","#10b981","#f59e0b","#8b5cf6","#ef4444"]}]},options:{responsive:true,maintainAspectRatio:false}});
 };
 
-/* ══════════════════════════════════════════════════════
-   ④ GITHUB-STYLE HEATMAP
-══════════════════════════════════════════════════════ */
+/* ═════ HEATMAP ═════ */
 window.renderHeatmap=()=>{
-  const gridEl=el("heatmapGrid"),labelsEl=el("heatmapMonthLabels");
-  if(!gridEl)return;
-  const history=S.history||{};
-  const today=new Date();
-  const MS=86400000;
-  const start=new Date(today.getTime()-364*MS);
-  const startDay=start.getDay(); // align to Sunday
-  const paddedStart=new Date(start.getTime()-startDay*MS);
-  let html="",monthHtml="",lastMonth=-1,colIdx=0;
-  const cursor=new Date(paddedStart);
-
-  while(cursor<=today){
-    const dateStr=cursor.toISOString().split("T")[0];
-    const inRange=cursor>=start&&cursor<=today;
-    const isToday=dateStr===today.toISOString().split("T")[0];
-    const pct=history[dateStr]??-1;
-
-    if(inRange&&cursor.getDate()===1){
-      const mName=new Intl.DateTimeFormat("ar-EG",{month:"short"}).format(cursor);
-      monthHtml+=`<span style="grid-column:${Math.floor(colIdx/7)+1}">${mName}</span>`;
+  const grid=el("heatmapGrid"), lbl=el("heatmapMonthLabels");if(!grid)return;
+  const hist=S.history||{}, today=new Date(), start=new Date(today.getTime()-364*86400000);
+  start.setDate(start.getDate()-start.getDay());
+  let html="", mHtml="", cur=new Date(start), col=0;
+  while(cur<=today){
+    const str=cur.toISOString().split("T")[0], inR=cur>=new Date(today.getTime()-364*86400000);
+    if(inR&&cur.getDate()===1) mHtml+=`<span style="grid-column:${Math.floor(col/7)+1}">${new Intl.DateTimeFormat("ar-EG",{month:"short"}).format(cur)}</span>`;
+    const pct=hist[str]; let op=0; if(inR){if(pct>0)op=0.2+(pct/100)*0.8;else if(pct===0)op=0.1;else op=0.05;}
+    
+    // Add vertical border to the first day of the month to separate months
+    let borderStyle = "";
+    if (inR && cur.getDate() === 1) {
+        borderStyle = "border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2px;"; 
     }
 
-    let opacity=0,color="var(--green)";
-    if(!inRange){color="transparent";opacity=0;}
-    else if(pct>0){opacity=0.15+(pct/100)*0.85;}
-    else if(pct===0){opacity=0.08;}
-    else{opacity=0.06;} // no data
-
-    const title=inRange?(pct>=0?`${dateStr}: ${pct}%`:`${dateStr}: لا بيانات`):"";
-    html+=`<div class="hm-cell${isToday?" hm-today":""}" title="${title}" style="background:${color};opacity:${opacity.toFixed(2)};${!inRange?"cursor:default;":""}"></div>`;
-    cursor.setDate(cursor.getDate()+1);
-    if(cursor.getDay()===0)colIdx+=7; // new column every Sunday
+    html+=`<div class="hm-cell" style="background:${inR?"var(--green)":"transparent"};opacity:${op.toFixed(2)};${borderStyle}" title="${inR?`${str}: ${pct??0}%`:""}"></div>`;
+    cur.setDate(cur.getDate()+1);if(cur.getDay()===0)col+=7;
   }
-  gridEl.innerHTML=html;
-  if(labelsEl)labelsEl.innerHTML=monthHtml;
+  grid.innerHTML=html; lbl.innerHTML=mHtml;
 };
 
-/* ═══════════════════════════════════════
-   AUTH
-═══════════════════════════════════════ */
 window.loginWithGoogle=()=>signInWithPopup(auth,gProv);
-window.logoutUser=()=>{if(confirm("تسجيل الخروج؟"))signOut(auth);};
+window.logoutUser=()=>{if(confirm("خروج؟"))signOut(auth);};
 
 onAuthStateChanged(auth,async u=>{
-  const overlay=el("loginOverlay");
-  if(u){
-    user=u;
-    el("uName").textContent=u.displayName||u.email||"مرحباً";
-    el("uAvatar").textContent=(u.displayName||u.email||"?")[0].toUpperCase();
-    el("gLoginBtn").style.display="none";
-    el("loadingRow").style.display="flex";
-    try{
-      const snap=await getDoc(doc(db,"rehlaty_users",u.uid));
-      if(snap.exists()){
-        S={...S,...snap.data()};
-        if(!S.todayTasks)S.todayTasks=[];if(!S.goals)S.goals=[];if(!S.streak)S.streak=0;
-        if(!S.certificates)S.certificates=[];if(!S.tagColors)S.tagColors={"تصميم":"#ec4899","ويب":"#3b82f6","تعلم":"#10b981"};
-        if(!S.events)S.events=[];if(!S.history)S.history={};
-      }else{
-        const local=localStorage.getItem("rehlaty_v3");
-        if(local){try{Object.assign(S,JSON.parse(local));}catch(e){}}
-        await setDoc(doc(db,"rehlaty_users",u.uid),S);
-      }
-    }catch(e){console.error(e);}
-    updateStreak();
-    renderAll();
-    detectOccasion();
-    el("motivQuote").textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
-    overlay.style.opacity="0";
-    setTimeout(()=>overlay.style.display="none",500);
-  }else{
-    user=null;overlay.style.display="flex";overlay.style.opacity="1";
-    el("gLoginBtn").style.display="flex";el("loadingRow").style.display="none";
-  }
+  if(u){user=u;el("uName").textContent=u.displayName;el("uAvatar").textContent=u.displayName[0];el("loginOverlay").style.display="none";try{const snap=await getDoc(doc(db,"rehlaty_users",u.uid));if(snap.exists())S={...S,...snap.data()};else await setDoc(doc(db,"rehlaty_users",u.uid),S);}catch(e){}updateStreak();renderAll();detectOccasion();pomodoroRender();}
 });
 
-/* ═══════════════════════════════════════
-   INIT
-═══════════════════════════════════════ */
-updateDate();
-window.initTheme();
-switchTab("today");
-
-el("settingsModal").addEventListener("click",e=>{if(e.target===el("settingsModal"))closeSettings();});
-el("taskModal").addEventListener("click",e=>{if(e.target===el("taskModal"))closeTaskModal();});
-
-// Responsive
-const statsGrid=document.querySelector(".stats-grid");
-const goalsGrid=document.querySelector(".goals-grid");
-const libLayouts=document.querySelectorAll(".lib-layout");
-const libSidebars=document.querySelectorAll(".lib-sidebar");
-const taskGrid=document.querySelector(".task-modal-grid");
-function handleResize(){
-  const w=window.innerWidth;
-  if(statsGrid)statsGrid.style.gridTemplateColumns=w<480?"repeat(2,1fr)":"repeat(4,1fr)";
-  if(goalsGrid)goalsGrid.style.gridTemplateColumns=w<768?"1fr":w<1024?"1fr 1fr":"repeat(3,1fr)";
-  libLayouts.forEach(e=>{e.style.flexDirection=w<640?"column":"row";});
-  libSidebars.forEach(e=>{e.style.width=w<640?"100%":"200px";e.style.flexDirection=w<640?"row":"column";e.style.overflow="auto";});
-  if(taskGrid)taskGrid.style.gridTemplateColumns=w<900?"1fr":"1fr 2fr";
-}
-handleResize();
-window.addEventListener("resize",handleResize);
-
+updateDate();window.initTheme();switchTab("today");
 </script>
 </body>
 </html>
