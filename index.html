@@ -122,9 +122,9 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
   border: 1px solid var(--border);
   border-right: 4px solid var(--tc, var(--blue)); 
   border-radius: 16px;
-  padding: 24px; /* زادت المسافة الداخلية لفك التزاحم */
-  margin-bottom: 24px; /* زادت المسافة الخارجية لفك التزاحم */
-  min-height: 120px; /* ارتفاع أريح للكارت */
+  padding: 24px; /* فك التزاحم الداخلي */
+  margin-bottom: 24px; /* فك التزاحم الخارجي */
+  min-height: 120px; /* مساحة مريحة للكارت */
   transition: all 0.3s ease;
   cursor: grab;
   word-break: break-word;
@@ -241,25 +241,7 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 .pomo-ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:6;}
 .pomo-ring-fill{fill:none;stroke:url(#pomoGrad);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .9s linear;}
 
-/* ════════ CALENDAR ════════ */
-#calendarWidget{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px;overflow:hidden;}
-#calendarHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-#calendarTitle{font-size:14px;font-weight:900;color:var(--txt1);}
-.cal-nav{background:transparent;border:1px solid var(--border);border-radius:8px;width:28px;height:28px;cursor:pointer;color:var(--txt2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Cairo',sans-serif;}
-.cal-nav:hover{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:var(--blue2);}
-#calendarDayNames{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;}
-.cal-day-name{font-size:10px;font-weight:700;color:var(--txt3);text-align:center;padding:4px 0;}
-#calendarGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.cal-cell{min-height:32px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;border:1px solid transparent;}
-.cal-cell:hover{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.25);}
-.cal-empty{cursor:default;}
-.cal-today{background:rgba(59,130,246,.18);border-color:rgba(59,130,246,.5)!important;}
-.cal-today .cal-day-num{color:var(--blue2);font-weight:900;}
-.cal-has-event{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3)!important;}
-.cal-day-num{font-size:11px;font-weight:700;color:var(--txt2);}
-.cal-dot{width:5px;height:5px;border-radius:50%;background:var(--green2);margin-top:1px;}
-
-/* ════════ HEATMAP (FULL WIDTH, NO SCROLL) ════════ */
+/* ════════ HEATMAP (FULL WIDTH LTR - NO SCROLL) ════════ */
 #heatmapWidget { background:var(--bg3); border:1px solid var(--border); border-radius:20px; padding:24px; width: 100%; overflow: hidden; }
 #heatmapTitle { font-size:18px; font-weight:900; color:var(--txt1); display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; }
 .heatmap-wrapper { direction: ltr; width: 100%; }
@@ -284,8 +266,10 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 @media(max-width:640px){.charts-grid{grid-template-columns:1fr;}}
 .chart-wrap{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:14px;position:relative;}
 .chart-label{font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:10px;}
-.chart-canvas-container { height: 220px; position: relative; } /* Fixed max-height */
+.chart-canvas-container { height: 220px; position: relative; }
 
+/* ════════ EXTRAS SECTION ════════ */
+#sec-extras .extras-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; align-content:start; }
 </style>
 </head>
 <body>
@@ -443,19 +427,21 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 
       <div id="sec-certs" class="section">
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;"><div><h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2><p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك في مكان واحد (اضغط للفتح في درايف)</p></div><button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button><input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="handleCertUpload(this)"></div>
-        <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;align-content:start;padding-bottom:20px;"></div>
+        <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;align-content:start;padding-bottom:20px;"></div>
       </div>
 
       <div id="sec-extras" class="section">
-        <div style="margin-bottom:20px;flex-shrink:0;">
-          <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
-          <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقويم، هيتماب، وتحليلات</p>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-shrink:0;">
+          <div>
+            <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
+            <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، هيتماب، وتحليلات</p>
+          </div>
         </div>
         
         <div class="extras-grid" style="display:flex; flex-direction:column; gap:20px;">
           
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
-            <div id="pomodoroWidget">
+          <div style="display:flex; justify-content:center;">
+            <div id="pomodoroWidget" style="width:100%; max-width:500px;">
               <svg width="0" height="0" style="position:absolute;"><defs><linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg>
               <div class="pomo-ring">
                 <svg viewBox="0 0 120 120" width="120" height="120">
@@ -476,22 +462,6 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
                 <button class="btn-primary" onclick="pomodoroStart()" style="padding:8px 18px;font-size:12px;">▶ ابدأ</button>
                 <button class="btn-ghost"   onclick="pomodoroPause()" style="padding:8px 14px;font-size:12px;">⏸ وقفة</button>
                 <button class="btn-ghost"   onclick="pomodoroReset()" style="padding:8px 14px;font-size:12px;">↺ إعادة</button>
-              </div>
-            </div>
-
-            <div id="calendarWidget">
-              <div style="font-size:13px;font-weight:900;color:var(--txt1);margin-bottom:12px;">📅 التقويم</div>
-              <div id="calendarHeader">
-                <button class="cal-nav" onclick="calendarNav(-1)">›</button>
-                <span id="calendarTitle"></span>
-                <button class="cal-nav" onclick="calendarNav(1)">‹</button>
-              </div>
-              <div id="calendarDayNames"></div>
-              <div id="calendarGrid"></div>
-              <div style="display:flex;gap:6px;margin-top:12px;">
-                <input type="date" id="newEvDate" class="field" style="flex:1;font-size:11px;padding:6px 10px;">
-                <input type="text" id="newEvTitle" placeholder="اسم الحدث..." class="field" style="flex:2;font-size:11px;padding:6px 10px;" onkeypress="if(event.key==='Enter')addCalEvent()">
-                <button class="btn-primary" onclick="addCalEvent()" style="padding:6px 12px;font-size:11px;flex-shrink:0;">+</button>
               </div>
             </div>
           </div>
@@ -532,7 +502,10 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
             </div>
           </div>
 
-        </div></div></div></div></div><div id="archiveModal" class="modal-bg">
+        </div>
+      </div>
+
+    </div></div></div><div id="archiveModal" class="modal-bg">
   <div class="modal-box" style="width:100%;max-width:600px; height:80vh; display:flex; flex-direction:column;">
     <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
       <h3 id="archiveModalTitle" style="font-size:18px;font-weight:900;color:#fff;">📦 الأرشيف</h3>
@@ -715,7 +688,7 @@ function updateStats(){
 const ALL_TABS=["today","goals","kanban","library","notes","certs","extras"];
 window.switchTab=tab=>{
   ALL_TABS.forEach(id=>{el("sec-"+id).classList.toggle("active",id===tab);el("tab-"+id).classList.toggle("active",id===tab);});
-  if(tab==="extras"){renderCharts();renderHeatmap();renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear());}
+  if(tab==="extras"){renderCharts();renderHeatmap();}
   if(window.innerWidth<768)closeSidebar();
 };
 window.openSidebar=()=>{el("sidebar").classList.add("open");el("sbOverlay").style.display="block";el("sbClose").style.display="flex";};
@@ -937,37 +910,7 @@ function renderCerts(){
 window.handleCertUpload=async inp=>{const f=inp.files[0];if(!f)return;showToast("جاري المعالجة...","loading");const r=new FileReader();r.onload=e=>{const name=prompt("اسم الشهادة:",f.name.split(".")[0]);if(!name){inp.value="";return;}const url=prompt("الرابط المباشر للملف (Drive Link):");if(!S.certificates)S.certificates=[];S.certificates.unshift({id:"cert"+Date.now(),title:name,data:e.target.result,url:url,ext:f.name.split(".").pop().toLowerCase(),date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())});inp.value="";saveData();showToast("تمت الإضافة! 🎓","success");};r.readAsDataURL(f);};
 window.delCert=id=>{if(confirm("مسح الشهادة؟")){playSound("del");S.certificates=S.certificates.filter(x=>x.id!==id);saveData();}};
 
-/* ════════ 8. TOOLS: CALENDAR & POMODORO ════════ */
-let calCurrent=new Date();
-window.renderCalendar=(month,year)=>{
-  const DAY_NAMES=["أحد","اثن","ثلا","أرب","خمس","جمع","سبت"];
-  const today=new Date();
-  const titleEl=el("calendarTitle"),dayNamesEl=el("calendarDayNames"),gridEl=el("calendarGrid");
-  if(!titleEl||!gridEl)return;
-  const evMap={};(S.events||[]).forEach(ev=>{if(!evMap[ev.date])evMap[ev.date]=[];evMap[ev.date].push(ev.title);});
-  titleEl.textContent=new Intl.DateTimeFormat("ar-EG",{month:"long",year:"numeric"}).format(new Date(year,month));
-  dayNamesEl.innerHTML=DAY_NAMES.map(d=>`<div class="cal-day-name">${d}</div>`).join("");
-  const firstDay=new Date(year,month,1).getDay(),daysInMonth=new Date(year,month+1,0).getDate();
-  let html="";
-  for(let i=0;i<firstDay;i++)html+=`<div class="cal-cell cal-empty"></div>`;
-  for(let day=1;day<=daysInMonth;day++){
-    const dateStr=`${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-    const isToday=day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear();
-    const hasEv=!!evMap[dateStr];
-    const titles=hasEv?evMap[dateStr].join(", "):"";
-    html+=`<div class="cal-cell${isToday?" cal-today":""}${hasEv?" cal-has-event":""}" title="${titles}"><span class="cal-day-num">${day}</span>${hasEv?`<div class="cal-dot"></div>`:""}</div>`;
-  }
-  gridEl.innerHTML=html;
-};
-window.calendarNav=dir=>{calCurrent.setMonth(calCurrent.getMonth()+dir);renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear());};
-window.addCalEvent=()=>{
-  const d=el("newEvDate").value,t=el("newEvTitle").value.trim();
-  if(!d||!t){showToast("أدخل تاريخ واسم!","error");return;}
-  if(!S.events)S.events=[]; S.events.push({date:d,title:t});
-  el("newEvDate").value="";el("newEvTitle").value=""; saveData();
-  renderCalendar(calCurrent.getMonth(),calCurrent.getFullYear()); showToast("تم إضافة الحدث! 📅","success");
-};
-
+/* ════════ 8. POMODORO (No Calendar) ════════ */
 const POMO_MODES={focus:{label:"تركيز 🧠",sec:25*60},short:{label:"استراحة قصيرة ☕",sec:5*60},long:{label:"استراحة طويلة 🛋️",sec:15*60}};
 let pomoInterval=null,pomoRemaining=POMO_MODES.focus.sec,pomoMode="focus",pomoRunning=false;
 const POMO_CIRC=2*Math.PI*52;
@@ -983,12 +926,12 @@ window.pomodoroReset=()=>{clearInterval(pomoInterval);pomoRunning=false;pomoRema
 window.pomodoroSetMode=mode=>{pomoMode=mode;document.querySelectorAll(".pomo-mode-btn").forEach(b=>b.classList.remove("active"));const mb=el("pm-"+mode);if(mb)mb.classList.add("active");pomodoroReset();};
 pomodoroRender();
 
-/* ════════ 9. EXTRAS: HEATMAP (NO SCROLL) & CHARTS ════════ */
+/* ════════ 9. EXTRAS: HEATMAP (FULL LTR GRID) & CHARTS ════════ */
 window.renderHeatmap=()=>{
-  const gridEl=el("heatmapGrid"),labelsEl=el("heatmapMonthLabels");
+  const gridEl=el("heatmapGrid");
   if(!gridEl)return;
   const history=S.history||{};
-  const today=new Date(); const year=today.getFullYear();
+  const year=new Date().getFullYear();
   el("currentYearDisplay").textContent=`(عام ${year})`;
   
   const start=new Date(year, 0, 1);
@@ -1001,7 +944,7 @@ window.renderHeatmap=()=>{
   let lastMonth = -1;
 
   for(let w=0; w<53; w++){
-    let colHtml = `<div class="hm-col">`;
+    let colHtml = "";
     let showMonth = false;
 
     for(let d=0; d<7; d++){
@@ -1017,16 +960,19 @@ window.renderHeatmap=()=>{
       let bg = "transparent";
       if(inYear){ bg=pct===-1?"rgba(255,255,255,0.05)":pct<30?"#064e3b":pct<60?"#065f46":pct<90?"#047857":"#10b981"; }
       
-      colHtml += `<div class="hm-cell" style="background:${bg}" title="${inYear?ds+' : '+(pct===-1?'0':pct)+'%':''}"></div>`;
+      const isToday = ds === new Date().toISOString().split("T")[0];
+      const todayClass = isToday ? " hm-today" : "";
+      
+      colHtml += `<div class="hm-cell${todayClass}" style="background:${bg}" title="${inYear?ds+' : '+(pct===-1?'0':pct)+'%':''}"></div>`;
       cursor.setDate(cursor.getDate() + 1);
     }
     
+    let monthLabel = "";
     if(showMonth){
-      // Insert Label inside the column to guarantee alignment
-      colHtml = `<div class="hm-col"><div style="position:absolute; top:-22px; right:0; font-size:10px; font-weight:900; color:var(--txt3); white-space:nowrap;">${months[lastMonth]}</div>` + colHtml.substring(22);
+      monthLabel = `<div style="position:absolute; top:-22px; right:0; font-size:10px; font-weight:900; color:var(--txt3); white-space:nowrap;">${months[lastMonth]}</div>`;
     }
     
-    html += colHtml + `</div>`;
+    html += `<div class="hm-col" style="position:relative;">${monthLabel}${colHtml}</div>`;
   }
   gridEl.innerHTML=html; 
 };
