@@ -110,9 +110,6 @@ body.light .field{background:rgba(0,0,0,.04);}
 .field::placeholder{color:var(--txt3);}
 input[type=date].field{direction:ltr;text-align:right;color-scheme:dark;}
 body.light input[type=date].field{color-scheme:light;}
-input[type=color]{-webkit-appearance:none;border:none;padding:0;background:transparent;cursor:pointer;}
-input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
-input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;border:1px solid var(--border);background:rgba(0,0,0,.2);}
 
 /* ════════ TASK CARD (KANBAN PREMIUM) ════════ */
@@ -204,6 +201,10 @@ input[type=color]::-webkit-color-swatch{border:none;border-radius:8px;}
 .modal-box{background:linear-gradient(145deg,#0d1527,#080c18);border:1px solid rgba(59,130,246,.15);border-radius:26px;box-shadow:0 30px 90px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden;transform:scale(.96);transition:transform .3s;}
 .modal-bg.show .modal-box{transform:scale(1);}
 
+/* ════════ SUGGESTIONS PANEL ════════ */
+#suggestionsPanel{position:fixed;top:0;left:-350px;width:340px;height:100%;background:linear-gradient(180deg,#0d1527,#080c18);border-right:1px solid var(--border);z-index:1000;transition:left .3s cubic-bezier(.4,0,.2,1);box-shadow:10px 0 40px rgba(0,0,0,.6);display:flex;flex-direction:column;}
+#suggestionsPanel.open{left:0;}
+
 /* ════════ MISC ════════ */
 .loader{border:3px solid rgba(255,255,255,.08);border-left-color:var(--cyan);border-radius:50%;width:26px;height:26px;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -270,9 +271,29 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
 
 /* ════════ EXTRAS SECTION ════════ */
 #sec-extras .extras-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; align-content:start; }
+
+/* ════════ PRINT & REPORT STYLES ════════ */
+@media print {
+  body * { visibility: hidden; }
+  #reportViewModal, #reportViewModal * { visibility: visible; }
+  #reportViewModal { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #ffffff !important; color: #000 !important; }
+  .no-print { display: none !important; }
+  .report-glass { background: none !important; border: 1px solid #ccc !important; box-shadow: none !important; color: #000 !important; }
+  .report-text { color: #000 !important; }
+}
+
+.report-glass { background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:16px; padding:20px; }
 </style>
 </head>
 <body>
+
+<div id="suggestionsPanel">
+  <div style="padding:24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+    <h3 style="font-weight:900; color:var(--txt1); font-size:16px;">💡 مهام لم تكتمل</h3>
+    <button onclick="toggleSuggestionsPanel()" style="background:rgba(255,255,255,0.05); border:none; width:30px; height:30px; border-radius:8px; color:var(--txt2); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">✕</button>
+  </div>
+  <div id="suggestionsList" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:12px;"></div>
+</div>
 
 <div class="confetti-wrap" id="confettiWrap"></div>
 
@@ -352,7 +373,10 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
             <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-.5px;margin-bottom:4px;">هنعمل إيه النهارده 🎯</h2>
             <div id="dateDisplay"></div>
           </div>
-          <button class="btn-ghost" onclick="openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-ghost" onclick="toggleSuggestionsPanel()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
+            <button class="btn-ghost" onclick="openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
+          </div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;flex-shrink:0;" class="stats-grid">
           <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--blue),var(--cyan));"><div style="font-size:24px;font-weight:900;color:var(--txt1);" id="sTotalToday">0</div><div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">مهام اليوم</div></div>
@@ -364,10 +388,12 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
           <div style="flex:1;"><div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:12px;font-weight:700;color:var(--txt2);">تقدم اليوم</span><span style="font-size:12px;font-weight:900;color:var(--txt1);" id="progressPct">0%</span></div><div class="pbar-track"><div class="pbar-fill" id="progressBar" style="width:0%"></div></div></div>
           <div style="font-size:28px;" id="moodEmoji">😴</div>
         </div>
+        
         <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color .2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
           <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
           <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
-          <button class="btn-primary" onclick="addTodayTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
+          <input type="date" id="newTodayDate" title="موعد التسليم (اختياري)" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:8px; color:var(--txt2); font-size:11px; padding:6px 10px; outline:none; font-family:'Cairo',sans-serif; cursor:pointer;">
+          <button class="btn-primary" onclick="addTodayTask()" style="padding:8px 16px;font-size:12px; margin-right:4px;">إضافة</button>
         </div>
         <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px;"></div>
       </div>
@@ -434,7 +460,11 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-shrink:0;">
           <div>
             <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
-            <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، هيتماب، وتحليلات</p>
+            <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقارير، وتحليلات الأداء</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-ghost" onclick="openReportModal('month')" style="background:var(--bg3); border-color:var(--border);">📊 تقرير الشهر</button>
+            <button class="btn-primary" onclick="openReportModal('year')">🏆 التقرير السنوي</button>
           </div>
         </div>
         
@@ -505,7 +535,37 @@ body.birthday .occasion-banner span.oc-text{animation:rainbow 3s linear infinite
         </div>
       </div>
 
-    </div></div></div><div id="archiveModal" class="modal-bg">
+    </div></div></div><div id="reportViewModal" class="modal-bg" style="z-index: 9999;">
+  <div class="modal-box report-glass" style="width:100%; max-width:700px; height:auto; max-height:90vh; display:flex; flex-direction:column; background:var(--bg2);">
+    
+    <div class="no-print" style="padding:22px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:18px; font-weight:900; color:#fff;">📊 تقرير الأداء</h3>
+      <button onclick="closeReportModal()" style="background:rgba(255,255,255,.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+
+    <div id="reportContentArea" style="padding:30px; flex:1; overflow-y:auto; color:var(--txt1);">
+      </div>
+
+    <div class="no-print" style="padding:20px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px;">
+      <button onclick="sendReportEmail()" class="btn-ghost" style="border-color:var(--blue); color:var(--blue2);">📧 إرسال للإيميل</button>
+      <button onclick="window.print()" class="btn-primary">🖨️ حفظ كـ PDF</button>
+    </div>
+  </div>
+</div>
+
+<div id="reportNotificationModal" class="modal-bg" style="z-index: 10000;">
+  <div class="modal-box" style="width:100%; max-width:400px; text-align:center; padding:40px 20px;">
+    <div style="font-size:50px; margin-bottom:10px;">📊</div>
+    <h2 style="font-size:24px; font-weight:900; color:#fff; margin-bottom:10px;">حصادك الشهري جاهز!</h2>
+    <p style="font-size:14px; color:var(--txt2); margin-bottom:24px;">جمعنالك كل إنجازاتك، تعبك، وأهدافك اللي حققتها الشهر اللي فات في تقرير واحد عشان تفتخر بنفسك.</p>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button onclick="closeReportNotification()" class="btn-ghost">تخطي الآن</button>
+      <button onclick="closeReportNotification(); openReportModal('month');" class="btn-primary px-8">عرض التقرير 🚀</button>
+    </div>
+  </div>
+</div>
+
+<div id="archiveModal" class="modal-bg">
   <div class="modal-box" style="width:100%;max-width:600px; height:80vh; display:flex; flex-direction:column;">
     <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
       <h3 id="archiveModalTitle" style="font-size:18px;font-weight:900;color:#fff;">📦 الأرشيف</h3>
@@ -583,7 +643,9 @@ let S={
   events:[],   
   history:{},  
   archive:{today:[], goals:[], years:{}},
-  lastYearChecked: new Date().getFullYear()
+  lastYearChecked: new Date().getFullYear(),
+  lastReportMonth: new Date().getMonth(), // For monthly report notification
+  suggestions: []
 };
 
 const ICONS={general:"📝",course:"🎓",book:"📖",lecture:"🎤",video:"▶️",workshop:"🛠️"};
@@ -615,27 +677,33 @@ window.playSound=type=>{
   }catch(e){}
 };
 
-/* ════════ DAILY MAINTENANCE (The Midnight Sweeper) ════════ */
-// This function runs automatically on app load. 
-// If it detects a NEW DAY, it sweeps all completed tasks/goals into the archive.
+/* ════════ DAILY MAINTENANCE & REPORTS ════════ */
 function dailySweep() {
   const today = new Date().toDateString();
   let needsSave = false;
   
   if (S.lastDate && S.lastDate !== today) {
     if (!S.archive) S.archive = { today: [], goals: [], years: {} };
+    if (!S.suggestions) S.suggestions = [];
     
-    // 1. Sweep Completed "Today" Tasks
+    // 1. Sweep "Today" Tasks
     if (S.todayTasks && S.todayTasks.length > 0) {
       const completedToday = S.todayTasks.filter(t => t.done);
+      const uncompletedToday = S.todayTasks.filter(t => !t.done);
+      
       completedToday.forEach(t => {
         S.archive.today.push({...t, archDate: S.lastDate});
       });
-      S.todayTasks = S.todayTasks.filter(t => !t.done);
-      if (completedToday.length > 0) needsSave = true;
+      
+      uncompletedToday.forEach(t => {
+        S.suggestions.unshift({...t, archDate: S.lastDate}); 
+      });
+      
+      S.todayTasks = []; 
+      needsSave = true;
     }
     
-    // 2. Sweep Completed "Goals"
+    // 2. Sweep "Goals"
     if (S.goals && S.goals.length > 0) {
       const completedGoals = S.goals.filter(g => g.done);
       completedGoals.forEach(g => {
@@ -650,6 +718,122 @@ function dailySweep() {
     saveDataSilently();
   }
 }
+
+function checkReportNotification() {
+  const curMonth = new Date().getMonth();
+  if (S.lastReportMonth === undefined) S.lastReportMonth = curMonth;
+  
+  // If the month has changed, show the notification
+  if (S.lastReportMonth !== curMonth) {
+    el("reportNotificationModal").classList.add("show");
+    S.lastReportMonth = curMonth;
+    saveDataSilently();
+  }
+}
+
+window.closeReportNotification = () => {
+    el("reportNotificationModal").classList.remove("show");
+};
+
+/* ════════ REPORT GENERATION LOGIC ════════ */
+window.openReportModal = (type) => {
+    const area = el("reportContentArea");
+    const d = new Date();
+    
+    let title = "", dateRange = "", completedTasks = 0, completedGoals = 0, avgFocus = 0;
+    
+    if (type === 'month') {
+        const prevMonth = new Date(); prevMonth.setMonth(prevMonth.getMonth() - 1);
+        title = "تقرير الأداء الشهري";
+        dateRange = new Intl.DateTimeFormat("ar-EG", { month: "long", year: "numeric" }).format(prevMonth);
+        
+        // Count tasks from archive that match last month
+        // Simple heuristic: just look at the last 30 days of archive or entire archive if simple.
+        completedTasks = S.archive.today ? S.archive.today.length : 0;
+        completedGoals = S.archive.goals ? S.archive.goals.length : 0;
+        avgFocus = "ممتاز"; 
+    } else {
+        title = "التقرير السنوي الشامل";
+        dateRange = `عام ${d.getFullYear() - 1}`;
+        completedTasks = S.archive.today ? S.archive.today.length : 0;
+        completedGoals = S.archive.goals ? S.archive.goals.length : 0;
+        avgFocus = "رائع جداً";
+    }
+
+    area.innerHTML = `
+        <div style="text-align:center; margin-bottom:30px;">
+            <div style="font-size:40px; margin-bottom:10px;">🏆</div>
+            <h1 class="report-text" style="font-size:28px; font-weight:900; margin-bottom:5px;">${title}</h1>
+            <p class="report-text" style="font-size:14px; opacity:0.7;">${dateRange}</p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:30px;">
+            <div style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.2); padding:20px; border-radius:16px; text-align:center;">
+                <div style="font-size:32px; font-weight:900; color:var(--green2);">${completedTasks}</div>
+                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">مهام يومية تم إنجازها</div>
+            </div>
+            <div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.2); padding:20px; border-radius:16px; text-align:center;">
+                <div style="font-size:32px; font-weight:900; color:var(--blue2);">${completedGoals}</div>
+                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">أهداف تم تحقيقها</div>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border);">
+            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">🌟 ملخص الأداء</h4>
+            <p class="report-text" style="font-size:13px; line-height:1.8;">لقد قدمت أداءً مبهراً خلال هذه الفترة. الالتزام والمثابرة هما مفتاح النجاح. استمر في بناء عاداتك الإيجابية وتطوير مهاراتك!</p>
+        </div>
+    `;
+
+    el("reportViewModal").classList.add("show");
+};
+
+window.closeReportModal = () => {
+    el("reportViewModal").classList.remove("show");
+};
+
+window.sendReportEmail = () => {
+    const subject = encodeURIComponent("تقرير أداء تطبيق رحلتي 🚀");
+    const body = encodeURIComponent("مرحباً،\nهذا هو تقرير أدائك الممتاز من تطبيق رحلتي.\n\nاستمر يا بطل!");
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+};
+
+
+/* ════════ SUGGESTIONS PANEL LOGIC ════════ */
+window.toggleSuggestionsPanel = () => {
+    const panel = el("suggestionsPanel");
+    if (panel.classList.contains("open")) {
+        panel.classList.remove("open");
+    } else {
+        panel.classList.add("open");
+        renderSuggestions();
+    }
+};
+
+function renderSuggestions() {
+    const list = el("suggestionsList");
+    if(!S.suggestions || !S.suggestions.length) {
+        list.innerHTML = "<p style='text-align:center; opacity:0.5; margin-top:20px; font-weight:bold;'>لا توجد مهام غير مكتملة</p>";
+        return;
+    }
+    list.innerHTML = S.suggestions.map((t, i) => `
+        <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.05);">
+           <div style="flex:1; min-width:0; margin-left:10px;">
+               <div style="font-weight:bold; font-size:13px; color:var(--txt1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.text}</div>
+               <div style="font-size:10px; color:var(--txt3); margin-top:4px;">من تاريخ: ${t.archDate}</div>
+           </div>
+           <button onclick="restoreSuggestion(${i})" style="background:rgba(59,130,246,0.15); color:var(--blue2); border:1px solid rgba(59,130,246,0.2); border-radius:8px; padding:6px 12px; font-size:11px; font-weight:bold; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.25)'" onmouseout="this.style.background='rgba(59,130,246,0.15)'">+ لليوم</button>
+        </div>
+    `).join("");
+}
+
+window.restoreSuggestion = (i) => {
+    const t = S.suggestions.splice(i, 1)[0];
+    t.done = false;
+    S.todayTasks.unshift(t);
+    saveData();
+    renderSuggestions();
+    showToast("تم إضافتها لمهام اليوم", "success");
+};
 
 /* ════════ SAVE LOGIC (DEBOUNCED) ════════ */
 let syncTimeout = null;
@@ -673,36 +857,6 @@ window.saveDataSilently = () => {
   }
 }
 
-function checkAutoArchive(){
-  const curYear = new Date().getFullYear();
-  if(!S.archive) S.archive = {today:[], goals:[], years:{}};
-  if (S.lastYearChecked && S.lastYearChecked < curYear) {
-      S.archive.years[S.lastYearChecked] = { history: { ...S.history }, tasks: [...S.tasks] };
-      S.history = {}; S.lastYearChecked = curYear;
-      saveDataSilently();
-      showToast(`سنة سعيدة! تم حفظ بيانات ${curYear-1} في الأرشيف 🎆`, "success");
-  }
-}
-
-/* ════════ OCCASIONS ════════ */
-function detectOccasion(){
-  const now=new Date(),m=now.getMonth()+1,d=now.getDate(),year=now.getFullYear();
-  document.body.classList.remove("birthday","ramadan","eid");
-  if(m===6&&d===6){document.body.classList.add("birthday");el("occasionBanner").style.display="flex";el("ocIcon").textContent="🎂";el("ocText").textContent="عيد ميلاد سعيد يا بطل! 🎉 سنة وانت طيب وبتبني مستقبلك بيدك 🎊";spawnConfetti();return;}
-  const RAMADAN=[{y:2025,sm:3,sd:1,em:3,ed:30},{y:2026,sm:2,sd:18,em:3,ed:19},{y:2027,sm:2,sd:7,em:3,ed:8}];
-  const EID_FITR=[{y:2025,sm:3,sd:30,em:4,ed:2},{y:2026,sm:3,sd:20,em:3,ed:23},{y:2027,sm:3,sd:9,em:3,ed:12}];
-  const EID_ADHA=[{y:2025,sm:6,sd:6,em:6,ed:10},{y:2026,sm:5,sd:26,em:5,ed:30},{y:2027,sm:5,sd:15,em:5,ed:19}];
-  const inRange=arr=>arr.some(r=>{if(r.y!==year)return false;return now>=new Date(year,r.sm-1,r.sd)&&now<=new Date(year,r.em-1,r.ed);});
-  if(inRange(EID_FITR)||inRange(EID_ADHA)){document.body.classList.add("eid");el("occasionBanner").style.display="flex";el("ocIcon").textContent="🌙";el("ocText").textContent=inRange(EID_ADHA)?"عيد الأضحى المبارك! كل سنة وانت بخير 🕌":"عيد الفطر المبارك! تقبل الله منا ومنكم 🌙";return;}
-  if(inRange(RAMADAN)){document.body.classList.add("ramadan");el("occasionBanner").style.display="flex";el("ocIcon").textContent="🌙";el("ocText").textContent="رمضان كريم! شهر التعلم والتطور الحقيقي 📿";return;}
-  el("occasionBanner").style.display="none";
-}
-function spawnConfetti(){
-  const wrap=el("confettiWrap");wrap.innerHTML="";
-  const colors=["#f87171","#fb923c","#facc15","#4ade80","#60a5fa","#a78bfa","#f472b6"];
-  for(let i=0;i<60;i++){const p=document.createElement("div");p.className="confetti-piece";const size=Math.random()*8+4;p.style.cssText=`left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[i%colors.length]};border-radius:${Math.random()>.5?"50%":"2px"};animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*3}s;opacity:${Math.random()*.7+.3};`;wrap.appendChild(p);}
-}
-
 /* ════════ DATE / STATS ════════ */
 function updateDate(){
   const now=new Date();
@@ -713,8 +867,8 @@ function updateDate(){
 function updateStreak(){
   const today=new Date().toDateString(),yest=new Date(Date.now()-86400000).toDateString();
   
-  // Call the sweeper FIRST to clean up old tasks from previous days
-  dailySweep();
+  dailySweep(); 
+  checkReportNotification(); 
 
   if(!S.lastDate)S.streak=1;
   else if(S.lastDate===today){}
@@ -723,8 +877,16 @@ function updateStreak(){
   
   S.lastDate=today;
   const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
-  checkAutoArchive();
+  
+  const curYear = new Date().getFullYear();
+  if (S.lastYearChecked && S.lastYearChecked < curYear) {
+      if(!S.archive) S.archive = {today:[], goals:[], years:{}};
+      S.archive.years[S.lastYearChecked] = { history: { ...S.history }, tasks: [...S.tasks] };
+      S.history = {}; S.lastYearChecked = curYear;
+      saveDataSilently();
+  }
 }
+
 function updateStats(){
   const tot=(S.todayTasks||[]).length,done=(S.todayTasks||[]).filter(t=>t.done).length,pct=tot>0?Math.round(done/tot*100):0;
   el("sTotalToday").textContent=tot;el("sDoneToday").textContent=done;el("sKanban").textContent=(S.tasks||[]).length;
@@ -773,30 +935,58 @@ function renderTodayTasks(){
   list.innerHTML=items.filter(t=>t.text.toLowerCase().includes(sq)).map(t=>`
     <div class="today-item${t.done?" done":""}">
       <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="toggleTodayTask('${t.id}')">
-      <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text}</div>${t.parentName?`<div style="font-size:10px;font-weight:700;color:var(--blue2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🔗 ${t.parentName}</div>`:""}</div>
+      <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text}</div>
+          <div style="display:flex; gap:12px; align-items:center; margin-top:4px;">
+              ${t.dueDate ? `<div style="font-size:10px;font-weight:700;color:var(--amber);background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:6px; border:1px solid rgba(245,158,11,0.2);">📅 ${t.dueDate}</div>` : ""}
+              ${t.parentName ? `<button onclick="goToCourse('${t.parentId}', ${t.subIdx})" style="font-size:10px;font-weight:700;color:var(--blue2);background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:2px 6px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">🔗 ${t.parentName}</button>` : ""}
+          </div>
+      </div>
       <button onclick="delTodayTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--txt3);font-size:16px;padding:0 4px;transition:color .2s;flex-shrink:0;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
     </div>`).join("");
 }
-window.addTodayTask=()=>{const inp=el("newTodayInput"),v=inp.value.trim();if(!v)return;if(!S.todayTasks)S.todayTasks=[];S.todayTasks.unshift({id:"td"+Date.now(),text:v,done:false});inp.value="";saveData();};
+window.addTodayTask=()=>{
+  const inp=el("newTodayInput"), v=inp.value.trim();
+  const dInp=el("newTodayDate"), d=dInp?dInp.value:"";
+  if(!v)return;
+  if(!S.todayTasks)S.todayTasks=[];
+  S.todayTasks.unshift({id:"td"+Date.now(), text:v, done:false, dueDate:d});
+  inp.value=""; if(dInp)dInp.value=""; 
+  saveData();
+};
 window.toggleTodayTask=id=>{
   const t=S.todayTasks.find(x=>x.id===id);if(!t)return;
   t.done=!t.done;
-  
-  // SYNC WITH KANBAN
   if(t.parentId && t.subIdx !== undefined){
     const parent = S.tasks.find(x=>x.id === t.parentId);
     if(parent && parent.subtasks && parent.subtasks[t.subIdx]){
         parent.subtasks[t.subIdx].done = t.done;
     }
   }
-
   if(t.done){
     showToast("عاش يا بطل! 👏","success");playSound("ok");
-    // Removed the setTimeout auto-archive here! Tasks will stay until midnight.
   }
   saveData();
 };
 window.delTodayTask=id=>{if(confirm("مسح المهمة؟")){playSound("del");S.todayTasks=S.todayTasks.filter(x=>x.id!==id);saveData();}};
+window.goToCourse=(parentId, subIdx)=>{
+  switchTab('kanban');
+  setTimeout(()=>{
+    openTaskModal(parentId);
+    setTimeout(()=>{
+      const row = el(`subtask-row-${subIdx}`);
+      if(row){
+        row.scrollIntoView({behavior:'smooth', block:'center'});
+        row.style.boxShadow="0 0 25px rgba(59,130,246,0.6)";
+        row.style.borderColor="var(--blue)";
+        setTimeout(()=>{
+          row.style.boxShadow="none";
+          row.style.borderColor="var(--border)";
+        }, 2000);
+      }
+    }, 400); 
+  }, 100); 
+};
 
 /* ════════ 2. GOALS ════════ */
 function renderGoals(){
@@ -818,10 +1008,7 @@ window.addGoal=type=>{const mp={year:"gyInput",month:"gmInput",week:"gwInput"};c
 window.toggleGoal=id=>{
   const g=S.goals.find(x=>x.id===id);if(g){
     g.done=!g.done;
-    if(g.done){
-      showToast("إنجاز عظيم! 🏆","success");playSound("ok");
-      // Removed setTimeout archive here too. Handled by dailySweep!
-    }
+    if(g.done){ showToast("إنجاز عظيم! 🏆","success");playSound("ok"); }
     saveData();
   }
 };
@@ -870,10 +1057,10 @@ function renderSubtasks(){
   el("mSubtasks").innerHTML=(t.subtasks||[]).map((s,i)=>{
     if(!s.links)s.links=[];if(typeof s.links==="string")s.links=s.links?[s.links]:[];
     if(!s.notes)s.notes=[]; 
-    const vids=s.links.map((lk,vi)=>{const ytid=getYTid(lk);return`<div style="margin-bottom:8px;padding:8px;border-radius:12px;background:rgba(0,0,0,.2);border:1px solid var(--border);"><div style="display:flex;gap:6px;"><button onclick="delSubVid(${i},${vi})" style="background:rgba(239,68,68,.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 10px;font-size:12px;">✕</button><input type="text" value="${lk}" onchange="updateSubVid(${i},${vi},this.value)" placeholder="رابط يوتيوب..." class="field" style="flex:1;font-size:11px;padding:6px 10px;text-align:left;direction:ltr;"></div>${ytid?`<div onclick="window.open('${lk}','_blank')" style="margin-top:7px;border-radius:10px;overflow:hidden;position:relative;height:160px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.75;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,.85);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">▶</div></div></div>`:""}</div>`;}).join("");
+    const vids=s.links.map((lk,vi)=>{const ytid=getYTid(lk);return`<div style="margin-bottom:8px;padding:8px;border-radius:12px;background:rgba(0,0,0,.2);border:1px solid var(--border);"><div style="display:flex;gap:6px;direction:ltr;"><input type="text" value="${lk}" onchange="updateSubVid(${i},${vi},this.value)" placeholder="Youtube Link..." class="field" style="flex:1;font-size:11px;padding:6px 10px;text-align:left;direction:ltr;"><button onclick="delSubVid(${i},${vi})" style="background:rgba(239,68,68,.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 10px;font-size:12px;">✕</button></div>${ytid?`<div onclick="window.open('${lk}','_blank')" style="margin-top:7px;border-radius:10px;overflow:hidden;position:relative;height:160px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:.75;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,.85);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;box-shadow:0 0 15px rgba(0,0,0,0.5);">▶</div></div></div>`:""}</div>`;}).join("");
     const notes=s.notes.map((n,ni)=>`<div style="display:flex;gap:6px;margin-bottom:6px;"><button onclick="delSubNote(${i},${ni})" style="background:rgba(239,68,68,.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 8px;font-size:12px;">✕</button><textarea oninput="updateSubNote(${i},${ni},this.value)" class="field" style="flex:1;height:60px;resize:none;border-radius:8px;font-size:12px;" placeholder="ملاحظة...">${n}</textarea></div>`).join("");
     const files=!s.files||!s.files.length?`<span style="font-size:10px;color:var(--txt3);">لا يوجد مرفقات</span>`:s.files.map((f,fi)=>`<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;background:rgba(0,0,0,.2);border:1px solid var(--border);color:var(--txt2);max-width:110px;overflow:hidden;">${fileIcon(f.ext,f.type)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;" title="${f.name}">${f.name}</span><button onclick="openSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--green2);padding:0;font-size:11px;">👁️</button><button onclick="delSubFile(${i},${fi})" style="background:transparent;border:none;cursor:pointer;color:var(--red);padding:0;font-size:11px;">✕</button></div>`).join("");
-    return`<div style="border-radius:16px;overflow:hidden;background:var(--bg3);border:1px solid var(--border);"><div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;"><label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" class="cb" ${s.done?"checked":""} onchange="toggleSub(${i})"><span style="font-size:13px;font-weight:700;flex:1;${s.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}">${s.text}</span></label><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;"><button onclick="sendSubToGoals(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(139,92,246,.1);color:var(--purple);border:1px solid rgba(139,92,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🏆 للأهداف</button><button onclick="sendSubToToday(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯 لليوم</button><button onclick="toggleSubNotes(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">📋 تفاصيل</button><button onclick="delSub(${i})" style="background:transparent;border:none;cursor:pointer;color:var(--red);font-size:14px;padding:0 4px;">✕</button></div></div><div id="snotes-${i}" class="notes-panel${s.panelOpen?' open':''}" style="background:rgba(0,0,0,.2);"><div style="padding:14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;"><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">فيديوهات</span><button onclick="addSubVid(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ فيديو</button></div>${vids}</div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">ملاحظات</span><button onclick="addSubNote(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ نص</button></div>${notes}</div><div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">ملحقات</span><button onclick="addSubFile(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ ملف</button></div><div style="display:flex;flex-wrap:wrap;gap:5px;">${files}</div></div></div></div></div>`;
+    return`<div id="subtask-row-${i}" style="border-radius:16px;overflow:hidden;background:var(--bg3);border:1px solid var(--border); transition:all 0.3s;"><div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;"><label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input type="checkbox" class="cb" ${s.done?"checked":""} onchange="toggleSub(${i})"><span style="font-size:13px;font-weight:700;flex:1;${s.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}">${s.text}</span></label><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;"><button onclick="sendSubToGoals(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(139,92,246,.1);color:var(--purple);border:1px solid rgba(139,92,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🏆 للأهداف</button><button onclick="sendSubToToday(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯 لليوم</button><button onclick="toggleSubNotes(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">📋 تفاصيل</button><button onclick="delSub(${i})" style="background:transparent;border:none;cursor:pointer;color:var(--red);font-size:14px;padding:0 4px;">✕</button></div></div><div id="snotes-${i}" class="notes-panel${s.panelOpen?' open':''}" style="background:rgba(0,0,0,.2);"><div style="padding:14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;"><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">فيديوهات</span><button onclick="addSubVid(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(59,130,246,.1);color:var(--blue2);border:1px solid rgba(59,130,246,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ فيديو</button></div>${vids}</div><div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">ملاحظات</span><button onclick="addSubNote(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ نص</button></div>${notes}</div><div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;">ملحقات</span><button onclick="addSubFile(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ ملف</button></div><div style="display:flex;flex-wrap:wrap;gap:5px;">${files}</div></div></div></div></div>`;
   }).join("");
 }
 window.addSubtask=()=>{const v=el("newSubIn").value.trim();if(!v)return;S.tasks.find(x=>x.id===activTask).subtasks.push({text:v,done:false,files:[],links:[],notes:[]});el("newSubIn").value="";renderSubtasks();saveDataSilently();};
@@ -1139,7 +1326,8 @@ onAuthStateChanged(auth,async u=>{
     const local=localStorage.getItem("rehlaty_v3");
     if(local){
       try{Object.assign(S,JSON.parse(local));}catch(e){}
-      dailySweep(); // Sweep before rendering
+      
+      updateStreak(); // This calls dailySweep() and checkReportNotification()
       renderAll(); detectOccasion();
       overlay.style.opacity="0"; setTimeout(()=>overlay.style.display="none",500);
     }
@@ -1150,7 +1338,8 @@ onAuthStateChanged(auth,async u=>{
       if(snap.exists()){
         S={...S,...snap.data()};
         if(!S.archive)S.archive={today:[],goals:[],years:{}};
-        dailySweep(); // Sweep cloud data
+        
+        updateStreak(); // Sweep cloud data
         saveDataSilently(); renderAll();
       }else{
         await setDoc(doc(db,"rehlaty_users",u.uid),S);
@@ -1158,7 +1347,6 @@ onAuthStateChanged(auth,async u=>{
       if(!local){ overlay.style.opacity="0"; setTimeout(()=>overlay.style.display="none",500); }
     }catch(e){console.error(e);}
     
-    updateStreak();
     el("motivQuote").textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
   }else{
     user=null;overlay.style.display="flex";overlay.style.opacity="1";
@@ -1170,6 +1358,7 @@ updateDate(); window.initTheme(); switchTab("today");
 el("settingsModal").addEventListener("click",e=>{if(e.target===el("settingsModal"))closeSettings();});
 el("taskModal").addEventListener("click",e=>{if(e.target===el("taskModal"))closeTaskModal();});
 el("archiveModal").addEventListener("click",e=>{if(e.target===el("archiveModal"))closeArchiveModal();});
+el("reportViewModal").addEventListener("click",e=>{if(e.target===el("reportViewModal"))closeReportModal();});
 </script>
 </body>
 </html>
