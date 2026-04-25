@@ -49,6 +49,29 @@ body::after{content:'';position:fixed;bottom:-15%;left:-10%;width:500px;height:5
 .confetti-piece{position:absolute;top:-20px;width:10px;height:10px;animation:confettiFall linear infinite;}
 @keyframes confettiFall{0%{transform:translateY(0) rotateZ(0);opacity:1}100%{transform:translateY(110vh) rotateZ(720deg);opacity:0}}
 
+/* ════════ OCCASIONS ════════ */
+.occasion-banner{display:none;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:700;font-size:13px;padding:10px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.15);align-items:center;justify-content:center;gap:8px;z-index:50;position:relative;flex-shrink:0;}
+body.birthday{--blue:#e91e8c;--cyan:#ff6eb4;}
+body.birthday::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at top right,rgba(233,30,140,0.12),transparent 60%),radial-gradient(ellipse at bottom left,rgba(255,110,180,0.08),transparent 60%);}
+body.birthday #sidebar{background:linear-gradient(180deg,#1a0a15,#0d0610);}
+body.birthday .logo-icon{background:linear-gradient(135deg,#e91e8c,#ff6eb4);}
+body.birthday .btn-primary{background:linear-gradient(135deg,#e91e8c,#c2185b);box-shadow:0 4px 15px rgba(233,30,140,0.4);}
+body.birthday .confetti-wrap{display:block;}
+
+body.ramadan{--blue:#c09347;--cyan:#e6c078;--green:#8a9b47;}
+body.ramadan::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at top,rgba(192,147,71,0.1),transparent 50%),radial-gradient(ellipse at bottom,rgba(138,155,71,0.07),transparent 50%);}
+body.ramadan #sidebar{background:linear-gradient(180deg,#0d0c06,#080807);}
+body.ramadan .logo-icon{background:linear-gradient(135deg,#c09347,#8a9b47);}
+body.ramadan .btn-primary{background:linear-gradient(135deg,#c09347,#a07830);box-shadow:0 4px 15px rgba(192,147,71,0.4);}
+body.ramadan .occasion-banner{display:flex;}
+
+body.eid{--blue:#22c55e;--cyan:#86efac;}
+body.eid::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at top right,rgba(34,197,94,0.1),transparent 50%),radial-gradient(ellipse at bottom left,rgba(134,239,172,0.07),transparent 50%);}
+body.eid #sidebar{background:linear-gradient(180deg,#060f0a,#040a06);}
+body.eid .logo-icon{background:linear-gradient(135deg,#22c55e,#15803d);}
+body.eid .btn-primary{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 4px 15px rgba(34,197,94,0.4);}
+body.eid .occasion-banner{display:flex;}
+
 /* ════════ LAYOUT ════════ */
 #app{display:flex;height:100%;position:relative;overflow:hidden;}
 #sidebar{width:268px;background:linear-gradient(180deg,#0d1527,#080c18);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:20px 16px;z-index:100;flex-shrink:0;transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden;}
@@ -321,7 +344,7 @@ body.light input[type=date].field{color-scheme:light;}
   </aside>
 
   <div id="main">
-    <div class="occasion-banner" id="occasionBanner"><span id="ocIcon">🌙</span><span class="oc-text" id="ocText">...</span></div>
+    <div class="occasion-banner" id="occasionBanner" style="display:none;"><span id="ocIcon"></span><span class="oc-text" id="ocText"></span></div>
     <div id="topbar">
       <div style="display:flex;align-items:center;gap:8px;"><div class="logo-icon" style="padding:7px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg></div><span style="font-weight:900;color:#fff;font-size:16px;">رحلتي</span></div>
       <button onclick="openSidebar()" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;color:var(--txt1);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
@@ -515,7 +538,7 @@ body.light input[type=date].field{color-scheme:light;}
   <div class="modal-box report-glass" style="width:100%; max-width:500px; display:flex; flex-direction:column; background:var(--bg2);">
     <div style="padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
       <h3 style="font-size:16px; font-weight:900; color:#fff;">📝 ملاحظة / نص</h3>
-      <button onclick="closeLibTextModal()" style="background:rgba(255,255,255,.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;">✕</button>
+      <button onclick="closeLibTextModal()" style="background:rgba(255,255,255,.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px; position:relative; z-index:100;">✕</button>
     </div>
     <div style="padding:20px; display:flex; flex-direction:column; gap:12px;">
       <input type="hidden" id="libTextId">
@@ -597,7 +620,7 @@ body.light input[type=date].field{color-scheme:light;}
       <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;"><span id="mIcon" style="font-size:24px;background:var(--bg4);padding:8px;border-radius:14px;">📝</span><h2 id="mTitle" style="font-size:20px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></h2></div>
       <div style="display:flex;align-items:center;gap:10px;">
         <select id="mType" onchange="handleTypeChange(this.value)" class="field" style="width:auto;font-size:12px;font-weight:700;padding:7px 12px;border-radius:10px;"><option value="general">📝 مهمة عادية</option><option value="course">🎓 كورس</option><option value="book">📖 كتاب</option><option value="lecture">🎤 محاضرة</option><option value="video">▶️ فيديو</option><option value="workshop">🛠️ ورشة عمل</option></select>
-        <button onclick="closeTaskModal()" style="background:rgba(255,255,255,.07);border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;color:var(--txt2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;" onmouseover="this.style.background='rgba(239,68,68,.15)';this.style.color='var(--red)'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='var(--txt2)'">✕</button>
+        <button onclick="closeTaskModal()" style="background:rgba(255,255,255,.07);border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;color:var(--txt2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s; position:relative; z-index:100;" onmouseover="this.style.background='rgba(239,68,68,.15)';this.style.color='var(--red)'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='var(--txt2)'">✕</button>
       </div>
     </div>
     <div style="flex:1;overflow-y:auto;padding:20px 24px;">
@@ -772,7 +795,6 @@ window.renderSpecificReport = () => {
     const now = new Date();
     let title = "", dateRange = "", completedTasks = 0, completedGoals = 0;
     
-    // Blur overlay logic
     const overlay = el("reportBlurOverlay");
     let isCurrentPeriod = false;
     
@@ -782,7 +804,6 @@ window.renderSpecificReport = () => {
         dateRange = new Intl.DateTimeFormat("ar-EG", { month: "long", year: "numeric" }).format(new Date(y, m, 1));
         isCurrentPeriod = (parseInt(y) === now.getFullYear() && parseInt(m) === now.getMonth());
         
-        // Filter archive for tasks/goals completed in that specific month/year
         completedTasks = (S.archive.today||[]).filter(t => {
             if(!t.archDate) return false;
             let d = new Date(t.archDate);
@@ -805,7 +826,6 @@ window.renderSpecificReport = () => {
         } else {
             let hist = S.archive.years[selVal];
             if(hist) {
-               // Assuming past year data might not have detailed arrays, we just estimate or show what we have.
                completedTasks = "محفوظ في الأرشيف القديم";
                completedGoals = "محفوظ في الأرشيف القديم";
             }
@@ -813,12 +833,10 @@ window.renderSpecificReport = () => {
     }
 
     if (overlay) {
-        // Blur ONLY if it's the current period and it's NOT the 1st of the month
         if (isCurrentPeriod && now.getDate() !== 1) overlay.style.display = "flex";
         else overlay.style.display = "none";
     }
 
-    // Weekly Trend for the current view
     let curWeekSum = 0, prevWeekSum = 0;
     for(let i=0; i<7; i++){
         let d1 = new Date(now); d1.setDate(d1.getDate()-i);
@@ -831,7 +849,6 @@ window.renderSpecificReport = () => {
     const trend = curAvg - prevAvg;
     const expected = Math.min(100, curAvg + (trend > 0 ? Math.ceil(trend/2) : 0));
 
-    // Completed Courses List for Yearly
     let coursesHtml = "";
     if (currentReportType === 'year') {
         const completedCourses = (S.tasks||[]).filter(t => t.type === 'course' && t.status === 'done');
@@ -865,6 +882,7 @@ window.renderSpecificReport = () => {
         <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px; text-align:center;">
             <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">توزيع الأقسام</h4>
             <div style="height:180px; position:relative;"><canvas id="reportPieChartCanvas"></canvas></div>
+            <div id="reportPieDetails" style="margin-top:15px; text-align:right;"></div>
         </div>
 
         <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
@@ -882,9 +900,9 @@ window.renderSpecificReport = () => {
         ${coursesHtml}
     `;
 
-    // Render the mini Pie Chart inside report
     setTimeout(() => {
         const pCtx = el("reportPieChartCanvas");
+        const pDetails = el("reportPieDetails");
         if(pCtx && typeof Chart !== "undefined") {
             const tCounts = {};
             (S.tasks||[]).forEach(t=>{const tag=t.tag||"بدون قسم";tCounts[tag]=(tCounts[tag]||0)+1;});
@@ -893,8 +911,19 @@ window.renderSpecificReport = () => {
             new Chart(pCtx, {
                 type:"doughnut",
                 data:{labels:lbls, datasets:[{data:dts, backgroundColor:cols, borderColor:"#0d1424", borderWidth:2}]},
-                options:{responsive:true, maintainAspectRatio:false, cutout:"60%", plugins:{legend:{position:"right", labels:{color:"#8ea6cc", font:{family:"Cairo", size:10}}}}}
+                options:{responsive:true, maintainAspectRatio:false, cutout:"60%", plugins:{legend:{display:false}}}
             });
+            if(pDetails) {
+                pDetails.innerHTML = lbls.map((l, i) => `
+                    <div style="display:flex; justify-content:space-between; background:rgba(255,255,255,0.05); padding:8px 12px; border-radius:8px; margin-bottom:5px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="width:10px; height:10px; border-radius:50%; background:${cols[i]}"></span>
+                            <span style="font-weight:bold; font-size:12px;">${l}</span>
+                        </div>
+                        <span style="font-weight:900; color:var(--txt1);">${dts[i]} مهام</span>
+                    </div>
+                `).join("");
+            }
         }
     }, 200);
 };
@@ -1385,7 +1414,7 @@ function renderNotes(){
 window.selNoteFolder=id=>{S.activNoteFolder=id;saveData();};
 window.addNoteFolder=()=>{const n=prompt("اسم اللوحة:");if(n){const id="nf"+Date.now();S.noteFolders.push({id,name:n.trim(),notes:[]});S.activNoteFolder=id;saveData();}};
 window.delNoteFolder=()=>{if(S.noteFolders.length<=1||!confirm("حذف اللوحة وكل ملاحظاتها؟"))return;playSound("del");S.noteFolders=S.noteFolders.filter(f=>f.id!==S.activNoteFolder);S.activNoteFolder=S.noteFolders[0].id;saveData();};
-window.addNote=()=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);if(!f)return;f.notes.unshift({id:"n"+Date.now(),title:"",content:"",color:'#fde047'});saveData();playSound("ok");};
+window.addNote=()=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);if(!f)return;const colors=["#fde047","#93c5fd","#6ee7b7","#f9a8d4","#c4b5fd"];f.notes.unshift({id:"n"+Date.now(),title:"",content:"",color:colors[Math.floor(Math.random()*colors.length)]});saveData();playSound("ok");};
 window.updateNoteSilently=(id,field,val)=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);if(n){n[field]=val;saveDataSilently();}};
 window.changeNoteColor=(id,color)=>{const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);const n=f?.notes.find(x=>x.id===id);if(n){n.color=color;saveDataSilently();const c=el('note-'+id);if(c)c.style.setProperty('--note-bg',color);}};
 window.delNote=id=>{if(confirm("مسح الملاحظة؟")){playSound("del");const f=S.noteFolders.find(x=>x.id===S.activNoteFolder);f.notes=f.notes.filter(n=>n.id!==id);saveData();}};
@@ -1400,7 +1429,7 @@ function renderCerts(){
 window.handleCertUpload=async inp=>{const f=inp.files[0];if(!f)return;showToast("جاري المعالجة...","loading");const r=new FileReader();r.onload=e=>{const name=prompt("اسم الشهادة:",f.name.split(".")[0]);if(!name){inp.value="";return;}const url=prompt("الرابط المباشر للملف (Drive Link):");if(!S.certificates)S.certificates=[];S.certificates.unshift({id:"cert"+Date.now(),title:name,data:e.target.result,url:url,ext:f.name.split(".").pop().toLowerCase(),date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())});inp.value="";saveData();showToast("تمت الإضافة! 🎓","success");};r.readAsDataURL(f);};
 window.delCert=id=>{if(confirm("مسح الشهادة؟")){playSound("del");S.certificates=S.certificates.filter(x=>x.id!==id);saveData();}};
 
-/* ════════ 8. POMODORO ════════ */
+/* ════════ 8. POMODORO (With Background Fix & Sounds) ════════ */
 const POMO_MODES={focus:{label:"تركيز 🧠",sec:25*60},short:{label:"استراحة قصيرة ☕",sec:5*60},long:{label:"استراحة طويلة 🛋️",sec:15*60}};
 let pomoInterval=null,pomoRemaining=POMO_MODES.focus.sec,pomoMode="focus",pomoRunning=false,pomoTargetTime=0;
 const POMO_CIRC=2*Math.PI*40;
@@ -1444,7 +1473,7 @@ window.renderHeatmap=()=>{
   const end=new Date(year, 11, 31);
   let html="";
   const cursor=new Date(start);
-  cursor.setDate(cursor.getDate() - cursor.getDay()); 
+  cursor.setDate(cursor.getDate() - cursor.getDay()); // Align to Sunday
   
   const months=["يناير","فبراير","مارس","إبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
   let lastMonth = -1;
@@ -1576,7 +1605,6 @@ onAuthStateChanged(auth,async u=>{
     }catch(e){console.error("Cloud sync offline:", e);}
     
     updateStreak();
-    el("motivQuote").textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
   }else{
     user=null;overlay.style.display="flex";overlay.style.opacity="1";
     el("gLoginBtn").style.display="flex";el("loadingRow").style.display="none";
