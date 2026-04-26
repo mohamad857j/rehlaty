@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رحلتي 🚀</title>
+    
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232563eb'/%3E%3Cpath d='M4 22c3-5 5-7 5-11s-2-6-2-8M20 22c-3-5-5-7-5-11s2-6 2-8M12 22v-2M12 15v-2M12 9V7' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,7 +14,7 @@
     
     <style>
         /* ════════════════════════════════════════
-           1. CSS VARIABLES — DARK (default)
+           1. المتغيرات والألوان الأساسية (الوضع الداكن)
         ════════════════════════════════════════ */
         :root {
             --bg: #07090f;
@@ -36,7 +37,9 @@
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
-        /* ════════ LIGHT MODE ════════ */
+        /* ════════════════════════════════════════
+           2. الوضع الفاتح (Light Mode)
+        ════════════════════════════════════════ */
         body.light {
             --bg: #f1f5fb;
             --bg2: #e8edf8;
@@ -69,7 +72,9 @@
             color-scheme: light;
         }
 
-        /* ════════ BASE STYLES ════════ */
+        /* ════════════════════════════════════════
+           3. التنسيق الأساسي للمتصفح
+        ════════════════════════════════════════ */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -88,7 +93,9 @@
             transition: background 0.4s, color 0.4s;
         }
 
-        /* ════════ BACKGROUND GLOW ════════ */
+        /* ════════════════════════════════════════
+           4. التأثيرات الخلفية (التنفس الزجاجي)
+        ════════════════════════════════════════ */
         body::before {
             content: '';
             position: fixed;
@@ -122,7 +129,9 @@
             50% { transform: scale(1.08); }
         }
 
-        /* ════════ LAYOUT ════════ */
+        /* ════════════════════════════════════════
+           5. الهيكل الأساسي للتطبيق
+        ════════════════════════════════════════ */
         #app {
             display: flex;
             height: 100%;
@@ -130,6 +139,7 @@
             overflow: hidden;
         }
 
+        /* الشريط الجانبي */
         #sidebar {
             width: 268px;
             background: linear-gradient(180deg, #0d1527, #080c18);
@@ -144,6 +154,7 @@
             overflow-x: hidden;
         }
 
+        /* الشريط الجانبي في الموبايل */
         @media(max-width: 767px) {
             #sidebar {
                 position: fixed;
@@ -158,6 +169,7 @@
             }
         }
 
+        /* المحتوى الرئيسي */
         #main {
             flex: 1;
             display: flex;
@@ -182,19 +194,32 @@
         }
 
         @media(max-width: 767px) {
-            #content { padding: 14px; }
+            #content { 
+                padding: 14px; 
+            }
         }
 
-        /* ════════ SCROLLBAR ════════ */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
+        /* ════════════════════════════════════════
+           6. شريط التمرير (Scrollbar)
+        ════════════════════════════════════════ */
+        ::-webkit-scrollbar { 
+            width: 5px; 
+            height: 5px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: transparent; 
+        }
         ::-webkit-scrollbar-thumb { 
             background: rgba(255,255,255,0.1); 
             border-radius: 99px; 
         }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: rgba(255,255,255,0.2); 
+        }
 
-        /* ════════ SIDEBAR COMPONENTS ════════ */
+        /* ════════════════════════════════════════
+           7. مكونات القائمة الجانبية
+        ════════════════════════════════════════ */
         .logo-icon {
             background: linear-gradient(135deg, var(--blue), #1d4ed8);
             border-radius: 14px;
@@ -251,7 +276,9 @@
             background: linear-gradient(180deg, var(--cyan), var(--blue));
         }
 
-        /* ════════ REUSABLE & HARDWARE ACCELERATION ════════ */
+        /* ════════════════════════════════════════
+           8. العناصر المشتركة (تسريع الهاردوير)
+        ════════════════════════════════════════ */
         .glass, 
         .task-card, 
         .cert-card, 
@@ -285,6 +312,9 @@
             box-shadow: 0 6px 24px rgba(0,0,0,0.3);
         }
 
+        /* ════════════════════════════════════════
+           9. الأزرار والحقول
+        ════════════════════════════════════════ */
         .btn-primary {
             background: linear-gradient(135deg, var(--blue), #1d4ed8);
             color: #fff;
@@ -330,7 +360,6 @@
             color: var(--blue2);
         }
         
-        /* Input Fields */
         .field {
             background: rgba(0, 0, 0, 0.25);
             border: 1px solid var(--border);
@@ -357,7 +386,7 @@
             color: var(--txt3); 
         }
         
-        /* Fix Date/Time dark scheme globally */
+        /* حل مشكلة انقلاب التاريخ في الوضع الداكن */
         input[type="datetime-local"] {
             color-scheme: dark;
             font-family: 'Cairo', sans-serif;
@@ -380,7 +409,9 @@
             background: rgba(0, 0, 0, 0.2);
         }
 
-        /* ════════ NEON HOVER EFFECT ════════ */
+        /* ════════════════════════════════════════
+           10. تأثير النيون على البطاقات
+        ════════════════════════════════════════ */
         .task-card:hover, 
         .course-hover:hover, 
         .lib-card:hover {
@@ -388,7 +419,9 @@
             border-color: var(--blue2) !important;
         }
 
-        /* ════════ TASK CARD (KANBAN) ════════ */
+        /* ════════════════════════════════════════
+           11. تصميم كارت المهام (بورد المهام)
+        ════════════════════════════════════════ */
         .task-card {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px);
@@ -403,7 +436,9 @@
             word-break: break-word;
         }
 
-        /* ════════ TODAY ITEM ════════ */
+        /* ════════════════════════════════════════
+           12. كارت المهام اليومية
+        ════════════════════════════════════════ */
         .today-item {
             background: var(--bg3);
             border: 1px solid var(--border);
@@ -453,7 +488,9 @@
             transform: translate(-50%, -50%);
         }
 
-        /* ════════ PROGRESS / STAT ════════ */
+        /* ════════════════════════════════════════
+           13. الإحصائيات وشريط التقدم
+        ════════════════════════════════════════ */
         .pbar-track {
             background: rgba(255, 255, 255, 0.06);
             border-radius: 99px;
@@ -511,7 +548,9 @@
             50% { box-shadow: 0 4px 22px rgba(245, 158, 11, 0.65); }
         }
 
-        /* ════════ FOLDER / NOTE & PALETTE ════════ */
+        /* ════════════════════════════════════════
+           14. الملاحظات والألوان (Palette)
+        ════════════════════════════════════════ */
         .folder-btn {
             text-align: right;
             padding: 11px 14px;
@@ -599,7 +638,9 @@
             z-index: 10; 
         }
 
-        /* ════════ MEDIEVAL CERTIFICATES (GOLDEN FRAME) ════════ */
+        /* ════════════════════════════════════════
+           15. الشهادات (الإطار الذهبي)
+        ════════════════════════════════════════ */
         .cert-card {
             background: #1c1511; 
             border: 14px solid transparent;
@@ -639,7 +680,9 @@
             z-index: 1;
         }
 
-        /* ════════ MODALS & PANELS (FIXED Z-INDEX) ════════ */
+        /* ════════════════════════════════════════
+           16. النوافذ المنبثقة (Modals)
+        ════════════════════════════════════════ */
         .modal-bg {
             position: fixed; 
             inset: 0; 
@@ -700,7 +743,9 @@
             left: 0; 
         }
 
-        /* ════════ MISC ════════ */
+        /* ════════════════════════════════════════
+           17. متفرقات (أيقونات التحميل، الإشعارات)
+        ════════════════════════════════════════ */
         .loader {
             border: 3px solid rgba(255, 255, 255, 0.08); 
             border-left-color: var(--cyan);
@@ -714,6 +759,7 @@
             to { transform: rotate(360deg); } 
         }
 
+        /* تعديل طبقة الإشعارات لضمان ظهورها فوق كل شيء */
         #toast {
             position: fixed; 
             bottom: 28px; 
@@ -721,7 +767,7 @@
             transform: translateX(-50%) translateY(20px);
             padding: 10px 20px; 
             border-radius: 16px; 
-            z-index: 99999; 
+            z-index: 999999; 
             opacity: 0; 
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
@@ -843,7 +889,9 @@
             #topbar { display: flex; } 
         }
 
-        /* ════════ POMODORO & AZKAR ════════ */
+        /* ════════════════════════════════════════
+           18. بومودورو والأذكار
+        ════════════════════════════════════════ */
         .pomo-modes { 
             display: flex; 
             gap: 6px; 
@@ -900,7 +948,9 @@
             transition: stroke-dashoffset 0.9s linear; 
         }
 
-        /* ════════ HEATMAP ════════ */
+        /* ════════════════════════════════════════
+           19. الهيتماب (سجل النشاط السنوي)
+        ════════════════════════════════════════ */
         #heatmapWidget { 
             background: var(--bg3); 
             border: 1px solid var(--border); 
@@ -978,7 +1028,9 @@
             display: inline-block; 
         }
 
-        /* ════════ ANALYTICS ════════ */
+        /* ════════════════════════════════════════
+           20. الإحصائيات البيانية (Charts)
+        ════════════════════════════════════════ */
         #analyticsWidget { 
             background: var(--bg3); 
             border: 1px solid var(--border); 
@@ -1023,7 +1075,9 @@
             position: relative; 
         }
 
-        /* ════════ PRINT & REPORT STYLES ════════ */
+        /* ════════════════════════════════════════
+           21. إعدادات الطباعة (PDF)
+        ════════════════════════════════════════ */
         @media print {
             body * { 
                 visibility: hidden; 
@@ -1045,12 +1099,14 @@
                 display: none !important; 
             }
         }
+        
         .report-glass { 
             background: rgba(255, 255, 255, 0.05); 
             border: 1px solid var(--border); 
             border-radius: 16px; 
             padding: 20px; 
         }
+        
         .report-text { 
             color: #eef2ff !important; 
         }
@@ -1119,16 +1175,18 @@
                 <div style="font-size:11px;color:var(--txt3);font-weight:600;margin-top:1px;">نحو غد أفضل</div>
             </div>
         </div>
+        
         <div style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.12);margin-bottom:22px;">
             <div id="uAvatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1d4ed8);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#fff;flex-shrink:0;">?</div>
             <div style="min-width:0;">
                 <div id="uName" style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">...</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
-                    <div style="width:7px;height:7px;border-radius:50%;background:var(--green2);animation:pulseWarm 2s ease-in-out infinite;box-shadow:0 0 6px var(--green2);"></div>
-                    <span style="font-size:11px;color:var(--green2);font-weight:700;">متصل سحابياً</span>
+                    <div id="connectionDot" style="width:7px;height:7px;border-radius:50%;background:var(--green2);animation:pulseWarm 2s ease-in-out infinite;box-shadow:0 0 6px var(--green2);"></div>
+                    <span id="connectionText" style="font-size:11px;color:var(--green2);font-weight:700;">متصل سحابياً</span>
                 </div>
             </div>
         </div>
+        
         <nav style="flex:1;display:flex;flex-direction:column;gap:3px;">
             <button class="nav-btn active" id="tab-today"   onclick="window.switchTab('today')">  <span>🎯</span> يومي </button>
             <button class="nav-btn"        id="tab-goals"   onclick="window.switchTab('goals')">  <span>🏆</span> أهدافي </button>
@@ -1273,21 +1331,27 @@
                 <div style="display:flex;gap:24px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
-                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);"><div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ</div>
+                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);">
+                                <div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ
+                            </div>
                             <span id="cntTodo" style="background:rgba(74,96,128,0.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
                         </div>
                         <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
-                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه</div>
+                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);">
+                                <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه
+                            </div>
                             <span id="cntInprogress" style="background:rgba(245,158,11,0.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,0.2);">0</span>
                         </div>
                         <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
-                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅</div>
+                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);">
+                                <div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅
+                            </div>
                             <span id="cntDone" style="background:rgba(16,185,129,0.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.2);">0</span>
                         </div>
                         <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
@@ -1467,7 +1531,7 @@
     </div>
 </div>
 
-<div id="reportViewModal" class="modal-bg" style="z-index: 100000;">
+<div id="reportViewModal" class="modal-bg" style="z-index: 99999;">
     <div class="modal-box report-glass" style="width:100%; max-width:700px; height:auto; max-height:90vh; display:flex; flex-direction:column; background:var(--bg2);">
         
         <div class="no-print" style="padding:22px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
@@ -1743,7 +1807,7 @@ window.playSound = function(type) {
     }
 };
 
-/* ════════ AZKAR WIDGET ════════ */
+/* ════════ AZKAR & OFFLINE UI ════════ */
 setInterval(function() {
     const zikrEl = el("azkarText");
     if(zikrEl) {
@@ -1756,7 +1820,32 @@ setInterval(function() {
     }
 }, 10000);
 
-/* ════════ DATE FORMAT HELPER (Fixed Datetime issue) ════════ */
+window.setOfflineUI = function() {
+    const dot = el('connectionDot');
+    const txt = el('connectionText');
+    if(dot && txt) {
+        dot.style.background = 'var(--red)';
+        dot.style.boxShadow = '0 0 6px var(--red)';
+        txt.style.color = 'var(--red)';
+        txt.textContent = 'حفظ محلي (أوفلاين)';
+    }
+};
+
+window.setOnlineUI = function() {
+    const dot = el('connectionDot');
+    const txt = el('connectionText');
+    if(dot && txt) {
+        dot.style.background = 'var(--green2)';
+        dot.style.boxShadow = '0 0 6px var(--green2)';
+        txt.style.color = 'var(--green2)';
+        txt.textContent = 'متصل سحابياً';
+    }
+};
+
+window.addEventListener('offline', window.setOfflineUI);
+window.addEventListener('online', window.setOnlineUI);
+
+/* ════════ DATE FORMAT HELPER ════════ */
 function safeDateTime(val) {
     if(!val) return "";
     if(val.length === 10) return val + "T00:00"; 
@@ -1771,7 +1860,10 @@ window.saveData = function() {
     if(user) {
         clearTimeout(window.syncTimeout);
         window.syncTimeout = setTimeout(() => {
-            setDoc(doc(db,"rehlaty_users",user.uid), S).catch(e => console.log("Offline save queued:", e.message));
+            setDoc(doc(db,"rehlaty_users",user.uid), S).catch(e => {
+                console.log("Offline save queued:", e.message);
+                window.setOfflineUI();
+            });
         }, 2000);
     }
 };
@@ -1781,7 +1873,10 @@ window.saveDataSilently = function() {
     if(user) {
         clearTimeout(window.syncTimeout);
         window.syncTimeout = setTimeout(() => {
-            setDoc(doc(db,"rehlaty_users",user.uid), S).catch(e => console.log("Offline save queued:", e.message));
+            setDoc(doc(db,"rehlaty_users",user.uid), S).catch(e => {
+                console.log("Offline save queued:", e.message);
+                window.setOfflineUI();
+            });
         }, 2000);
     }
 };
@@ -1800,7 +1895,6 @@ function dailySweep() {
             const uncompletedToday = S.todayTasks.filter(t => t && !t.done);
             
             completedToday.forEach(t => {
-                // Ensure Tag is carried over to archive
                 let finalTag = "بدون قسم";
                 if(t.parentId) {
                     let parent = S.tasks.find(x => x.id === t.parentId);
@@ -1917,7 +2011,7 @@ window.restoreArchiveItem = function(type, idx) {
     window.showToast("تم الاسترجاع بنجاح!","success");
 };
 
-/* ════════ REPORT GENERATION LOGIC (SMART ACCORDION & PIE) ════════ */
+/* ════════ REPORT GENERATION LOGIC ════════ */
 let currentReportType = 'month';
 
 window.openReportModal = function(type) {
@@ -2079,7 +2173,7 @@ window.renderSpecificReport = function() {
         }
     }
     
-    // Accurate Pie Chart based ONLY on filteredTasks and explicitly copied tags
+    // Accurate Pie Chart
     const tCounts = {};
     filteredTasks.forEach(t => {
         let tag = t.savedTag || "مهام عامة"; 
@@ -2169,10 +2263,9 @@ window.closeReportModal = function() {
 
 window.saveAsPDF = function() {
     const element = document.getElementById('reportContentArea');
-    
-    // Hard-hack for background and colors to prevent white PDF
     const oldBg = element.style.backgroundColor;
     const oldColor = element.style.color;
+    
     element.style.backgroundColor = '#111827'; 
     element.style.color = '#eef2ff';
     element.style.padding = '20px';
@@ -2598,6 +2691,12 @@ window.delTodayTask = function(id) {
 };
 
 window.goToCourse = function(parentId, subIdx) {
+    const courseExists = S.tasks.find(x => x.id === parentId);
+    if (!courseExists) {
+        window.showToast("⚠️ هذا الكورس/المشروع تم حذفه من بورد المهام", "error");
+        return;
+    }
+    
     window.switchTab('kanban');
     setTimeout(() => {
         window.openTaskModal(parentId);
@@ -3861,6 +3960,7 @@ onAuthStateChanged(auth, async u => {
             }
         } catch(e) {
             console.error("Cloud sync offline:", e.message);
+            window.setOfflineUI(); // Trigger UI offline mode if getDoc fails
         }
     
         window.updateStreak();
