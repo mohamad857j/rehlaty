@@ -1781,72 +1781,25 @@
 
 <div id="toast"><span id="toastIcon"></span><span id="toastText"></span></div>
 
-<script>
-    if(typeof window.loginWithGoogle === "undefined") {
-window.applyBgImage = function(url) {
- 
- 
-S.bgImage=url||"";
- 
- 
-if(url){document.body.style.backgroundImage=`url('${url}')`; document.body.style.backgroundSize="cover"; document.body.style.backgroundPosition="center"; document.body.style.backgroundAttachment="fixed"; const ov=document.getElementById("appOverlay");if(ov)ov.style.opacity="1";}
- 
- 
-else{document.body.style.backgroundImage=""; const ov=document.getElementById("appOverlay");if(ov)ov.style.opacity="0";}
-};
-window.setBgPreset=function(url){window.applyBgImage(url);window.saveDataSilently();window.showToast("
-ت
-م
- 
-ت
-غ
-ي
-ي
-ر
- 
-ا
-ل
-خ
-ل
-ف
-ي
-ة
-!","success");};
-window.handleBgUpload=async function(inp){if(!inp.files[0])return;window.showToast("
-ج
-ا
-ر
-ي
- 
-ا
-ل
-ر
-ف
-ع
-...","loading");try{const url=await uploadCloud(inp.files[0]);window.setBgPreset(url);}catch(e){window.showToast("
-ف
-ش
-ل
-","error");}inp.value="";};
-window.removeBg=function(){window.applyBgImage("");window.saveDataSilently();window.showToast("
-إ
-ز
-ا
-ل
-ة
- 
-ا
-ل
-خ
-ل
-ف
-ي
-ة
-","success");};
 
-        window.loginWithGoogle = () => alert("جاري التحميل... الرجاء الانتظار.");
-    }
-</script>
+
+window.applyBgImage = function(url) {
+    S.bgImage = url || "";
+    if(url) {
+        document.body.style.backgroundImage = `url('${url}')`; 
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundAttachment = "fixed";
+        const ov = document.getElementById("appOverlay"); if(ov) ov.style.opacity = "1";
+    } else {
+        document.body.style.backgroundImage = "";
+        const ov = document.getElementById("appOverlay"); if(ov) ov.style.opacity = "0";
+    }
+};
+window.setBgPreset = function(url) { window.applyBgImage(url); window.saveDataSilently(); window.showToast("u{062A}u{0645} u{062A}u{063A}u{064A}u{064A}u{0631} u{0627}u{0644}u{062E}u{0644}u{0641}u{064A}u{0629}!","success"); };
+window.handleBgUpload = async function(inp) { if(!inp.files[0])return; window.showToast("u{062C}u{0627}u{0631}u{064A} u{0627}u{0644}u{0631}u{0641}u{0639}...","loading"); try{ const url=await uploadCloud(inp.files[0]); window.setBgPreset(url); } catch(e){ window.showToast("u{0641}u{0634}u{0644} u{0627}u{0644}u{0631}u{0641}u{0639}","error"); } inp.value=""; };
+window.removeBg = function() { window.applyBgImage(""); window.saveDataSilently(); window.showToast("u{062A}u{0645}u{062A} u{0625}u{0632}u{0627}u{0644}u{0629} u{0627}u{0644}u{062E}u{0644}u{0641}u{064A}u{0629}","success"); };
+
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -2538,7 +2491,6 @@ window.updateStreak = function() {
     }
 }
 
-window.updateStats = function() {
 function getTodayStr(){return new Date().toISOString().split("T")[0];}
 window.updateStats = function() {
  
@@ -3294,13 +3246,16 @@ window.renderSubtasks = function() {
                 <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
                     <button onclick="
 window.confirmScheduleTask = function() {
-  const p=window._ps;if(!p)return;
-  const td=el('schedDate').value||getTodayStr();
-  const xp=parseInt(el('schedXp').value||'30');
-  if(!S.todayTasks)S.todayTasks=[];
-  S.todayTasks.unshift({id:'td'+Date.now(),text:p.text,done:false,parentId:p.parentId,subIdx:p.subIdx,parentName:p.parentName,targetDate:td,xp});
-  window._ps=null;el('scheduleModal').classList.remove('show');
-  window.saveData();window.showToast(td===getTodayStr()?'تم &#x1F3AF;':('جدولة '+td),'success');
+    const p = window._ps; if(!p) return;
+    const td = el("schedDate").value || getTodayStr();
+    const xp = parseInt(el("schedXp").value || "30");
+    if(!S.todayTasks) S.todayTasks = [];
+    S.todayTasks.unshift({id:"td"+Date.now(), text:p.text, done:false, parentId:p.parentId, subIdx:p.subIdx, parentName:p.parentName, targetDate:td, xp});
+    window._ps = null;
+    el("scheduleModal").classList.remove("show");
+    window.saveData();
+    const msg = td === getTodayStr() ? "u{062A}u{0645} u{0627}u{0644}u{0646}u{0642}u{0644} u{0644}u{0644}u{064A}u{0648}u{0645}! &#x1F3AF;" : "u{062C}u{062F}u{0648}u{0644}u{0629} u{0644}u{064A}u{0648}u{0645} " + td;
+    window.showToast(msg, "success");
 };
 window.sendSubToGoals(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(139,92,246,0.1);color:var(--purple);border:1px solid rgba(139,92,246,0.2);cursor:pointer;font-family:'Cairo',sans-serif;">🏆 للأهداف</button>
                     <button onclick="window.sendSubToToday(${i})" style="font-size:9px;font-weight:900;padding:5px 9px;border-radius:8px;background:rgba(16,185,129,0.1);color:var(--green2);border:1px solid rgba(16,185,129,0.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯 لليوم</button>
@@ -3874,95 +3829,17 @@ window.renderCerts = function() {
 };
 
 window.handleCertUpload = async function(inp) {
- 
- 
-const f=inp.files[0];if(!f)return;
- 
- 
-const name=prompt("
-ا
-س
-م
- 
-ا
-ل
-ش
-ه
-ا
-د
-ة
-:",f.name.split(".")[0]);
- 
- 
-if(!name){inp.value="";return;}
- 
- 
-window.showToast("
-ج
-ا
-ر
-ي
- 
-ا
-ل
-ر
-ف
-ع
-...","loading");
- 
- 
-try {
- 
- 
- 
- 
-const url=await uploadCloud(f);
- 
- 
- 
- 
-if(!S.certificates)S.certificates=[];
- 
- 
- 
- 
-S.certificates.unshift({id:"cert"+Date.now(),title:name,url,ext:f.name.split(".").pop().toLowerCase(),date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())});
- 
- 
- 
- 
-inp.value="";window.saveData();
- 
- 
- 
- 
-window.showToast("
-ت
-م
-ت
-ت
- 
-ا
-ل
-إ
-ض
-ا
-ف
-ة
-! &#x1F393;","success");
- 
- 
-} catch(e){window.showToast("
-ف
-ش
-ل
- 
-ا
-ل
-ر
-ف
-ع
-","error");inp.value="";}
+    const f = inp.files[0]; if(!f) return;
+    const name = prompt("u{0627}u{0633}u{0645} u{0627}u{0644}u{0634}u{0647}u{0627}u{062F}u{0629}:", f.name.split(".")[0]);
+    if(!name) { inp.value = ""; return; }
+    window.showToast("u{062C}u{0627}u{0631}u{064A} u{0627}u{0644}u{0631}u{0641}u{0639} u{0639}u{0644}u{0649} u{0627}u{0644}u{0633}u{062D}u{0627}u{0628}u{0629}...","loading");
+    try {
+        const url = await uploadCloud(f);
+        if(!S.certificates) S.certificates = [];
+        S.certificates.unshift({ id:"cert"+Date.now(), title:name, url, ext:f.name.split(".").pop().toLowerCase(), date:new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date()) });
+        inp.value = ""; window.saveData();
+        window.showToast("u{062A}u{0645}u{062A} u{0627}u{0644}u{0625}u{0636}u{0627}u{0641}u{0629}! &#x1F393;","success");
+    } catch(e) { window.showToast("u{0641}u{0634}u{0644} u{0627}u{0644}u{0631}u{0641}u{0639}","error"); inp.value = ""; }
 };
 };
 
