@@ -2493,55 +2493,22 @@ window.updateStreak = function() {
 
 function getTodayStr(){return new Date().toISOString().split("T")[0];}
 window.updateStats = function() {
- 
- 
 const todayStr=getTodayStr();
- 
- 
 const visible=(S.todayTasks||[]).filter(t=>!t.targetDate||t.targetDate<=todayStr);
- 
- 
 const totalXP=visible.reduce((s,t)=>s+(parseInt(t.xp)||10),0);
- 
- 
 const earnedXP=visible.filter(t=>t.done).reduce((s,t)=>s+(parseInt(t.xp)||10),0);
- 
- 
 const tot=visible.length,done2=visible.filter(t=>t.done).length;
- 
- 
 const pct=totalXP>0?Math.round(earnedXP/totalXP*100):0;
- 
- 
 el("sTotalToday").textContent=tot;
- 
- 
 el("sDoneToday").textContent=done2;
- 
- 
 el("sKanban").textContent=(S.tasks||[]).length;
- 
- 
 el("progressBar").style.width=pct+"%";
- 
- 
 el("progressPct").textContent=pct+"%";
- 
- 
 el("moodEmoji").textContent=pct===0?"&#x1F634;":pct<30?"&#x1F331;":pct<60?"&#x1F4AA;":pct<90?"&#x1F525;":"&#x1F3C6;";
- 
- 
 const sn=el("streakNum");if(sn)sn.textContent=S.streak||0;
- 
- 
 const today=getTodayStr();
- 
- 
 if(visible.length>0){if(!S.history)S.history={};S.history[today]=pct;}
 }
-    }
-}
-
 /* ════════ TABS / SIDEBAR / THEME / PERIODS ════════ */
 const ALL_TABS = ["today","goals","kanban","library","notes","certs","focus","extras"];
 
