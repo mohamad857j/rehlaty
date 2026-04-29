@@ -176,7 +176,7 @@
             flex-direction: column;
             min-width: 0;
             overflow: hidden;
-            background: var(--bg);
+            background: transparent; /* Changed for custom backgrounds */
             position: relative;
             z-index: 1;
         }
@@ -1590,6 +1590,7 @@
             <button onclick="window.closeSettings()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
         </div>
         <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;max-height:70vh;overflow-y:auto;">
+            
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div>
                     <div style="font-size:13px;font-weight:700;color:var(--txt1);">مظهر التطبيق</div>
@@ -1597,6 +1598,23 @@
                 </div>
                 <button class="btn-ghost" onclick="window.toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button>
             </div>
+
+            <!-- جديد: خلفية التطبيق -->
+            <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+                <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
+                    <span>خلفية التطبيق 🎨</span>
+                    <button onclick="window.changeBg('none', '')" style="background:transparent;border:none;color:var(--red);font-size:10px;font-weight:bold;cursor:pointer;">إزالة ✕</button>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                    <div onclick="window.changeBg('gradient', 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBg('gradient', 'linear-gradient(135deg, #141e30, #243b55)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #141e30, #243b55); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBg('gradient', 'radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBg('pattern', 'radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px); background-size:15px 15px; border:2px solid var(--border);"></div>
+                </div>
+                <button onclick="document.getElementById('bgUploadIn').click()" style="width:100%;background:rgba(59,130,246,0.1);border:1px dashed var(--blue2);border-radius:10px;color:var(--blue2);font-weight:700;font-size:12px;padding:8px;cursor:pointer;">🖼️ رفع صورة من جهازك</button>
+                <input type="file" id="bgUploadIn" style="display:none;" accept="image/*" onchange="window.handleBgUpload(this)">
+            </div>
+
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">إدارة الأقسام</div>
                 <div style="display:flex;gap:7px;margin-bottom:10px;">
@@ -1606,6 +1624,1763 @@
                 </div>
                 <div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto;"></div>
             </div>
+
+            <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+                <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn-ghost" onclick="window.exportData()" style="flex:1;justify-content:center;display:flex;gap:6px;padding:10px;">💾 حفظ</button>
+                    <button onclick="document.getElementById('importIn').click()" style="flex:1;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;color:var(--green2);font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;font-family:'Cairo',sans-serif;">📂 استرجاع</button>
+                    <input type="file" id="importIn" style="display:none;" accept=".json" onchange="window.importData(this)">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="scheduledModal" class="modal-bg" style="z-index: 100000;">
+    <div class="modal-box" style="width:100%;max-width:500px; height:70vh; display:flex; flex-direction:column;">
+        <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="font-size:18px;font-weight:900;color:#fff;">📅 المهام المجدولة للمستقبل</h3>
+            <button onclick="window.closeScheduledModal()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+        <div id="scheduledList" style="padding:20px 24px; flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px;"></div>
+    </div>
+</div>
+
+<div id="toast"><span id="toastIcon"></span><span id="toastText"></span></div>
+
+<div id="taskModal" class="modal-bg" style="z-index: 100000;">
+    <div class="modal-box" style="width:95%;max-width:1300px;height:90vh;display:flex;flex-direction:column;">
+        <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;">
+                <span id="mIcon" style="font-size:24px;background:var(--bg4);padding:8px;border-radius:14px;">📝</span>
+                <h2 id="mTitle" style="font-size:20px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <select id="mType" onchange="window.handleTypeChange(this.value)" class="field" style="width:auto;font-size:12px;font-weight:700;padding:7px 12px;border-radius:10px;">
+                    <option value="general">📝 مهمة عادية</option>
+                    <option value="course">🎓 كورس</option>
+                    <option value="book">📖 كتاب</option>
+                    <option value="lecture">🎤 محاضرة</option>
+                    <option value="video">▶️ فيديو</option>
+                    <option value="workshop">🛠️ ورشة عمل</option>
+                </select>
+                <button onclick="window.closeTaskModal()" class="close-btn-high" style="background:rgba(239,68,68,0.15);border:none;border-radius:10px;width:36px;height:36px;cursor:pointer;color:var(--red);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.3)';" onmouseout="this.style.background='rgba(239,68,68,0.15)';">✕</button>
+            </div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:20px 24px;">
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;" class="task-modal-grid">
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div style="display:flex;gap:10px;">
+                        <label style="flex:1;">
+                            <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">البداية 📅</div>
+                            <input type="datetime-local" id="mStartDate" onchange="window.saveTaskDates()" class="field" style="font-size:12px;">
+                        </label>
+                        <label style="flex:1;">
+                            <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">النهاية 🏁</div>
+                            <input type="datetime-local" id="mEndDate" onchange="window.saveTaskDates()" class="field" style="font-size:12px;">
+                        </label>
+                    </div>
+                    <label>
+                        <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">الوصف العام</div>
+                        <textarea id="mDesc" oninput="window.saveDataSilently()" class="field" style="height:160px;resize:none;border-radius:14px;font-size:13px;" placeholder="اكتب تفاصيل المهمة..."></textarea>
+                    </label>
+                    <div style="padding:14px;border-radius:14px;background:rgba(0,0,0,0.25);border:1px solid var(--border);">
+                        <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">مرفقات 📎</div>
+                        <div style="display:flex;gap:7px;margin-bottom:10px;">
+                            <button class="btn-ghost" onclick="window.addAttachment('link')" style="flex:1;font-size:11px;color:var(--blue2);">🔗 رابط</button>
+                            <button class="btn-ghost" onclick="window.addAttachment('file')" style="flex:1;font-size:11px;color:var(--green2);">☁️ ملف</button>
+                        </div>
+                        <div id="mAttachments" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">الدروس / الخطوات</div>
+                    <div style="display:flex;gap:8px;background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:12px;padding:7px;">
+                        <input type="text" id="newSubIn" placeholder="أضف درساً..." class="field" style="border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addSubtask()">
+                        <button class="btn-primary" onclick="window.addSubtask()" style="padding:7px 14px;font-size:12px;flex-shrink:0;">➕</button>
+                    </div>
+                    <div id="mSubtasks" style="display:flex;flex-direction:column;gap:10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if(typeof window.loginWithGoogle === "undefined") {
+        window.loginWithGoogle = () => alert("جاري التحميل... الرجاء الانتظار.");
+    }
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+// Firebase Config
+const FB = {
+    apiKey: "AIzaSyBbdeRIp_cbN7LP3dKovOmfCHTxseM-zro",
+    authDomain: "rehlaty-final.firebaseapp.com",
+    projectId: "rehlaty-final",
+    storageBucket: "rehlaty-final.firebasestorage.app",
+    messagingSenderId: "332709629068",
+    appId: "1:332709629068:web:cdfb8f40dfa4c74d31ffa9"
+};
+
+const fbApp = initializeApp(FB);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+const gProv = new GoogleAuthProvider();
+
+let user = null;
+let activTask = null;
+let sq = "";
+
+// Default State (Safe Boot)
+let S = {
+    tasks: [], 
+    todayTasks: [], 
+    goals: [], 
+    resources: [], 
+    certificates: [],
+    noteFolders: [{id:"nf_gen", name:"لوحة عامة", notes:[]}], من عيوني يا صديقي! شهادة أعتز بيها جداً 👑.
+
+بما إنك مصمم على الكود كامل عشان تريح دماغك من وجع الدماغ بتاع النسخ واللصق، أنا هطبعهولك كله من الألف للياء وفيه **كل التعديلات الجديدة** (إصلاح زرار التاريخ عشان يفتح التقويم + إضافة واجهة تغيير الخلفيات في الإعدادات + برمجة الخلفيات).
+
+**بس ركز معايا في نقطة مهمة جداً:** 
+الذكاء الاصطناعي له "حد أقصى" لعدد السطور في الرسالة الواحدة. الكود بتاعك ضخم جداً، فعشان ميوصلش مقطوع ويبوظ منك تاني، أنا هبعتهولك على **جزئين**. 
+
+انسخ **الجزء الأول** ده وحطه في ملفك، وأول ما تنسخه اكتبلي كلمة واحدة بس: **"كمل"**، وهبعتلك الجزء التاني فوراً تلزقه تحته ويبقى كده الكود معاك كامل وسليم 100%.
+
+يلا بينا، ده **الجزء الأول** (من أول الملف لحد نص أكواد الجافاسكريبت):
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلتي 🚀</title>
+    
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232563eb'/%3E%3Cpath d='M4 22c3-5 5-7 5-11s-2-6-2-8M20 22c-3-5-5-7-5-11s2-6 2-8M12 22v-2M12 15v-2M12 9V7' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+    
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js](https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js)"></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js](https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js)"></script>
+    <link href="[https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap](https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap)" rel="stylesheet">
+    
+    <style>
+        /* ════════════════════════════════════════
+           1. المتغيرات والألوان الأساسية (الوضع الداكن)
+        ════════════════════════════════════════ */
+        :root {
+            --bg: #07090f;
+            --bg2: #0c1018;
+            --bg3: #111827;
+            --bg4: #1a2235;
+            --border: rgba(255, 255, 255, 0.07);
+            --border2: rgba(255, 255, 255, 0.12);
+            --txt1: #eef2ff;
+            --txt2: #8ea6cc;
+            --txt3: #46607a;
+            --blue: #3b82f6;
+            --blue2: #60a5fa;
+            --cyan: #38bdf8;
+            --green: #10b981;
+            --green2: #34d399;
+            --purple: #8b5cf6;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ════════════════════════════════════════
+           2. الوضع الفاتح (Light Mode)
+        ════════════════════════════════════════ */
+        body.light {
+            --bg: #f1f5fb;
+            --bg2: #e8edf8;
+            --bg3: #ffffff;
+            --bg4: #f8faff;
+            --border: rgba(0, 0, 0, 0.08);
+            --border2: rgba(0, 0, 0, 0.15);
+            --txt1: #0f172a;
+            --txt2: #4a6080;
+            --txt3: #9ab0cc;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light #sidebar {
+            background: linear-gradient(180deg, #fff, #f1f5fb);
+        }
+
+        body.light .glass {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.light .task-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light input, 
+        body.light textarea, 
+        body.light select {
+            color-scheme: light;
+        }
+
+        /* ════════════════════════════════════════
+           3. التنسيق الأساسي للمتصفح
+        ════════════════════════════════════════ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--txt1);
+            transition: background 0.4s, color 0.4s;
+        }
+
+        /* ════════════════════════════════════════
+           4. التأثيرات الخلفية (التنفس الزجاجي)
+        ════════════════════════════════════════ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -15%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.06), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: breathe 9s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -15%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: breathe 12s ease-in-out infinite reverse;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        /* ════════════════════════════════════════
+           5. الهيكل الأساسي للتطبيق
+        ════════════════════════════════════════ */
+        #app {
+            display: flex;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* الشريط الجانبي */
+        #sidebar {
+            width: 268px;
+            background: linear-gradient(180deg, #0d1527, #080c18);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 16px;
+            z-index: 100;
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* الشريط الجانبي في الموبايل */
+        @media(max-width: 767px) {
+            #sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                transform: translateX(100%);
+                box-shadow: -10px 0 40px rgba(0,0,0,0.6);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+
+        /* المحتوى الرئيسي */
+        #main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        #content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media(max-width: 767px) {
+            #content { 
+                padding: 14px; 
+            }
+        }
+
+        /* ════════════════════════════════════════
+           6. شريط التمرير (Scrollbar)
+        ════════════════════════════════════════ */
+        ::-webkit-scrollbar { 
+            width: 5px; 
+            height: 5px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 99px; 
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: rgba(255,255,255,0.2); 
+        }
+
+        /* ════════════════════════════════════════
+           7. مكونات القائمة الجانبية
+        ════════════════════════════════════════ */
+        .logo-icon {
+            background: linear-gradient(135deg, var(--blue), #1d4ed8);
+            border-radius: 14px;
+            padding: 9px;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.4s;
+        }
+
+        .nav-btn {
+            width: 100%;
+            text-align: right;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            color: var(--txt2);
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            background: transparent;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.2);
+            color: var(--blue2);
+            transform: translateX(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(59, 130, 246, 0.08));
+            border-color: rgba(59, 130, 246, 0.35);
+            color: #bfdbfe;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.12);
+        }
+
+        .nav-btn.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 3px;
+            border-radius: 3px 0 0 3px;
+            background: linear-gradient(180deg, var(--cyan), var(--blue));
+        }
+
+        /* ════════════════════════════════════════
+           8. العناصر المشتركة (تسريع الهاردوير)
+        ════════════════════════════════════════ */
+        .glass, 
+        .task-card, 
+        .cert-card, 
+        .lib-card, 
+        .stat-card, 
+        .today-item, 
+        .note-card, 
+        .course-hover, 
+        .azkar-widget {
+            transform: translateZ(0); 
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+
+        .glass {
+            background: rgba(13, 20, 36, 0.82);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border2);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+        }
+
+        /* ════════════════════════════════════════
+           9. الأزرار والحقول
+        ════════════════════════════════════════ */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--blue), #1d4ed8);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 9px 18px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--txt2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 7px 14px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.25);
+            color: var(--blue2);
+        }
+        
+        .field {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 9px 14px;
+            color: var(--txt1);
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        body.light .field {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .field:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .field::placeholder { 
+            color: var(--txt3); 
+        }
+        
+        /* حل مشكلة انقلاب التاريخ في الوضع الداكن */
+        input[type="datetime-local"] {
+            color-scheme: dark;
+            font-family: 'Cairo', sans-serif;
+            direction: ltr; 
+        }
+
+        body.light input[type="datetime-local"] {
+            color-scheme: light;
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* ════════════════════════════════════════
+           10. تأثير النيون على البطاقات
+        ════════════════════════════════════════ */
+        .task-card:hover, 
+        .course-hover:hover, 
+        .lib-card:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(59, 130, 246, 0.1) !important;
+            border-color: var(--blue2) !important;
+        }
+
+        /* ════════════════════════════════════════
+           11. تصميم كارت المهام (بورد المهام)
+        ════════════════════════════════════════ */
+        .task-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-right: 4px solid var(--tc, var(--blue)); 
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            min-height: 120px;
+            transition: all 0.3s ease;
+            cursor: grab;
+            word-break: break-word;
+        }
+
+        /* ════════════════════════════════════════
+           12. كارت المهام اليومية
+        ════════════════════════════════════════ */
+        .today-item {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.22s;
+            margin-bottom: 8px;
+        }
+
+        .today-item:hover {
+            border-color: var(--border2);
+            background: var(--bg4);
+        }
+
+        .today-item.done { 
+            opacity: 0.5; 
+        }
+
+        .cb {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            border: 2px solid var(--txt3);
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        .cb:checked { 
+            border-color: var(--blue); 
+            background: var(--blue); 
+        }
+
+        .cb:checked::after {
+            content: '✔';
+            position: absolute;
+            font-size: 11px;
+            color: #fff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* ════════════════════════════════════════
+           13. الإحصائيات وشريط التقدم
+        ════════════════════════════════════════ */
+        .pbar-track {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 99px;
+            height: 5px;
+            overflow: hidden;
+        }
+
+        .pbar-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--sc-grad, linear-gradient(90deg, var(--blue), var(--cyan)));
+        }
+
+        .stat-card:hover { 
+            transform: translateY(-2px); 
+        }
+
+        .streak {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: #fff;
+            border-radius: 99px;
+            padding: 4px 11px;
+            font-size: 12px;
+            font-weight: 900;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+            animation: pulseWarm 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseWarm {
+            0%, 100% { box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 4px 22px rgba(245, 158, 11, 0.65); }
+        }
+
+        /* ════════════════════════════════════════
+           14. الملاحظات والألوان (Palette)
+        ════════════════════════════════════════ */
+        .folder-btn {
+            text-align: right;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--txt2);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .folder-btn:hover { 
+            background: rgba(59, 130, 246, 0.08); 
+            border-color: rgba(59, 130, 246, 0.2); 
+            color: var(--blue2); 
+        }
+
+        .folder-btn.active { 
+            background: rgba(59, 130, 246, 0.14); 
+            border-color: rgba(59, 130, 246, 0.35); 
+            color: #bfdbfe; 
+        }
+
+        .note-card {
+            position: relative;
+            border-radius: 6px 6px 20px 6px;
+            padding: 20px;
+            flex-shrink: 0;
+            width: 280px;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--note-bg, #fde047);
+            color: #1f2937;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .note-card:hover { 
+            transform: translateY(-5px) rotate(1deg); 
+            box-shadow: 8px 12px 25px rgba(0, 0, 0, 0.3); 
+            z-index: 10; 
+        }
+
+        .note-card textarea {
+            background: transparent; 
+            color: inherit; 
+            border: none; 
+            outline: none;
+            width: 100%; 
+            min-height: 160px; 
+            resize: none;
+            font-family: 'Cairo', sans-serif; 
+            font-size: 13px; 
+            font-weight: 600; 
+            line-height: 1.6;
+        }
+
+        .note-card input[type="text"] { 
+            color: inherit; 
+        }
+
+        .palette-row { 
+            display: flex; 
+            gap: 5px; 
+            margin-bottom: 5px; 
+            justify-content: center; 
+        }
+
+        .color-dot { 
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+            border: 1px solid rgba(0, 0, 0, 0.15); 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        }
+
+        .color-dot:hover { 
+            transform: scale(1.3); 
+            z-index: 10; 
+        }
+
+        /* ════════════════════════════════════════
+           15. الشهادات (الإطار الذهبي)
+        ════════════════════════════════════════ */
+        .cert-card {
+            background: #1c1511; 
+            border: 14px solid transparent;
+            border-image: repeating-linear-gradient(45deg, #b8860b, #ffd700 8px, #daa520 16px, #b8860b 24px) 14;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.9);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            height: 240px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .cert-card::before {
+            content: ''; 
+            position: absolute; 
+            inset: -6px; 
+            border: 2px solid rgba(255, 215, 0, 0.4); 
+            pointer-events: none; 
+            z-index: 2;
+        }
+
+        .cert-card:hover { 
+            transform: scale(1.03) translateY(-4px); 
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9), inset 0 0 35px rgba(0, 0, 0, 1); 
+        }
+
+        .cert-card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.7)); 
+            z-index: 1;
+        }
+
+        /* ════════════════════════════════════════
+           16. النوافذ المنبثقة (Modals)
+        ════════════════════════════════════════ */
+        .modal-bg {
+            position: fixed; 
+            inset: 0; 
+            z-index: 9999; 
+            background: rgba(4, 8, 16, 0.88);
+            backdrop-filter: blur(14px); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 16px; 
+            opacity: 0; 
+            transition: opacity 0.3s; 
+            pointer-events: none;
+        }
+
+        .modal-bg.show { 
+            opacity: 1; 
+            pointer-events: all; 
+        }
+
+        .modal-box {
+            background: linear-gradient(145deg, #0d1527, #080c18);
+            border: 1px solid rgba(59, 130, 246, 0.15); 
+            border-radius: 26px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            overflow: hidden; 
+            transform: scale(0.96); 
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .modal-bg.show .modal-box { 
+            transform: scale(1); 
+        }
+        
+        .close-btn-high {
+            position: relative;
+            z-index: 99999 !important;
+        }
+
+        #suggestionsPanel {
+            position: fixed; 
+            top: 0; 
+            left: -350px; 
+            width: 340px; 
+            height: 100%;
+            background: linear-gradient(180deg, #0d1527, #080c18);
+            border-right: 1px solid var(--border); 
+            z-index: 10000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.6); 
+            display: flex; 
+            flex-direction: column;
+        }
+
+        #suggestionsPanel.open { 
+            left: 0; 
+        }
+
+        /* ════════════════════════════════════════
+           17. متفرقات (أيقونات التحميل، الإشعارات)
+        ════════════════════════════════════════ */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.08); 
+            border-left-color: var(--cyan);
+            border-radius: 50%; 
+            width: 26px; 
+            height: 26px; 
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+
+        #toast {
+            position: fixed; 
+            bottom: 28px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(20px);
+            padding: 10px 20px; 
+            border-radius: 16px; 
+            z-index: 999999; 
+            opacity: 0; 
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            font-weight: 700; 
+            font-size: 13px; 
+            color: #fff; 
+            max-width: 90%; 
+            white-space: nowrap; 
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        #toast.show { 
+            opacity: 1; 
+            transform: translateX(-50%) translateY(0); 
+        }
+        
+        .section { 
+            display: none; 
+            flex: 1; 
+            flex-direction: column; 
+            min-height: 0; 
+            padding-bottom: 20px; 
+        }
+
+        .section.active { 
+            display: flex; 
+        }
+
+        .notes-panel { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.4s ease; 
+        }
+
+        .notes-panel.open { 
+            max-height: 1200px; 
+            overflow-y: auto; 
+        }
+
+        .goal-item {
+            background: rgba(255, 255, 255, 0.025); 
+            border: 1px solid var(--border);
+            border-radius: 12px; 
+            padding: 11px 13px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            transition: all 0.2s; 
+            margin-bottom: 7px;
+        }
+
+        .goal-item:hover { 
+            background: rgba(59, 130, 246, 0.06); 
+            border-color: rgba(59, 130, 246, 0.2); 
+        }
+
+        .lib-card {
+            background: var(--bg3); 
+            border: 1px solid var(--border); 
+            border-radius: 18px;
+            padding: 18px; 
+            position: relative; 
+            overflow: hidden; 
+            transition: all 0.25s;
+            height: 150px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+        }
+
+        @keyframes fadeUp { 
+            from { opacity: 0; transform: translateY(14px); } 
+            to { opacity: 1; transform: none; } 
+        }
+
+        .fade-in { 
+            animation: fadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; 
+        }
+
+        .empty { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 50px 20px; 
+            opacity: 0.55; 
+            text-align: center; 
+        }
+
+        .empty span { 
+            font-size: 44px; 
+            margin-bottom: 12px; 
+        }
+
+        .empty p { 
+            color: var(--txt2); 
+            font-size: 13px; 
+            font-weight: 600; 
+            max-width: 230px; 
+            line-height: 1.7; 
+        }
+
+        #topbar { 
+            display: none; 
+            background: rgba(8, 12, 24, 0.96); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border); 
+            padding: 12px 16px; 
+            align-items: center; 
+            justify-content: space-between; 
+            z-index: 50; 
+            flex-shrink: 0; 
+        }
+
+        @media(max-width: 767px) { 
+            #topbar { display: flex; } 
+        }
+
+        /* ════════════════════════════════════════
+           18. بومودورو والأذكار
+        ════════════════════════════════════════ */
+        .pomo-modes { 
+            display: flex; 
+            gap: 6px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
+
+        .pomo-mode-btn {
+            padding: 5px 12px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border);
+            background: transparent; 
+            color: var(--txt2); 
+            font-size: 11px; 
+            font-weight: 700;
+            cursor: pointer; 
+            font-family: 'Cairo', sans-serif; 
+            transition: all 0.2s;
+        }
+
+        .pomo-mode-btn:hover, .pomo-mode-btn.active {
+            background: rgba(59, 130, 246, 0.15); 
+            border-color: rgba(59, 130, 246, 0.4); 
+            color: var(--blue2);
+        }
+
+        .pomo-controls { 
+            display: flex; 
+            gap: 8px; 
+        }
+
+        .pomo-ring { 
+            position: relative; 
+            width: 90px; 
+            height: 90px; 
+            flex-shrink: 0; 
+        }
+
+        .pomo-ring svg { 
+            transform: rotate(-90deg); 
+        }
+
+        .pomo-ring-bg { 
+            fill: none; 
+            stroke: rgba(255, 255, 255, 0.06); 
+            stroke-width: 5; 
+        }
+
+        .pomo-ring-fill { 
+            fill: none; 
+            stroke: url(#pomoGrad); 
+            stroke-width: 5; 
+            stroke-linecap: round; 
+            transition: stroke-dashoffset 0.9s linear; 
+        }
+
+        /* ════════════════════════════════════════
+           19. الهيتماب (سجل النشاط السنوي)
+        ════════════════════════════════════════ */
+        #heatmapWidget { 
+            background: var(--bg3); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 24px; 
+            width: 100%; 
+            overflow: hidden; 
+        }
+
+        #heatmapTitle { 
+            font-size: 18px; 
+            font-weight: 900; 
+            color: var(--txt1); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 20px; 
+        }
+
+        .heatmap-wrapper { 
+            direction: ltr; 
+            width: 100%; 
+        }
+
+        #heatmapGrid { 
+            display: grid; 
+            grid-template-columns: repeat(53, 1fr); 
+            gap: 3px; 
+            width: 100%; 
+            padding-top: 25px; 
+        }
+
+        .hm-col { 
+            display: grid; 
+            grid-template-rows: repeat(7, 1fr); 
+            gap: 3px; 
+            position: relative; 
+        }
+
+        .hm-cell { 
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            border-radius: 2px; 
+            transition: transform 0.15s, outline 0.2s; 
+        }
+
+        .hm-cell:hover { 
+            transform: scale(1.5); 
+            outline: 1px solid var(--cyan); 
+            z-index: 10; 
+            position: relative; 
+        }
+
+        .hm-today { 
+            outline: 2px solid var(--amber) !important; 
+            border-radius: 2px; 
+        }
+
+        #heatmapLegend { 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            font-size: 11px; 
+            color: var(--txt3); 
+            margin-top: 20px; 
+            direction: rtl; 
+            font-weight: 700; 
+        }
+
+        .hm-swatch { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 2px; 
+            background: var(--green); 
+            display: inline-block; 
+        }
+
+        /* ════════════════════════════════════════
+           20. الإحصائيات البيانية (Charts)
+        ════════════════════════════════════════ */
+        #analyticsWidget { 
+            background: var(--bg3); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 16px; 
+        }
+
+        #analyticsTitle { 
+            font-size: 13px; 
+            font-weight: 900; 
+            color: var(--txt1); 
+            margin-bottom: 14px; 
+        }
+
+        .charts-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 16px; 
+        }
+
+        @media(max-width: 640px) { 
+            .charts-grid { grid-template-columns: 1fr; } 
+        }
+
+        .chart-wrap { 
+            background: rgba(0, 0, 0, 0.2); 
+            border: 1px solid var(--border); 
+            border-radius: 14px; 
+            padding: 14px; 
+            position: relative; 
+        }
+
+        .chart-label { 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: var(--txt2); 
+            margin-bottom: 10px; 
+        }
+
+        .chart-canvas-container { 
+            height: 220px; 
+            position: relative; 
+        }
+
+        /* ════════════════════════════════════════
+           21. إعدادات الطباعة (PDF)
+        ════════════════════════════════════════ */
+        @media print {
+            body * { 
+                visibility: hidden; 
+            }
+            #reportViewModal, 
+            #reportViewModal * { 
+                visibility: visible; 
+            }
+            #reportViewModal { 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                height: 100%; 
+                background: #111827 !important; 
+                color: #eef2ff !important; 
+            }
+            .no-print { 
+                display: none !important; 
+            }
+        }
+        
+        .report-glass { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            padding: 20px; 
+        }
+        
+        .report-text { 
+            color: #eef2ff !important; 
+        }
+    </style>
+</head>
+<body>
+
+<div id="suggestionsPanel">
+    <div style="padding:24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-weight:900; color:var(--txt1); font-size:16px;">💡 مهام لم تكتمل</h3>
+        <button onclick="window.toggleSuggestionsPanel()" class="close-btn-high" style="background:rgba(255,255,255,0.05); border:none; width:30px; height:30px; border-radius:8px; color:var(--txt2); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">✕</button>
+    </div>
+    <div id="suggestionsList" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:12px;"></div>
+</div>
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<div id="loginOverlay" style="position:fixed;inset:0;z-index:99999;background:#040810;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity 0.5s;">
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+        <div style="position:absolute;top:20%;right:20%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.08),transparent 70%);"></div>
+        <div style="position:absolute;bottom:20%;left:20%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,0.06),transparent 70%);"></div>
+    </div>
+    <div style="position:relative;z-index:1;text-align:center;max-width:360px;width:100%;" class="fade-in">
+        <div style="display:flex;justify-content:center;margin-bottom:24px;">
+            <div class="logo-icon" style="padding:18px;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/>
+                    <path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/>
+                    <path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/>
+                </svg>
+            </div>
+        </div>
+        <h1 style="font-size:48px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px;">رحلتي</h1>
+        <p style="font-size:14px;color:var(--txt2);margin-bottom:32px;font-weight:600;">مساحتك السحابية للتطور والتعلم 🚀</p>
+        <div class="glass" style="padding:28px;">
+            <button id="gLoginBtn" onclick="window.loginWithGoogle()" style="width:100%;background:#fff;color:#1e293b;border:none;border-radius:14px;padding:14px;font-weight:900;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;font-family:'Cairo',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,0.3);" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                الدخول بحساب جوجل
+            </button>
+            <div id="loadingRow" style="display:none;margin-top:20px;align-items:center;justify-content:center;gap:10px;flex-direction:column;">
+                <div class="loader"></div>
+                <p style="font-size:12px;color:var(--txt2);font-weight:700;">جاري المزامنة مع السحابة...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="app">
+    <div id="sbOverlay" onclick="window.closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:90;backdrop-filter:blur(4px);"></div>
+
+    <aside id="sidebar">
+        <button onclick="window.closeSidebar()" style="display:none;position:absolute;top:16px;left:16px;background:rgba(255,255,255,0.07);border:none;border-radius:10px;width:34px;height:34px;cursor:pointer;color:var(--txt2);font-size:16px;" id="sbClose">✕</button>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+            <div class="logo-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/>
+                </svg>
+            </div>
+            <div>
+                <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;">رحلتي</div>
+                <div style="font-size:11px;color:var(--txt3);font-weight:600;margin-top:1px;">نحو غد أفضل</div>
+            </div>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.12);margin-bottom:22px;">
+            <div id="uAvatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1d4ed8);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#fff;flex-shrink:0;">?</div>
+            <div style="min-width:0;">
+                <div id="uName" style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">...</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
+                    <div id="connectionDot" style="width:7px;height:7px;border-radius:50%;background:var(--green2);animation:pulseWarm 2s ease-in-out infinite;box-shadow:0 0 6px var(--green2);"></div>
+                    <span id="connectionText" style="font-size:11px;color:var(--green2);font-weight:700;">متصل سحابياً</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav style="flex:1;display:flex;flex-direction:column;gap:3px;">
+            <button class="nav-btn active" id="tab-today"   onclick="window.switchTab('today')">  <span>🎯</span> يومي </button>
+            <button class="nav-btn"        id="tab-goals"   onclick="window.switchTab('goals')">  <span>🏆</span> أهدافي </button>
+            <button class="nav-btn"        id="tab-kanban"  onclick="window.switchTab('kanban')"> <span>📋</span> بورد المهام </button>
+            <button class="nav-btn"        id="tab-library" onclick="window.switchTab('library')"><span>📚</span> مكتبة المصادر </button>
+            <button class="nav-btn"        id="tab-notes"   onclick="window.switchTab('notes')">  <span>📝</span> الملاحظات </button>
+            <button class="nav-btn"        id="tab-certs"   onclick="window.switchTab('certs')">  <span>🎓</span> شهاداتي </button>
+            <button class="nav-btn"        id="tab-extras"  onclick="window.switchTab('extras')"> <span>✨</span> أدوات وإحصائيات </button>
+        </nav>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+            <button class="btn-ghost" onclick="window.openSettings()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;">
+                <span>⚙️ الإعدادات</span><span style="font-size:12px;">›</span>
+            </button>
+            <button onclick="window.logoutUser()" style="width:100%;background:transparent;border:1px solid transparent;border-radius:11px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;color:var(--red);font-family:'Cairo',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.1)';this.style.borderColor='rgba(239,68,68,0.2)'" onmouseout="this.style.background='transparent';this.style.borderColor='transparent'">🚪 تسجيل خروج</button>
+        </div>
+    </aside>
+
+    <div id="main">
+        <div id="topbar">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div class="logo-icon" style="padding:7px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/></svg>
+                </div>
+                <span style="font-weight:900;color:#fff;font-size:16px;">رحلتي</span>
+            </div>
+            <button onclick="window.openSidebar()" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;color:var(--txt1);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+
+        <div style="padding:16px 24px 0;flex-shrink:0;position:relative;z-index:1;">
+            <div style="display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 16px;max-width:600px;margin:0 auto;transition:border-color 0.2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--txt3);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="searchInput" placeholder="ابحث عن مهام، كورسات، شهادات..." oninput="window.handleSearch(this.value)" style="background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;width:100%;">
+            </div>
+        </div>
+
+        <div id="content">
+
+            <div id="sec-today" class="section active">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
+                    <div class="fade-in">
+                        <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-0.5px;margin-bottom:4px;">هنعمل إيه النهارده 🎯</h2>
+                        <div id="dateDisplay"></div>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-ghost close-btn-high" onclick="window.openScheduledModal()" style="background:var(--bg3); border-color:var(--border);">📅 المهام المجدولة</button>
+                        <button class="btn-ghost close-btn-high" onclick="window.toggleSuggestionsPanel()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
+                        <button class="btn-ghost close-btn-high" onclick="window.openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
+                    </div>
+                </div>
+                
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;flex-shrink:0;" class="stats-grid">
+                    <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--blue),var(--cyan));">
+                        <div style="font-size:24px;font-weight:900;color:var(--txt1);" id="sTotalToday">0</div>
+                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">مهام اليوم</div>
+                    </div>
+                    <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--green),var(--green2));">
+                        <div style="font-size:24px;font-weight:900;color:var(--green2);" id="sDoneToday">0</div>
+                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">تم إنجازه</div>
+                    </div>
+                    <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--purple),#a78bfa);">
+                        <div style="font-size:24px;font-weight:900;color:#a78bfa;" id="sKanban">0</div>
+                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">كورسات/مشاريع</div>
+                    </div>
+                    <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--amber),#fbbf24);">
+                        <div class="streak" id="streakBadge">🔥 <span id="streakNum">0</span></div>
+                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:6px;">يوم متتالي</div>
+                    </div>
+                </div>
+                
+                <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;flex-shrink:0;">
+                    <div style="flex:1;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+                            <span style="font-size:12px;font-weight:700;color:var(--txt2);">تقدم اليوم</span>
+                            <span style="font-size:12px;font-weight:900;color:var(--txt1);" id="progressPct">0%</span>
+                        </div>
+                        <div class="pbar-track"><div class="pbar-fill" id="progressBar" style="width:0%"></div></div>
+                    </div>
+                    <div style="font-size:28px;" id="moodEmoji">😴</div>
+                </div>
+                
+                <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color 0.2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
+                    <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
+                    <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')window.addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
+                    <input type="datetime-local" id="newTodayDate" title="موعد التسليم (اختياري)" class="field" style="width:auto; padding:6px 10px; font-size:11px;">
+                    <button class="btn-primary" onclick="window.addTodayTask()" style="padding:8px 16px;font-size:12px; margin-right:4px;">إضافة</button>
+                </div>
+                
+                <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px;"></div>
+            </div>
+
+            <div id="sec-goals" class="section">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
+                    <div class="fade-in">
+                        <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-0.5px;margin-bottom:4px;">أهدافي 🏆</h2>
+                        <p style="font-size:13px;color:var(--txt2);">خطط للسنة والشهر والأسبوع</p>
+                    </div>
+                    <button class="btn-ghost close-btn-high" onclick="window.openArchiveModal('goals')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
+                </div>
+                <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:20px;padding-bottom:20px;">
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;" class="goals-grid">
+                        <div class="glass" style="padding:18px;border-color:rgba(59,130,246,0.2);">
+                            <h3 id="gyTitle" style="font-size:14px;font-weight:900;color:var(--blue);text-align:center;margin-bottom:14px;">سنة</h3>
+                            <div style="display:flex;gap:6px;margin-bottom:12px;">
+                                <input type="text" id="gyInput" placeholder="هدف للسنة..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')window.addGoal('year')">
+                                <button class="btn-primary" onclick="window.addGoal('year')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;">+</button>
+                            </div>
+                            <div id="lyList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div>
+                        </div>
+                        <div class="glass" style="padding:18px;border-color:rgba(16,185,129,0.2);">
+                            <h3 id="gmTitle" style="font-size:14px;font-weight:900;color:var(--green);text-align:center;margin-bottom:14px;">شهر</h3>
+                            <div style="display:flex;gap:6px;margin-bottom:12px;">
+                                <input type="text" id="gmInput" placeholder="هدف للشهر..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')window.addGoal('month')">
+                                <button class="btn-primary" onclick="window.addGoal('month')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;background:linear-gradient(135deg,var(--green),#059669);">+</button>
+                            </div>
+                            <div id="gmList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div>
+                        </div>
+                        <div class="glass" style="padding:18px;border-color:rgba(139,92,246,0.2);">
+                            <h3 id="gwTitle" style="font-size:14px;font-weight:900;color:var(--purple);text-align:center;margin-bottom:14px;">أسبوع</h3>
+                            <div style="display:flex;gap:6px;margin-bottom:12px;">
+                                <input type="text" id="gwInput" placeholder="هدف للأسبوع..." class="field" style="font-size:12px;padding:7px 11px;" onkeypress="if(event.key==='Enter')window.addGoal('week')">
+                                <button class="btn-primary" onclick="window.addGoal('week')" style="width:34px;height:34px;padding:0;justify-content:center;flex-shrink:0;font-size:16px;background:linear-gradient(135deg,var(--purple),#7c3aed);">+</button>
+                            </div>
+                            <div id="gwList" style="min-height:100px;max-height:280px;overflow-y:auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-kanban" class="section">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:12px;flex-shrink:0;">
+                    <div>
+                        <h2 style="font-size:22px;font-weight:900;color:var(--txt1);margin-bottom:4px;">يا أهلاً يا بطل ✨</h2>
+                        <p id="motivQuote" style="font-size:13px;color:var(--txt2);max-width:380px;"></p>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px;">
+                        <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addTask()">
+                        <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
+                        <button class="btn-primary" onclick="window.addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
+                    </div>
+                </div>
+                <div style="display:flex;gap:24px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
+                    <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
+                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);">
+                                <div style="width:8px;height:8px;border-radius:50%;background:#4a6080;"></div> لسه هبدأ
+                            </div>
+                            <span id="cntTodo" style="background:rgba(74,96,128,0.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
+                        </div>
+                        <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                    </div>
+                    <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
+                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--amber);">
+                                <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulseWarm 2s infinite;"></div> شغال عليه
+                            </div>
+                            <span id="cntInprogress" style="background:rgba(245,158,11,0.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,0.2);">0</span>
+                        </div>
+                        <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                    </div>
+                    <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
+                            <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--green2);">
+                                <div style="width:8px;height:8px;border-radius:50%;background:var(--green2);"></div> خلصته ✅
+                            </div>
+                            <span id="cntDone" style="background:rgba(16,185,129,0.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.2);">0</span>
+                        </div>
+                        <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-library" class="section">
+                <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
+                    <div>
+                        <h2 style="font-size:24px;font-weight:900;color:var(--txt1);letter-spacing:-0.5px;">مكتبة المصادر 📚</h2>
+                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">روابطك وملفاتك كلها هنا</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:14px;flex:1;min-height:0;" class="lib-layout">
+                    <div id="libFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
+                    <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+                        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+                            <span id="libActiveTitle" style="font-weight:900;font-size:14px;color:var(--blue);">...</span>
+                            <div style="display:flex;gap:8px;">
+                                <button class="btn-ghost" onclick="window.addLibText()" style="font-size:11px;color:var(--amber);border-color:rgba(245,158,11,0.2);">📝 نص</button>
+                                <button class="btn-ghost" onclick="window.addLibFolder()" style="font-size:11px;color:var(--green2);border-color:rgba(52,211,153,0.2);">➕ مجلد</button>
+                                <button class="btn-ghost" id="delLibFolderBtn" onclick="window.delLibFolder()" style="font-size:11px;color:var(--red);border-color:rgba(239,68,68,0.2);">🗑️ حذف</button>
+                            </div>
+                        </div>
+                        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex-shrink:0;background:rgba(0,0,0,0.15);">
+                            <input type="text" id="libTitle" placeholder="الاسم..." class="field" style="flex:1;min-width:90px;font-size:12px;padding:7px 11px;">
+                            <input type="text" id="libUrl" placeholder="الرابط..." class="field" style="flex:1;min-width:90px;font-size:12px;padding:7px 11px;">
+                            <button class="btn-ghost" onclick="document.getElementById('libFileIn').click()" style="font-size:11px;">☁️ رفع</button>
+                            <input type="file" id="libFileIn" class="hidden" onchange="window.handleLibUpload(this)" style="display:none;">
+                            <button class="btn-primary" onclick="window.addResource()" style="padding:7px 14px;font-size:12px;">حفظ</button>
+                        </div>
+                        <div id="libList" style="flex:1;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;overflow-y:auto;align-content:start;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-notes" class="section">
+                <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
+                    <div>
+                        <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">لوحة الملاحظات 📝</h2>
+                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">رتب أفكارك ولونها زي ما تحب!</p>
+                    </div>
+                    <button class="btn-primary" onclick="window.addNote()">➕ إضافة</button>
+                </div>
+                <div style="display:flex;gap:14px;flex:1;min-height:0;" class="lib-layout">
+                    <div id="noteFolders" style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto;" class="lib-sidebar"></div>
+                    <div class="glass" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+                        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+                            <span id="noteActiveTitle" style="font-weight:900;font-size:14px;color:var(--blue);">...</span>
+                            <div style="display:flex;gap:8px;">
+                                <button class="btn-ghost" onclick="window.addNoteFolder()" style="font-size:11px;color:var(--green2);">➕ لوحة</button>
+                                <button class="btn-ghost" id="delNoteFolderBtn" onclick="window.delNoteFolder()" style="font-size:11px;color:var(--red);">🗑️ حذف</button>
+                            </div>
+                        </div>
+                        <div id="notesBoard" style="flex:1;padding:24px;display:flex;flex-wrap:wrap;gap:24px;overflow-y:auto;align-content:flex-start;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-certs" class="section">
+                <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
+                    <div>
+                        <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2>
+                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك في مكان واحد (اضغط للفتح في درايف)</p>
+                    </div>
+                    <button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button>
+                    <input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="window.handleCertUpload(this)">
+                </div>
+                <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;align-content:start;padding-bottom:20px;"></div>
+            </div>
+
+            <div id="sec-extras" class="section">
+                <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-shrink:0;">
+                    <div>
+                        <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
+                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقارير، وتحليلات الأداء</p>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-ghost" onclick="window.openReportModal('month')" style="background:var(--bg3); border-color:var(--border);">📊 تقرير الشهر</button>
+                        <button class="btn-primary" onclick="window.openReportModal('year')">🏆 التقرير السنوي</button>
+                    </div>
+                </div>
+                
+                <div class="extras-grid" style="display:flex; flex-direction:column; gap:20px;">
+                    
+                    <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+                        
+                        <div id="azkarWidget" class="glass azkar-widget" style="flex:1; min-width:250px; max-width:400px; padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                             <div style="font-size:28px; margin-bottom:10px;">📿</div>
+                             <div id="azkarText" style="font-size:16px; font-weight:900; color:var(--txt1); line-height:1.6; transition: opacity 0.5s;">سبحان الله وبحمده، سبحان الله العظيم</div>
+                        </div>
+
+                        <div id="pomodoroWidget" style="flex:1; min-width:250px; max-width:350px;">
+                            <svg width="0" height="0" style="position:absolute;">
+                                <defs>
+                                    <linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="pomo-ring">
+                                <svg viewBox="0 0 90 90" width="90" height="90">
+                                    <circle class="pomo-ring-bg" cx="45" cy="45" r="40"/>
+                                    <circle class="pomo-ring-fill" id="pomoRingFill" cx="45" cy="45" r="40" stroke-dasharray="251.2" stroke-dashoffset="0"/>
+                                </svg>
+                                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                                    <div id="pomodoroDisplay" style="font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">25:00</div>
+                                    <div id="pomodoroLabel" style="font-size:9px;font-weight:700;color:var(--txt3);margin-top:2px;">تركيز 🧠</div>
+                                </div>
+                            </div>
+                            <div class="pomo-modes">
+                                <button class="pomo-mode-btn active" id="pm-focus"  onclick="window.pomodoroSetMode('focus')">تركيز</button>
+                                <button class="pomo-mode-btn"         id="pm-short"  onclick="window.pomodoroSetMode('short')">قصيرة</button>
+                                <button class="pomo-mode-btn"         id="pm-long"   onclick="window.pomodoroSetMode('long')">طويلة</button>
+                            </div>
+                            <div class="pomo-controls">
+                                <button class="btn-primary" onclick="window.pomodoroStart()" style="padding:6px 14px;font-size:11px;">▶ ابدأ</button>
+                                <button class="btn-ghost"   onclick="window.pomodoroPause()" style="padding:6px 12px;font-size:11px;">⏸ وقفة</button>
+                                <button class="btn-ghost"   onclick="window.pomodoroReset()" style="padding:6px 12px;font-size:11px;">↺</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="heatmapWidget">
+                        <div id="heatmapTitle">
+                            <span>🟩 نشاطك السنوي <span id="currentYearDisplay" style="font-size:12px; color:var(--txt3); font-weight:normal; margin-right:8px;"></span></span>
+                        </div>
+                        <div class="heatmap-wrapper">
+                            <div id="heatmapGrid"></div>
+                        </div>
+                        <div id="heatmapLegend">
+                            <span>أقل</span>
+                            <div class="hm-swatch" style="opacity:0.15;"></div>
+                            <div class="hm-swatch" style="opacity:0.35;"></div>
+                            <div class="hm-swatch" style="opacity:0.6;"></div>
+                            <div class="hm-swatch" style="opacity:0.85;"></div>
+                            <div class="hm-swatch" style="opacity:1;"></div>
+                            <span>أكثر</span>
+                        </div>
+                    </div>
+
+                    <div id="analyticsWidget">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                            <div id="analyticsTitle">📊 تحليلات الأداء</div>
+                            <button class="btn-ghost" onclick="window.renderCharts()" style="font-size:11px;">🔄 تحديث</button>
+                        </div>
+                        <div class="charts-grid">
+                            <div class="chart-wrap">
+                                <div class="chart-label">توزيع المهام بالأقسام</div>
+                                <div class="chart-canvas-container"><canvas id="pieChart"></canvas></div>
+                            </div>
+                            <div class="chart-wrap">
+                                <div class="chart-label">إنجاز آخر 7 أيام (%)</div>
+                                <div class="chart-canvas-container"><canvas id="lineChart"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div></div></div><div id="libTextModal" class="modal-bg" style="z-index: 105000;">
+    <div class="modal-box report-glass" style="width:100%; max-width:500px; display:flex; flex-direction:column; background:var(--bg2);">
+        <div style="padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-size:16px; font-weight:900; color:#fff;">📝 ملاحظة / نص</h3>
+            <button onclick="window.closeLibTextModal()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px; display:flex; justify-content:center; align-items:center;">✕</button>
+        </div>
+        <div style="padding:20px; display:flex; flex-direction:column; gap:12px;">
+            <input type="hidden" id="libTextId">
+            <input type="text" id="libTextTitle" placeholder="عنوان الملاحظة..." class="field" style="font-size:14px; font-weight:bold;">
+            <textarea id="libTextContent" placeholder="اكتب التفاصيل هنا..." class="field" style="height:200px; resize:none; font-size:13px;"></textarea>
+            <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                 <button class="btn-primary" onclick="window.saveLibText()">💾 حفظ الملاحظة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="reportViewModal" class="modal-bg" style="z-index: 99999;">
+    <div class="modal-box report-glass" style="width:100%; max-width:700px; height:auto; max-height:90vh; display:flex; flex-direction:column; background:var(--bg2);">
+        
+        <div class="no-print" style="padding:22px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                 <h3 style="font-size:18px; font-weight:900; color:#fff;">📊 تقرير الأداء</h3>
+                 <select id="reportMonthSelect" onchange="window.renderSpecificReport()" class="field" style="padding:4px 8px; font-size:12px; width:auto; border-radius:8px;"></select>
+            </div>
+            <button onclick="window.closeReportModal()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+
+        <div style="position:relative; flex:1; display:flex; flex-direction:column; min-height:300px;">
+            <div id="reportBlurOverlay" style="position:absolute; inset:0; backdrop-filter:blur(10px); background:rgba(11,17,32,0.8); z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:16px; padding:20px; text-align:center;">
+                <div style="font-size:50px; margin-bottom:15px;">🔒</div>
+                <h2 style="font-size:24px; font-weight:900; color:#fff; line-height:1.4;">كمل يا بطل عشان الشهر يكمل<br>والنتيجة تطلع 🎯💪</h2>
+                <p style="font-size:13px; color:var(--txt2); margin-top:12px;">التقرير ده هيفتحلك تلقائياً أول يوم في الشهر الجديد</p>
+                <button onclick="document.getElementById('reportBlurOverlay').style.display='none'" style="margin-top:30px; background:none; border:1px dashed var(--border2); border-radius:8px; padding:6px 12px; color:var(--txt3); font-size:10px; cursor:pointer;">[للتجربة: تخطي القفل]</button>
+            </div>
+            
+            <div id="reportContentArea" style="padding:30px; flex:1; overflow-y:auto; color:var(--txt1);">
+                </div>
+        </div>
+
+        <div class="no-print" style="padding:20px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px;">
+            <button onclick="window.saveAsPDF()" class="btn-primary">🖨️ حفظ كـ PDF</button>
+        </div>
+    </div>
+</div>
+
+<div id="reportNotificationModal" class="modal-bg" style="z-index: 100000;">
+    <div class="modal-box" style="width:100%; max-width:400px; text-align:center; padding:40px 20px;">
+        <div style="font-size:50px; margin-bottom:10px;">📊</div>
+        <h2 style="font-size:24px; font-weight:900; color:#fff; margin-bottom:10px;">حصادك الشهري جاهز!</h2>
+        <p style="font-size:14px; color:var(--txt2); margin-bottom:24px;">جمعنالك كل إنجازاتك، تعبك، وأهدافك اللي حققتها الشهر اللي فات في تقرير واحد عشان تفتخر بنفسك.</p>
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button onclick="window.closeReportNotification()" class="btn-ghost">تخطي الآن</button>
+            <button onclick="window.closeReportNotification(); window.openReportModal('month');" class="btn-primary px-8">عرض التقرير 🚀</button>
+        </div>
+    </div>
+</div>
+
+<div id="archiveModal" class="modal-bg" style="z-index: 99999;">
+    <div class="modal-box" style="width:100%;max-width:600px; height:80vh; display:flex; flex-direction:column;">
+        <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <h3 id="archiveModalTitle" style="font-size:18px;font-weight:900;color:#fff;">📦 الأرشيف</h3>
+            <button onclick="window.closeArchiveModal()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+        <div id="archiveContent" style="padding:20px 24px; flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:16px;"></div>
+    </div>
+</div>
+
+<div id="settingsModal" class="modal-bg" style="z-index: 99999;">
+    <div class="modal-box" style="width:100%;max-width:420px;">
+        <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="font-size:18px;font-weight:900;color:#fff;">⚙️ الإعدادات</h3>
+            <button onclick="window.closeSettings()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+        <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;max-height:70vh;overflow-y:auto;">
+            
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+                <div>
+                    <div style="font-size:13px;font-weight:700;color:var(--txt1);">مظهر التطبيق</div>
+                    <div style="font-size:11px;color:var(--txt3);margin-top:2px;">داكن / فاتح</div>
+                </div>
+                <button class="btn-ghost" onclick="window.toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button>
+            </div>
+
+            <!-- جديد: خلفية التطبيق -->
+            <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+                <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
+                    <span>خلفية التطبيق 🎨</span>
+                    <button onclick="window.changeBg('none', '')" style="background:transparent;border:none;color:var(--red);font-size:10px;font-weight:bold;cursor:pointer;">إزالة ✕</button>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                    <div onclick="window.changeBg('gradient', 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBg('gradient', 'linear-gradient(135deg, #141e30, #243b55)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #141e30, #243b55); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBg('gradient', 'radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBg('pattern', 'radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px); background-size:15px 15px; border:2px solid var(--border);"></div>
+                </div>
+                <button onclick="document.getElementById('bgUploadIn').click()" style="width:100%;background:rgba(59,130,246,0.1);border:1px dashed var(--blue2);border-radius:10px;color:var(--blue2);font-weight:700;font-size:12px;padding:8px;cursor:pointer;">🖼️ رفع صورة من جهازك</button>
+                <input type="file" id="bgUploadIn" style="display:none;" accept="image/*" onchange="window.handleBgUpload(this)">
+            </div>
+
+            <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+                <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">إدارة الأقسام</div>
+                <div style="display:flex;gap:7px;margin-bottom:10px;">
+                    <input type="color" id="newTagColor" value="#3b82f6" style="width:34px;height:34px;border-radius:10px;border:1px solid var(--border);padding:3px;background:var(--bg);cursor:pointer;flex-shrink:0;">
+                    <input type="text" id="newTagInput" placeholder="اسم القسم..." class="field" style="flex:1;font-size:12px;padding:7px 11px;">
+                    <button class="btn-primary" onclick="window.addTag()" style="padding:7px 12px;font-size:12px;flex-shrink:0;">إضافة</button>
+                </div>
+                <div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto;"></div>
+            </div>
+
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div>
                 <div style="display:flex;gap:8px;">
@@ -1738,7 +3513,8 @@ let S = {
     archive: {today:[], goals:[], years:{}},
     lastYearChecked: new Date().getFullYear(), 
     lastReportMonth: new Date().getMonth(), 
-    suggestions: []
+    suggestions: [],
+    appBg: { type: 'none', val: '' } // 🎨 إضافة متغير الخلفية
 };
 
 const ICONS = {
@@ -1771,6 +3547,46 @@ const AZKAR = [
 let currentZikr = 0;
 
 const el = id => document.getElementById(id);
+
+/* ════════ BACKGROUND LOGIC (الخلفيات) ════════ */
+window.changeBg = function(type, val) {
+    S.appBg = { type, val };
+    window.applyBg();
+    window.saveDataSilently();
+};
+
+window.applyBg = function() {
+    if(!S.appBg) return;
+    
+    document.body.style.backgroundImage = 'none';
+    document.body.style.backgroundSize = 'auto';
+    document.body.style.backgroundAttachment = 'scroll';
+    
+    if(S.appBg.type === 'none') {
+        document.body.style.background = 'var(--bg)';
+    } else if(S.appBg.type === 'color' || S.appBg.type === 'gradient') {
+        document.body.style.background = S.appBg.val;
+    } else if(S.appBg.type === 'pattern') {
+        document.body.style.backgroundColor = 'var(--bg)';
+        document.body.style.backgroundImage = S.appBg.val;
+        document.body.style.backgroundSize = '20px 20px';
+    } else if(S.appBg.type === 'image') {
+        document.body.style.background = `linear-gradient(rgba(13, 20, 36, 0.85), rgba(13, 20, 36, 0.85)), url(${S.appBg.val})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    }
+};
+
+window.handleBgUpload = function(inp) {
+    const f = inp.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        window.changeBg('image', e.target.result);
+    };
+    r.readAsDataURL(f);
+};
 
 /* ════════ GLOBAL SYNC TIMEOUT ════════ */
 window.syncTimeout = null;
@@ -2198,7 +4014,6 @@ window.renderSpecificReport = function() {
         }
     }
     
-    // Accurate Pie Chart
     const tCounts = {};
     filteredTasks.forEach(t => {
         let tag = t.savedTag || "مهام عامة"; 
@@ -2592,6 +4407,7 @@ window.handleSearch = function(v) {
 
 /* ════════ GLOBAL RENDERING ════════ */
 window.renderAll = function() { 
+    if(window.applyBg) window.applyBg();
     window.renderTags(); 
     window.renderTodayTasks(); 
     window.renderTasks(); 
@@ -2634,15 +4450,15 @@ window.renderTodayTasks = function() {
         if(t.dueDate) {
             const d = new Date(t.dueDate);
             if(!isNaN(d.getTime())) {
-                dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--amber);background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:6px; border:1px solid rgba(245,158,11,0.2); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;">
+                dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--amber);background:rgba(245,158,11,0.1);padding:4px 8px;border-radius:8px; border:1px solid rgba(245,158,11,0.2); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;" onclick="this.querySelector('input').showPicker()">
                     📅 ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}
-                    <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" value="${t.dueDate}" style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%;">
+                    <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" value="${t.dueDate}" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
                 </div>`;
             }
         } else {
-            dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--txt3);background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:6px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;">
+            dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--txt3);background:rgba(255,255,255,0.05);padding:4px 8px;border-radius:8px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;" onclick="this.querySelector('input').showPicker()">
                 ➕ أضف تاريخ
-                <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%;">
+                <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
             </div>`;
         }
 
@@ -3127,7 +4943,6 @@ function fileIcon(ext, type){
     if(["psd","ai","xd"].includes(ext)) return "🎨";
     return "📁";
 }
-
 window.renderSubtasks = function() {
     const t = S.tasks.find(x => x.id === activTask);
     if(!t) return;
