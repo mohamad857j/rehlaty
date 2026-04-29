@@ -1232,11 +1232,10 @@
                         <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-0.5px;margin-bottom:4px;">هنعمل إيه النهارده 🎯</h2>
                         <div id="dateDisplay"></div>
                     </div>
-                   <div style="display:flex; gap:10px;">
-                        <button class="btn-ghost close-btn-high" onclick="window.openScheduledModal()" style="background:var(--bg3); border-color:var(--border);">📅 المهام المجدولة</button>
-                        <button class="btn-ghost close-btn-high" onclick="window.toggleSuggestionsPanel()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
-                        <button class="btn-ghost close-btn-high" onclick="window.openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
-                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-ghost close-btn-high" onclick="window.toggleSuggestionsPanel()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
+                        <button class="btn-ghost close-btn-high" onclick="window.openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
+                    </div>
                 </div>
                 
                 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;flex-shrink:0;" class="stats-grid">
@@ -1675,15 +1674,6 @@
         </div>
     </div>
 </div>
-<div id="scheduledModal" class="modal-bg" style="z-index: 100000;">
-    <div class="modal-box" style="width:100%;max-width:500px; height:70vh; display:flex; flex-direction:column;">
-        <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="font-size:18px;font-weight:900;color:#fff;">📅 المهام المجدولة للمستقبل</h3>
-            <button onclick="window.closeScheduledModal()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
-        </div>
-        <div id="scheduledList" style="padding:20px 24px; flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px;"></div>
-    </div>
-</div>
 
 <div id="toast"><span id="toastIcon"></span><span id="toastText"></span></div>
 
@@ -1893,47 +1883,33 @@ window.saveDataSilently = function() {
 
 /* ════════ DAILY MAINTENANCE & REPORTS ════════ */
 function dailySweep() {
-    const today = new Date().toDateString();
-    let needsSave = false;
-    
-    if (S.lastDate && S.lastDate !== today) {
-        if (!S.archive) S.archive = { today: [], goals: [], years: {} };
-        if (!S.suggestions) S.suggestions = [];
-        
-        if (S.todayTasks && S.todayTasks.length > 0) {
-            const endOfLastDate = new Date(S.lastDate);
-            endOfLastDate.setHours(23, 59, 59);
-
-            const completedToday = [];
-            const uncompletedToday = [];
-            const futureTasksKept = [];
-
-            S.todayTasks.forEach(t => {
-                const isFuture = t.dueDate && (new Date(t.dueDate).getTime() > endOfLastDate.getTime());
-                if(isFuture) {
-                    futureTasksKept.push(t);
-                } else {
-                    if (t.done) completedToday.push(t);
-                    else uncompletedToday.push(t);
-                }
-            });
-            
-            completedToday.forEach(t => {
-                let finalTag = "بدون قسم";
-                if(t.parentId) {
-                    let parent = S.tasks.find(x => x.id === t.parentId);
-                    if(parent && parent.tag) finalTag = parent.tag;
-                }
-                S.archive.today.push({...t, archDate: S.lastDate, savedTag: finalTag});
-            });
-            
-            uncompletedToday.forEach(t => {
-                S.suggestions.unshift({...t, archDate: S.lastDate}); 
-            });
-            
-            S.todayTasks = futureTasksKept; 
-            needsSave = true;
-        }
+    const today = new Date().toDateString();
+    let needsSave = false;
+    
+    if (S.lastDate && S.lastDate !== today) {
+        if (!S.archive) S.archive = { today: [], goals: [], years: {} };
+        if (!S.suggestions) S.suggestions = [];
+        
+        if (S.todayTasks && S.todayTasks.length > 0) {
+            const completedToday = S.todayTasks.filter(t => t && t.done);
+            const uncompletedToday = S.todayTasks.filter(t => t && !t.done);
+            
+            completedToday.forEach(t => {
+                let finalTag = "بدون قسم";
+                if(t.parentId) {
+                    let parent = S.tasks.find(x => x.id === t.parentId);
+                    if(parent && parent.tag) finalTag = parent.tag;
+                }
+                S.archive.today.push({...t, archDate: S.lastDate, savedTag: finalTag});
+            });
+            
+            uncompletedToday.forEach(t => {
+                S.suggestions.unshift({...t, archDate: S.lastDate}); 
+            });
+            
+            S.todayTasks = []; 
+            needsSave = true;
+        }
         
         if (S.goals && S.goals.length > 0) {
             const completedGoals = S.goals.filter(g => g && g.done);
@@ -2397,30 +2373,25 @@ window.updateStreak = function() {
 }
 
 window.updateStats = function() {
-    const now = new Date();
-    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime();
-    
-    const currentItems = (S.todayTasks||[]).filter(t => !t.dueDate || new Date(t.dueDate).getTime() <= endOfToday);
-    
-    const tot = currentItems.length;
-    const done = currentItems.filter(t=>t.done).length;
-    const pct = tot > 0 ? Math.round(done/tot*100) : 0;
-    
-    el("sTotalToday").textContent = tot;
-    el("sDoneToday").textContent = done;
-    el("sKanban").textContent = (S.tasks||[]).length;
-    el("progressBar").style.width = pct + "%";
-    el("progressPct").textContent = pct + "%";
-    el("moodEmoji").textContent = pct === 0 ? "😴" : pct < 30 ? "🌱" : pct < 60 ? "💪" : pct < 90 ? "🔥" : "🏆";
-    
-    const sn = el("streakNum"); 
-    if(sn) sn.textContent = S.streak || 0;
-    
-    const today = new Date().toISOString().split("T")[0];
-    if(tot > 0) {
-        if(!S.history) S.history = {};
-        S.history[today] = pct;
-    }
+    const tot = (S.todayTasks||[]).length;
+    const done = (S.todayTasks||[]).filter(t=>t.done).length;
+    const pct = tot > 0 ? Math.round(done/tot*100) : 0;
+    
+    el("sTotalToday").textContent = tot;
+    el("sDoneToday").textContent = done;
+    el("sKanban").textContent = (S.tasks||[]).length;
+    el("progressBar").style.width = pct + "%";
+    el("progressPct").textContent = pct + "%";
+    el("moodEmoji").textContent = pct === 0 ? "😴" : pct < 30 ? "🌱" : pct < 60 ? "💪" : pct < 90 ? "🔥" : "🏆";
+    
+    const sn = el("streakNum"); 
+    if(sn) sn.textContent = S.streak || 0;
+    
+    const today = new Date().toISOString().split("T")[0];
+    if(tot > 0) {
+        if(!S.history) S.history = {};
+        S.history[today] = pct;
+    }
 }
 
 /* ════════ TABS / SIDEBAR / THEME / PERIODS ════════ */
@@ -2603,129 +2574,79 @@ window.renderAll = function() { 
 
 /* ════════ 1. TODAY (GROUPED BY COURSE) ════════ */
 window.renderTodayTasks = function() {
-    const list = el("todayList");
-    const schedList = el("scheduledList");
-    if(!list) return;
-    if(!S.todayTasks) S.todayTasks = [];
+    const list = el("todayList");
+    if(!list) return;
+    if(!S.todayTasks) S.todayTasks = [];
+    
+    const items = [...S.todayTasks].sort((a,b) => a.done === b.done ? 0 : a.done ? 1 : -1);
+    if(!items.length) {
+        list.innerHTML = `<div class="empty"><span>🎯</span><p>يومك فاضي لسه.. ضيف مهمة أو اسحب درس من كورساتك!</p></div>`;
+        return;
+    }
+  
+    let groups = {};
+    let independent = [];
+  
+    items.filter(t => (t.text || "").toLowerCase().includes(sq)).forEach(t => {
+        if (t.parentName) {
+            if (!groups[t.parentName]) groups[t.parentName] = [];
+            groups[t.parentName].push(t);
+        } else {
+            independent.push(t);
+        }
+    });
 
-    const now = new Date();
-    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime();
+    const genItem = (t) => {
+        let dateHtml = "";
+        if(t.dueDate) {
+            const d = new Date(t.dueDate);
+            if(!isNaN(d.getTime())) {
+                dateHtml = `<div style="font-size:10px;font-weight:700;color:var(--amber);background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:6px; border:1px solid rgba(245,158,11,0.2);">📅 ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}</div>`;
+            }
+        }
+        return `
+        <div class="today-item${t.done?" done":""}">
+            <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="window.toggleTodayTask('${t.id}')">
+            <div style="flex:1;min-width:0;">
+                <div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text}</div>
+                <div style="display:flex; gap:12px; align-items:center; margin-top:4px;">
+                    ${dateHtml}
+                    ${t.parentName ? `<button onclick="window.goToCourse('${t.parentId}', ${t.subIdx})" style="font-size:10px;font-weight:700;color:var(--blue2);background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:2px 6px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">🔗 عرض في الكورس</button>` : ""}
+                </div>
+            </div>
+            <button onclick="window.delTodayTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--txt3);font-size:16px;padding:0 4px;transition:color 0.2s;flex-shrink:0;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
+        </div>`;
+    };
 
-    const currentItems = [];
-    const futureItems = [];
-
-    [...S.todayTasks].forEach(t => {
-        if (t.dueDate) {
-            const dTime = new Date(t.dueDate).getTime();
-            if (dTime > endOfToday) {
-                futureItems.push(t);
-                return;
-            }
-        }
-        currentItems.push(t);
-    });
-
-    currentItems.sort((a,b) => a.done === b.done ? 0 : a.done ? 1 : -1);
-    futureItems.sort((a,b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
-
-    const genItem = (t) => {
-        let dateHtml = "";
-        if(t.dueDate) {
-            const d = new Date(t.dueDate);
-            if(!isNaN(d.getTime())) {
-                dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--amber);background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:6px; border:1px solid rgba(245,158,11,0.2); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;">
-                    📅 ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}
-                    <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" value="${t.dueDate}" style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%;">
-                </div>`;
-            }
-        } else {
-            dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--txt3);background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:6px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;">
-                ➕ أضف تاريخ
-                <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%;">
-            </div>`;
-        }
-
-        return `
-        <div class="today-item${t.done?" done":""}">
-            <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="window.toggleTodayTask('${t.id}')">
-            <div style="flex:1;min-width:0;">
-                <div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text}</div>
-                <div style="display:flex; gap:12px; align-items:center; margin-top:4px;">
-                    ${dateHtml}
-                    ${t.parentName ? `<button onclick="window.goToCourse('${t.parentId}', ${t.subIdx})" style="font-size:10px;font-weight:700;color:var(--blue2);background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:2px 6px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">🔗 عرض في الكورس</button>` : ""}
-                </div>
-            </div>
-            <button onclick="window.delTodayTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--txt3);font-size:16px;padding:0 4px;transition:color 0.2s;flex-shrink:0;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
-        </div>`;
-    };
-
-    if(!currentItems.length) {
-        list.innerHTML = `<div class="empty"><span>🎯</span><p>يومك فاضي لسه.. ضيف مهمة أو اسحب درس من كورساتك!</p></div>`;
-    } else {
-        let groups = {};
-        let independent = [];
-        currentItems.filter(t => (t.text || "").toLowerCase().includes(sq)).forEach(t => {
-            if (t.parentName) {
-                if (!groups[t.parentName]) groups[t.parentName] = [];
-                groups[t.parentName].push(t);
-            } else {
-                independent.push(t);
-            }
-        });
-
-        let html = '';
-        for (let g in groups) {
-            let tasks = groups[g];
-            let doneCount = tasks.filter(x => x.done).length;
-            let pct = Math.round((doneCount / tasks.length) * 100);
-            let safeG = "grp_" + Math.random().toString(36).substr(2, 9);
-            
-            html += `
-            <div style="background:var(--bg3); border:1px solid var(--border); border-radius:14px; margin-bottom:10px; overflow:hidden; transform:translateZ(0);">
-                <div onclick="document.getElementById('${safeG}').classList.toggle('hidden')" style="padding:12px 16px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background:rgba(255,255,255,0.02); transition:background 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.05)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
-                    <div style="font-weight:900; font-size:13px; color:var(--blue2);">📚 ${g}</div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                       <span style="font-size:11px; color:var(--txt3); font-weight:bold;">${doneCount}/${tasks.length} مهام</span>
-                       <div style="width:20px; height:20px; border-radius:50%; background:conic-gradient(var(--blue) ${pct}%, transparent 0); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative;">
-                          <div style="width:12px; height:12px; border-radius:50%; background:var(--bg3);"></div>
-                       </div>
-                    </div>
-                </div>
-                <div id="${safeG}" style="padding:10px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:6px;">
-                    ${tasks.map(t => genItem(t)).join('')}
-                </div>
-            </div>`;
-        }
-        if(independent.length) {
-            html += independent.map(t => genItem(t)).join('');
-        }
-        list.innerHTML = html;
-    }
-
-    if (schedList) {
-        if(!futureItems.length) {
-            schedList.innerHTML = `<div class="empty"><span>📅</span><p>لا توجد مهام مجدولة للمستقبل حالياً.</p></div>`;
-        } else {
-            schedList.innerHTML = futureItems.map(t => genItem(t)).join('');
-        }
-    }
-};
-
-window.updateTodayDate = function(id, val) {
-    const t = S.todayTasks.find(x => x.id === id);
-    if(t) {
-        t.dueDate = val;
-        window.saveData();
-    }
-};
-
-window.openScheduledModal = function() {
-    window.renderTodayTasks(); 
-    el("scheduledModal").classList.add("show");
-};
-
-window.closeScheduledModal = function() {
-    el("scheduledModal").classList.remove("show");
+    let html = '';
+    for (let g in groups) {
+        let tasks = groups[g];
+        let doneCount = tasks.filter(x => x.done).length;
+        let pct = Math.round((doneCount / tasks.length) * 100);
+        let safeG = "grp_" + Math.random().toString(36).substr(2, 9);
+        
+        html += `
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:14px; margin-bottom:10px; overflow:hidden; transform:translateZ(0);">
+            <div onclick="document.getElementById('${safeG}').classList.toggle('hidden')" style="padding:12px 16px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background:rgba(255,255,255,0.02); transition:background 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.05)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
+                <div style="font-weight:900; font-size:13px; color:var(--blue2);">📚 ${g}</div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                   <span style="font-size:11px; color:var(--txt3); font-weight:bold;">${doneCount}/${tasks.length} مهام</span>
+                   <div style="width:20px; height:20px; border-radius:50%; background:conic-gradient(var(--blue) ${pct}%, transparent 0); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative;">
+                      <div style="width:12px; height:12px; border-radius:50%; background:var(--bg3);"></div>
+                   </div>
+                </div>
+            </div>
+            <div id="${safeG}" style="padding:10px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:6px;">
+                ${tasks.map(t => genItem(t)).join('')}
+            </div>
+        </div>`;
+    }
+  
+    if(independent.length) {
+        html += independent.map(t => genItem(t)).join('');
+    }
+  
+    list.innerHTML = html;
 };
 
 window.addTodayTask = function() {
