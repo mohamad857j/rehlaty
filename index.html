@@ -3725,4 +3725,338 @@ window.renderCerts = function() {
     <div class="cert-card" onclick="window.open('${c.url||c.data}','_blank')">
         <img src="${c.data}" onerror="this.style.display='none'">
         <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);color:#fff;font-size:9px;font-weight:900;padding:3px 7px;border-radius:7px;z-index:3;">${c.ext.toUpperCase()}</div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgbaأنا نموذج لغوي، ولا يمكنني المساعدة في ذلك.
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);z-index:3;text-align:center;">
+            <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
+            <div style="font-size:10px;font-weight:700;color:var(--blue2);margin-top:2px;">${c.date}</div>
+        </div>
+        <button onclick="event.stopPropagation();window.delCert('${c.id}')" style="position:absolute;top:10px;left:10px;width:30px;height:30px;border-radius:50%;background:rgba(239,68,68,0.9);border:none;cursor:pointer;color:#fff;font-size:14px;z-index:4;">✕</button>
+    </div>`).join("");
+};
+
+window.handleCertUpload = async function(inp) {
+    const f = inp.files[0];
+    if(!f) return;
+    window.showToast("جاري المعالجة...","loading");
+    const r = new FileReader();
+    r.onload = e => {
+        const name = prompt("اسم الشهادة:", f.name.split(".")[0]);
+        if(!name){ inp.value=""; return; }
+        const url = prompt("الرابط المباشر للملف (Drive Link):");
+        if(!S.certificates) S.certificates = [];
+        S.certificates.unshift({
+            id: "cert"+Date.now(),
+            title: name,
+            data: e.target.result,
+            url: url,
+            ext: f.name.split(".").pop().toLowerCase(),
+            date: new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())
+        });
+        inp.value = "";
+        window.saveData();
+        window.showToast("تمت الإضافة! 🎓","success");
+    };
+    r.readAsDataURL(f);
+};
+
+window.delCert = function(id) {
+    if(confirm("مسح الشهادة؟")){
+        window.playSound("del");
+        S.certificates = S.certificates.filter(x => x.id !== id);
+        window.saveData();
+    }
+};
+
+/* ════════ 8. POMODORO ════════ */
+const POMO_MODES = {
+    focus: {label:"تركيز 🧠", sec:25*60},
+    short: {label:"استراحة قصيرة ☕", sec:5*60},
+    long: {label:"استراحة طويلة 🛋️", sec:15*60}
+};
+let pomoInterval = null, pomoRemaining = POMO_MODES.focus.sec, pomoMode = "focus", pomoRunning = false, pomoTargetTime = 0;
+const POMO_CIRC = 2 * Math.PI * 40;
+
+window.pomodoroRender = function() {
+    const m = String(Math.floor(pomoRemaining/60)).padStart(2,"0");
+    const s = String(pomoRemaining%60).padStart(2,"0");
+    el("pomodoroDisplay").textContent = `${m}:${s}`;
+    el("pomodoroLabel").textContent = POMO_MODES[pomoMode].label;
+    const pct = pomoRemaining / POMO_MODES[pomoMode].sec;
+    const ring = el("pomoRingFill");
+    if(ring){
+        ring.style.strokeDasharray = POMO_CIRC;
+        ring.style.strokeDashoffset = POMO_CIRC * (1 - pct);
+    }
+};
+
+window.pomodoroStart = function() {
+    if(pomoRunning) return;
+    pomoRunning = true;
+    window.playSound("pomo-start");
+    pomoTargetTime = Date.now() + (pomoRemaining * 1000);
+    pomoInterval = setInterval(() => {
+        pomoRemaining = Math.max(0, Math.round((pomoTargetTime - Date.now()) / 1000));
+        window.pomodoroRender();
+        if(pomoRemaining <= 0){
+            clearInterval(pomoInterval);
+            pomoRunning = false;
+            window.playSound("pomo-end");
+            window.showToast("انتهى الوقت! 🎉","success");
+            window.pomodoroSetMode(pomoMode==="focus" ? "short" : "focus");
+        }
+    }, 1000);
+};
+
+window.pomodoroPause = function() {
+    clearInterval(pomoInterval);
+    pomoRunning = false;
+};
+
+window.pomodoroReset = function() {
+    clearInterval(pomoInterval);
+    pomoRunning = false;
+    pomoRemaining = POMO_MODES[pomoMode].sec;
+    window.pomodoroRender();
+};
+
+window.pomodoroSetMode = function(mode) {
+    pomoMode = mode;
+    document.querySelectorAll(".pomo-mode-btn").forEach(b => b.classList.remove("active"));
+    const mb = el("pm-"+mode);
+    if(mb) mb.classList.add("active");
+    window.pomodoroReset();
+};
+
+document.addEventListener("visibilitychange", () => {
+    if(!document.hidden && pomoRunning) {
+        pomoRemaining = Math.max(0, Math.round((pomoTargetTime - Date.now()) / 1000));
+        window.pomodoroRender();
+    }
+});
+window.pomodoroRender();
+
+/* ════════ 9. EXTRAS: HEATMAP & CHARTS ════════ */
+window.renderHeatmap = function() {
+    const gridEl = el("heatmapGrid");
+    if(!gridEl) return;
+    
+    const history = S.history || {};
+    const year = new Date().getFullYear();
+    el("currentYearDisplay").textContent = `(عام ${year})`;
+  
+    const start = new Date(year, 0, 1);
+    let html = "";
+    const cursor = new Date(start);
+    cursor.setDate(cursor.getDate() - cursor.getDay()); 
+  
+    const months = ["يناير","فبراير","مارس","إبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+    let lastMonth = -1;
+
+    for(let w=0; w<53; w++) {
+        let colHtml = "";
+        let showMonth = false;
+
+        for(let d=0; d<7; d++) {
+            const ds = cursor.toISOString().split("T")[0];
+            const inYear = cursor.getFullYear() === year;
+       
+            if(inYear && cursor.getMonth() !== lastMonth && cursor.getDate() <= 7) {
+                showMonth = true;
+                lastMonth = cursor.getMonth();
+            }
+
+            const pct = history[ds] !== undefined ? history[ds] : -1;
+            let bg = "transparent";
+       
+            if(inYear) { 
+                if(pct === -1 || pct === 0) bg = "rgba(255,255,255,0.02)"; 
+                else if(pct < 30) bg = "#064e3b";
+                else if(pct < 60) bg = "#065f46";
+                else if(pct < 90) bg = "#047857";
+                else bg = "#10b981";
+            }
+       
+            const isToday = ds === new Date().toISOString().split("T")[0];
+            const todayClass = isToday ? " hm-today" : "";
+       
+            colHtml += `<div class="hm-cell${todayClass}" style="background:${bg}" title="${inYear?ds+' : '+(pct===-1?'0':pct)+'%':''}"></div>`;
+            cursor.setDate(cursor.getDate() + 1);
+        }
+    
+        let monthLabel = "";
+        if(showMonth){
+            monthLabel = `<div style="position:absolute; top:-22px; right:0; font-size:10px; font-weight:900; color:var(--txt3); white-space:nowrap;">${months[lastMonth]}</div>`;
+        }
+    
+        html += `<div class="hm-col" style="position:relative;">${monthLabel}${colHtml}</div>`;
+    }
+    gridEl.innerHTML = html; 
+};
+
+let lineInst = null, pieInst = null;
+window.renderCharts = function() {
+    const lineCtx = el("lineChart"), pieCtx = el("pieChart");
+    if(!lineCtx || !pieCtx || typeof Chart === "undefined") return;
+    
+    const labels = [], data = [];
+    for(let i=6; i>=0; i--){
+        const d = new Date(); d.setDate(d.getDate()-i);
+        const key = d.toISOString().split("T")[0];
+        labels.push(new Intl.DateTimeFormat("ar-EG",{weekday:"short"}).format(d));
+        data.push((S.history && S.history[key]) ?? 0);
+    }
+    
+    if(lineInst) lineInst.destroy();
+    lineInst = new Chart(lineCtx, {
+        type: "line",
+        data: {
+            labels,
+            datasets: [{label:"نسبة الإنجاز %", data, borderColor:"#3b82f6", backgroundColor:"rgba(59,130,246,0.1)", borderWidth:2.5, pointBackgroundColor:"#38bdf8", pointRadius:4, tension:0.4, fill:true}]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+            scales: {
+                y: {min:0, max:100, ticks:{color:"#46607a",font:{family:"Cairo"}}, grid:{color:"rgba(255,255,255,0.04)"}},
+                x: {ticks:{color:"#46607a",font:{family:"Cairo"}}, grid:{color:"rgba(255,255,255,0.04)"}}
+            }
+        }
+    });
+  
+    const tagCounts = {};
+    (S.tasks || []).forEach(t => {
+        const tag = t.tag || "بدون قسم";
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+    
+    const pLabels = Object.keys(tagCounts), pData = Object.values(tagCounts);
+    const pColors = pLabels.map(tag => S.tagColors?.[tag] || "#64748b");
+    
+    if(pieInst) pieInst.destroy();
+    pieInst = new Chart(pieCtx, {
+        type: "doughnut",
+        data: {
+            labels: pLabels,
+            datasets: [{data:pData, backgroundColor:pColors, borderColor:"#0d1424", borderWidth:2}]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false, cutout:"65%",
+            plugins:{legend:{position:"bottom", labels:{color:"#8ea6cc", font:{family:"Cairo",size:11}}}}
+        }
+    });
+};
+
+/* ════════ FAST LOAD & SYNC ════════ */
+window.loginWithGoogle = () => signInWithPopup(auth, gProv);
+window.logoutUser = () => { if(confirm("تسجيل الخروج؟")) signOut(auth); };
+
+onAuthStateChanged(auth, async u => {
+    const overlay = el("loginOverlay");
+    if(u) {
+        user = u; 
+        el("uName").textContent = u.displayName || u.email || "مرحباً"; 
+        el("uAvatar").textContent = (u.displayName || u.email || "?")[0].toUpperCase();
+        el("gLoginBtn").style.display = "none"; 
+        el("loadingRow").style.display = "flex";
+    
+        const local = localStorage.getItem("rehlaty_v3");
+        if(local) {
+            try {
+                const parsed = JSON.parse(local);
+                
+                // Safe Object Assign to prevent overwriting Defaults if corrupt
+                if(parsed && typeof parsed === 'object'){
+                   Object.keys(parsed).forEach(key => {
+                       if(parsed[key] !== undefined && parsed[key] !== null) {
+                           S[key] = parsed[key];
+                       }
+                   });
+                }
+                
+                S.tasks = (S.tasks || []).map(t => ({
+                    ...t, 
+                    subtasks: t.subtasks || t.subs || [], 
+                    files: t.files || [], 
+                    description: t.description || t.desc || "", 
+                    type: t.type || "general"
+                }));
+                S.archive = S.archive || {today:[], goals:[], years:{}};
+                S.archive.today = S.archive.today || []; 
+                S.archive.goals = S.archive.goals || []; 
+                S.archive.years = S.archive.years || {};
+                S.suggestions = S.suggestions || []; 
+                S.todayTasks = S.todayTasks || []; 
+                S.goals = S.goals || [];
+                S.resources = S.resources || []; 
+                S.certificates = S.certificates || [];
+                S.tags = S.tags || ["تصميم", "ويب", "تعلم"];
+                S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
+
+            } catch(e) {
+                console.error("Local load error", e);
+            }
+        }
+
+        try {
+            dailySweep(); 
+            window.renderAll(); 
+        } catch(err) {
+            console.error("Render error during boot:", err);
+        } finally {
+            overlay.style.opacity = "0"; 
+            setTimeout(() => overlay.style.display="none", 500);
+        }
+
+        try {
+            const snap = await getDoc(doc(db,"rehlaty_users",u.uid));
+            if(snap.exists()) {
+                const cloudData = snap.data();
+                
+                // Safe merge for cloud data
+                if(cloudData && typeof cloudData === 'object'){
+                   Object.keys(cloudData).forEach(key => {
+                       if(cloudData[key] !== undefined && cloudData[key] !== null) {
+                           S[key] = cloudData[key];
+                       }
+                   });
+                }
+                
+                S.tasks = (S.tasks || []).map(t => ({
+                    ...t, 
+                    subtasks: t.subtasks || t.subs || [], 
+                    files: t.files || [], 
+                    description: t.description || t.desc || "", 
+                    type: t.type || "general"
+                }));
+                S.archive = S.archive || {today:[], goals:[], years:{}};
+                S.archive.today = S.archive.today || []; 
+                S.archive.goals = S.archive.goals || [];
+                S.tags = S.tags || ["تصميم", "ويب", "تعلم"];
+                S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
+        
+                dailySweep(); 
+                window.saveDataSilently(); 
+                window.renderAll();
+            } else {
+                await setDoc(doc(db,"rehlaty_users",u.uid), S);
+            }
+        } catch(e) {
+            console.error("Cloud sync offline:", e.message);
+            window.setOfflineUI(); // Trigger UI offline mode if getDoc fails
+        }
+    
+        window.updateStreak();
+    } else {
+        user = null;
+        overlay.style.display = "flex";
+        overlay.style.opacity = "1";
+        el("gLoginBtn").style.display = "flex";
+        el("loadingRow").style.display = "none";
+    }
+});
+
+window.updateDate(); 
+window.initTheme(); 
+window.switchTab("today");
+
+</script>
+</body>
+</html>
