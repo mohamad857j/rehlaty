@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رحلتي 🚀</title>
     
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232563eb'/%3E%3Cpath d='M4 22c3-5 5-7 5-11s-2-6-2-8M20 22c-3-5-5-7-5-11s2-6 2-8M12 22v-2M12 15v-2M12 9V7' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232563eb'/%3E%3Cpath d='M4 22c3-5 5-7 5-11s-2-6-2-8M20 22c-3-5-5-7-5-11s2-6 2-8M12 22v-2M12 15v-2M12 9V7' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
     
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <script src="[https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js](https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js)"></script>
-    <script src="[https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js](https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js)"></script>
-    <link href="[https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap](https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap)" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* ════════════════════════════════════════
@@ -1598,20 +1598,31 @@
                 <button class="btn-ghost" onclick="window.toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button>
             </div>
 
-            <!-- جديد: خلفية التطبيق -->
+            <!-- إعدادات الخلفية -->
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
-                    <span>خلفية التطبيق 🎨</span>
-                    <button onclick="window.changeBg('none', '')" style="background:transparent;border:none;color:var(--red);font-size:10px;font-weight:bold;cursor:pointer;">إزالة ✕</button>
+                    <span>الخلفية الأساسية 🖼️</span>
+                    <button onclick="window.changeBgBase('none', '')" style="background:transparent;border:none;color:var(--red);font-size:10px;font-weight:bold;cursor:pointer;">إزالة ✕</button>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                    <div onclick="window.changeBg('gradient', 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); border:2px solid var(--border);"></div>
-                    <div onclick="window.changeBg('gradient', 'linear-gradient(135deg, #141e30, #243b55)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #141e30, #243b55); border:2px solid var(--border);"></div>
-                    <div onclick="window.changeBg('gradient', 'radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876); border:2px solid var(--border);"></div>
-                    <div onclick="window.changeBg('pattern', 'radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px); background-size:15px 15px; border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #141e30, #243b55)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #141e30, #243b55); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBgBase('gradient', 'radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876); border:2px solid var(--border);"></div>
                 </div>
                 <button onclick="document.getElementById('bgUploadIn').click()" style="width:100%;background:rgba(59,130,246,0.1);border:1px dashed var(--blue2);border-radius:10px;color:var(--blue2);font-weight:700;font-size:12px;padding:8px;cursor:pointer;">🖼️ رفع صورة من جهازك</button>
                 <input type="file" id="bgUploadIn" style="display:none;" accept="image/*" onchange="window.handleBgUpload(this)">
+                
+                <div style="width:100%; height:1px; background:var(--border); margin:12px 0;"></div>
+                
+                <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
+                    <span>تأثيرات النقوش (Patterns) ✨</span>
+                    <button onclick="window.changeBgPattern('none')" style="background:transparent;border:none;color:var(--red);font-size:10px;font-weight:bold;cursor:pointer;">بدون</button>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <div onclick="window.changeBgPattern('dots')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="نقاط"></div>
+                    <div onclick="window.changeBgPattern('grid')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="شبكة"></div>
+                    <div onclick="window.changeBgPattern('stripes')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 8px); border:2px solid var(--border);" title="خطوط"></div>
+                </div>
             </div>
 
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
@@ -1757,7 +1768,7 @@ let S = {
     lastYearChecked: new Date().getFullYear(), 
     lastReportMonth: new Date().getMonth(), 
     suggestions: [],
-    appBg: { type: 'none', val: '' } // 🎨 إضافة متغير الخلفية
+    appBg: { baseType: 'none', baseVal: '', pattern: 'none' }
 };
 
 const ICONS = {
@@ -1790,46 +1801,6 @@ const AZKAR = [
 let currentZikr = 0;
 
 const el = id => document.getElementById(id);
-
-/* ════════ BACKGROUND LOGIC (الخلفيات) ════════ */
-window.changeBg = function(type, val) {
-    S.appBg = { type, val };
-    window.applyBg();
-    window.saveDataSilently();
-};
-
-window.applyBg = function() {
-    if(!S.appBg) return;
-    
-    document.body.style.backgroundImage = 'none';
-    document.body.style.backgroundSize = 'auto';
-    document.body.style.backgroundAttachment = 'scroll';
-    
-    if(S.appBg.type === 'none') {
-        document.body.style.background = 'var(--bg)';
-    } else if(S.appBg.type === 'color' || S.appBg.type === 'gradient') {
-        document.body.style.background = S.appBg.val;
-    } else if(S.appBg.type === 'pattern') {
-        document.body.style.backgroundColor = 'var(--bg)';
-        document.body.style.backgroundImage = S.appBg.val;
-        document.body.style.backgroundSize = '20px 20px';
-    } else if(S.appBg.type === 'image') {
-        document.body.style.background = `linear-gradient(rgba(13, 20, 36, 0.85), rgba(13, 20, 36, 0.85)), url(${S.appBg.val})`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundAttachment = 'fixed';
-    }
-};
-
-window.handleBgUpload = function(inp) {
-    const f = inp.files[0];
-    if(!f) return;
-    const r = new FileReader();
-    r.onload = e => {
-        window.changeBg('image', e.target.result);
-    };
-    r.readAsDataURL(f);
-};
 
 /* ════════ GLOBAL SYNC TIMEOUT ════════ */
 window.syncTimeout = null;
@@ -2257,6 +2228,7 @@ window.renderSpecificReport = function() {
         }
     }
     
+    // Accurate Pie Chart
     const tCounts = {};
     filteredTasks.forEach(t => {
         let tag = t.savedTag || "مهام عامة"; 
@@ -2522,6 +2494,79 @@ window.toggleTheme = function() {
     const isL = document.body.classList.contains("light");
     localStorage.setItem("rehlaty_theme", isL ? "light" : "dark");
     el("themeBtn").textContent = isL ? "☀️ فاتح" : "🌙 داكن";
+};
+
+/* ════════ BACKGROUND LOGIC ════════ */
+window.changeBgBase = function(type, val) {
+    if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
+    S.appBg.baseType = type;
+    S.appBg.baseVal = val;
+    window.applyBg();
+    window.saveDataSilently();
+};
+
+window.changeBgPattern = function(pattern) {
+    if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
+    S.appBg.pattern = pattern;
+    window.applyBg();
+    window.saveDataSilently();
+};
+
+window.applyBg = function() {
+    if(!S.appBg) return;
+    
+    let bgImageLayers = [];
+    let bgColor = 'var(--bg)';
+    
+    if(S.appBg.pattern === 'dots') {
+        bgImageLayers.push('radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)');
+        document.body.style.backgroundSize = '15px 15px';
+    } else if(S.appBg.pattern === 'grid') {
+        bgImageLayers.push('linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)');
+        document.body.style.backgroundSize = '20px 20px';
+    } else if(S.appBg.pattern === 'stripes') {
+        bgImageLayers.push('repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px)');
+        document.body.style.backgroundSize = 'auto'; 
+    } else {
+        document.body.style.backgroundSize = 'auto';
+    }
+
+    if(S.appBg.baseType === 'gradient') {
+        bgImageLayers.push(S.appBg.baseVal);
+    } else if(S.appBg.baseType === 'image') {
+        bgImageLayers.push(`linear-gradient(rgba(13, 20, 36, 0.85), rgba(13, 20, 36, 0.85))`); 
+        bgImageLayers.push(`url(${S.appBg.baseVal})`);
+    } else if(S.appBg.baseType === 'color') {
+        bgColor = S.appBg.baseVal;
+    }
+
+    if(bgImageLayers.length > 0) {
+        document.body.style.backgroundImage = bgImageLayers.join(', ');
+    } else {
+        document.body.style.backgroundImage = 'none';
+    }
+    
+    document.body.style.backgroundColor = bgColor;
+    
+    if (S.appBg.baseType === 'image') {
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    } else if (S.appBg.pattern !== 'none') {
+         document.body.style.backgroundAttachment = 'fixed';
+    } else {
+        document.body.style.backgroundAttachment = 'scroll';
+    }
+};
+
+window.handleBgUpload = function(inp) {
+    const f = inp.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        window.changeBgBase('image', e.target.result);
+    };
+    r.readAsDataURL(f);
 };
 
 function periods() {
@@ -3186,6 +3231,7 @@ function fileIcon(ext, type){
     if(["psd","ai","xd"].includes(ext)) return "🎨";
     return "📁";
 }
+
 window.renderSubtasks = function() {
     const t = S.tasks.find(x => x.id === activTask);
     if(!t) return;
@@ -3341,7 +3387,7 @@ window.updateSubNote = function(i, ni, v) {
 };
 
 window.delSubNote = function(i, ni) {
-    S.tasks.find(x => x.id === activTask).subtasks[i].notes.splice(ni,1);
+S.tasks.find(x => x.id === activTask).subtasks[i].notes.splice(ni,1);
     window.saveDataSilently();
     window.renderSubtasks();
 };
@@ -4047,6 +4093,7 @@ onAuthStateChanged(auth, async u => {
                 S.certificates = S.certificates || [];
                 S.tags = S.tags || ["تصميم", "ويب", "تعلم"];
                 S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
+                if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
 
             } catch(e) {
                 console.error("Local load error", e);
@@ -4089,6 +4136,7 @@ onAuthStateChanged(auth, async u => {
                 S.archive.goals = S.archive.goals || [];
                 S.tags = S.tags || ["تصميم", "ويب", "تعلم"];
                 S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
+                if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
         
                 dailySweep(); 
                 window.saveDataSilently(); 
