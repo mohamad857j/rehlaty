@@ -387,12 +387,16 @@
         }
         
         /* حل مشكلة انقلاب التاريخ في الوضع الداكن */
+        input[type="date"],
+        input[type="time"],
         input[type="datetime-local"] {
             color-scheme: dark;
             font-family: 'Cairo', sans-serif;
             direction: ltr; 
         }
 
+        body.light input[type="date"],
+        body.light input[type="time"],
         body.light input[type="datetime-local"] {
             color-scheme: light;
         }
@@ -437,13 +441,13 @@
         }
 
         /* ════════════════════════════════════════
-           12. كارت المهام اليومية
+           12. كارت المهام اليومية (التصميم الجديد)
         ════════════════════════════════════════ */
         .today-item {
             background: var(--bg3);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 12px 16px;
+            padding: 14px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -1209,20 +1213,26 @@
                     <div style="font-size:28px;" id="moodEmoji">😴</div>
                 </div>
                 
-                <!-- شريط إضافة المهمة الجديد والأنيق -->
                 <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color 0.2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
                     <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
                     <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." oninput="window.toggleNewTaskOptions(this.value)" onkeypress="if(event.key==='Enter')window.addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
                     
                     <div id="newTaskOptions" style="display:none; align-items:center; gap:8px;">
                         <select id="newTodayEffort" class="field" style="width:auto; padding:6px 10px; font-size:11px; font-weight:900; background:rgba(255,255,255,0.05); border:none; cursor:pointer;" title="حجم المجهود">
-                            <option value="1" style="background:var(--bg3); color:var(--txt1);">🟢 خفيفة</option>
-                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>🟡 متوسطة</option>
-                            <option value="5" style="background:var(--bg3); color:var(--txt1);">🔴 عميقة</option>
+                            <option value="1" style="background:var(--bg3); color:var(--green2);">🟢 خفيفة</option>
+                            <option value="3" style="background:var(--bg3); color:var(--amber);" selected>🟡 متوسطة</option>
+                            <option value="5" style="background:var(--bg3); color:var(--red);">🔴 عميقة</option>
                         </select>
-                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
-                            📅 ⏰
-                            <input type="datetime-local" id="newTodayDate" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                        
+                        <div style="display:flex; gap:4px;">
+                            <div style="position:relative; display:flex; align-items:center; justify-content:center; width:30px; height:30px; background:rgba(255,255,255,0.05); border-radius:8px; cursor:pointer; color:var(--txt2); transition:0.2s;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(59,130,246,0.1)'; this.style.color='var(--blue2)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--txt2)';" title="تحديد التاريخ">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <input type="date" id="newTodayDateOnly" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                            </div>
+                            <div style="position:relative; display:flex; align-items:center; justify-content:center; width:30px; height:30px; background:rgba(255,255,255,0.05); border-radius:8px; cursor:pointer; color:var(--txt2); transition:0.2s;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(245,158,11,0.1)'; this.style.color='var(--amber)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--txt2)';" title="تحديد الوقت">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <input type="time" id="newTodayTimeOnly" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                            </div>
                         </div>
                     </div>
 
@@ -1280,9 +1290,9 @@
                         <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addTask()">
                         
                         <select id="newTaskEffort" class="field" style="width:auto; padding:7px 10px; font-size:12px; font-weight:900; background:rgba(255,255,255,0.05); border:none; cursor:pointer; border-radius:10px;" title="حجم المجهود">
-                            <option value="1" style="background:var(--bg3); color:var(--txt1);">🟢 خفيفة</option>
-                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>🟡 متوسطة</option>
-                            <option value="5" style="background:var(--bg3); color:var(--txt1);">🔴 عميقة</option>
+                            <option value="1" style="background:var(--bg3); color:var(--green2);">🟢 خفيفة</option>
+                            <option value="3" style="background:var(--bg3); color:var(--amber);" selected>🟡 متوسطة</option>
+                            <option value="5" style="background:var(--bg3); color:var(--red);">🔴 عميقة</option>
                         </select>
 
                         <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
@@ -1532,7 +1542,6 @@
                 <button class="btn-ghost" onclick="window.toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button>
             </div>
 
-            <!-- إعدادات الخلفية -->
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
                     <span>الخلفية الأساسية 🖼️</span>
@@ -1685,7 +1694,7 @@ const gProv = new GoogleAuthProvider();
 let user = null;
 let activTask = null;
 let sq = "";
-let chartWeekOffset = 0; // للتحكم في تقليب الأسابيع
+let chartWeekOffset = 0; 
 
 // Default State (Safe Boot)
 let S = {
@@ -1719,14 +1728,6 @@ const ICONS = {
     video: "▶️", 
     workshop: "🛠️"
 };
-
-const QUOTES = [
-    "عافر، حلمك يستاهل التعب! 💪", 
-    "وما نيل المطالب بالتمني ✨", 
-    "السعي عبادة والمثابرة فن 🌟", 
-    "كل خطوة صغيرة بتقربك من حلمك 🚀", 
-    "اليوم اللي مش بتتعلم فيه مش بيتحسبش! 📚"
-];
 
 const AZKAR = [
     "سبحان الله وبحمده", 
@@ -2662,113 +2663,21 @@ window.renderAll = function() {
     window.updateStats(); 
 };
 
-/* ════════ 1. TODAY (NO GROUPS, SLEEK UI) ════════ */
-window.renderTodayTasks = function() {
-    const list = el("todayList");
-    const schedList = el("scheduledList");
-    if(!list) return;
-    if(!S.todayTasks) S.todayTasks = [];
-
-    const now = new Date();
-    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime();
-
-    const currentItems = [];
-    const futureItems = [];
-
-    [...S.todayTasks].forEach(t => {
-        if (t.dueDate) {
-            const dTime = new Date(t.dueDate).getTime();
-            if (dTime > endOfToday) {
-                futureItems.push(t);
-                return;
-            }
-        }
-        currentItems.push(t);
-    });
-
-    currentItems.sort((a,b) => a.done === b.done ? 0 : a.done ? 1 : -1);
-    futureItems.sort((a,b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
-
-    const genItem = (t) => {
-        let dateHtml = "";
-        if(t.dueDate) {
-            const d = new Date(t.dueDate);
-            if(!isNaN(d.getTime())) {
-                dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--cyan); background:rgba(56,189,248,0.1); padding:4px 8px; border-radius:8px; border:1px solid rgba(56,189,248,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" title="تعديل الموعد: ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}">
-                    📅 ⏰
-                    <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" value="${t.dueDate}" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
-                </div>`;
-            }
-        } else {
-            dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--txt3); opacity:0.5; padding:4px 8px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="أضف تاريخ/وقت">
-                📅 ⏰
-                <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
-            </div>`;
-        }
-
-        const eff = t.effort || 1;
-        let effBadge = "";
-        if(eff === 1) effBadge = `<span style="font-size:10px; font-weight:900; color:var(--green2); background:rgba(52,211,153,0.1); padding:2px 6px; border-radius:6px; border:1px solid rgba(52,211,153,0.2); margin-left:6px;">🟢 خفيفة</span>`;
-        else if(eff === 3) effBadge = `<span style="font-size:10px; font-weight:900; color:var(--amber); background:rgba(245,158,11,0.1); padding:2px 6px; border-radius:6px; border:1px solid rgba(245,158,11,0.2); margin-left:6px;">🟡 متوسطة</span>`;
-        else effBadge = `<span style="font-size:10px; font-weight:900; color:var(--red); background:rgba(239,68,68,0.1); padding:2px 6px; border-radius:6px; border:1px solid rgba(239,68,68,0.2); margin-left:6px;">🔴 عميقة</span>`;
-
-        return `
-        <div class="today-item${t.done?" done":""}" style="padding:14px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; display:flex; align-items:center; gap:12px; transition:all 0.2s; margin-bottom:8px;">
-            <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="window.toggleTodayTask('${t.id}')">
-            
-            <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;">
-                <div style="display:flex; align-items:center;">
-                    ${effBadge}
-                    <span style="font-size:14px; font-weight:700; ${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${t.text}">${t.text}</span>
-                </div>
-                ${t.parentName ? `<div style="display:flex; align-items:center;"><button onclick="window.goToCourse('${t.parentId}', ${t.subIdx})" style="font-size:10px; font-weight:700; color:var(--blue2); background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); padding:2px 8px; border-radius:8px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">📚 ${t.parentName} ↗</button></div>` : ""}
-            </div>
-            
-            <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
-                ${dateHtml}
-                <button onclick="window.delTodayTask('${t.id}')" style="background:transparent; border:none; cursor:pointer; color:var(--txt3); font-size:16px; padding:0 4px; transition:color 0.2s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
-            </div>
-        </div>`;
-    };
-
-    if(!currentItems.length) {
-        list.innerHTML = `<div class="empty"><span>🎯</span><p>يومك فاضي لسه.. ضيف مهمة أو اسحب درس من كورساتك!</p></div>`;
-    } else {
-        const filtered = currentItems.filter(t => (t.text || "").toLowerCase().includes(sq));
-        list.innerHTML = filtered.map(t => genItem(t)).join('');
-    }
-
-    if (schedList) {
-        if(!futureItems.length) {
-            schedList.innerHTML = `<div class="empty"><span>📅</span><p>لا توجد مهام مجدولة للمستقبل حالياً.</p></div>`;
-        } else {
-            schedList.innerHTML = futureItems.map(t => genItem(t)).join('');
-        }
-    }
-};
-
-window.updateTodayDate = function(id, val) {
-    const t = S.todayTasks.find(x => x.id === id);
-    if(t) {
-        t.dueDate = val;
-        window.saveData();
-    }
-};
-
-window.openScheduledModal = function() {
-    window.renderTodayTasks(); 
-    el("scheduledModal").classList.add("show");
-};
-
-window.closeScheduledModal = function() {
-    el("scheduledModal").classList.remove("show");
-};
-
 window.addTodayTask = function() {
     const inp = el("newTodayInput");
     const v = inp.value.trim();
-    const dInp = el("newTodayDate");
-    const d = dInp ? safeDateTime(dInp.value) : "";
+    
+    const dInp = el("newTodayDateOnly");
+    const tInp = el("newTodayTimeOnly");
+    let d = "";
+    if(dInp && dInp.value) {
+        d = dInp.value;
+        if(tInp && tInp.value) {
+            d += "T" + tInp.value;
+        } else {
+            d += "T00:00";
+        }
+    }
     
     const effInp = el("newTodayEffort");
     const effort = effInp ? parseInt(effInp.value) : 1;
@@ -2780,10 +2689,10 @@ window.addTodayTask = function() {
     
     inp.value = ""; 
     if(dInp) dInp.value = ""; 
+    if(tInp) tInp.value = ""; 
     window.toggleNewTaskOptions(""); 
     window.saveData();
 };
-
 window.toggleTodayTask = function(id) {
     const t = S.todayTasks.find(x => x.id === id);
     if(!t) return;
