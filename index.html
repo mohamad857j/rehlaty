@@ -889,66 +889,7 @@
         }
 
         /* ════════════════════════════════════════
-           18. بومودورو والأذكار
-        ════════════════════════════════════════ */
-        .pomo-modes { 
-            display: flex; 
-            gap: 6px; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-        }
-
-        .pomo-mode-btn {
-            padding: 5px 12px; 
-            border-radius: 20px; 
-            border: 1px solid var(--border);
-            background: transparent; 
-            color: var(--txt2); 
-            font-size: 11px; 
-            font-weight: 700;
-            cursor: pointer; 
-            font-family: 'Cairo', sans-serif; 
-            transition: all 0.2s;
-        }
-
-        .pomo-mode-btn:hover, .pomo-mode-btn.active {
-            background: rgba(59, 130, 246, 0.15); 
-            border-color: rgba(59, 130, 246, 0.4); 
-            color: var(--blue2);
-        }
-
-        .pomo-controls { 
-            display: flex; 
-            gap: 8px; 
-        }
-
-        .pomo-ring { 
-            position: relative; 
-            width: 90px; 
-            height: 90px; 
-            flex-shrink: 0; 
-        }
-
-        .pomo-ring svg { 
-            transform: rotate(-90deg); 
-        }
-
-        .pomo-ring-bg { 
-            fill: none; 
-            stroke: rgba(255, 255, 255, 0.06); 
-            stroke-width: 5; 
-        }
-
-        .pomo-ring-fill { 
-            fill: none; 
-            stroke: url(#pomoGrad); 
-            stroke-width: 5; 
-            stroke-linecap: round; 
-            transition: stroke-dashoffset 0.9s linear; 
-        }
-
-        /* ════════════════════════════════════════
-           19. الهيتماب (سجل النشاط السنوي)
+           18. الهيتماب (سجل النشاط السنوي)
         ════════════════════════════════════════ */
         #heatmapWidget { 
             background: var(--bg3); 
@@ -1028,7 +969,7 @@
         }
 
         /* ════════════════════════════════════════
-           20. الإحصائيات البيانية (Charts)
+           19. الإحصائيات البيانية (Charts)
         ════════════════════════════════════════ */
         #analyticsWidget { 
             background: var(--bg3); 
@@ -1075,7 +1016,7 @@
         }
 
         /* ════════════════════════════════════════
-           21. إعدادات الطباعة (PDF)
+           20. إعدادات الطباعة (PDF)
         ════════════════════════════════════════ */
         @media print {
             body * { 
@@ -1245,7 +1186,7 @@
                     </div>
                     <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--green),var(--green2));">
                         <div style="font-size:24px;font-weight:900;color:var(--green2);" id="sDoneToday">0</div>
-                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">تم إنجازه</div>
+                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">مهام منجزة</div>
                     </div>
                     <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--purple),#a78bfa);">
                         <div style="font-size:24px;font-weight:900;color:#a78bfa;" id="sKanban">0</div>
@@ -1260,7 +1201,7 @@
                 <div style="display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;flex-shrink:0;">
                     <div style="flex:1;">
                         <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
-                            <span style="font-size:12px;font-weight:700;color:var(--txt2);">تقدم اليوم</span>
+                            <span style="font-size:12px;font-weight:700;color:var(--txt2);">تقدم اليوم (حسب المجهود)</span>
                             <span style="font-size:12px;font-weight:900;color:var(--txt1);" id="progressPct">0%</span>
                         </div>
                         <div class="pbar-track"><div class="pbar-fill" id="progressBar" style="width:0%"></div></div>
@@ -1271,6 +1212,13 @@
                 <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color 0.2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
                     <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
                     <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')window.addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
+                    
+                    <select id="newTodayEffort" class="field" style="width:auto; padding:6px 10px; font-size:11px; font-weight:900; color:var(--amber); background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.2); cursor:pointer;" title="حجم المجهود (النقاط)">
+                        <option value="1" style="background:var(--bg3); color:var(--txt1);">⚡ 1 خفيفة</option>
+                        <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>⚡ 3 متوسطة</option>
+                        <option value="5" style="background:var(--bg3); color:var(--txt1);">⚡ 5 عميقة</option>
+                    </select>
+
                     <input type="datetime-local" id="newTodayDate" title="موعد التسليم (اختياري)" class="field" style="width:auto; padding:6px 10px; font-size:11px;">
                     <button class="btn-primary" onclick="window.addTodayTask()" style="padding:8px 16px;font-size:12px; margin-right:4px;">إضافة</button>
                 </div>
@@ -1324,6 +1272,13 @@
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px;">
                         <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addTask()">
+                        
+                        <select id="newTaskEffort" class="field" style="width:auto; padding:7px 10px; font-size:12px; font-weight:900; color:var(--amber); background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.2); cursor:pointer; border-radius:10px;" title="حجم المجهود">
+                            <option value="1" style="background:var(--bg3); color:var(--txt1);">⚡ 1</option>
+                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>⚡ 3</option>
+                            <option value="5" style="background:var(--bg3); color:var(--txt1);">⚡ 5</option>
+                        </select>
+
                         <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
                         <button class="btn-primary" onclick="window.addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
                     </div>
@@ -1428,7 +1383,7 @@
                 <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-shrink:0;">
                     <div>
                         <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">أدوات وإحصائيات ✨</h2>
-                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">بومودورو، تقارير، وتحليلات الأداء</p>
+                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">تحليلات دقيقة لأدائك وإنجازاتك</p>
                     </div>
                     <div style="display:flex; gap:10px;">
                         <button class="btn-ghost" onclick="window.openReportModal('month')" style="background:var(--bg3); border-color:var(--border);">📊 تقرير الشهر</button>
@@ -1438,42 +1393,9 @@
                 
                 <div class="extras-grid" style="display:flex; flex-direction:column; gap:20px;">
                     
-                    <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
-                        
-                        <div id="azkarWidget" class="glass azkar-widget" style="flex:1; min-width:250px; max-width:400px; padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-                             <div style="font-size:28px; margin-bottom:10px;">📿</div>
-                             <div id="azkarText" style="font-size:16px; font-weight:900; color:var(--txt1); line-height:1.6; transition: opacity 0.5s;">سبحان الله وبحمده، سبحان الله العظيم</div>
-                        </div>
-
-                        <div id="pomodoroWidget" style="flex:1; min-width:250px; max-width:350px;">
-                            <svg width="0" height="0" style="position:absolute;">
-                                <defs>
-                                    <linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#38bdf8"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <div class="pomo-ring">
-                                <svg viewBox="0 0 90 90" width="90" height="90">
-                                    <circle class="pomo-ring-bg" cx="45" cy="45" r="40"/>
-                                    <circle class="pomo-ring-fill" id="pomoRingFill" cx="45" cy="45" r="40" stroke-dasharray="251.2" stroke-dashoffset="0"/>
-                                </svg>
-                                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-                                    <div id="pomodoroDisplay" style="font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">25:00</div>
-                                    <div id="pomodoroLabel" style="font-size:9px;font-weight:700;color:var(--txt3);margin-top:2px;">تركيز 🧠</div>
-                                </div>
-                            </div>
-                            <div class="pomo-modes">
-                                <button class="pomo-mode-btn active" id="pm-focus"  onclick="window.pomodoroSetMode('focus')">تركيز</button>
-                                <button class="pomo-mode-btn"         id="pm-short"  onclick="window.pomodoroSetMode('short')">قصيرة</button>
-                                <button class="pomo-mode-btn"         id="pm-long"   onclick="window.pomodoroSetMode('long')">طويلة</button>
-                            </div>
-                            <div class="pomo-controls">
-                                <button class="btn-primary" onclick="window.pomodoroStart()" style="padding:6px 14px;font-size:11px;">▶ ابدأ</button>
-                                <button class="btn-ghost"   onclick="window.pomodoroPause()" style="padding:6px 12px;font-size:11px;">⏸ وقفة</button>
-                                <button class="btn-ghost"   onclick="window.pomodoroReset()" style="padding:6px 12px;font-size:11px;">↺</button>
-                            </div>
-                        </div>
+                    <div id="azkarWidget" class="glass azkar-widget" style="width:100%; padding:24px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                         <div style="font-size:32px; margin-bottom:14px;">📿</div>
+                         <div id="azkarText" style="font-size:18px; font-weight:900; color:var(--txt1); line-height:1.6; transition: opacity 0.5s;">سبحان الله وبحمده، سبحان الله العظيم</div>
                     </div>
 
                     <div id="heatmapWidget">
@@ -1505,8 +1427,14 @@
                                 <div class="chart-canvas-container"><canvas id="pieChart"></canvas></div>
                             </div>
                             <div class="chart-wrap">
-                                <div class="chart-label">إنجاز آخر 7 أيام (%)</div>
-                                <div class="chart-canvas-container"><canvas id="lineChart"></canvas></div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div class="chart-label" style="margin-bottom:0;">الإنجاز الأسبوعي (%)</div>
+                                    <div style="display:flex; gap:6px;">
+                                        <button onclick="window.changeChartWeek(-1)" title="الأسبوع التالي" style="background:var(--bg); border:1px solid var(--border); color:var(--txt2); border-radius:6px; cursor:pointer; padding:2px 8px; font-size:10px;">▶</button>
+                                        <button onclick="window.changeChartWeek(1)" title="الأسبوع السابق" style="background:var(--bg); border:1px solid var(--border); color:var(--txt2); border-radius:6px; cursor:pointer; padding:2px 8px; font-size:10px;">◀</button>
+                                    </div>
+                                </div>
+                                <div class="chart-canvas-container"><canvas id="barChart"></canvas></div>
                             </div>
                         </div>
                     </div>
@@ -1634,6 +1562,11 @@
                 </div>
                 <div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto;"></div>
             </div>
+            
+            <div style="padding:14px 16px;border-radius:14px;background:rgba(245,158,11,0.05);border:1px dashed rgba(245,158,11,0.3); margin-bottom:16px;">
+                <div style="font-size:13px;font-weight:900;color:var(--amber);margin-bottom:6px;">أدوات المطور 🛠️</div>
+                <button class="btn-ghost" onclick="window.simulateYearEnd()" style="width:100%; border-color:rgba(245,158,11,0.3); color:var(--amber);">⏳ محاكاة نهاية العام (لاختبار الأرشيف)</button>
+            </div>
 
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div>
@@ -1746,6 +1679,7 @@ const gProv = new GoogleAuthProvider();
 let user = null;
 let activTask = null;
 let sq = "";
+let chartWeekOffset = 0; 
 
 // Default State (Safe Boot)
 let S = {
@@ -1831,13 +1765,6 @@ window.playSound = function(type) {
         if(type === "ok") {
             o.type="sine"; o.frequency.setValueAtTime(330,ctx.currentTime); o.frequency.setValueAtTime(440,ctx.currentTime+0.1); o.frequency.setValueAtTime(659,ctx.currentTime+0.2);
             g.gain.setValueAtTime(0.04,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.45); o.start(); o.stop(ctx.currentTime+0.45);
-        }
-        else if(type === "pomo-start") {
-            o.type="sine"; o.frequency.setValueAtTime(800,ctx.currentTime); g.gain.setValueAtTime(0.05,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.15); o.start(); o.stop(ctx.currentTime+0.15);
-        }
-        else if(type === "pomo-end") {
-            o.type="sine"; o.frequency.setValueAtTime(500,ctx.currentTime); o.frequency.setValueAtTime(700,ctx.currentTime+0.2); o.frequency.setValueAtTime(900,ctx.currentTime+0.4);
-            g.gain.setValueAtTime(0.05,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.8); o.start(); o.stop(ctx.currentTime+0.8);
         }
         else {
             o.type="sawtooth"; o.frequency.setValueAtTime(240,ctx.currentTime); o.frequency.exponentialRampToValueAtTime(90,ctx.currentTime+0.22);
@@ -2066,6 +1993,14 @@ window.restoreArchiveItem = function(type, idx) {
     window.showToast("تم الاسترجاع بنجاح!","success");
 };
 
+window.simulateYearEnd = function() {
+    if(confirm("تحذير: ده هينقل بيانات السنة دي للأرشيف كأن السنة خلصت. متأكد؟")) {
+        S.lastYearChecked = new Date().getFullYear() + 1; // خدعة للبرنامج
+        window.updateStreak(); // دالة الاستريك هي اللي بتقفل السنة
+        window.showToast("تم نقل البيانات لأرشيف السنة بنجاح! 🎊", "success");
+    }
+};
+
 /* ════════ REPORT GENERATION LOGIC ════════ */
 let currentReportType = 'month';
 
@@ -2137,8 +2072,9 @@ window.renderSpecificReport = function() {
         } else {
             let hist = S.archive.years[selVal];
             if(hist) { 
-                completedTasksCount = "محفوظ في الأرشيف القديم"; 
-                completedGoalsCount = "محفوظ في الأرشيف القديم"; 
+                filteredTasks = hist.tasks ? hist.tasks.filter(t => t.status === 'done') : []; 
+                completedTasksCount = "تم حفظه بالأرشيف"; 
+                completedGoalsCount = "تم حفظه بالأرشيف"; 
             }
         }
     }
@@ -2389,7 +2325,7 @@ window.restoreSuggestion = function(i) {
     window.showToast("تم إضافتها لمهام اليوم", "success");
 };
 
-/* ════════ DATE / STATS ════════ */
+/* ════════ DATE / STATS (WITH EFFORT POINTS) ════════ */
 window.updateDate = function() {
     const now = new Date();
     const greg = new Intl.DateTimeFormat("ar-EG",{weekday:"long",year:"numeric",month:"long",day:"numeric"}).format(now);
@@ -2433,12 +2369,19 @@ window.updateStats = function() {
     
     const currentItems = (S.todayTasks||[]).filter(t => !t.dueDate || new Date(t.dueDate).getTime() <= endOfToday);
     
-    const tot = currentItems.length;
-    const done = currentItems.filter(t=>t.done).length;
-    const pct = tot > 0 ? Math.round(done/tot*100) : 0;
+    let totalEffort = 0;
+    let doneEffort = 0;
     
-    el("sTotalToday").textContent = tot;
-    el("sDoneToday").textContent = done;
+    currentItems.forEach(t => {
+        let e = parseInt(t.effort) || 1; 
+        totalEffort += e;
+        if(t.done) doneEffort += e;
+    });
+    
+    const pct = totalEffort > 0 ? Math.round(doneEffort/totalEffort*100) : 0;
+    
+    el("sTotalToday").textContent = currentItems.length;
+    el("sDoneToday").textContent = currentItems.filter(t=>t.done).length;
     el("sKanban").textContent = (S.tasks||[]).length;
     el("progressBar").style.width = pct + "%";
     el("progressPct").textContent = pct + "%";
@@ -2448,7 +2391,7 @@ window.updateStats = function() {
     if(sn) sn.textContent = S.streak || 0;
     
     const today = new Date().toISOString().split("T")[0];
-    if(tot > 0) {
+    if(totalEffort > 0) {
         if(!S.history) S.history = {};
         S.history[today] = pct;
     }
@@ -2750,11 +2693,16 @@ window.renderTodayTasks = function() {
             </div>`;
         }
 
+        const eff = t.effort || 1;
+        const effLabel = `⚡ ${eff}`;
+
         return `
         <div class="today-item${t.done?" done":""}">
             <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="window.toggleTodayTask('${t.id}')">
             <div style="flex:1;min-width:0;">
-                <div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.text}</div>
+                <div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    <span style="color:var(--amber); font-size:11px; margin-left:4px;">[${effLabel}]</span> ${t.text}
+                </div>
                 <div style="display:flex; gap:12px; align-items:center; margin-top:4px;">
                     ${dateHtml}
                     ${t.parentName ? `<button onclick="window.goToCourse('${t.parentId}', ${t.subIdx})" style="font-size:10px;font-weight:700;color:var(--blue2);background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:2px 6px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">🔗 عرض في الكورس</button>` : ""}
@@ -2781,8 +2729,16 @@ window.renderTodayTasks = function() {
         let html = '';
         for (let g in groups) {
             let tasks = groups[g];
-            let doneCount = tasks.filter(x => x.done).length;
-            let pct = Math.round((doneCount / tasks.length) * 100);
+            
+            let grpTotal = 0;
+            let grpDone = 0;
+            tasks.forEach(x => {
+                let e = parseInt(x.effort) || 1;
+                grpTotal += e;
+                if(x.done) grpDone += e;
+            });
+            
+            let pct = grpTotal > 0 ? Math.round((grpDone / grpTotal) * 100) : 0;
             let safeG = "grp_" + Math.random().toString(36).substr(2, 9);
             
             html += `
@@ -2790,7 +2746,7 @@ window.renderTodayTasks = function() {
                 <div onclick="document.getElementById('${safeG}').classList.toggle('hidden')" style="padding:12px 16px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background:rgba(255,255,255,0.02); transition:background 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.05)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
                     <div style="font-weight:900; font-size:13px; color:var(--blue2);">📚 ${g}</div>
                     <div style="display:flex; align-items:center; gap:8px;">
-                       <span style="font-size:11px; color:var(--txt3); font-weight:bold;">${doneCount}/${tasks.length} مهام</span>
+                       <span style="font-size:11px; color:var(--txt3); font-weight:bold;">${pct}%</span>
                        <div style="width:20px; height:20px; border-radius:50%; background:conic-gradient(var(--blue) ${pct}%, transparent 0); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative;">
                           <div style="width:12px; height:12px; border-radius:50%; background:var(--bg3);"></div>
                        </div>
@@ -2839,10 +2795,13 @@ window.addTodayTask = function() {
     const dInp = el("newTodayDate");
     const d = dInp ? safeDateTime(dInp.value) : "";
     
+    const effInp = el("newTodayEffort");
+    const effort = effInp ? parseInt(effInp.value) : 1;
+    
     if(!v) return;
     if(!S.todayTasks) S.todayTasks = [];
     
-    S.todayTasks.unshift({id:"td"+Date.now(), text:v, done:false, dueDate:d});
+    S.todayTasks.unshift({id:"td"+Date.now(), text:v, done:false, dueDate:d, effort: effort});
     inp.value = ""; 
     if(dInp) dInp.value = ""; 
     window.saveData();
@@ -2993,7 +2952,7 @@ window.goalToToday = function(id) {
         window.showToast("موجود بالفعل!", "error");
         return;
     }
-    S.todayTasks.unshift({id:"td"+Date.now(), text:g.text, done:false, parentName:"🏆 "+g.periodLabel});
+    S.todayTasks.unshift({id:"td"+Date.now(), text:g.text, done:false, parentName:"🏆 "+g.periodLabel, effort: 3});
     window.saveData();
     window.showToast("تم النقل لليومي! 🎯", "success");
 };
@@ -3517,7 +3476,7 @@ window.sendSubToToday = function(i) {
         window.showToast("موجود بالفعل!","error");
         return;
     }
-    S.todayTasks.unshift({id:"td"+Date.now(), text:s.text, done:false, parentId:activTask, subIdx:i, parentName:t.text});
+    S.todayTasks.unshift({id:"td"+Date.now(), text:s.text, done:false, parentId:activTask, subIdx:i, parentName:t.text, effort:3});
     window.saveData();
     window.showToast("تم النقل لليوم! 🎯","success");
 };
@@ -3870,74 +3829,6 @@ window.delCert = function(id) {
     }
 };
 
-/* ════════ 8. POMODORO ════════ */
-const POMO_MODES = {
-    focus: {label:"تركيز 🧠", sec:25*60},
-    short: {label:"استراحة قصيرة ☕", sec:5*60},
-    long: {label:"استراحة طويلة 🛋️", sec:15*60}
-};
-let pomoInterval = null, pomoRemaining = POMO_MODES.focus.sec, pomoMode = "focus", pomoRunning = false, pomoTargetTime = 0;
-const POMO_CIRC = 2 * Math.PI * 40;
-
-window.pomodoroRender = function() {
-    const m = String(Math.floor(pomoRemaining/60)).padStart(2,"0");
-    const s = String(pomoRemaining%60).padStart(2,"0");
-    el("pomodoroDisplay").textContent = `${m}:${s}`;
-    el("pomodoroLabel").textContent = POMO_MODES[pomoMode].label;
-    const pct = pomoRemaining / POMO_MODES[pomoMode].sec;
-    const ring = el("pomoRingFill");
-    if(ring){
-        ring.style.strokeDasharray = POMO_CIRC;
-        ring.style.strokeDashoffset = POMO_CIRC * (1 - pct);
-    }
-};
-
-window.pomodoroStart = function() {
-    if(pomoRunning) return;
-    pomoRunning = true;
-    window.playSound("pomo-start");
-    pomoTargetTime = Date.now() + (pomoRemaining * 1000);
-    pomoInterval = setInterval(() => {
-        pomoRemaining = Math.max(0, Math.round((pomoTargetTime - Date.now()) / 1000));
-        window.pomodoroRender();
-        if(pomoRemaining <= 0){
-            clearInterval(pomoInterval);
-            pomoRunning = false;
-            window.playSound("pomo-end");
-            window.showToast("انتهى الوقت! 🎉","success");
-            window.pomodoroSetMode(pomoMode==="focus" ? "short" : "focus");
-        }
-    }, 1000);
-};
-
-window.pomodoroPause = function() {
-    clearInterval(pomoInterval);
-    pomoRunning = false;
-};
-
-window.pomodoroReset = function() {
-    clearInterval(pomoInterval);
-    pomoRunning = false;
-    pomoRemaining = POMO_MODES[pomoMode].sec;
-    window.pomodoroRender();
-};
-
-window.pomodoroSetMode = function(mode) {
-    pomoMode = mode;
-    document.querySelectorAll(".pomo-mode-btn").forEach(b => b.classList.remove("active"));
-    const mb = el("pm-"+mode);
-    if(mb) mb.classList.add("active");
-    window.pomodoroReset();
-};
-
-document.addEventListener("visibilitychange", () => {
-    if(!document.hidden && pomoRunning) {
-        pomoRemaining = Math.max(0, Math.round((pomoTargetTime - Date.now()) / 1000));
-        window.pomodoroRender();
-    }
-});
-window.pomodoroRender();
-
 /* ════════ 9. EXTRAS: HEATMAP & CHARTS ════════ */
 window.renderHeatmap = function() {
     const gridEl = el("heatmapGrid");
@@ -3996,31 +3887,46 @@ window.renderHeatmap = function() {
     gridEl.innerHTML = html; 
 };
 
-let lineInst = null, pieInst = null;
+window.changeChartWeek = function(offset) {
+    chartWeekOffset += offset;
+    if(chartWeekOffset < 0) chartWeekOffset = 0; 
+    window.renderCharts();
+};
+
+let barInst = null, pieInst = null;
 window.renderCharts = function() {
-    const lineCtx = el("lineChart"), pieCtx = el("pieChart");
-    if(!lineCtx || !pieCtx || typeof Chart === "undefined") return;
+    const barCtx = el("barChart"), pieCtx = el("pieChart");
+    if(!barCtx || !pieCtx || typeof Chart === "undefined") return;
     
     const labels = [], data = [];
+    const baseDate = new Date();
+    baseDate.setDate(baseDate.getDate() - (chartWeekOffset * 7));
+
     for(let i=6; i>=0; i--){
-        const d = new Date(); d.setDate(d.getDate()-i);
+        const d = new Date(baseDate); 
+        d.setDate(d.getDate()-i);
         const key = d.toISOString().split("T")[0];
-        labels.push(new Intl.DateTimeFormat("ar-EG",{weekday:"short"}).format(d));
+        labels.push(new Intl.DateTimeFormat("ar-EG",{weekday:"short", month:"short", day:"numeric"}).format(d));
         data.push((S.history && S.history[key]) ?? 0);
     }
     
-    if(lineInst) lineInst.destroy();
-    lineInst = new Chart(lineCtx, {
-        type: "line",
+    if(barInst) barInst.destroy();
+    barInst = new Chart(barCtx, {
+        type: "bar",
         data: {
             labels,
-            datasets: [{label:"نسبة الإنجاز %", data, borderColor:"#3b82f6", backgroundColor:"rgba(59,130,246,0.1)", borderWidth:2.5, pointBackgroundColor:"#38bdf8", pointRadius:4, tension:0.4, fill:true}]
+            datasets: [{
+                label: "نسبة الإنجاز %", 
+                data, 
+                backgroundColor: data.map(v => v < 30 ? "#ef4444" : (v < 70 ? "#f59e0b" : "#10b981")),
+                borderRadius: 6
+            }]
         },
         options: {
             responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
             scales: {
                 y: {min:0, max:100, ticks:{color:"#46607a",font:{family:"Cairo"}}, grid:{color:"rgba(255,255,255,0.04)"}},
-                x: {ticks:{color:"#46607a",font:{family:"Cairo"}}, grid:{color:"rgba(255,255,255,0.04)"}}
+                x: {ticks:{color:"#46607a",font:{family:"Cairo"}}, grid:{display:false}}
             }
         }
     });
@@ -4048,6 +3954,14 @@ window.renderCharts = function() {
     });
 };
 
+window.simulateYearEnd = function() {
+    if(confirm("تحذير: ده هينقل بيانات السنة دي للأرشيف كأن السنة خلصت عشان تختبر تقريرك السنوي. متأكد؟")) {
+        S.lastYearChecked = new Date().getFullYear() + 1; 
+        window.updateStreak(); 
+        window.showToast("تم نقل البيانات لأرشيف السنة بنجاح! 🎊 روح شوف التقرير السنوي", "success");
+    }
+};
+
 /* ════════ FAST LOAD & SYNC ════════ */
 window.loginWithGoogle = () => signInWithPopup(auth, gProv);
 window.logoutUser = () => { if(confirm("تسجيل الخروج؟")) signOut(auth); };
@@ -4066,7 +3980,6 @@ onAuthStateChanged(auth, async u => {
             try {
                 const parsed = JSON.parse(local);
                 
-                // Safe Object Assign to prevent overwriting Defaults if corrupt
                 if(parsed && typeof parsed === 'object'){
                    Object.keys(parsed).forEach(key => {
                        if(parsed[key] !== undefined && parsed[key] !== null) {
@@ -4115,7 +4028,6 @@ onAuthStateChanged(auth, async u => {
             if(snap.exists()) {
                 const cloudData = snap.data();
                 
-                // Safe merge for cloud data
                 if(cloudData && typeof cloudData === 'object'){
                    Object.keys(cloudData).forEach(key => {
                        if(cloudData[key] !== undefined && cloudData[key] !== null) {
@@ -4146,7 +4058,7 @@ onAuthStateChanged(auth, async u => {
             }
         } catch(e) {
             console.error("Cloud sync offline:", e.message);
-            window.setOfflineUI(); // Trigger UI offline mode if getDoc fails
+            window.setOfflineUI();
         }
     
         window.updateStreak();
