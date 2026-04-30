@@ -1209,21 +1209,27 @@
                     <div style="font-size:28px;" id="moodEmoji">😴</div>
                 </div>
                 
+                <!-- شريط إضافة المهمة الجديد والأنيق -->
                 <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color 0.2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
                     <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
-                    <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." onkeypress="if(event.key==='Enter')window.addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
+                    <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." oninput="window.toggleNewTaskOptions(this.value)" onkeypress="if(event.key==='Enter')window.addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
                     
-                    <select id="newTodayEffort" class="field" style="width:auto; padding:6px 10px; font-size:11px; font-weight:900; color:var(--amber); background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.2); cursor:pointer;" title="حجم المجهود (النقاط)">
-                        <option value="1" style="background:var(--bg3); color:var(--txt1);">⚡ 1 خفيفة</option>
-                        <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>⚡ 3 متوسطة</option>
-                        <option value="5" style="background:var(--bg3); color:var(--txt1);">⚡ 5 عميقة</option>
-                    </select>
+                    <div id="newTaskOptions" style="display:none; align-items:center; gap:8px;">
+                        <select id="newTodayEffort" class="field" style="width:auto; padding:6px 10px; font-size:11px; font-weight:900; background:rgba(255,255,255,0.05); border:none; cursor:pointer;" title="حجم المجهود">
+                            <option value="1" style="background:var(--bg3); color:var(--txt1);">🟢 خفيفة</option>
+                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>🟡 متوسطة</option>
+                            <option value="5" style="background:var(--bg3); color:var(--txt1);">🔴 عميقة</option>
+                        </select>
+                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
+                            📅 ⏰
+                            <input type="datetime-local" id="newTodayDate" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                        </div>
+                    </div>
 
-                    <input type="datetime-local" id="newTodayDate" title="موعد التسليم (اختياري)" class="field" style="width:auto; padding:6px 10px; font-size:11px;">
                     <button class="btn-primary" onclick="window.addTodayTask()" style="padding:8px 16px;font-size:12px; margin-right:4px;">إضافة</button>
                 </div>
                 
-                <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px;"></div>
+                <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px;display:flex;flex-direction:column;gap:8px;"></div>
             </div>
 
             <div id="sec-goals" class="section">
@@ -1273,10 +1279,10 @@
                     <div style="display:flex;flex-wrap:wrap;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px;">
                         <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addTask()">
                         
-                        <select id="newTaskEffort" class="field" style="width:auto; padding:7px 10px; font-size:12px; font-weight:900; color:var(--amber); background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.2); cursor:pointer; border-radius:10px;" title="حجم المجهود">
-                            <option value="1" style="background:var(--bg3); color:var(--txt1);">⚡ 1</option>
-                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>⚡ 3</option>
-                            <option value="5" style="background:var(--bg3); color:var(--txt1);">⚡ 5</option>
+                        <select id="newTaskEffort" class="field" style="width:auto; padding:7px 10px; font-size:12px; font-weight:900; background:rgba(255,255,255,0.05); border:none; cursor:pointer; border-radius:10px;" title="حجم المجهود">
+                            <option value="1" style="background:var(--bg3); color:var(--txt1);">🟢 خفيفة</option>
+                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>🟡 متوسطة</option>
+                            <option value="5" style="background:var(--bg3); color:var(--txt1);">🔴 عميقة</option>
                         </select>
 
                         <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
@@ -1679,7 +1685,7 @@ const gProv = new GoogleAuthProvider();
 let user = null;
 let activTask = null;
 let sq = "";
-let chartWeekOffset = 0; 
+let chartWeekOffset = 0; // للتحكم في تقليب الأسابيع
 
 // Default State (Safe Boot)
 let S = {
@@ -1995,8 +2001,8 @@ window.restoreArchiveItem = function(type, idx) {
 
 window.simulateYearEnd = function() {
     if(confirm("تحذير: ده هينقل بيانات السنة دي للأرشيف كأن السنة خلصت. متأكد؟")) {
-        S.lastYearChecked = new Date().getFullYear() + 1; // خدعة للبرنامج
-        window.updateStreak(); // دالة الاستريك هي اللي بتقفل السنة
+        S.lastYearChecked = new Date().getFullYear() + 1; 
+        window.updateStreak(); 
         window.showToast("تم نقل البيانات لأرشيف السنة بنجاح! 🎊", "success");
     }
 };
@@ -2636,6 +2642,13 @@ window.handleSearch = function(v) {
     window.renderAll();
 };
 
+window.toggleNewTaskOptions = function(val) {
+    const opts = el('newTaskOptions');
+    if (opts) {
+        opts.style.display = val.length > 0 ? 'flex' : 'none';
+    }
+};
+
 /* ════════ GLOBAL RENDERING ════════ */
 window.renderAll = function() { 
     if(window.applyBg) window.applyBg();
@@ -2649,7 +2662,7 @@ window.renderAll = function() {
     window.updateStats(); 
 };
 
-/* ════════ 1. TODAY (GROUPED BY COURSE) ════════ */
+/* ════════ 1. TODAY (NO GROUPS, SLEEK UI) ════════ */
 window.renderTodayTasks = function() {
     const list = el("todayList");
     const schedList = el("scheduledList");
@@ -2681,86 +2694,48 @@ window.renderTodayTasks = function() {
         if(t.dueDate) {
             const d = new Date(t.dueDate);
             if(!isNaN(d.getTime())) {
-                dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--amber);background:rgba(245,158,11,0.1);padding:4px 8px;border-radius:8px; border:1px solid rgba(245,158,11,0.2); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;" onclick="this.querySelector('input').showPicker()">
-                    📅 ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}
+                dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--cyan); background:rgba(56,189,248,0.1); padding:4px 8px; border-radius:8px; border:1px solid rgba(56,189,248,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" title="تعديل الموعد: ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}">
+                    📅 ⏰
                     <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" value="${t.dueDate}" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
                 </div>`;
             }
         } else {
-            dateHtml = `<div style="position:relative; font-size:10px;font-weight:700;color:var(--txt3);background:rgba(255,255,255,0.05);padding:4px 8px;border-radius:8px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:4px; overflow:hidden;" onclick="this.querySelector('input').showPicker()">
-                ➕ أضف تاريخ
+            dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--txt3); opacity:0.5; padding:4px 8px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="أضف تاريخ/وقت">
+                📅 ⏰
                 <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
             </div>`;
         }
 
         const eff = t.effort || 1;
-        const effLabel = `⚡ ${eff}`;
+        let effBadge = "";
+        if(eff === 1) effBadge = `<span style="font-size:10px; font-weight:900; color:var(--green2); background:rgba(52,211,153,0.1); padding:2px 6px; border-radius:6px; border:1px solid rgba(52,211,153,0.2); margin-left:6px;">🟢 خفيفة</span>`;
+        else if(eff === 3) effBadge = `<span style="font-size:10px; font-weight:900; color:var(--amber); background:rgba(245,158,11,0.1); padding:2px 6px; border-radius:6px; border:1px solid rgba(245,158,11,0.2); margin-left:6px;">🟡 متوسطة</span>`;
+        else effBadge = `<span style="font-size:10px; font-weight:900; color:var(--red); background:rgba(239,68,68,0.1); padding:2px 6px; border-radius:6px; border:1px solid rgba(239,68,68,0.2); margin-left:6px;">🔴 عميقة</span>`;
 
         return `
-        <div class="today-item${t.done?" done":""}">
+        <div class="today-item${t.done?" done":""}" style="padding:14px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; display:flex; align-items:center; gap:12px; transition:all 0.2s; margin-bottom:8px;">
             <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="window.toggleTodayTask('${t.id}')">
-            <div style="flex:1;min-width:0;">
-                <div style="font-size:13px;font-weight:700;${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                    <span style="color:var(--amber); font-size:11px; margin-left:4px;">[${effLabel}]</span> ${t.text}
+            
+            <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;">
+                <div style="display:flex; align-items:center;">
+                    ${effBadge}
+                    <span style="font-size:14px; font-weight:700; ${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${t.text}">${t.text}</span>
                 </div>
-                <div style="display:flex; gap:12px; align-items:center; margin-top:4px;">
-                    ${dateHtml}
-                    ${t.parentName ? `<button onclick="window.goToCourse('${t.parentId}', ${t.subIdx})" style="font-size:10px;font-weight:700;color:var(--blue2);background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:2px 6px;border-radius:6px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">🔗 عرض في الكورس</button>` : ""}
-                </div>
+                ${t.parentName ? `<div style="display:flex; align-items:center;"><button onclick="window.goToCourse('${t.parentId}', ${t.subIdx})" style="font-size:10px; font-weight:700; color:var(--blue2); background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); padding:2px 8px; border-radius:8px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'">📚 ${t.parentName} ↗</button></div>` : ""}
             </div>
-            <button onclick="window.delTodayTask('${t.id}')" style="background:transparent;border:none;cursor:pointer;color:var(--txt3);font-size:16px;padding:0 4px;transition:color 0.2s;flex-shrink:0;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
+            
+            <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                ${dateHtml}
+                <button onclick="window.delTodayTask('${t.id}')" style="background:transparent; border:none; cursor:pointer; color:var(--txt3); font-size:16px; padding:0 4px; transition:color 0.2s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--txt3)'">✕</button>
+            </div>
         </div>`;
     };
 
     if(!currentItems.length) {
         list.innerHTML = `<div class="empty"><span>🎯</span><p>يومك فاضي لسه.. ضيف مهمة أو اسحب درس من كورساتك!</p></div>`;
     } else {
-        let groups = {};
-        let independent = [];
-        currentItems.filter(t => (t.text || "").toLowerCase().includes(sq)).forEach(t => {
-            if (t.parentName) {
-                if (!groups[t.parentName]) groups[t.parentName] = [];
-                groups[t.parentName].push(t);
-            } else {
-                independent.push(t);
-            }
-        });
-
-        let html = '';
-        for (let g in groups) {
-            let tasks = groups[g];
-            
-            let grpTotal = 0;
-            let grpDone = 0;
-            tasks.forEach(x => {
-                let e = parseInt(x.effort) || 1;
-                grpTotal += e;
-                if(x.done) grpDone += e;
-            });
-            
-            let pct = grpTotal > 0 ? Math.round((grpDone / grpTotal) * 100) : 0;
-            let safeG = "grp_" + Math.random().toString(36).substr(2, 9);
-            
-            html += `
-            <div style="background:var(--bg3); border:1px solid var(--border); border-radius:14px; margin-bottom:10px; overflow:hidden; transform:translateZ(0);">
-                <div onclick="document.getElementById('${safeG}').classList.toggle('hidden')" style="padding:12px 16px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background:rgba(255,255,255,0.02); transition:background 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.05)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'">
-                    <div style="font-weight:900; font-size:13px; color:var(--blue2);">📚 ${g}</div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                       <span style="font-size:11px; color:var(--txt3); font-weight:bold;">${pct}%</span>
-                       <div style="width:20px; height:20px; border-radius:50%; background:conic-gradient(var(--blue) ${pct}%, transparent 0); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative;">
-                          <div style="width:12px; height:12px; border-radius:50%; background:var(--bg3);"></div>
-                       </div>
-                    </div>
-                </div>
-                <div id="${safeG}" style="padding:10px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:6px;">
-                    ${tasks.map(t => genItem(t)).join('')}
-                </div>
-            </div>`;
-        }
-        if(independent.length) {
-            html += independent.map(t => genItem(t)).join('');
-        }
-        list.innerHTML = html;
+        const filtered = currentItems.filter(t => (t.text || "").toLowerCase().includes(sq));
+        list.innerHTML = filtered.map(t => genItem(t)).join('');
     }
 
     if (schedList) {
@@ -2802,8 +2777,10 @@ window.addTodayTask = function() {
     if(!S.todayTasks) S.todayTasks = [];
     
     S.todayTasks.unshift({id:"td"+Date.now(), text:v, done:false, dueDate:d, effort: effort});
+    
     inp.value = ""; 
     if(dInp) dInp.value = ""; 
+    window.toggleNewTaskOptions(""); 
     window.saveData();
 };
 
@@ -2879,7 +2856,7 @@ window.renderGoals = function() {
                 ${g.parentName ? `<div style="font-size:10px;color:var(--purple);font-weight:700;">🔗 ${g.parentName}</div>` : ""}
             </div>
             <div style="display:flex;gap:5px;opacity:0;transition:opacity 0.2s;" class="goal-actions">
-                ${!g.done ? `<button onclick="window.goalToToday('${g.id}')" style="font-size:9px;font-weight:900;padding:4px 7px;border-radius:8px;background:rgba(16,185,129,0.1);color:var(--green2);border:1px solid rgba(16,185,129,0.2);cursor:pointer;">🎯</button>` : ""}
+                ${!g.done ? `<button onclick="window.goalToToday('${g.id}')" style="font-size:9px;font-weight:900;padding:4px 7px;border-radius:8px;background:rgba(16,185,129,0.1);color:var(--green2);border:1px solid rgba(16,185,129,0.2);cursor:pointer;">🎯 لليوم</button>` : ""}
                 <button onclick="window.delGoal('${g.id}')" style="font-size:10px;background:transparent;border:none;cursor:pointer;color:var(--red);">✕</button>
             </div>
         </div>`;
@@ -2952,7 +2929,11 @@ window.goalToToday = function(id) {
         window.showToast("موجود بالفعل!", "error");
         return;
     }
-    S.todayTasks.unshift({id:"td"+Date.now(), text:g.text, done:false, parentName:"🏆 "+g.periodLabel, effort: 3});
+    
+    const eff = prompt("اختر حجم المهمة: \n1 لـ خفيفة \n3 لـ متوسطة \n5 لـ عميقة", "3");
+    const parsedEff = [1, 3, 5].includes(parseInt(eff)) ? parseInt(eff) : 3;
+    
+    S.todayTasks.unshift({id:"td"+Date.now(), text:g.text, done:false, parentName:"🏆 "+g.periodLabel, effort: parsedEff});
     window.saveData();
     window.showToast("تم النقل لليومي! 🎯", "success");
 };
@@ -3346,7 +3327,7 @@ window.updateSubNote = function(i, ni, v) {
 };
 
 window.delSubNote = function(i, ni) {
-S.tasks.find(x => x.id === activTask).subtasks[i].notes.splice(ni,1);
+    S.tasks.find(x => x.id === activTask).subtasks[i].notes.splice(ni,1);
     window.saveDataSilently();
     window.renderSubtasks();
 };
@@ -3476,7 +3457,11 @@ window.sendSubToToday = function(i) {
         window.showToast("موجود بالفعل!","error");
         return;
     }
-    S.todayTasks.unshift({id:"td"+Date.now(), text:s.text, done:false, parentId:activTask, subIdx:i, parentName:t.text, effort:3});
+    
+    const eff = prompt("اختر حجم المهمة: \n1 لـ خفيفة \n3 لـ متوسطة \n5 لـ عميقة", "3");
+    const parsedEff = [1, 3, 5].includes(parseInt(eff)) ? parseInt(eff) : 3;
+
+    S.todayTasks.unshift({id:"td"+Date.now(), text:s.text, done:false, parentId:activTask, subIdx:i, parentName:t.text, effort: parsedEff});
     window.saveData();
     window.showToast("تم النقل لليوم! 🎯","success");
 };
