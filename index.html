@@ -10,13 +10,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- مكتبة لعمل الكونفيتي الخاص بعيد الميلاد -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* ════════════════════════════════════════
-           1. المتغيرات والألوان الأساسية (الوضع الداكن فقط)
+           1. المتغيرات والألوان الأساسية (الوضع الداكن)
         ════════════════════════════════════════ */
         :root {
             --bg: #07090f;
@@ -37,12 +35,45 @@
             --amber: #f59e0b;
             --red: #ef4444;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            /* متغيرات ثيم العيد الأساسية - تتفعل برمجياً */
-            --eid-pattern: none;
         }
 
         /* ════════════════════════════════════════
-           2. التنسيق الأساسي للمتصفح وثيم العيد
+           2. الوضع الفاتح (Light Mode)
+        ════════════════════════════════════════ */
+        body.light {
+            --bg: #f1f5fb;
+            --bg2: #e8edf8;
+            --bg3: #ffffff;
+            --bg4: #f8faff;
+            --border: rgba(0, 0, 0, 0.08);
+            --border2: rgba(0, 0, 0, 0.15);
+            --txt1: #0f172a;
+            --txt2: #4a6080;
+            --txt3: #9ab0cc;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light #sidebar {
+            background: linear-gradient(180deg, #fff, #f1f5fb);
+        }
+
+        body.light .glass {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.light .task-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light input, 
+        body.light textarea, 
+        body.light select {
+            color-scheme: light;
+        }
+
+        /* ════════════════════════════════════════
+           3. التنسيق الأساسي للمتصفح
         ════════════════════════════════════════ */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -59,21 +90,11 @@
             font-family: 'Cairo', sans-serif;
             background: var(--bg);
             color: var(--txt1);
-            transition: background 0.8s ease, color 0.4s;
-        }
-
-        /* كلاس العيد - يضيف زخارف إسلامية خفيفة في الخلفية */
-        body.eid-theme::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M30 0L33 27L60 30L33 33L30 60L27 33L0 30L27 27L30 0Z" fill="rgba(52, 211, 153, 0.03)" fill-rule="evenodd"/%3E%3C/svg%3E');
-            pointer-events: none;
-            z-index: -1;
+            transition: background 0.4s, color 0.4s;
         }
 
         /* ════════════════════════════════════════
-           3. التأثيرات الخلفية (التنفس الزجاجي)
+           4. التأثيرات الخلفية (التنفس الزجاجي)
         ════════════════════════════════════════ */
         body::before {
             content: '';
@@ -109,7 +130,7 @@
         }
 
         /* ════════════════════════════════════════
-           4. الهيكل الأساسي للتطبيق
+           5. الهيكل الأساسي للتطبيق
         ════════════════════════════════════════ */
         #app {
             display: flex;
@@ -118,6 +139,7 @@
             overflow: hidden;
         }
 
+        /* الشريط الجانبي */
         #sidebar {
             width: 268px;
             background: linear-gradient(180deg, #0d1527, #080c18);
@@ -132,6 +154,7 @@
             overflow-x: hidden;
         }
 
+        /* الشريط الجانبي في الموبايل */
         @media(max-width: 767px) {
             #sidebar {
                 position: fixed;
@@ -146,6 +169,7 @@
             }
         }
 
+        /* المحتوى الرئيسي */
         #main {
             flex: 1;
             display: flex;
@@ -170,16 +194,31 @@
         }
 
         @media(max-width: 767px) {
-            #content { padding: 14px; }
+            #content { 
+                padding: 14px; 
+            }
         }
 
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+        /* ════════════════════════════════════════
+           6. شريط التمرير (Scrollbar)
+        ════════════════════════════════════════ */
+        ::-webkit-scrollbar { 
+            width: 5px; 
+            height: 5px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 99px; 
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: rgba(255,255,255,0.2); 
+        }
 
         /* ════════════════════════════════════════
-           5. مكونات القائمة الجانبية وزر المزامنة
+           7. مكونات القائمة الجانبية
         ════════════════════════════════════════ */
         .logo-icon {
             background: linear-gradient(135deg, var(--blue), #1d4ed8);
@@ -191,24 +230,6 @@
             justify-content: center;
             flex-shrink: 0;
             transition: background 0.4s;
-        }
-
-        /* زر المزامنة الذكي */
-        .sync-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 4px;
-            background: transparent;
-            border: 1px solid transparent;
-            padding: 2px 6px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .sync-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .nav-btn {
@@ -256,9 +277,17 @@
         }
 
         /* ════════════════════════════════════════
-           6. العناصر المشتركة (تسريع الهاردوير)
+           8. العناصر المشتركة (تسريع الهاردوير)
         ════════════════════════════════════════ */
-        .glass, .task-card, .cert-card, .lib-card, .stat-card, .today-item, .note-card, .course-hover, .azkar-widget {
+        .glass, 
+        .task-card, 
+        .cert-card, 
+        .lib-card, 
+        .stat-card, 
+        .today-item, 
+        .note-card, 
+        .course-hover, 
+        .azkar-widget {
             transform: translateZ(0); 
             will-change: transform;
             backface-visibility: hidden;
@@ -271,8 +300,20 @@
             border-radius: 20px;
         }
 
+        .card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border2);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+        }
+
         /* ════════════════════════════════════════
-           7. الأزرار والحقول
+           9. الأزرار والحقول
         ════════════════════════════════════════ */
         .btn-primary {
             background: linear-gradient(135deg, var(--blue), #1d4ed8);
@@ -296,7 +337,9 @@
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
 
-        .btn-primary:active { transform: translateY(0); }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
 
         .btn-ghost {
             background: transparent;
@@ -330,17 +373,28 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
+        body.light .field {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
         .field:focus {
             border-color: var(--blue);
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
         }
 
-        .field::placeholder { color: var(--txt3); }
+        .field::placeholder { 
+            color: var(--txt3); 
+        }
         
+        /* حل مشكلة انقلاب التاريخ في الوضع الداكن */
         input[type="datetime-local"] {
             color-scheme: dark;
             font-family: 'Cairo', sans-serif;
             direction: ltr; 
+        }
+
+        body.light input[type="datetime-local"] {
+            color-scheme: light;
         }
 
         .tag-pill {
@@ -356,37 +410,40 @@
         }
 
         /* ════════════════════════════════════════
-           8. تأثير النيون وبورد المهام (الكانبان) المنسق
+           10. تأثير النيون على البطاقات
         ════════════════════════════════════════ */
-        .task-card:hover, .course-hover:hover, .lib-card:hover {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), inset 0 0 10px rgba(59, 130, 246, 0.1) !important;
+        .task-card:hover, 
+        .course-hover:hover, 
+        .lib-card:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(59, 130, 246, 0.1) !important;
             border-color: var(--blue2) !important;
         }
 
-        /* تظبيط مسافات الكانبان المريحة */
-        .drop-zone {
-            gap: 16px; /* مسافة مريحة بين الكروت */
-            padding: 8px 8px 40px !important; 
-        }
-
+        /* ════════════════════════════════════════
+           11. تصميم كارت المهام (بورد المهام)
+        ════════════════════════════════════════ */
         .task-card {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px);
             border: 1px solid var(--border);
             border-right: 4px solid var(--tc, var(--blue)); 
             border-radius: 16px;
-            padding: 20px 24px; /* مسافات داخلية متناسقة */
+            padding: 24px;
+            margin-bottom: 24px;
             min-height: 120px;
             transition: all 0.3s ease;
             cursor: grab;
             word-break: break-word;
         }
 
+        /* ════════════════════════════════════════
+           12. كارت المهام اليومية
+        ════════════════════════════════════════ */
         .today-item {
             background: var(--bg3);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 14px 18px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -399,7 +456,9 @@
             background: var(--bg4);
         }
 
-        .today-item.done { opacity: 0.5; }
+        .today-item.done { 
+            opacity: 0.5; 
+        }
 
         .cb {
             appearance: none;
@@ -414,18 +473,23 @@
             transition: all 0.2s;
         }
 
-        .cb:checked { border-color: var(--blue); background: var(--blue); }
+        .cb:checked { 
+            border-color: var(--blue); 
+            background: var(--blue); 
+        }
+
         .cb:checked::after {
             content: '✔';
             position: absolute;
             font-size: 11px;
             color: #fff;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
         }
 
         /* ════════════════════════════════════════
-           9. الإحصائيات وشريط التقدم
+           13. الإحصائيات وشريط التقدم
         ════════════════════════════════════════ */
         .pbar-track {
             background: rgba(255, 255, 255, 0.06);
@@ -433,6 +497,7 @@
             height: 5px;
             overflow: hidden;
         }
+
         .pbar-fill {
             height: 100%;
             border-radius: 99px;
@@ -449,16 +514,42 @@
             overflow: hidden;
             transition: transform 0.25s;
         }
+
         .stat-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; height: 2px;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
             background: var(--sc-grad, linear-gradient(90deg, var(--blue), var(--cyan)));
         }
-        .stat-card:hover { transform: translateY(-2px); }
+
+        .stat-card:hover { 
+            transform: translateY(-2px); 
+        }
+
+        .streak {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: #fff;
+            border-radius: 99px;
+            padding: 4px 11px;
+            font-size: 12px;
+            font-weight: 900;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+            animation: pulseWarm 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseWarm {
+            0%, 100% { box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 4px 22px rgba(245, 158, 11, 0.65); }
+        }
 
         /* ════════════════════════════════════════
-           10. الملاحظات (Palette)
+           14. الملاحظات والألوان (Palette)
         ════════════════════════════════════════ */
         .folder-btn {
             text-align: right;
@@ -471,11 +562,22 @@
             font-size: 13px;
             cursor: pointer;
             white-space: nowrap;
+            font-family: 'Cairo', sans-serif;
             transition: all 0.2s;
             width: 100%;
         }
-        .folder-btn:hover { background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.2); color: var(--blue2); }
-        .folder-btn.active { background: rgba(59, 130, 246, 0.14); border-color: rgba(59, 130, 246, 0.35); color: #bfdbfe; }
+
+        .folder-btn:hover { 
+            background: rgba(59, 130, 246, 0.08); 
+            border-color: rgba(59, 130, 246, 0.2); 
+            color: var(--blue2); 
+        }
+
+        .folder-btn.active { 
+            background: rgba(59, 130, 246, 0.14); 
+            border-color: rgba(59, 130, 246, 0.35); 
+            color: #bfdbfe; 
+        }
 
         .note-card {
             position: relative;
@@ -489,20 +591,62 @@
             color: #1f2937;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .note-card:hover { transform: translateY(-5px) rotate(1deg); box-shadow: 8px 12px 25px rgba(0, 0, 0, 0.3); z-index: 10; }
+
+        .note-card:hover { 
+            transform: translateY(-5px) rotate(1deg); 
+            box-shadow: 8px 12px 25px rgba(0, 0, 0, 0.3); 
+            z-index: 10; 
+        }
+
         .note-card textarea {
-            background: transparent; color: inherit; border: none; outline: none;
-            width: 100%; min-height: 160px; resize: none; font-size: 13px; font-weight: 600; line-height: 1.6;
+            background: transparent; 
+            color: inherit; 
+            border: none; 
+            outline: none;
+            width: 100%; 
+            min-height: 160px; 
+            resize: none;
+            font-family: 'Cairo', sans-serif; 
+            font-size: 13px; 
+            font-weight: 600; 
+            line-height: 1.6;
+        }
+
+        .note-card input[type="text"] { 
+            color: inherit; 
+        }
+
+        .palette-row { 
+            display: flex; 
+            gap: 5px; 
+            margin-bottom: 5px; 
+            justify-content: center; 
+        }
+
+        .color-dot { 
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+            border: 1px solid rgba(0, 0, 0, 0.15); 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        }
+
+        .color-dot:hover { 
+            transform: scale(1.3); 
+            z-index: 10; 
         }
 
         /* ════════════════════════════════════════
-           11. الشهادات (الإطار الزجاجي النيون الجديد)
+           15. الشهادات (الإطار الذهبي)
         ════════════════════════════════════════ */
         .cert-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            background: #1c1511; 
+            border: 14px solid transparent;
+            border-image: repeating-linear-gradient(45deg, #b8860b, #ffd700 8px, #daa520 16px, #b8860b 24px) 14;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.9);
+            border-radius: 4px;
             overflow: hidden;
             position: relative;
             height: 240px;
@@ -514,101 +658,412 @@
             cursor: pointer;
         }
 
+        .cert-card::before {
+            content: ''; 
+            position: absolute; 
+            inset: -6px; 
+            border: 2px solid rgba(255, 215, 0, 0.4); 
+            pointer-events: none; 
+            z-index: 2;
+        }
+
         .cert-card:hover { 
-            transform: translateY(-5px) scale(1.02); 
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3), inset 0 0 15px rgba(59, 130, 246, 0.2); 
-            border-color: var(--blue2);
+            transform: scale(1.03) translateY(-4px); 
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9), inset 0 0 35px rgba(0, 0, 0, 1); 
         }
 
         .cert-card img { 
             width: 100%; 
             height: 100%; 
             object-fit: contain; 
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5)); 
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.7)); 
             z-index: 1;
-            transition: transform 0.4s;
-        }
-        
-        .cert-card:hover img {
-            transform: scale(1.03);
         }
 
         /* ════════════════════════════════════════
-           12. النوافذ المنبثقة والتقويم المخصص
+           16. النوافذ المنبثقة (Modals)
         ════════════════════════════════════════ */
         .modal-bg {
-            position: fixed; inset: 0; z-index: 9999; 
-            background: rgba(4, 8, 16, 0.88); backdrop-filter: blur(14px); 
-            display: flex; align-items: center; justify-content: center; 
-            padding: 16px; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+            position: fixed; 
+            inset: 0; 
+            z-index: 9999; 
+            background: rgba(4, 8, 16, 0.88);
+            backdrop-filter: blur(14px); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 16px; 
+            opacity: 0; 
+            transition: opacity 0.3s; 
+            pointer-events: none;
         }
-        .modal-bg.show { opacity: 1; pointer-events: all; }
+
+        .modal-bg.show { 
+            opacity: 1; 
+            pointer-events: all; 
+        }
 
         .modal-box {
             background: linear-gradient(145deg, #0d1527, #080c18);
             border: 1px solid rgba(59, 130, 246, 0.15); 
             border-radius: 26px;
             box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-            overflow: hidden; transform: scale(0.96); transition: transform 0.3s;
-            position: relative; z-index: 10000;
+            overflow: hidden; 
+            transform: scale(0.96); 
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 10000;
         }
-        .modal-bg.show .modal-box { transform: scale(1); }
+
+        .modal-bg.show .modal-box { 
+            transform: scale(1); 
+        }
         
-        /* التقويم المخصص الأنيق */
-        .custom-cal-day {
-            width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-            border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer;
-            color: var(--txt2); transition: all 0.2s;
+        .close-btn-high {
+            position: relative;
+            z-index: 99999 !important;
         }
-        .custom-cal-day:hover:not(.disabled) {
-            background: rgba(59, 130, 246, 0.2); color: var(--blue2);
+
+        #suggestionsPanel {
+            position: fixed; 
+            top: 0; 
+            left: -350px; 
+            width: 340px; 
+            height: 100%;
+            background: linear-gradient(180deg, #0d1527, #080c18);
+            border-right: 1px solid var(--border); 
+            z-index: 10000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.6); 
+            display: flex; 
+            flex-direction: column;
         }
-        .custom-cal-day.selected {
-            background: var(--blue); color: #fff; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
-        }
-        .custom-cal-day.disabled {
-            opacity: 0.3; cursor: not-allowed;
+
+        #suggestionsPanel.open { 
+            left: 0; 
         }
 
         /* ════════════════════════════════════════
-           13. متفرقات
+           17. متفرقات (أيقونات التحميل، الإشعارات)
         ════════════════════════════════════════ */
         .loader {
-            border: 3px solid rgba(255, 255, 255, 0.08); border-left-color: var(--cyan);
-            border-radius: 50%; width: 26px; height: 26px; animation: spin 0.8s linear infinite;
+            border: 3px solid rgba(255, 255, 255, 0.08); 
+            border-left-color: var(--cyan);
+            border-radius: 50%; 
+            width: 26px; 
+            height: 26px; 
+            animation: spin 0.8s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
 
         #toast {
-            position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
-            padding: 10px 20px; border-radius: 16px; z-index: 999999; opacity: 0; pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 8px;
-            font-weight: 700; font-size: 13px; color: #fff; max-width: 90%; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            position: fixed; 
+            bottom: 28px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(20px);
+            padding: 10px 20px; 
+            border-radius: 16px; 
+            z-index: 999999; 
+            opacity: 0; 
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            font-weight: 700; 
+            font-size: 13px; 
+            color: #fff; 
+            max-width: 90%; 
+            white-space: nowrap; 
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
-        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        
-        .section { display: none; flex: 1; flex-direction: column; min-height: 0; padding-bottom: 20px; }
-        .section.active { display: flex; }
 
-        .fade-in { animation: fadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        #toast.show { 
+            opacity: 1; 
+            transform: translateX(-50%) translateY(0); 
+        }
+        
+        .section { 
+            display: none; 
+            flex: 1; 
+            flex-direction: column; 
+            min-height: 0; 
+            padding-bottom: 20px; 
+        }
+
+        .section.active { 
+            display: flex; 
+        }
+
+        .notes-panel { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.4s ease; 
+        }
+
+        .notes-panel.open { 
+            max-height: 1200px; 
+            overflow-y: auto; 
+        }
+
+        .goal-item {
+            background: rgba(255, 255, 255, 0.025); 
+            border: 1px solid var(--border);
+            border-radius: 12px; 
+            padding: 11px 13px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            transition: all 0.2s; 
+            margin-bottom: 7px;
+        }
+
+        .goal-item:hover { 
+            background: rgba(59, 130, 246, 0.06); 
+            border-color: rgba(59, 130, 246, 0.2); 
+        }
+
+        .lib-card {
+            background: var(--bg3); 
+            border: 1px solid var(--border); 
+            border-radius: 18px;
+            padding: 18px; 
+            position: relative; 
+            overflow: hidden; 
+            transition: all 0.25s;
+            height: 150px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+        }
+
+        @keyframes fadeUp { 
+            from { opacity: 0; transform: translateY(14px); } 
+            to { opacity: 1; transform: none; } 
+        }
+
+        .fade-in { 
+            animation: fadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; 
+        }
+
+        .empty { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 50px 20px; 
+            opacity: 0.55; 
+            text-align: center; 
+        }
+
+        .empty span { 
+            font-size: 44px; 
+            margin-bottom: 12px; 
+        }
+
+        .empty p { 
+            color: var(--txt2); 
+            font-size: 13px; 
+            font-weight: 600; 
+            max-width: 230px; 
+            line-height: 1.7; 
+        }
+
+        #topbar { 
+            display: none; 
+            background: rgba(8, 12, 24, 0.96); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border); 
+            padding: 12px 16px; 
+            align-items: center; 
+            justify-content: space-between; 
+            z-index: 50; 
+            flex-shrink: 0; 
+        }
+
+        @media(max-width: 767px) { 
+            #topbar { display: flex; } 
+        }
+
+        /* ════════════════════════════════════════
+           18. الهيتماب (سجل النشاط السنوي)
+        ════════════════════════════════════════ */
+        #heatmapWidget { 
+            background: var(--bg3); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 24px; 
+            width: 100%; 
+            overflow: hidden; 
+        }
+
+        #heatmapTitle { 
+            font-size: 18px; 
+            font-weight: 900; 
+            color: var(--txt1); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 20px; 
+        }
+
+        .heatmap-wrapper { 
+            direction: ltr; 
+            width: 100%; 
+        }
+
+        #heatmapGrid { 
+            display: grid; 
+            grid-template-columns: repeat(53, 1fr); 
+            gap: 3px; 
+            width: 100%; 
+            padding-top: 25px; 
+        }
+
+        .hm-col { 
+            display: grid; 
+            grid-template-rows: repeat(7, 1fr); 
+            gap: 3px; 
+            position: relative; 
+        }
+
+        .hm-cell { 
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            border-radius: 2px; 
+            transition: transform 0.15s, outline 0.2s; 
+        }
+
+        .hm-cell:hover { 
+            transform: scale(1.5); 
+            outline: 1px solid var(--cyan); 
+            z-index: 10; 
+            position: relative; 
+        }
+
+        .hm-today { 
+            outline: 2px solid var(--amber) !important; 
+            border-radius: 2px; 
+        }
+
+        #heatmapLegend { 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            font-size: 11px; 
+            color: var(--txt3); 
+            margin-top: 20px; 
+            direction: rtl; 
+            font-weight: 700; 
+        }
+
+        .hm-swatch { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 2px; 
+            background: var(--green); 
+            display: inline-block; 
+        }
+
+        /* ════════════════════════════════════════
+           19. الإحصائيات البيانية (Charts)
+        ════════════════════════════════════════ */
+        #analyticsWidget { 
+            background: var(--bg3); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 16px; 
+        }
+
+        #analyticsTitle { 
+            font-size: 13px; 
+            font-weight: 900; 
+            color: var(--txt1); 
+            margin-bottom: 14px; 
+        }
+
+        .charts-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 16px; 
+        }
+
+        @media(max-width: 640px) { 
+            .charts-grid { grid-template-columns: 1fr; } 
+        }
+
+        .chart-wrap { 
+            background: rgba(0, 0, 0, 0.2); 
+            border: 1px solid var(--border); 
+            border-radius: 14px; 
+            padding: 14px; 
+            position: relative; 
+        }
+
+        .chart-label { 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: var(--txt2); 
+            margin-bottom: 10px; 
+        }
+
+        .chart-canvas-container { 
+            height: 220px; 
+            position: relative; 
+        }
+
+        /* ════════════════════════════════════════
+           20. إعدادات الطباعة (PDF)
+        ════════════════════════════════════════ */
+        @media print {
+            body * { 
+                visibility: hidden; 
+            }
+            #reportViewModal, 
+            #reportViewModal * { 
+                visibility: visible; 
+            }
+            #reportViewModal { 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                height: 100%; 
+                background: #111827 !important; 
+                color: #eef2ff !important; 
+            }
+            .no-print { 
+                display: none !important; 
+            }
+        }
+        
+        .report-glass { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            padding: 20px; 
+        }
+        
+        .report-text { 
+            color: #eef2ff !important; 
+        }
     </style>
 </head>
 <body>
 
-<!-- شاشة الاحتفال بعيد الميلاد والزينة -->
-<canvas id="confetti-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:999999;"></canvas>
-
-<!-- نافذة اقتراحات المهام -->
-<div id="suggestionsPanel" style="position:fixed; top:0; left:-350px; width:340px; height:100%; background:linear-gradient(180deg, #0d1527, #080c18); border-right:1px solid var(--border); z-index:10000; transition:left 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow:10px 0 40px rgba(0,0,0,0.6); display:flex; flex-direction:column;">
+<div id="suggestionsPanel">
     <div style="padding:24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
         <h3 style="font-weight:900; color:var(--txt1); font-size:16px;">💡 مهام لم تكتمل</h3>
-        <button onclick="window.toggleSuggestionsPanel()" style="background:rgba(255,255,255,0.05); border:none; width:30px; height:30px; border-radius:8px; color:var(--txt2); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">✕</button>
+        <button onclick="window.toggleSuggestionsPanel()" class="close-btn-high" style="background:rgba(255,255,255,0.05); border:none; width:30px; height:30px; border-radius:8px; color:var(--txt2); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">✕</button>
     </div>
     <div id="suggestionsList" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:12px;"></div>
 </div>
 
-<!-- شاشة الدخول وتسجيل حساب جوجل -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
 <div id="loginOverlay" style="position:fixed;inset:0;z-index:99999;background:#040810;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity 0.5s;">
     <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
         <div style="position:absolute;top:20%;right:20%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.08),transparent 70%);"></div>
@@ -618,7 +1073,9 @@
         <div style="display:flex;justify-content:center;margin-bottom:24px;">
             <div class="logo-icon" style="padding:18px;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/><path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/><path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/>
+                    <path d="M4 22c3-5 5-7 5-11s-2-6-2-8"/>
+                    <path d="M20 22c-3-5-5-7-5-11s2-6 2-8"/>
+                    <path d="M12 22v-2"/><path d="M12 15v-2"/><path d="M12 9V7"/>
                 </svg>
             </div>
         </div>
@@ -645,7 +1102,6 @@
 <div id="app">
     <div id="sbOverlay" onclick="window.closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:90;backdrop-filter:blur(4px);"></div>
 
-    <!-- الشريط الجانبي -->
     <aside id="sidebar">
         <button onclick="window.closeSidebar()" style="display:none;position:absolute;top:16px;left:16px;background:rgba(255,255,255,0.07);border:none;border-radius:10px;width:34px;height:34px;cursor:pointer;color:var(--txt2);font-size:16px;" id="sbClose">✕</button>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
@@ -660,15 +1116,14 @@
             </div>
         </div>
         
-        <!-- بطاقة المستخدم وزر المزامنة الذكي -->
         <div style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.12);margin-bottom:22px;">
             <div id="uAvatar" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1d4ed8);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#fff;flex-shrink:0;">?</div>
             <div style="min-width:0;">
                 <div id="uName" style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">...</div>
-                <button class="sync-btn" onclick="window.forceSyncNow()" title="اضغط للمزامنة اليدوية">
+                <div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
                     <div id="connectionDot" style="width:7px;height:7px;border-radius:50%;background:var(--green2);animation:pulseWarm 2s ease-in-out infinite;box-shadow:0 0 6px var(--green2);"></div>
-                    <span id="connectionText" style="font-size:10px;color:var(--green2);font-weight:700;">متصل سحابياً</span>
-                </button>
+                    <span id="connectionText" style="font-size:11px;color:var(--green2);font-weight:700;">متصل سحابياً</span>
+                </div>
             </div>
         </div>
         
@@ -688,7 +1143,8 @@
             <button onclick="window.logoutUser()" style="width:100%;background:transparent;border:1px solid transparent;border-radius:11px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;color:var(--red);font-family:'Cairo',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.1)';this.style.borderColor='rgba(239,68,68,0.2)'" onmouseout="this.style.background='transparent';this.style.borderColor='transparent'">🚪 تسجيل خروج</button>
         </div>
     </aside>
-<div id="main">
+
+    <div id="main">
         <div id="topbar">
             <div style="display:flex;align-items:center;gap:8px;">
                 <div class="logo-icon" style="padding:7px;">
@@ -710,11 +1166,10 @@
 
         <div id="content">
 
-            <!-- ============================== TODAY SECTION ============================== -->
             <div id="sec-today" class="section active">
                 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
                     <div class="fade-in">
-                        <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-0.5px;margin-bottom:4px;" id="welcomeTitle">هنعمل إيه النهارده 🎯</h2>
+                        <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-0.5px;margin-bottom:4px;">هنعمل إيه النهارده 🎯</h2>
                         <div id="dateDisplay"></div>
                     </div>
                     <div style="display:flex; gap:10px;">
@@ -754,36 +1209,29 @@
                     <div style="font-size:28px;" id="moodEmoji">😴</div>
                 </div>
                 
-                <!-- شريط الإضافة الذكي (يظهر الخيارات عند الكتابة) -->
+                <!-- شريط إضافة المهمة الجديد والأنيق -->
                 <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;margin-bottom:12px;flex-shrink:0;transition:border-color 0.2s;" onfocusin="this.style.borderColor='var(--blue)'" onfocusout="this.style.borderColor='var(--border)'">
                     <span style="color:var(--blue);font-size:20px;font-weight:900;">+</span>
                     <input type="text" id="newTodayInput" placeholder="إضافة مهمة سريعة..." oninput="window.toggleNewTaskOptions(this.value)" onkeypress="if(event.key==='Enter')window.addTodayTask()" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt1);font-family:'Cairo',sans-serif;font-size:13px;">
                     
                     <div id="newTaskOptions" style="display:none; align-items:center; gap:8px;">
-                        <div style="position:relative;" title="المجهود">
-                           <select id="newTodayEffort" class="field" style="padding:6px; font-size:12px; border:none; background:rgba(255,255,255,0.05); cursor:pointer; border-radius:8px; outline:none; appearance:none; text-align:center;">
-                               <option value="1">🟢 خفيفة</option>
-                               <option value="3" selected>🟡 متوسطة</option>
-                               <option value="5">🔴 عميقة</option>
-                           </select>
-                        </div>
-                        
-                        <!-- زر النافذة المخصصة للتقويم والساعة -->
-                        <div style="display:flex; gap:4px;">
-                            <div style="position:relative; display:flex; align-items:center; justify-content:center; width:36px; height:32px; background:rgba(255,255,255,0.05); border-radius:8px; cursor:pointer; color:var(--txt1); transition:0.2s; font-size:14px;" onclick="window.openCustomPicker('new')" onmouseover="this.style.background='rgba(59,130,246,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="تحديد التاريخ والوقت">
-                                📅⏰
-                            </div>
+                        <select id="newTodayEffort" class="field" style="width:auto; padding:6px 10px; font-size:11px; font-weight:900; background:rgba(255,255,255,0.05); border:none; cursor:pointer;" title="حجم المجهود">
+                            <option value="1" style="background:var(--bg3); color:var(--txt1);">🟢 خفيفة</option>
+                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>🟡 متوسطة</option>
+                            <option value="5" style="background:var(--bg3); color:var(--txt1);">🔴 عميقة</option>
+                        </select>
+                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
+                            📅 ⏰
+                            <input type="datetime-local" id="newTodayDate" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
                         </div>
                     </div>
 
                     <button class="btn-primary" onclick="window.addTodayTask()" style="padding:8px 16px;font-size:12px; margin-right:4px;">إضافة</button>
                 </div>
                 
-                <!-- قائمة مهام اليوم الانسيابية -->
                 <div id="todayList" style="flex:1;overflow-y:auto;padding-right:2px;display:flex;flex-direction:column;gap:8px;"></div>
             </div>
 
-            <!-- ============================== GOALS SECTION ============================== -->
             <div id="sec-goals" class="section">
                 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
                     <div class="fade-in">
@@ -822,7 +1270,6 @@
                 </div>
             </div>
 
-            <!-- ============================== KANBAN SECTION ============================== -->
             <div id="sec-kanban" class="section">
                 <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:12px;flex-shrink:0;">
                     <div>
@@ -832,12 +1279,16 @@
                     <div style="display:flex;flex-wrap:wrap;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px;">
                         <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addTask()">
                         
+                        <select id="newTaskEffort" class="field" style="width:auto; padding:7px 10px; font-size:12px; font-weight:900; background:rgba(255,255,255,0.05); border:none; cursor:pointer; border-radius:10px;" title="حجم المجهود">
+                            <option value="1" style="background:var(--bg3); color:var(--txt1);">🟢 خفيفة</option>
+                            <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>🟡 متوسطة</option>
+                            <option value="5" style="background:var(--bg3); color:var(--txt1);">🔴 عميقة</option>
+                        </select>
+
                         <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
                         <button class="btn-primary" onclick="window.addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
                     </div>
                 </div>
-                
-                <!-- مسافات الكانبان المريحة -->
                 <div style="display:flex;gap:24px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
@@ -846,7 +1297,7 @@
                             </div>
                             <span id="cntTodo" style="background:rgba(74,96,128,0.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
                         </div>
-                        <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
@@ -855,7 +1306,7 @@
                             </div>
                             <span id="cntInprogress" style="background:rgba(245,158,11,0.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,0.2);">0</span>
                         </div>
-                        <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
@@ -864,12 +1315,11 @@
                             </div>
                             <span id="cntDone" style="background:rgba(16,185,129,0.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.2);">0</span>
                         </div>
-                        <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- ============================== LIBRARY SECTION ============================== -->
             <div id="sec-library" class="section">
                 <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
                     <div>
@@ -900,7 +1350,6 @@
                 </div>
             </div>
 
-            <!-- ============================== NOTES SECTION ============================== -->
             <div id="sec-notes" class="section">
                 <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
                     <div>
@@ -924,12 +1373,11 @@
                 </div>
             </div>
 
-            <!-- ============================== CERTS SECTION ============================== -->
             <div id="sec-certs" class="section">
                 <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
                     <div>
                         <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">شهاداتي 🎓</h2>
-                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">إنجازاتك في مكان واحد (إطار زجاجي نيون)</p>
+                        <p style="font-size:12px;color:var(--txt2);margin-top:2px;">كل إنجازاتك في مكان واحد (اضغط للفتح في درايف)</p>
                     </div>
                     <button class="btn-primary" onclick="document.getElementById('certFileIn').click()">☁️ رفع شهادة</button>
                     <input type="file" id="certFileIn" style="display:none;" accept="image/*,application/pdf" onchange="window.handleCertUpload(this)">
@@ -937,7 +1385,6 @@
                 <div id="certsList" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;align-content:start;padding-bottom:20px;"></div>
             </div>
 
-            <!-- ============================== EXTRAS SECTION ============================== -->
             <div id="sec-extras" class="section">
                 <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-shrink:0;">
                     <div>
@@ -951,6 +1398,7 @@
                 </div>
                 
                 <div class="extras-grid" style="display:flex; flex-direction:column; gap:20px;">
+                    
                     <div id="azkarWidget" class="glass azkar-widget" style="width:100%; padding:24px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
                          <div style="font-size:32px; margin-bottom:14px;">📿</div>
                          <div id="azkarText" style="font-size:18px; font-weight:900; color:var(--txt1); line-height:1.6; transition: opacity 0.5s;">سبحان الله وبحمده، سبحان الله العظيم</div>
@@ -996,41 +1444,11 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
-        </div></div></div>
-
-<!-- ============================== MODALS ============================== -->
-
-<!-- 1. النافذة المخصصة للتقويم والساعة بستايل التطبيق -->
-<div id="customPickerModal" class="modal-bg" style="z-index: 105000;">
-    <div class="modal-box" style="width:100%; max-width:340px; padding:24px; display:flex; flex-direction:column; background:var(--bg2);">
-        <h3 style="font-size:16px; font-weight:900; color:#fff; margin-bottom:20px; text-align:center;">حدد التاريخ والوقت 📅⏰</h3>
-        
-        <input type="hidden" id="customPickerTargetId">
-        
-        <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:24px;">
-            <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:16px; border-radius:14px;">
-                <label style="display:block; font-size:12px; color:var(--cyan); font-weight:900; margin-bottom:8px;">التاريخ 📅</label>
-                <input type="date" id="customDateInp" class="field" style="color-scheme:dark; font-size:14px; font-weight:bold; cursor:pointer;">
-            </div>
-            
-            <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:16px; border-radius:14px;">
-                <label style="display:block; font-size:12px; color:var(--amber); font-weight:900; margin-bottom:8px;">الوقت ⏰</label>
-                <input type="time" id="customTimeInp" class="field" style="color-scheme:dark; font-size:14px; font-weight:bold; cursor:pointer;">
-            </div>
-        </div>
-        
-        <div style="display:flex; gap:10px;">
-            <button onclick="window.clearCustomPicker()" class="btn-ghost" style="color:var(--red); border-color:rgba(239,68,68,0.2);">مسح الموعد</button>
-            <button onclick="window.closeCustomPicker()" class="btn-ghost" style="flex:1;">إلغاء</button>
-            <button onclick="window.applyCustomPicker()" class="btn-primary" style="flex:1; justify-content:center;">حفظ الموعد</button>
-        </div>
-    </div>
-</div>
-
-<div id="libTextModal" class="modal-bg" style="z-index: 105000;">
+        </div></div></div><div id="libTextModal" class="modal-bg" style="z-index: 105000;">
     <div class="modal-box report-glass" style="width:100%; max-width:500px; display:flex; flex-direction:column; background:var(--bg2);">
         <div style="padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
             <h3 style="font-size:16px; font-weight:900; color:#fff;">📝 ملاحظة / نص</h3>
@@ -1049,6 +1467,7 @@
 
 <div id="reportViewModal" class="modal-bg" style="z-index: 99999;">
     <div class="modal-box report-glass" style="width:100%; max-width:700px; height:auto; max-height:90vh; display:flex; flex-direction:column; background:var(--bg2);">
+        
         <div class="no-print" style="padding:22px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
             <div style="display:flex; align-items:center; gap:12px;">
                  <h3 style="font-size:18px; font-weight:900; color:#fff;">📊 تقرير الأداء</h3>
@@ -1064,7 +1483,9 @@
                 <p style="font-size:13px; color:var(--txt2); margin-top:12px;">التقرير ده هيفتحلك تلقائياً أول يوم في الشهر الجديد</p>
                 <button onclick="document.getElementById('reportBlurOverlay').style.display='none'" style="margin-top:30px; background:none; border:1px dashed var(--border2); border-radius:8px; padding:6px 12px; color:var(--txt3); font-size:10px; cursor:pointer;">[للتجربة: تخطي القفل]</button>
             </div>
-            <div id="reportContentArea" style="padding:30px; flex:1; overflow-y:auto; color:var(--txt1);"></div>
+            
+            <div id="reportContentArea" style="padding:30px; flex:1; overflow-y:auto; color:var(--txt1);">
+                </div>
         </div>
 
         <div class="no-print" style="padding:20px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px;">
@@ -1095,7 +1516,6 @@
     </div>
 </div>
 
-<!-- إعدادات نظيفة بدون أدوات المطور -->
 <div id="settingsModal" class="modal-bg" style="z-index: 99999;">
     <div class="modal-box" style="width:100%;max-width:420px;">
         <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
@@ -1104,6 +1524,15 @@
         </div>
         <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;max-height:70vh;overflow-y:auto;">
             
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
+                <div>
+                    <div style="font-size:13px;font-weight:700;color:var(--txt1);">مظهر التطبيق</div>
+                    <div style="font-size:11px;color:var(--txt3);margin-top:2px;">داكن / فاتح</div>
+                </div>
+                <button class="btn-ghost" onclick="window.toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button>
+            </div>
+
+            <!-- إعدادات الخلفية -->
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
                     <span>الخلفية الأساسية 🖼️</span>
@@ -1140,6 +1569,11 @@
                 <div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto;"></div>
             </div>
             
+            <div style="padding:14px 16px;border-radius:14px;background:rgba(245,158,11,0.05);border:1px dashed rgba(245,158,11,0.3); margin-bottom:16px;">
+                <div style="font-size:13px;font-weight:900;color:var(--amber);margin-bottom:6px;">أدوات المطور 🛠️</div>
+                <button class="btn-ghost" onclick="window.simulateYearEnd()" style="width:100%; border-color:rgba(245,158,11,0.3); color:var(--amber);">⏳ محاكاة نهاية العام (لاختبار الأرشيف)</button>
+            </div>
+
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div>
                 <div style="display:flex;gap:8px;">
@@ -1233,6 +1667,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+// Firebase Config
 const FB = {
     apiKey: "AIzaSyBbdeRIp_cbN7LP3dKovOmfCHTxseM-zro",
     authDomain: "rehlaty-final.firebaseapp.com",
@@ -1250,8 +1685,9 @@ const gProv = new GoogleAuthProvider();
 let user = null;
 let activTask = null;
 let sq = "";
-let chartWeekOffset = 0; 
+let chartWeekOffset = 0; // للتحكم في تقليب الأسابيع
 
+// Default State (Safe Boot)
 let S = {
     tasks: [], 
     todayTasks: [], 
@@ -1275,7 +1711,14 @@ let S = {
     appBg: { baseType: 'none', baseVal: '', pattern: 'none' }
 };
 
-const ICONS = { general: "📝", course: "🎓", book: "📖", lecture: "🎤", video: "▶️", workshop: "🛠️" };
+const ICONS = {
+    general: "📝", 
+    course: "🎓", 
+    book: "📖", 
+    lecture: "🎤", 
+    video: "▶️", 
+    workshop: "🛠️"
+};
 
 const QUOTES = [
     "عافر، حلمك يستاهل التعب! 💪", 
@@ -1286,15 +1729,22 @@ const QUOTES = [
 ];
 
 const AZKAR = [
-    "سبحان الله وبحمده", "استغفر الله العظيم", "اللهم صل وسلم على نبينا محمد", 
-    "لا حول ولا قوة إلا بالله", "الحمد لله حمداً كثيراً", "سبحان الله العظيم", "حسبي الله ونعم الوكيل"
+    "سبحان الله وبحمده", 
+    "استغفر الله العظيم", 
+    "اللهم صل وسلم على نبينا محمد", 
+    "لا حول ولا قوة إلا بالله", 
+    "الحمد لله حمداً كثيراً", 
+    "سبحان الله العظيم", 
+    "حسبي الله ونعم الوكيل"
 ];
 
 let currentZikr = 0;
+
 const el = id => document.getElementById(id);
 
+/* ════════ GLOBAL SYNC TIMEOUT ════════ */
 window.syncTimeout = null;
-window.isSyncing = false;
+
 /* ════════ TOAST & AUDIO ════════ */
 window.showToast = function(msg, type="info") {
     const t = el("toast"), ic = el("toastIcon"), tx = el("toastText");
@@ -1331,7 +1781,7 @@ window.playSound = function(type) {
     }
 };
 
-/* ════════ AZKAR & SPECIAL EVENTS (BIRTHDAY & EID) ════════ */
+/* ════════ AZKAR & OFFLINE UI ════════ */
 setInterval(function() {
     const zikrEl = el("azkarText");
     if(zikrEl) {
@@ -1344,129 +1794,65 @@ setInterval(function() {
     }
 }, 10000);
 
-window.checkSpecialEvents = function() {
-    const now = new Date();
-    const d = now.getDate();
-    const m = now.getMonth() + 1;
-    
-    // 1. فحص يوم ميلاد البطل 6/6
-    if(d === 6 && m === 6) {
-        if(window.confetti) {
-            const duration = 7 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999999 };
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                const particleCount = 50 * (timeLeft / duration);
-                window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
-        if(!S.bdayGreeted || S.bdayGreeted !== now.getFullYear()) {
-            setTimeout(() => window.showToast("كل سنة وانت طيب يا عالمي! 17 سنة تألق 🎂🎉", "success"), 1500);
-            S.bdayGreeted = now.getFullYear();
-            window.saveDataSilently();
-        }
-    }
-    
-    // 2. فحص الأعياد الإسلامية (الفطر والأضحى)
-    let isEid = false;
-    try {
-        const hijriDate = new Intl.DateTimeFormat("en-u-ca-islamic", {month: "numeric", day: "numeric"}).format(now);
-        const [hM, hD] = hijriDate.split("/");
-        const hmInt = parseInt(hM), hdInt = parseInt(hD);
-        if (hmInt === 10 && hdInt >= 1 && hdInt <= 3) isEid = true; // عيد الفطر
-        if (hmInt === 12 && hdInt >= 10 && hdInt <= 13) isEid = true; // عيد الأضحى
-    } catch(e) {}
-    
-    if(isEid) {
-        document.body.classList.add("eid-theme");
-        if(!S.eidGreeted || S.eidGreeted !== now.getFullYear()+now.getMonth()) {
-            setTimeout(() => window.showToast("كل عام وأنت بخير بمناسبة العيد! 🌙✨", "success"), 2500);
-            S.eidGreeted = now.getFullYear()+now.getMonth();
-            window.saveDataSilently();
-        }
-    } else {
-        document.body.classList.remove("eid-theme");
-    }
-};
-
-/* ════════ SMART LIVE SYNC UI ════════ */
 window.setOfflineUI = function() {
-    const dot = el('connectionDot'), txt = el('connectionText');
+    const dot = el('connectionDot');
+    const txt = el('connectionText');
     if(dot && txt) {
         dot.style.background = 'var(--red)';
         dot.style.boxShadow = '0 0 6px var(--red)';
         txt.style.color = 'var(--red)';
-        txt.textContent = 'محفوظ محلياً 💾';
+        txt.textContent = 'حفظ محلي (أوفلاين)';
     }
 };
 
 window.setOnlineUI = function() {
-    const dot = el('connectionDot'), txt = el('connectionText');
+    const dot = el('connectionDot');
+    const txt = el('connectionText');
     if(dot && txt) {
         dot.style.background = 'var(--green2)';
         dot.style.boxShadow = '0 0 6px var(--green2)';
         txt.style.color = 'var(--green2)';
-        txt.textContent = 'متصل سحابياً ☁️';
-    }
-};
-
-window.setSyncingUI = function() {
-    const dot = el('connectionDot'), txt = el('connectionText');
-    if(dot && txt) {
-        dot.style.background = 'var(--amber)';
-        dot.style.boxShadow = '0 0 6px var(--amber)';
-        txt.style.color = 'var(--amber)';
-        txt.textContent = 'جاري الرفع ⏳';
+        txt.textContent = 'متصل سحابياً';
     }
 };
 
 window.addEventListener('offline', window.setOfflineUI);
-window.addEventListener('online', () => {
-    window.setOnlineUI();
-    if(user) window.forceSyncNow(); 
-});
+window.addEventListener('online', window.setOnlineUI);
 
-window.forceSyncNow = async function() {
-    if(!user) return window.showToast("يجب تسجيل الدخول أولاً!", "error");
-    if(!navigator.onLine) return window.showToast("لا يوجد اتصال بالإنترنت! مسجل محلياً", "error");
-    
-    window.setSyncingUI();
-    try {
-        await setDoc(doc(db,"rehlaty_users",user.uid), S);
-        window.setOnlineUI();
-        window.showToast("تمت المزامنة بنجاح! ☁️✅", "success");
-    } catch(e) {
-        window.setOfflineUI();
-        window.showToast("فشلت المزامنة!", "error");
-    }
-};
+/* ════════ DATE FORMAT HELPER ════════ */
+function safeDateTime(val) {
+    if(!val) return "";
+    if(val.length === 10) return val + "T00:00"; 
+    if(val.length > 16) return val.slice(0, 16);
+    return val;
+}
 
-/* ════════ SAVE LOGIC (DEBOUNCED & LIVE) ════════ */
-window.saveDataSilently = function() {
+/* ════════ SAVE LOGIC (DEBOUNCED) ════════ */
+window.saveData = function() {
+    window.renderAll();
     localStorage.setItem("rehlaty_v3", JSON.stringify(S));
-    if(user && navigator.onLine) {
-        window.setSyncingUI();
+    if(user) {
         clearTimeout(window.syncTimeout);
         window.syncTimeout = setTimeout(() => {
-            setDoc(doc(db,"rehlaty_users",user.uid), S).then(() => {
-                window.setOnlineUI();
-            }).catch(e => {
+            setDoc(doc(db,"rehlaty_users",user.uid), S).catch(e => {
                 console.log("Offline save queued:", e.message);
                 window.setOfflineUI();
             });
-        }, 1500);
-    } else if (!navigator.onLine) {
-        window.setOfflineUI();
+        }, 2000);
     }
 };
 
-window.saveData = function() {
-    window.renderAll();
-    window.saveDataSilently();
+window.saveDataSilently = function() {
+    localStorage.setItem("rehlaty_v3", JSON.stringify(S));
+    if(user) {
+        clearTimeout(window.syncTimeout);
+        window.syncTimeout = setTimeout(() => {
+            setDoc(doc(db,"rehlaty_users",user.uid), S).catch(e => {
+                console.log("Offline save queued:", e.message);
+                window.setOfflineUI();
+            });
+        }, 2000);
+    }
 };
 
 /* ════════ DAILY MAINTENANCE & REPORTS ════════ */
@@ -1542,78 +1928,741 @@ window.closeReportNotification = function() {
     el("reportNotificationModal").classList.remove("show");
 };
 
-/* ════════ DATE FORMAT HELPER ════════ */
-function safeDateTime(val) {
-    if(!val) return "";
-    if(val.length === 10) return val + "T00:00"; 
-    if(val.length > 16) return val.slice(0, 16);
-    return val;
+/* ════════ ARCHIVE SYSTEM ════════ */
+window.openArchiveModal = function(type) {
+    const t = el("archiveModalTitle");
+    const c = el("archiveContent"); 
+    c.innerHTML = "";
+    if(!S.archive) S.archive = {today:[], goals:[], years:{}};
+    
+    if(type === 'today') {
+        t.textContent = "سجل مهام اليوم (الأرشيف)";
+        if(!S.archive.today || !S.archive.today.length){
+            c.innerHTML = "<p style='text-align:center;opacity:0.4;padding:20px;font-weight:bold;'>الأرشيف فارغ</p>";
+        } else {
+            S.archive.today.forEach((item, i) => {
+                c.innerHTML += `
+                <div style="background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-weight:bold;font-size:14px;">${item.text}</div>
+                        <div style="font-size:10px;opacity:0.5;margin-top:4px;">${item.archDate}</div>
+                    </div>
+                    <button onclick="window.restoreArchiveItem('today',${i})" style="background:rgba(59,130,246,0.15);color:var(--blue2);border:none;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;">استرجاع</button>
+                </div>`;
+            });
+        }
+    } else if(type === 'goals') {
+        t.textContent = "سجل الأهداف المنجزة";
+        if(!S.archive.goals || !S.archive.goals.length){
+            c.innerHTML = "<p style='text-align:center;opacity:0.4;padding:20px;font-weight:bold;'>الأرشيف فارغ</p>";
+        } else {
+            S.archive.goals.forEach((item, i) => {
+                c.innerHTML += `
+                <div style="background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-weight:bold;font-size:14px;">${item.text}</div>
+                        <div style="font-size:10px;opacity:0.5;margin-top:4px;">${item.archDate}</div>
+                    </div>
+                    <button onclick="window.restoreArchiveItem('goals',${i})" style="background:rgba(59,130,246,0.15);color:var(--blue2);border:none;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;">استرجاع</button>
+                </div>`;
+            });
+        }
+    } else if(type === 'years') {
+        t.textContent = "أرشيف السنوات السابقة";
+        const years = Object.keys(S.archive.years || {});
+        if(!years.length){
+            c.innerHTML = "<p style='text-align:center;opacity:0.4;padding:20px;font-weight:bold;'>لا توجد بيانات لسنوات سابقة</p>";
+        } else {
+            years.forEach(y => {
+                c.innerHTML += `
+                <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:18px;font-weight:900;color:var(--blue2);">عام ${y}</span>
+                    <span style="font-size:11px;opacity:0.6;font-weight:bold;">مؤرشف 🔒</span>
+                </div>`;
+            });
+        }
+    }
+    el("archiveModal").classList.add("show");
+};
+
+window.closeArchiveModal = function() {
+    el("archiveModal").classList.remove("show");
+};
+
+window.restoreArchiveItem = function(type, idx) {
+    const item = S.archive[type].splice(idx, 1)[0];
+    item.done = false;
+    if(type === 'today') S.todayTasks.unshift(item); 
+    else S.goals.unshift(item);
+    window.saveData();
+    window.closeArchiveModal();
+    window.showToast("تم الاسترجاع بنجاح!","success");
+};
+
+window.simulateYearEnd = function() {
+    if(confirm("تحذير: ده هينقل بيانات السنة دي للأرشيف كأن السنة خلصت. متأكد؟")) {
+        S.lastYearChecked = new Date().getFullYear() + 1; 
+        window.updateStreak(); 
+        window.showToast("تم نقل البيانات لأرشيف السنة بنجاح! 🎊", "success");
+    }
+};
+
+/* ════════ REPORT GENERATION LOGIC ════════ */
+let currentReportType = 'month';
+
+window.openReportModal = function(type) {
+    currentReportType = type;
+    populateReportDropdown();
+    window.renderSpecificReport();
+    el("reportViewModal").classList.add("show");
+};
+
+function populateReportDropdown() {
+    const sel = el("reportMonthSelect");
+    sel.innerHTML = "";
+    const now = new Date();
+    if(currentReportType === 'month') {
+        for(let i=0; i<12; i++) {
+            let d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            let val = `${d.getFullYear()}-${d.getMonth()}`;
+            let text = new Intl.DateTimeFormat("ar-EG", { month: "long", year: "numeric" }).format(d);
+            sel.innerHTML += `<option value="${val}">${text}</option>`;
+        }
+    } else {
+        const ys = Object.keys(S.archive.years || {});
+        ys.push(now.getFullYear().toString());
+        const uniqueYears = [...new Set(ys)].sort((a,b)=>b-a);
+        uniqueYears.forEach(y => {
+            sel.innerHTML += `<option value="${y}">عام ${y}</option>`;
+        });
+    }
 }
 
-/* ════════ CUSTOM DATE/TIME PICKER LOGIC ════════ */
-let activeCustomPickerTarget = null;
-
-window.openCustomPicker = function(targetId) {
-    activeCustomPickerTarget = targetId;
-    el("customPickerTargetId").value = targetId;
+window.renderSpecificReport = function() {
+    const area = el("reportContentArea");
+    const selVal = el("reportMonthSelect").value;
+    const now = new Date();
+    let title = "", dateRange = "", completedTasksCount = 0, completedGoalsCount = 0;
     
-    if(targetId !== 'new') {
-        const t = S.todayTasks.find(x => x.id === targetId);
-        if(t && t.dueDate) {
-            const dObj = new Date(t.dueDate);
-            if(!isNaN(dObj.getTime())) {
-                el("customDateInp").value = t.dueDate.split('T')[0];
-                el("customTimeInp").value = t.dueDate.split('T')[1]?.slice(0,5) || "";
-            }
+    const overlay = el("reportBlurOverlay");
+    let isCurrentPeriod = false;
+    let filteredTasks = []; 
+    
+    if (currentReportType === 'month') {
+        const [y, m] = selVal.split("-");
+        title = "تقرير الأداء الشهري";
+        dateRange = new Intl.DateTimeFormat("ar-EG", { month: "long", year: "numeric" }).format(new Date(y, m, 1));
+        isCurrentPeriod = (parseInt(y) === now.getFullYear() && parseInt(m) === now.getMonth());
+        
+        filteredTasks = (S.archive.today||[]).filter(t => {
+            if(!t.archDate) return false; 
+            let d = new Date(t.archDate);
+            return d.getFullYear() == y && d.getMonth() == m;
+        });
+        
+        completedTasksCount = filteredTasks.length;
+        completedGoalsCount = (S.archive.goals||[]).filter(g => {
+            if(!g.archDate) return false; 
+            let d = new Date(g.archDate);
+            return d.getFullYear() == y && d.getMonth() == m;
+        }).length;
+    } else {
+        title = "التقرير السنوي الشامل";
+        dateRange = `عام ${selVal}`;
+        isCurrentPeriod = (parseInt(selVal) === now.getFullYear());
+        
+        if (isCurrentPeriod) {
+            filteredTasks = (S.archive.today||[]).filter(t => t.archDate && new Date(t.archDate).getFullYear() == selVal);
+            completedTasksCount = filteredTasks.length;
+            completedGoalsCount = (S.archive.goals||[]).filter(g => g.archDate && new Date(g.archDate).getFullYear() == selVal).length;
         } else {
-            el("customDateInp").value = ""; el("customTimeInp").value = "";
+            let hist = S.archive.years[selVal];
+            if(hist) { 
+                filteredTasks = hist.tasks ? hist.tasks.filter(t => t.status === 'done') : []; 
+                completedTasksCount = "تم حفظه بالأرشيف"; 
+                completedGoalsCount = "تم حفظه بالأرشيف"; 
+            }
         }
-    } else {
-        el("customDateInp").value = ""; el("customTimeInp").value = "";
     }
-    el("customPickerModal").classList.add("show");
-};
 
-window.closeCustomPicker = function() {
-    el("customPickerModal").classList.remove("show");
-};
-
-window.clearCustomPicker = function() {
-    if(activeCustomPickerTarget && activeCustomPickerTarget !== 'new') {
-        window.updateTodayDate(activeCustomPickerTarget, "");
-    } else if (activeCustomPickerTarget === 'new') {
-        let hidden = el("newTodayDate");
-        if(hidden) hidden.value = "";
+    if (overlay) {
+        if (isCurrentPeriod && now.getDate() !== 1) overlay.style.display = "flex";
+        else overlay.style.display = "none";
     }
-    window.closeCustomPicker();
-};
 
-window.applyCustomPicker = function() {
-    const d = el("customDateInp").value;
-    const t = el("customTimeInp").value;
-    let finalVal = "";
-    if(d) {
-        finalVal = d + (t ? "T"+t : "T00:00");
+    let curWeekSum = 0, prevWeekSum = 0;
+    for(let i=0; i<7; i++) {
+        let d1 = new Date(now); d1.setDate(d1.getDate()-i);
+        curWeekSum += (S.history[d1.toISOString().split("T")[0]] || 0);
+        let d2 = new Date(now); d2.setDate(d2.getDate()-(i+7));
+        prevWeekSum += (S.history[d2.toISOString().split("T")[0]] || 0);
+    }
+    const curAvg = Math.round(curWeekSum/7);
+    const prevAvg = Math.round(prevWeekSum/7);
+    const trend = curAvg - prevAvg;
+    const expected = Math.min(100, curAvg + (trend > 0 ? Math.ceil(trend/2) : 0));
+
+    let courseGroups = {};
+    let generalTasks = [];
+    
+    filteredTasks.forEach(t => {
+        if(t.parentName) {
+            let cleanName = t.parentName.replace("🏆 ", ""); 
+            if(!courseGroups[cleanName]) courseGroups[cleanName] = [];
+            courseGroups[cleanName].push(t);
+        } else {
+            generalTasks.push(t);
+        }
+    });
+
+    let accordionHtml = "";
+    if (filteredTasks.length > 0) {
+        accordionHtml += `
+        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
+            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:15px;">📋 تفاصيل المهام المنجزة (حسب الكورس/المشروع)</h4>`;
+            
+        for(let course in courseGroups) {
+            let tasks = courseGroups[course];
+            let safeId = "rep_grp_" + Math.random().toString(36).substr(2, 9);
+            accordionHtml += `
+            <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;">
+                <div onclick="document.getElementById('${safeId}').classList.toggle('hidden')" style="padding:14px; cursor:pointer; display:flex; justify-content:space-between; background:rgba(255,255,255,0.02);">
+                    <strong style="color:var(--blue2);">📚 ${course}</strong>
+                    <span style="font-size:11px; color:var(--txt2); font-weight:bold; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:6px;">${tasks.length} مهام 🔽</span>
+                </div>
+                <div id="${safeId}" class="hidden" style="padding:10px 14px; border-top:1px solid var(--border); font-size:12px; color:var(--txt1);">
+                    <ul style="list-style:inside; color:var(--txt2); line-height:1.8;">
+                        ${tasks.map(t => `<li style="margin-bottom:6px;">${t.text} <span style="color:var(--green2); font-size:10px;">(تم)</span></li>`).join('')}
+                    </ul>
+                </div>
+            </div>`;
+        }
+        
+        if (generalTasks.length > 0) {
+            let safeId = "rep_grp_" + Math.random().toString(36).substr(2, 9);
+            accordionHtml += `
+            <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;">
+                <div onclick="document.getElementById('${safeId}').classList.toggle('hidden')" style="padding:14px; cursor:pointer; display:flex; justify-content:space-between; background:rgba(255,255,255,0.02);">
+                    <strong style="color:var(--green2);">📝 مهام عامة متفرقة</strong>
+                    <span style="font-size:11px; color:var(--txt2); font-weight:bold; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:6px;">${generalTasks.length} مهام 🔽</span>
+                </div>
+                <div id="${safeId}" class="hidden" style="padding:10px 14px; border-top:1px solid var(--border); font-size:12px; color:var(--txt1);">
+                    <ul style="list-style:inside; color:var(--txt2); line-height:1.8;">
+                        ${generalTasks.map(t => `<li style="margin-bottom:6px;">${t.text} <span style="color:var(--green2); font-size:10px;">(تم)</span></li>`).join('')}
+                    </ul>
+                </div>
+            </div>`;
+        }
+        accordionHtml += `</div>`;
+    }
+
+    let coursesHtml = "";
+    if (currentReportType === 'year') {
+        const completedCourses = (S.tasks||[]).filter(t => t.type === 'course' && t.status === 'done');
+        if (completedCourses.length > 0) {
+            coursesHtml = `
+            <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
+                <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">🎓 كورسات تم إنجازها بنجاح</h4>
+                <ul style="font-size:13px; line-height:1.8; list-style:inside; padding-right:15px; color:var(--blue2);">
+                    ${completedCourses.map(c => `<li><span class="report-text">${c.text}</span></li>`).join('')}
+                </ul>
+            </div>`;
+        }
     }
     
-    if(activeCustomPickerTarget === 'new') {
-        let hidden = el("newTodayDate");
-        if(!hidden) {
-            hidden = document.createElement("input");
-            hidden.type = "hidden";
-            hidden.id = "newTodayDate";
-            el("newTaskOptions").appendChild(hidden);
+    // Accurate Pie Chart
+    const tCounts = {};
+    filteredTasks.forEach(t => {
+        let tag = t.savedTag || "مهام عامة"; 
+        tCounts[tag] = (tCounts[tag] || 0) + 1;
+    });
+    
+    let pieDetailsHtml = Object.keys(tCounts).map(tag => {
+        let col = S.tagColors?.[tag] || "#64748b";
+        return `
+        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+            <span style="color:${col}">● ${tag}</span>
+            <span class="report-text" style="color:var(--txt2)">${tCounts[tag]} مهمة/درس</span>
+        </div>`;
+    }).join("");
+
+    let pieSection = "";
+    if (Object.keys(tCounts).length > 0) {
+        pieSection = `
+        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px; text-align:center;">
+            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:15px;">توزيع الأقسام (في هذا التقرير)</h4>
+            <div style="height:180px; position:relative; margin-bottom:20px;"><canvas id="reportPieChartCanvas"></canvas></div>
+            <div style="text-align:right;">${pieDetailsHtml}</div>
+        </div>`;
+    }
+
+    area.innerHTML = `
+        <div style="text-align:center; margin-bottom:30px;">
+            <div style="font-size:40px; margin-bottom:10px;">🏆</div>
+            <h1 class="report-text" style="font-size:28px; font-weight:900; margin-bottom:5px;">${title}</h1>
+            <p class="report-text" style="font-size:14px; opacity:0.7;">${dateRange}</p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:30px;">
+            <div style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.2); padding:20px; border-radius:16px; text-align:center;">
+                <div style="font-size:32px; font-weight:900; color:var(--green2);">${completedTasksCount}</div>
+                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">مهام تم إنجازها</div>
+            </div>
+            <div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.2); padding:20px; border-radius:16px; text-align:center;">
+                <div style="font-size:32px; font-weight:900; color:var(--blue2);">${completedGoalsCount}</div>
+                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">أهداف تم تحقيقها</div>
+            </div>
+        </div>
+        
+        ${pieSection}
+
+        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
+            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">📊 تحليل الأداء الأسبوعي</h4>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
+              <span class="report-text">الأسبوع الحالي: <b style="color:var(--blue2)">${curAvg}%</b></span>
+              <span class="report-text">الأسبوع السابق: <b>${prevAvg}%</b></span>
+            </div>
+            <div style="font-size:13px; font-weight:bold; color:${trend>=0?'var(--green2)':'var(--red)'}; margin-bottom:10px;">
+              ${trend > 0 ? '📈 تقدمت بنسبة '+trend+'%!' : trend < 0 ? '📉 تراجعت بنسبة '+Math.abs(trend)+'%، شد حيلك!' : '➖ مستوى ثابت'}
+            </div>
+            <div class="report-text" style="font-size:12px; opacity:0.8;">النسبة المتوقعة الأسبوع القادم: <b>${expected}%</b> 🎯</div>
+        </div>
+        
+        ${accordionHtml}
+        ${coursesHtml}
+    `;
+
+    setTimeout(() => {
+        const pCtx = el("reportPieChartCanvas");
+        if(pCtx && typeof Chart !== "undefined" && Object.keys(tCounts).length > 0) {
+            const lbls = Object.keys(tCounts), dts = Object.values(tCounts);
+            const cols = lbls.map(tag => S.tagColors?.[tag] || "#64748b");
+            new Chart(pCtx, {
+                type: "doughnut",
+                data: {
+                    labels: lbls, 
+                    datasets: [{data:dts, backgroundColor:cols, borderColor:"transparent", borderWidth:2}]
+                },
+                options: {
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    cutout: "60%", 
+                    plugins: {legend: {display: false}}
+                }
+            });
         }
-        hidden.value = finalVal;
-        window.closeCustomPicker();
-        window.showToast("تم تحديد الموعد!", "success");
+    }, 200);
+};
+
+window.closeReportModal = function() {
+    el("reportViewModal").classList.remove("show");
+};
+
+window.saveAsPDF = function() {
+    const element = document.getElementById('reportContentArea');
+    const oldBg = element.style.backgroundColor;
+    const oldColor = element.style.color;
+    
+    element.style.backgroundColor = '#111827'; 
+    element.style.color = '#eef2ff';
+    element.style.padding = '20px';
+    
+    element.querySelectorAll('.report-text').forEach(el => {
+        el.setAttribute('data-old-color', el.style.color);
+        el.style.color = '#eef2ff';
+    });
+
+    const opt = {
+        margin:       0.5,
+        filename:     'Rehlaty_Report.pdf',
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#111827' },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    
+    window.showToast("جاري تجهيز التقرير...", "loading");
+    
+    html2pdf().set(opt).from(element).save().then(() => {
+        element.style.backgroundColor = oldBg;
+        element.style.color = oldColor;
+        element.style.padding = '30px';
+        element.querySelectorAll('.report-text').forEach(el => {
+            el.style.color = el.getAttribute('data-old-color') || '';
+        });
+        window.showToast("تم التحميل بنجاح! ✅", "success");
+    });
+};
+
+/* ════════ SUGGESTIONS PANEL LOGIC ════════ */
+window.toggleSuggestionsPanel = function() {
+    const panel = el("suggestionsPanel");
+    if (panel.classList.contains("open")) {
+        panel.classList.remove("open");
     } else {
-        window.updateTodayDate(activeCustomPickerTarget, finalVal);
-        window.closeCustomPicker();
+        panel.classList.add("open");
+        window.renderSuggestions();
     }
 };
 
-/* ════════ 1. TODAY TASKS (CUSTOM PICKER + EFFORT CIRCLES) ════════ */
+window.renderSuggestions = function() {
+    const list = el("suggestionsList");
+    if(!S.suggestions || !S.suggestions.length) {
+        list.innerHTML = "<p style='text-align:center; opacity:0.5; margin-top:20px; font-weight:bold;'>لا توجد مهام غير مكتملة</p>";
+        return;
+    }
+    
+    list.innerHTML = S.suggestions.map((t, i) => `
+        <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.05);">
+           <div style="flex:1; min-width:0; margin-left:10px;">
+               <div style="font-weight:bold; font-size:13px; color:var(--txt1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.text}</div>
+               <div style="font-size:10px; color:var(--txt3); margin-top:4px;">من تاريخ: ${t.archDate}</div>
+           </div>
+           <button onclick="window.restoreSuggestion(${i})" style="background:rgba(59,130,246,0.15); color:var(--blue2); border:1px solid rgba(59,130,246,0.2); border-radius:8px; padding:6px 12px; font-size:11px; font-weight:bold; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.25)'" onmouseout="this.style.background='rgba(59,130,246,0.15)'">+ لليوم</button>
+        </div>
+    `).join("");
+}
+
+window.restoreSuggestion = function(i) {
+    const t = S.suggestions.splice(i, 1)[0];
+    t.done = false;
+    S.todayTasks.unshift(t);
+    window.saveData();
+    window.renderSuggestions();
+    window.showToast("تم إضافتها لمهام اليوم", "success");
+};
+
+/* ════════ DATE / STATS (WITH EFFORT POINTS) ════════ */
+window.updateDate = function() {
+    const now = new Date();
+    const greg = new Intl.DateTimeFormat("ar-EG",{weekday:"long",year:"numeric",month:"long",day:"numeric"}).format(now);
+    let hijri = "";
+    try {
+        hijri = new Intl.DateTimeFormat("ar-SA-u-ca-islamic",{year:"numeric",month:"long",day:"numeric"}).format(now);
+    } catch(e) {}
+    
+    el("dateDisplay").innerHTML = `
+        <div style="font-size:15px;font-weight:700;color:var(--cyan);margin-top:4px;">${greg}</div>
+        ${hijri ? `<div style="font-size:12px;font-weight:600;color:var(--green2);margin-top:2px;">🌙 ${hijri}</div>` : ""}
+    `;
+}
+
+window.updateStreak = function() {
+    const today = new Date().toDateString();
+    const yest = new Date(Date.now() - 86400000).toDateString();
+    
+    if(!S.lastDate) S.streak = 1;
+    else if(S.lastDate === today) {}
+    else if(S.lastDate === yest) S.streak = (S.streak||0) + 1;
+    else S.streak = 1;
+    
+    S.lastDate = today;
+    const sn = el("streakNum"); 
+    if(sn) sn.textContent = S.streak || 0;
+    
+    const curYear = new Date().getFullYear();
+    if (S.lastYearChecked && S.lastYearChecked < curYear) {
+        if(!S.archive) S.archive = {today:[], goals:[], years:{}};
+        S.archive.years[S.lastYearChecked] = { history: { ...S.history }, tasks: [...S.tasks] };
+        S.history = {}; 
+        S.lastYearChecked = curYear;
+        window.saveDataSilently();
+    }
+}
+
+window.updateStats = function() {
+    const now = new Date();
+    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime();
+    
+    const currentItems = (S.todayTasks||[]).filter(t => !t.dueDate || new Date(t.dueDate).getTime() <= endOfToday);
+    
+    let totalEffort = 0;
+    let doneEffort = 0;
+    
+    currentItems.forEach(t => {
+        let e = parseInt(t.effort) || 1; 
+        totalEffort += e;
+        if(t.done) doneEffort += e;
+    });
+    
+    const pct = totalEffort > 0 ? Math.round(doneEffort/totalEffort*100) : 0;
+    
+    el("sTotalToday").textContent = currentItems.length;
+    el("sDoneToday").textContent = currentItems.filter(t=>t.done).length;
+    el("sKanban").textContent = (S.tasks||[]).length;
+    el("progressBar").style.width = pct + "%";
+    el("progressPct").textContent = pct + "%";
+    el("moodEmoji").textContent = pct === 0 ? "😴" : pct < 30 ? "🌱" : pct < 60 ? "💪" : pct < 90 ? "🔥" : "🏆";
+    
+    const sn = el("streakNum"); 
+    if(sn) sn.textContent = S.streak || 0;
+    
+    const today = new Date().toISOString().split("T")[0];
+    if(totalEffort > 0) {
+        if(!S.history) S.history = {};
+        S.history[today] = pct;
+    }
+}
+
+/* ════════ TABS / SIDEBAR / THEME / PERIODS ════════ */
+const ALL_TABS = ["today","goals","kanban","library","notes","certs","extras"];
+
+window.switchTab = function(tab) {
+    ALL_TABS.forEach(id => {
+        el("sec-"+id).classList.toggle("active", id === tab);
+        el("tab-"+id).classList.toggle("active", id === tab);
+    });
+    if(tab === "extras") {
+        window.renderCharts();
+        window.renderHeatmap();
+    }
+    if(window.innerWidth < 768) window.closeSidebar();
+};
+
+window.openSidebar = function() {
+    el("sidebar").classList.add("open");
+    el("sbOverlay").style.display = "block";
+    el("sbClose").style.display = "flex";
+};
+
+window.closeSidebar = function() {
+    el("sidebar").classList.remove("open");
+    el("sbOverlay").style.display = "none";
+    el("sbClose").style.display = "none";
+};
+
+window.initTheme = function() {
+    const light = localStorage.getItem("rehlaty_theme") === "light";
+    if(light){
+        document.body.classList.add("light");
+        el("themeBtn").textContent = "☀️ فاتح";
+    }
+};
+
+window.toggleTheme = function() {
+    document.body.classList.toggle("light");
+    const isL = document.body.classList.contains("light");
+    localStorage.setItem("rehlaty_theme", isL ? "light" : "dark");
+    el("themeBtn").textContent = isL ? "☀️ فاتح" : "🌙 داكن";
+};
+
+/* ════════ BACKGROUND LOGIC ════════ */
+window.changeBgBase = function(type, val) {
+    if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
+    S.appBg.baseType = type;
+    S.appBg.baseVal = val;
+    window.applyBg();
+    window.saveDataSilently();
+};
+
+window.changeBgPattern = function(pattern) {
+    if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
+    S.appBg.pattern = pattern;
+    window.applyBg();
+    window.saveDataSilently();
+};
+
+window.applyBg = function() {
+    if(!S.appBg) return;
+    
+    let bgImageLayers = [];
+    let bgColor = 'var(--bg)';
+    
+    if(S.appBg.pattern === 'dots') {
+        bgImageLayers.push('radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)');
+        document.body.style.backgroundSize = '15px 15px';
+    } else if(S.appBg.pattern === 'grid') {
+        bgImageLayers.push('linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)');
+        document.body.style.backgroundSize = '20px 20px';
+    } else if(S.appBg.pattern === 'stripes') {
+        bgImageLayers.push('repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px)');
+        document.body.style.backgroundSize = 'auto'; 
+    } else {
+        document.body.style.backgroundSize = 'auto';
+    }
+
+    if(S.appBg.baseType === 'gradient') {
+        bgImageLayers.push(S.appBg.baseVal);
+    } else if(S.appBg.baseType === 'image') {
+        bgImageLayers.push(`linear-gradient(rgba(13, 20, 36, 0.85), rgba(13, 20, 36, 0.85))`); 
+        bgImageLayers.push(`url(${S.appBg.baseVal})`);
+    } else if(S.appBg.baseType === 'color') {
+        bgColor = S.appBg.baseVal;
+    }
+
+    if(bgImageLayers.length > 0) {
+        document.body.style.backgroundImage = bgImageLayers.join(', ');
+    } else {
+        document.body.style.backgroundImage = 'none';
+    }
+    
+    document.body.style.backgroundColor = bgColor;
+    
+    if (S.appBg.baseType === 'image') {
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    } else if (S.appBg.pattern !== 'none') {
+         document.body.style.backgroundAttachment = 'fixed';
+    } else {
+        document.body.style.backgroundAttachment = 'scroll';
+    }
+};
+
+window.handleBgUpload = function(inp) {
+    const f = inp.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        window.changeBgBase('image', e.target.result);
+    };
+    r.readAsDataURL(f);
+};
+
+function periods() {
+    const d = new Date();
+    const y = d.getFullYear().toString();
+    const mN = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+    const mi = d.getMonth();
+    const m = (mi + 1).toString().padStart(2, "0");
+    const w = Math.ceil(d.getDate() / 7).toString();
+    const wN = {"1":"الأول","2":"الثاني","3":"الثالث","4":"الرابع","5":"الخامس"};
+    return {
+        year: y, 
+        month: `${y}-${m}`, 
+        week: `${y}-${m}-W${w}`, 
+        labels: {
+            year: `سنة ${y}`, 
+            month: `شهر ${mN[mi]}`, 
+            week: `الأسبوع ${wN[w]} (${mN[mi]})`
+        }
+    };
+}
+
+async function uploadCloud(file) {
+    return new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = e => {
+            const b64 = e.target.result.split(",")[1];
+            const fd = new URLSearchParams();
+            fd.append("filename", Date.now() + "_" + file.name);
+            fd.append("mimetype", file.type);
+            fd.append("data", b64);
+            
+            fetch("https://script.google.com/macros/s/AKfycbzW1neZSMCZ9Yr0jVSE5n7y2FtrUvmjsbDwzw0c3zsBJ8GIbjbZV7xjXtP-yt1ecQFZ/exec", {
+                method: "POST", 
+                body: fd
+            })
+            .then(r => r.json())
+            .then(d => d.url ? res(d.url) : rej(d.error))
+            .catch(rej);
+        };
+        r.readAsDataURL(file);
+    });
+}
+
+/* ════════ SETTINGS & TAGS ════════ */
+window.openSettings = function() {
+    el("settingsModal").classList.add("show");
+};
+
+window.closeSettings = function() {
+    el("settingsModal").classList.remove("show");
+};
+
+window.renderTags = function() {
+    const list = el("tagsList");
+    if(!list) return;
+    
+    if(!S.tags) S.tags = ["تصميم","ويب","تعلم"];
+    if(!S.tagColors) S.tagColors = {"تصميم":"#ec4899","ويب":"#3b82f6","تعلم":"#10b981"};
+
+    list.innerHTML = S.tags.map(t => {
+        const c = S.tagColors[t] || "#6366f1";
+        return `
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(0,0,0,0.2);border:1px solid var(--border);color:var(--txt2);">
+            <span style="width:9px;height:9px;border-radius:50%;background:${c};flex-shrink:0;"></span>
+            ${t}
+            <button onclick="window.delTag('${t}')" style="background:transparent;border:none;cursor:pointer;color:var(--red);padding:0;font-size:12px;">✕</button>
+        </span>`;
+    }).join("");
+};
+
+window.addTag = function() {
+    const v = el("newTagInput").value.trim();
+    const c = el("newTagColor").value;
+    if(v && !S.tags.includes(v)){
+        S.tags.push(v);
+        S.tagColors[v] = c;
+        el("newTagInput").value = "";
+        window.saveData();
+    }
+};
+
+window.delTag = function(t) {
+    window.playSound("del");
+    S.tags = S.tags.filter(x => x !== t);
+    delete S.tagColors[t];
+    window.saveData();
+};
+
+window.exportData = function() {
+    const b = new Blob([JSON.stringify(S)], {type: "application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(b);
+    a.download = "rehlaty_backup.json";
+    a.click();
+    window.showToast("تم حفظ النسخة!","success");
+};
+
+window.importData = function(inp) {
+    const f = inp.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        try {
+            const d = JSON.parse(e.target.result);
+            if(d && d.tasks){
+                S = d;
+                window.saveData();
+                window.showToast("تم الاسترجاع! 🔄","success");
+                window.closeSettings();
+            } else {
+                window.showToast("الملف غير صالح!","error");
+            }
+        } catch(err) {
+            window.showToast("خطأ في القراءة","error");
+        }
+        inp.value = "";
+    };
+    r.readAsText(f);
+};
+
+window.handleSearch = function(v) {
+    sq = v.toLowerCase().trim();
+    window.renderAll();
+};
+
+window.toggleNewTaskOptions = function(val) {
+    const opts = el('newTaskOptions');
+    if (opts) {
+        opts.style.display = val.length > 0 ? 'flex' : 'none';
+    }
+};
+
+/* ════════ GLOBAL RENDERING ════════ */
+window.renderAll = function() { 
+    if(window.applyBg) window.applyBg();
+    window.renderTags(); 
+    window.renderTodayTasks(); 
+    window.renderTasks(); 
+    window.renderGoals(); 
+    window.renderLib(); 
+    window.renderNotes(); 
+    window.renderCerts(); 
+    window.updateStats(); 
+};
+
+/* ════════ 1. TODAY (NO GROUPS, SLEEK UI) ════════ */
 window.renderTodayTasks = function() {
     const list = el("todayList");
     const schedList = el("scheduledList");
@@ -1645,11 +2694,16 @@ window.renderTodayTasks = function() {
         if(t.dueDate) {
             const d = new Date(t.dueDate);
             if(!isNaN(d.getTime())) {
-                const formatted = d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
-                dateHtml = `<div style="font-size:12px; font-weight:900; color:var(--cyan); background:rgba(56,189,248,0.1); padding:4px 8px; border-radius:8px; border:1px solid rgba(56,189,248,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;" onclick="window.openCustomPicker('${t.id}')" onmouseover="this.style.background='rgba(56,189,248,0.2)'" onmouseout="this.style.background='rgba(56,189,248,0.1)'" title="تعديل الموعد">📅 ${formatted}</div>`;
+                dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--cyan); background:rgba(56,189,248,0.1); padding:4px 8px; border-radius:8px; border:1px solid rgba(56,189,248,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" title="تعديل الموعد: ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}">
+                    📅 ⏰
+                    <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" value="${t.dueDate}" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                </div>`;
             }
         } else {
-            dateHtml = `<div style="font-size:14px; font-weight:900; color:var(--txt3); opacity:0.5; padding:4px 8px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0;" onclick="window.openCustomPicker('${t.id}')" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="أضف تاريخ/وقت">📅⏰</div>`;
+            dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--txt3); opacity:0.5; padding:4px 8px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="أضف تاريخ/وقت">
+                📅 ⏰
+                <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+            </div>`;
         }
 
         const eff = t.effort || 1;
@@ -1659,7 +2713,7 @@ window.renderTodayTasks = function() {
         else effBadge = `<span style="font-size:10px; font-weight:900; color:var(--red); background:rgba(239,68,68,0.1); padding:2px 6px; border-radius:6px; border:1px solid rgba(239,68,68,0.2); margin-left:6px;">🔴 عميقة</span>`;
 
         return `
-        <div class="today-item${t.done?" done":""}">
+        <div class="today-item${t.done?" done":""}" style="padding:14px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; display:flex; align-items:center; gap:12px; transition:all 0.2s; margin-bottom:8px;">
             <input type="checkbox" class="cb" ${t.done?"checked":""} onchange="window.toggleTodayTask('${t.id}')">
             
             <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;">
@@ -1717,7 +2771,7 @@ window.addTodayTask = function() {
     const d = dInp ? safeDateTime(dInp.value) : "";
     
     const effInp = el("newTodayEffort");
-    const effort = effInp ? parseInt(effInp.value) : 3;
+    const effort = effInp ? parseInt(effInp.value) : 1;
     
     if(!v) return;
     if(!S.todayTasks) S.todayTasks = [];
@@ -1876,7 +2930,7 @@ window.goalToToday = function(id) {
         return;
     }
     
-    const eff = prompt("اختر حجم المهمة:\n1 لـ خفيفة 🟢\n3 لـ متوسطة 🟡\n5 لـ عميقة 🔴", "3");
+    const eff = prompt("اختر حجم المهمة: \n1 لـ خفيفة \n3 لـ متوسطة \n5 لـ عميقة", "3");
     const parsedEff = [1, 3, 5].includes(parseInt(eff)) ? parseInt(eff) : 3;
     
     S.todayTasks.unshift({id:"td"+Date.now(), text:g.text, done:false, parentName:"🏆 "+g.periodLabel, effort: parsedEff});
@@ -1884,340 +2938,7 @@ window.goalToToday = function(id) {
     window.showToast("تم النقل لليومي! 🎯", "success");
 };
 
-/* ════════ SUGGESTIONS PANEL ════════ */
-window.toggleSuggestionsPanel = function() {
-    const panel = el("suggestionsPanel");
-    if (panel.classList.contains("open")) {
-        panel.classList.remove("open");
-    } else {
-        panel.classList.add("open");
-        window.renderSuggestions();
-    }
-};
-
-window.renderSuggestions = function() {
-    const list = el("suggestionsList");
-    if(!S.suggestions || !S.suggestions.length) {
-        list.innerHTML = "<p style='text-align:center; opacity:0.5; margin-top:20px; font-weight:bold;'>لا توجد مهام غير مكتملة</p>";
-        return;
-    }
-    
-    list.innerHTML = S.suggestions.map((t, i) => `
-        <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.05);">
-           <div style="flex:1; min-width:0; margin-left:10px;">
-               <div style="font-weight:bold; font-size:13px; color:var(--txt1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.text}</div>
-               <div style="font-size:10px; color:var(--txt3); margin-top:4px;">من تاريخ: ${t.archDate}</div>
-           </div>
-           <button onclick="window.restoreSuggestion(${i})" style="background:rgba(59,130,246,0.15); color:var(--blue2); border:1px solid rgba(59,130,246,0.2); border-radius:8px; padding:6px 12px; font-size:11px; font-weight:bold; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(59,130,246,0.25)'" onmouseout="this.style.background='rgba(59,130,246,0.15)'">+ لليوم</button>
-        </div>
-    `).join("");
-}
-
-window.restoreSuggestion = function(i) {
-    const t = S.suggestions.splice(i, 1)[0];
-    t.done = false;
-    S.todayTasks.unshift(t);
-    window.saveData();
-    window.renderSuggestions();
-    window.showToast("تم إضافتها لمهام اليوم", "success");
-};
-
-/* ════════ ARCHIVE SYSTEM ════════ */
-window.openArchiveModal = function(type) {
-    const t = el("archiveModalTitle");
-    const c = el("archiveContent"); 
-    c.innerHTML = "";
-    if(!S.archive) S.archive = {today:[], goals:[], years:{}};
-    
-    if(type === 'today') {
-        t.textContent = "سجل مهام اليوم (الأرشيف)";
-        if(!S.archive.today || !S.archive.today.length){
-            c.innerHTML = "<p style='text-align:center;opacity:0.4;padding:20px;font-weight:bold;'>الأرشيف فارغ</p>";
-        } else {
-            S.archive.today.forEach((item, i) => {
-                c.innerHTML += `
-                <div style="background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
-                    <div>
-                        <div style="font-weight:bold;font-size:14px;">${item.text}</div>
-                        <div style="font-size:10px;opacity:0.5;margin-top:4px;">${item.archDate}</div>
-                    </div>
-                    <button onclick="window.restoreArchiveItem('today',${i})" style="background:rgba(59,130,246,0.15);color:var(--blue2);border:none;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;">استرجاع</button>
-                </div>`;
-            });
-        }
-    } else if(type === 'goals') {
-        t.textContent = "سجل الأهداف المنجزة";
-        if(!S.archive.goals || !S.archive.goals.length){
-            c.innerHTML = "<p style='text-align:center;opacity:0.4;padding:20px;font-weight:bold;'>الأرشيف فارغ</p>";
-        } else {
-            S.archive.goals.forEach((item, i) => {
-                c.innerHTML += `
-                <div style="background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
-                    <div>
-                        <div style="font-weight:bold;font-size:14px;">${item.text}</div>
-                        <div style="font-size:10px;opacity:0.5;margin-top:4px;">${item.archDate}</div>
-                    </div>
-                    <button onclick="window.restoreArchiveItem('goals',${i})" style="background:rgba(59,130,246,0.15);color:var(--blue2);border:none;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;">استرجاع</button>
-                </div>`;
-            });
-        }
-    }
-    el("archiveModal").classList.add("show");
-};
-
-window.closeArchiveModal = function() { el("archiveModal").classList.remove("show"); };
-
-window.restoreArchiveItem = function(type, idx) {
-    const item = S.archive[type].splice(idx, 1)[0];
-    item.done = false;
-    if(type === 'today') S.todayTasks.unshift(item); 
-    else S.goals.unshift(item);
-    window.saveData();
-    window.closeArchiveModal();
-    window.showToast("تم الاسترجاع بنجاح!","success");
-};
-
-/* ════════ REPORTS LOGIC ════════ */
-let currentReportType = 'month';
-
-window.openReportModal = function(type) {
-    currentReportType = type;
-    populateReportDropdown();
-    window.renderSpecificReport();
-    el("reportViewModal").classList.add("show");
-};
-
-function populateReportDropdown() {
-    const sel = el("reportMonthSelect");
-    sel.innerHTML = "";
-    const now = new Date();
-    if(currentReportType === 'month') {
-        for(let i=0; i<12; i++) {
-            let d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-            let val = `${d.getFullYear()}-${d.getMonth()}`;
-            let text = new Intl.DateTimeFormat("ar-EG", { month: "long", year: "numeric" }).format(d);
-            sel.innerHTML += `<option value="${val}">${text}</option>`;
-        }
-    } else {
-        const ys = Object.keys(S.archive.years || {});
-        ys.push(now.getFullYear().toString());
-        const uniqueYears = [...new Set(ys)].sort((a,b)=>b-a);
-        uniqueYears.forEach(y => {
-            sel.innerHTML += `<option value="${y}">عام ${y}</option>`;
-        });
-    }
-}
-
-window.renderSpecificReport = function() {
-    const area = el("reportContentArea");
-    const selVal = el("reportMonthSelect").value;
-    const now = new Date();
-    let title = "", dateRange = "", completedTasksCount = 0, completedGoalsCount = 0;
-    
-    const overlay = el("reportBlurOverlay");
-    let isCurrentPeriod = false;
-    let filteredTasks = []; 
-    
-    if (currentReportType === 'month') {
-        const [y, m] = selVal.split("-");
-        title = "تقرير الأداء الشهري";
-        dateRange = new Intl.DateTimeFormat("ar-EG", { month: "long", year: "numeric" }).format(new Date(y, m, 1));
-        isCurrentPeriod = (parseInt(y) === now.getFullYear() && parseInt(m) === now.getMonth());
-        
-        filteredTasks = (S.archive.today||[]).filter(t => {
-            if(!t.archDate) return false; 
-            let d = new Date(t.archDate);
-            return d.getFullYear() == y && d.getMonth() == m;
-        });
-        
-        completedTasksCount = filteredTasks.length;
-        completedGoalsCount = (S.archive.goals||[]).filter(g => {
-            if(!g.archDate) return false; 
-            let d = new Date(g.archDate);
-            return d.getFullYear() == y && d.getMonth() == m;
-        }).length;
-    } else {
-        title = "التقرير السنوي الشامل";
-        dateRange = `عام ${selVal}`;
-        isCurrentPeriod = (parseInt(selVal) === now.getFullYear());
-        
-        if (isCurrentPeriod) {
-            filteredTasks = (S.archive.today||[]).filter(t => t.archDate && new Date(t.archDate).getFullYear() == selVal);
-            completedTasksCount = filteredTasks.length;
-            completedGoalsCount = (S.archive.goals||[]).filter(g => g.archDate && new Date(g.archDate).getFullYear() == selVal).length;
-        } else {
-            let hist = S.archive.years[selVal];
-            if(hist) { 
-                filteredTasks = hist.tasks ? hist.tasks.filter(t => t.status === 'done') : []; 
-                completedTasksCount = "تم حفظه بالأرشيف"; 
-                completedGoalsCount = "تم حفظه بالأرشيف"; 
-            }
-        }
-    }
-
-    if (overlay) {
-        if (isCurrentPeriod && now.getDate() !== 1) overlay.style.display = "flex";
-        else overlay.style.display = "none";
-    }
-
-    let curWeekSum = 0, prevWeekSum = 0;
-    for(let i=0; i<7; i++) {
-        let d1 = new Date(now); d1.setDate(d1.getDate()-i);
-        curWeekSum += (S.history[d1.toISOString().split("T")[0]] || 0);
-        let d2 = new Date(now); d2.setDate(d2.getDate()-(i+7));
-        prevWeekSum += (S.history[d2.toISOString().split("T")[0]] || 0);
-    }
-    const curAvg = Math.round(curWeekSum/7);
-    const prevAvg = Math.round(prevWeekSum/7);
-    const trend = curAvg - prevAvg;
-    const expected = Math.min(100, curAvg + (trend > 0 ? Math.ceil(trend/2) : 0));
-
-    let courseGroups = {};
-    let generalTasks = [];
-    
-    filteredTasks.forEach(t => {
-        if(t.parentName) {
-            let cleanName = t.parentName.replace("🏆 ", ""); 
-            if(!courseGroups[cleanName]) courseGroups[cleanName] = [];
-            courseGroups[cleanName].push(t);
-        } else {
-            generalTasks.push(t);
-        }
-    });
-
-    let accordionHtml = "";
-    if (filteredTasks.length > 0) {
-        accordionHtml += `
-        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
-            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:15px;">📋 تفاصيل المهام المنجزة</h4>`;
-            
-        for(let course in courseGroups) {
-            let tasks = courseGroups[course];
-            let safeId = "rep_grp_" + Math.random().toString(36).substr(2, 9);
-            accordionHtml += `
-            <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;">
-                <div onclick="document.getElementById('${safeId}').classList.toggle('hidden')" style="padding:14px; cursor:pointer; display:flex; justify-content:space-between; background:rgba(255,255,255,0.02);">
-                    <strong style="color:var(--blue2);">📚 ${course}</strong>
-                    <span style="font-size:11px; color:var(--txt2); font-weight:bold; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:6px;">${tasks.length} مهام 🔽</span>
-                </div>
-                <div id="${safeId}" class="hidden" style="padding:10px 14px; border-top:1px solid var(--border); font-size:12px; color:var(--txt1);">
-                    <ul style="list-style:inside; color:var(--txt2); line-height:1.8;">
-                        ${tasks.map(t => `<li style="margin-bottom:6px;">${t.text} <span style="color:var(--green2); font-size:10px;">(تم)</span></li>`).join('')}
-                    </ul>
-                </div>
-            </div>`;
-        }
-        
-        if (generalTasks.length > 0) {
-            let safeId = "rep_grp_" + Math.random().toString(36).substr(2, 9);
-            accordionHtml += `
-            <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;">
-                <div onclick="document.getElementById('${safeId}').classList.toggle('hidden')" style="padding:14px; cursor:pointer; display:flex; justify-content:space-between; background:rgba(255,255,255,0.02);">
-                    <strong style="color:var(--green2);">📝 مهام عامة متفرقة</strong>
-                    <span style="font-size:11px; color:var(--txt2); font-weight:bold; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:6px;">${generalTasks.length} مهام 🔽</span>
-                </div>
-                <div id="${safeId}" class="hidden" style="padding:10px 14px; border-top:1px solid var(--border); font-size:12px; color:var(--txt1);">
-                    <ul style="list-style:inside; color:var(--txt2); line-height:1.8;">
-                        ${generalTasks.map(t => `<li style="margin-bottom:6px;">${t.text} <span style="color:var(--green2); font-size:10px;">(تم)</span></li>`).join('')}
-                    </ul>
-                </div>
-            </div>`;
-        }
-        accordionHtml += `</div>`;
-    }
-
-    let coursesHtml = "";
-    if (currentReportType === 'year') {
-        const completedCourses = (S.tasks||[]).filter(t => t.type === 'course' && t.status === 'done');
-        if (completedCourses.length > 0) {
-            coursesHtml = `
-            <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
-                <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">🎓 كورسات تم إنجازها بنجاح</h4>
-                <ul style="font-size:13px; line-height:1.8; list-style:inside; padding-right:15px; color:var(--blue2);">
-                    ${completedCourses.map(c => `<li><span class="report-text">${c.text}</span></li>`).join('')}
-                </ul>
-            </div>`;
-        }
-    }
-    
-    const tCounts = {};
-    filteredTasks.forEach(t => {
-        let tag = t.savedTag || "مهام عامة"; 
-        tCounts[tag] = (tCounts[tag] || 0) + 1;
-    });
-    
-    let pieDetailsHtml = Object.keys(tCounts).map(tag => {
-        let col = S.tagColors?.[tag] || "#64748b";
-        return `
-        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-            <span style="color:${col}">● ${tag}</span>
-            <span class="report-text" style="color:var(--txt2)">${tCounts[tag]} مهمة</span>
-        </div>`;
-    }).join("");
-
-    let pieSection = "";
-    if (Object.keys(tCounts).length > 0) {
-        pieSection = `
-        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px; text-align:center;">
-            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:15px;">توزيع الأقسام (في هذا التقرير)</h4>
-            <div style="height:180px; position:relative; margin-bottom:20px;"><canvas id="reportPieChartCanvas"></canvas></div>
-            <div style="text-align:right;">${pieDetailsHtml}</div>
-        </div>`;
-    }
-
-    area.innerHTML = `
-        <div style="text-align:center; margin-bottom:30px;">
-            <div style="font-size:40px; margin-bottom:10px;">🏆</div>
-            <h1 class="report-text" style="font-size:28px; font-weight:900; margin-bottom:5px;">${title}</h1>
-            <p class="report-text" style="font-size:14px; opacity:0.7;">${dateRange}</p>
-        </div>
-        
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:30px;">
-            <div style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.2); padding:20px; border-radius:16px; text-align:center;">
-                <div style="font-size:32px; font-weight:900; color:var(--green2);">${completedTasksCount}</div>
-                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">مهام تم إنجازها</div>
-            </div>
-            <div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.2); padding:20px; border-radius:16px; text-align:center;">
-                <div style="font-size:32px; font-weight:900; color:var(--blue2);">${completedGoalsCount}</div>
-                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">أهداف تم تحقيقها</div>
-            </div>
-        </div>
-        
-        ${pieSection}
-
-        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
-            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">📊 تحليل الأداء الأسبوعي</h4>
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
-              <span class="report-text">الأسبوع الحالي: <b style="color:var(--blue2)">${curAvg}%</b></span>
-              <span class="report-text">الأسبوع السابق: <b>${prevAvg}%</b></span>
-            </div>
-            <div style="font-size:13px; font-weight:bold; color:${trend>=0?'var(--green2)':'var(--red)'}; margin-bottom:10px;">
-              ${trend > 0 ? '📈 تقدمت بنسبة '+trend+'%!' : trend < 0 ? '📉 تراجعت بنسبة '+Math.abs(trend)+'%، شد حيلك!' : '➖ مستوى ثابت'}
-            </div>
-            <div class="report-text" style="font-size:12px; opacity:0.8;">النسبة المتوقعة الأسبوع القادم: <b>${expected}%</b> 🎯</div>
-        </div>
-        
-        ${accordionHtml}
-        ${coursesHtml}
-    `;
-
-    setTimeout(() => {
-        const pCtx = el("reportPieChartCanvas");
-        if(pCtx && typeof Chart !== "undefined" && Object.keys(tCounts).length > 0) {
-            const lbls = Object.keys(tCounts), dts = Object.values(tCounts);
-            const cols = lbls.map(tag => S.tagColors?.[tag] || "#64748b");
-            new Chart(pCtx, {
-                type: "doughnut",
-                data: { labels: lbls, datasets: [{data:dts, backgroundColor:cols, borderColor:"transparent", borderWidth:2}] },
-                options: { responsive: true, maintainAspectRatio: false, cutout: "60%", plugins: {legend: {display: false}} }
-            });
-        }
-    }, 200);
-};
-
-window.closeReportModal = function() { el("reportViewModal").classList.remove("show"); };
-
-/* ════════ 3. KANBAN LOGIC ════════ */
+/* ════════ 3. KANBAN ════════ */
 window.renderTasks = function() {
     const cols = {todo:"", inprogress:"", done:""};
     let ct = 0, ci = 0, cd = 0;
@@ -2292,9 +3013,16 @@ window.addTask = function() {
     
     S.tasks.unshift({
         id: "t" + Date.now(), 
-        text: v, status: "todo", tag: el("newTaskTag").value, 
-        subtasks: [], files: [], description: "", pinned: false, 
-        type: "general", startDate: "", endDate: ""
+        text: v, 
+        status: "todo", 
+        tag: el("newTaskTag").value, 
+        subtasks: [], 
+        files: [], 
+        description: "", 
+        pinned: false, 
+        type: "general", 
+        startDate: "", 
+        endDate: ""
     });
     
     inp.value = "";
@@ -2320,9 +3048,11 @@ window.togglePin = function(id) {
 window.moveTask = function(id, dir) {
     const idx = S.tasks.findIndex(t => t.id === id);
     if(idx < 0) return;
+    
     const task = S.tasks[idx];
     const col = S.tasks.filter(t => t.status === task.status);
     const ci = col.findIndex(t => t.id === id);
+    
     if(dir === "up" && ci > 0) {
         const si = S.tasks.findIndex(t => t.id === col[ci-1].id);
         [S.tasks[idx], S.tasks[si]] = [S.tasks[si], S.tasks[idx]];
@@ -2334,14 +3064,21 @@ window.moveTask = function(id, dir) {
     }
 };
 
-window.drag = function(ev) { ev.dataTransfer.setData("text", ev.target.closest(".task-card")?.id || ""); };
-window.allowDrop = function(ev) { ev.preventDefault(); };
+window.drag = function(ev) {
+    ev.dataTransfer.setData("text", ev.target.closest(".task-card")?.id || "");
+};
+
+window.allowDrop = function(ev) {
+    ev.preventDefault();
+};
 
 window.drop = function(ev) {
     ev.preventDefault();
     const id = ev.dataTransfer.getData("text");
     const zone = ev.target.closest(".drop-zone");
+    
     if(!zone || !id) return;
+    
     const t = S.tasks.find(x => x.id === id);
     if(t && t.status !== zone.id) {
         if(zone.id === "done"){
@@ -2352,6 +3089,7 @@ window.drop = function(ev) {
         window.saveData();
     }
 };
+
 /* ════════ TASK MODAL (With Multi-notes) ════════ */
 window.openTaskModal = function(id) {
     try {
@@ -2720,7 +3458,7 @@ window.sendSubToToday = function(i) {
         return;
     }
     
-    const eff = prompt("اختر حجم المهمة: \n1 لـ خفيفة 🟢\n3 لـ متوسطة 🟡\n5 لـ عميقة 🔴", "3");
+    const eff = prompt("اختر حجم المهمة: \n1 لـ خفيفة \n3 لـ متوسطة \n5 لـ عميقة", "3");
     const parsedEff = [1, 3, 5].includes(parseInt(eff)) ? parseInt(eff) : 3;
 
     S.todayTasks.unshift({id:"td"+Date.now(), text:s.text, done:false, parentId:activTask, subIdx:i, parentName:t.text, effort: parsedEff});
@@ -2796,7 +3534,10 @@ window.renderLib = function() {
     });
 };
 
-window.selLibFolder = function(id) { S.activLibFolder = id; window.saveData(); };
+window.selLibFolder = function(id) {
+    S.activLibFolder = id;
+    window.saveData();
+};
 
 window.addLibFolder = function() {
     const n = prompt("اسم المجلد:");
@@ -2823,16 +3564,22 @@ window.addResource = function() {
     if(!t) return;
     if(!S.resources) S.resources = [];
     S.resources.unshift({id:Date.now(), title:t, url:u, type:"link", folderId:S.activLibFolder});
-    el("libTitle").value = ""; el("libUrl").value = "";
-    window.saveData(); window.showToast("تم الحفظ! ✅","success");
+    el("libTitle").value = "";
+    el("libUrl").value = "";
+    window.saveData();
+    window.showToast("تم الحفظ! ✅","success");
 };
 
 window.addLibText = function() {
-    el("libTextId").value = ""; el("libTextTitle").value = ""; el("libTextContent").value = "";
+    el("libTextId").value = "";
+    el("libTextTitle").value = "";
+    el("libTextContent").value = "";
     el("libTextModal").classList.add("show");
 };
 
-window.closeLibTextModal = function() { el("libTextModal").classList.remove("show"); };
+window.closeLibTextModal = function() {
+    el("libTextModal").classList.remove("show");
+};
 
 window.saveLibText = function() {
     const idVal = el("libTextId").value;
@@ -2850,24 +3597,33 @@ window.saveLibText = function() {
     }
     
     window.saveDataSilently(); 
-    window.renderLib(); window.closeLibTextModal(); window.showToast("تم الحفظ! ✅", "success");
+    window.renderLib();
+    window.closeLibTextModal();
+    window.showToast("تم الحفظ! ✅", "success");
 };
 
 window.handleLibUpload = async function(inp) {
     if(!inp.files[0]) return;
     window.showToast("جاري الرفع...","loading");
     try {
-        const f = inp.files[0]; const url = await uploadCloud(f);
+        const f = inp.files[0];
+        const url = await uploadCloud(f);
         if(!S.resources) S.resources = [];
         S.resources.unshift({id:Date.now(), title:f.name, data:url, type:"file", ext:f.name.split(".").pop().toLowerCase(), folderId:S.activLibFolder});
-        inp.value = ""; window.saveData(); window.showToast("تم! ✅","success");
-    } catch(e) { window.showToast("فشل الرفع","error"); }
+        inp.value = "";
+        window.saveData();
+        window.showToast("تم! ✅","success");
+    } catch(e) {
+        window.showToast("فشل الرفع","error");
+    }
 };
 
 window.openLib = function(id) {
     const r = S.resources.find(x => x.id === id);
     if(r.type === "text") { 
-        el("libTextId").value = r.id; el("libTextTitle").value = r.title; el("libTextContent").value = r.data;
+        el("libTextId").value = r.id;
+        el("libTextTitle").value = r.title;
+        el("libTextContent").value = r.data;
         el("libTextModal").classList.add("show");
     } else { 
         window.open(r.type==="link" ? (r.url.startsWith("http") ? r.url : "https://"+r.url) : r.data, "_blank"); 
@@ -2876,18 +3632,30 @@ window.openLib = function(id) {
 
 window.dlLib = function(id) {
     const r = S.resources.find(x => x.id === id);
-    if(r.type === "link") { window.open(r.url.startsWith("http") ? r.url : "https://"+r.url, "_blank"); } 
-    else { const a = document.createElement("a"); a.href = r.data; a.download = r.title; a.click(); }
+    if(r.type === "link") {
+        window.open(r.url.startsWith("http") ? r.url : "https://"+r.url, "_blank");
+    } else {
+        const a = document.createElement("a");
+        a.href = r.data;
+        a.download = r.title;
+        a.click();
+    }
 };
 
 window.delLib = function(id) {
-    if(confirm("حذف؟")){ window.playSound("del"); S.resources = S.resources.filter(r => r.id !== id); window.saveData(); }
+    if(confirm("حذف؟")){
+        window.playSound("del");
+        S.resources = S.resources.filter(r => r.id !== id);
+        window.saveData();
+    }
 };
 
 /* ════════ 6. NOTES (Color Palette) ════════ */
 const NOTE_COLORS = [
-    ['#fca5a5', '#ef4444', '#b91c1c'], ['#86efac', '#10b981', '#047857'],
-    ['#93c5fd', '#3b82f6', '#1d4ed8'], ['#fde047', '#eab308', '#a16207'],
+    ['#fca5a5', '#ef4444', '#b91c1c'],
+    ['#86efac', '#10b981', '#047857'],
+    ['#93c5fd', '#3b82f6', '#1d4ed8'],
+    ['#fde047', '#eab308', '#a16207'],
     ['#d8b4fe', '#8b5cf6', '#6d28d9'] 
 ];
 
@@ -2897,13 +3665,19 @@ window.renderNotes = function() {
     flist.innerHTML = S.noteFolders.map(f => `<button class="folder-btn${S.activNoteFolder===f.id?" active":""}" onclick="window.selNoteFolder('${f.id}')">📋 ${f.name}</button>`).join("");
     
     const act = S.noteFolders.find(f => f.id === S.activNoteFolder);
-    if(act){ el("noteActiveTitle").textContent = act.name; el("delNoteFolderBtn").style.display = S.noteFolders.length > 1 ? "" : "none"; }
+    if(act){
+        el("noteActiveTitle").textContent = act.name;
+        el("delNoteFolderBtn").style.display = S.noteFolders.length > 1 ? "" : "none";
+    }
     
     const board = el("notesBoard");
     if(!act){ board.innerHTML = ""; return; }
     
     const notes = act.notes.filter(n => (n.title||"").toLowerCase().includes(sq) || (n.content||"").toLowerCase().includes(sq));
-    if(!notes.length){ board.innerHTML = `<div class="empty" style="width:100%;"><span>💭</span><p>اللوحة فاضية.. ضيف ملاحظة!</p></div>`; return; }
+    if(!notes.length){
+        board.innerHTML = `<div class="empty" style="width:100%;"><span>💭</span><p>اللوحة فاضية.. ضيف ملاحظة!</p></div>`;
+        return;
+    }
   
     board.innerHTML = notes.map(n => `
     <div id="note-${n.id}" class="note-card" style="--note-bg:${n.color||'#fde047'};">
@@ -2911,7 +3685,11 @@ window.renderNotes = function() {
           <div style="position:relative;display:inline-flex;" class="group" onmouseenter="this.querySelector('.palette-menu').style.display='block'" onmouseleave="this.querySelector('.palette-menu').style.display='none'">
              <span style="cursor:pointer;opacity:0.5;font-size:14px;">🎨</span>
              <div class="palette-menu" style="display:none; position:absolute; top:100%; right:0; background:var(--bg3); padding:8px; border-radius:8px; border:1px solid var(--border); z-index:100; width:max-content; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-                ${NOTE_COLORS.map(row => `<div class="palette-row">${row.map(c => `<div onclick="window.changeNoteColor('${n.id}', '${c}')" class="color-dot" style="background:${c};"></div>`).join('')}</div>`).join('')}
+                ${NOTE_COLORS.map(row => `
+                    <div class="palette-row">
+                        ${row.map(c => `<div onclick="window.changeNoteColor('${n.id}', '${c}')" class="color-dot" style="background:${c};"></div>`).join('')}
+                    </div>
+                `).join('')}
              </div>
           </div>
           <button onclick="window.delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:14px;opacity:0.5;padding:0;transition:0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">✕</button>
@@ -2921,47 +3699,67 @@ window.renderNotes = function() {
     </div>`).join("");
 };
 
-window.selNoteFolder = function(id) { S.activNoteFolder = id; window.saveData(); };
+window.selNoteFolder = function(id) {
+    S.activNoteFolder = id;
+    window.saveData();
+};
 
 window.addNoteFolder = function() {
     const n = prompt("اسم اللوحة:");
-    if(n){ S.noteFolders.push({id:"nf"+Date.now(), name:n.trim(), notes:[]}); S.activNoteFolder = "nf"+Date.now(); window.saveData(); }
+    if(n){
+        const id = "nf" + Date.now();
+        S.noteFolders.push({id, name:n.trim(), notes:[]});
+        S.activNoteFolder = id;
+        window.saveData();
+    }
 };
 
 window.delNoteFolder = function() {
     if(S.noteFolders.length <= 1 || !confirm("حذف اللوحة وكل ملاحظاتها؟")) return;
     window.playSound("del");
     S.noteFolders = S.noteFolders.filter(f => f.id !== S.activNoteFolder);
-    S.activNoteFolder = S.noteFolders[0].id; window.saveData();
+    S.activNoteFolder = S.noteFolders[0].id;
+    window.saveData();
 };
 
 window.addNote = function() {
     const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
     if(!f) return;
     f.notes.unshift({id:"n"+Date.now(), title:"", content:"", color:'#fde047'});
-    window.saveData(); window.playSound("ok");
+    window.saveData();
+    window.playSound("ok");
 };
 
 window.updateNoteSilently = function(id, field, val) {
     const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
     const n = f?.notes.find(x => x.id === id);
-    if(n){ n[field] = val; window.saveDataSilently(); }
+    if(n){
+        n[field] = val;
+        window.saveDataSilently();
+    }
 };
 
 window.changeNoteColor = function(id, color) {
     const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
     const n = f?.notes.find(x => x.id === id);
-    if(n){ n.color = color; window.saveDataSilently(); const c = el('note-'+id); if(c) c.style.setProperty('--note-bg', color); }
+    if(n){
+        n.color = color;
+        window.saveDataSilently();
+        const c = el('note-'+id);
+        if(c) c.style.setProperty('--note-bg', color);
+    }
 };
 
 window.delNote = function(id) {
     if(confirm("مسح الملاحظة؟")){
-        window.playSound("del"); const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
-        f.notes = f.notes.filter(n => n.id !== id); window.saveData();
+        window.playSound("del");
+        const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
+        f.notes = f.notes.filter(n => n.id !== id);
+        window.saveData();
     }
 };
 
-/* ════════ 7. CERTIFICATES (Glass Neon Frame) ════════ */
+/* ════════ 7. CERTIFICATES (Medieval Frame) ════════ */
 window.renderCerts = function() {
     const list = el("certsList");
     if(!list) return;
@@ -2994,17 +3792,26 @@ window.handleCertUpload = async function(inp) {
         const url = prompt("الرابط المباشر للملف (Drive Link):");
         if(!S.certificates) S.certificates = [];
         S.certificates.unshift({
-            id: "cert"+Date.now(), title: name, data: e.target.result, url: url,
+            id: "cert"+Date.now(),
+            title: name,
+            data: e.target.result,
+            url: url,
             ext: f.name.split(".").pop().toLowerCase(),
             date: new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())
         });
-        inp.value = ""; window.saveData(); window.showToast("تمت الإضافة! 🎓","success");
+        inp.value = "";
+        window.saveData();
+        window.showToast("تمت الإضافة! 🎓","success");
     };
     r.readAsDataURL(f);
 };
 
 window.delCert = function(id) {
-    if(confirm("مسح الشهادة؟")){ window.playSound("del"); S.certificates = S.certificates.filter(x => x.id !== id); window.saveData(); }
+    if(confirm("مسح الشهادة؟")){
+        window.playSound("del");
+        S.certificates = S.certificates.filter(x => x.id !== id);
+        window.saveData();
+    }
 };
 
 /* ════════ 9. EXTRAS: HEATMAP & CHARTS ════════ */
@@ -3025,12 +3832,17 @@ window.renderHeatmap = function() {
     let lastMonth = -1;
 
     for(let w=0; w<53; w++) {
-        let colHtml = ""; let showMonth = false;
+        let colHtml = "";
+        let showMonth = false;
+
         for(let d=0; d<7; d++) {
             const ds = cursor.toISOString().split("T")[0];
             const inYear = cursor.getFullYear() === year;
        
-            if(inYear && cursor.getMonth() !== lastMonth && cursor.getDate() <= 7) { showMonth = true; lastMonth = cursor.getMonth(); }
+            if(inYear && cursor.getMonth() !== lastMonth && cursor.getDate() <= 7) {
+                showMonth = true;
+                lastMonth = cursor.getMonth();
+            }
 
             const pct = history[ds] !== undefined ? history[ds] : -1;
             let bg = "transparent";
@@ -3045,12 +3857,16 @@ window.renderHeatmap = function() {
        
             const isToday = ds === new Date().toISOString().split("T")[0];
             const todayClass = isToday ? " hm-today" : "";
+       
             colHtml += `<div class="hm-cell${todayClass}" style="background:${bg}" title="${inYear?ds+' : '+(pct===-1?'0':pct)+'%':''}"></div>`;
             cursor.setDate(cursor.getDate() + 1);
         }
     
         let monthLabel = "";
-        if(showMonth) monthLabel = `<div style="position:absolute; top:-22px; right:0; font-size:10px; font-weight:900; color:var(--txt3); white-space:nowrap;">${months[lastMonth]}</div>`;
+        if(showMonth){
+            monthLabel = `<div style="position:absolute; top:-22px; right:0; font-size:10px; font-weight:900; color:var(--txt3); white-space:nowrap;">${months[lastMonth]}</div>`;
+        }
+    
         html += `<div class="hm-col" style="position:relative;">${monthLabel}${colHtml}</div>`;
     }
     gridEl.innerHTML = html; 
@@ -3082,7 +3898,15 @@ window.renderCharts = function() {
     if(barInst) barInst.destroy();
     barInst = new Chart(barCtx, {
         type: "bar",
-        data: { labels, datasets: [{ label: "نسبة الإنجاز %", data, backgroundColor: data.map(v => v < 30 ? "#ef4444" : (v < 70 ? "#f59e0b" : "#10b981")), borderRadius: 6 }] },
+        data: {
+            labels,
+            datasets: [{
+                label: "نسبة الإنجاز %", 
+                data, 
+                backgroundColor: data.map(v => v < 30 ? "#ef4444" : (v < 70 ? "#f59e0b" : "#10b981")),
+                borderRadius: 6
+            }]
+        },
         options: {
             responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
             scales: {
@@ -3093,7 +3917,10 @@ window.renderCharts = function() {
     });
   
     const tagCounts = {};
-    (S.tasks || []).forEach(t => { const tag = t.tag || "بدون قسم"; tagCounts[tag] = (tagCounts[tag] || 0) + 1; });
+    (S.tasks || []).forEach(t => {
+        const tag = t.tag || "بدون قسم";
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
     
     const pLabels = Object.keys(tagCounts), pData = Object.values(tagCounts);
     const pColors = pLabels.map(tag => S.tagColors?.[tag] || "#64748b");
@@ -3101,12 +3928,23 @@ window.renderCharts = function() {
     if(pieInst) pieInst.destroy();
     pieInst = new Chart(pieCtx, {
         type: "doughnut",
-        data: { labels: pLabels, datasets: [{data:pData, backgroundColor:pColors, borderColor:"#0d1424", borderWidth:2}] },
+        data: {
+            labels: pLabels,
+            datasets: [{data:pData, backgroundColor:pColors, borderColor:"#0d1424", borderWidth:2}]
+        },
         options: {
             responsive:true, maintainAspectRatio:false, cutout:"65%",
             plugins:{legend:{position:"bottom", labels:{color:"#8ea6cc", font:{family:"Cairo",size:11}}}}
         }
     });
+};
+
+window.simulateYearEnd = function() {
+    if(confirm("تحذير: ده هينقل بيانات السنة دي للأرشيف كأن السنة خلصت عشان تختبر تقريرك السنوي. متأكد؟")) {
+        S.lastYearChecked = new Date().getFullYear() + 1; 
+        window.updateStreak(); 
+        window.showToast("تم نقل البيانات لأرشيف السنة بنجاح! 🎊 روح شوف التقرير السنوي", "success");
+    }
 };
 
 /* ════════ FAST LOAD & SYNC ════════ */
@@ -3126,50 +3964,80 @@ onAuthStateChanged(auth, async u => {
         if(local) {
             try {
                 const parsed = JSON.parse(local);
+                
                 if(parsed && typeof parsed === 'object'){
                    Object.keys(parsed).forEach(key => {
-                       if(parsed[key] !== undefined && parsed[key] !== null) { S[key] = parsed[key]; }
+                       if(parsed[key] !== undefined && parsed[key] !== null) {
+                           S[key] = parsed[key];
+                       }
                    });
                 }
                 
                 S.tasks = (S.tasks || []).map(t => ({
-                    ...t, subtasks: t.subtasks || t.subs || [], files: t.files || [], 
-                    description: t.description || t.desc || "", type: t.type || "general"
+                    ...t, 
+                    subtasks: t.subtasks || t.subs || [], 
+                    files: t.files || [], 
+                    description: t.description || t.desc || "", 
+                    type: t.type || "general"
                 }));
                 S.archive = S.archive || {today:[], goals:[], years:{}};
-                S.archive.today = S.archive.today || []; S.archive.goals = S.archive.goals || []; S.archive.years = S.archive.years || {};
-                S.suggestions = S.suggestions || []; S.todayTasks = S.todayTasks || []; S.goals = S.goals || [];
-                S.resources = S.resources || []; S.certificates = S.certificates || [];
-                S.tags = S.tags || ["تصميم", "ويب", "تعلم"]; S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
+                S.archive.today = S.archive.today || []; 
+                S.archive.goals = S.archive.goals || []; 
+                S.archive.years = S.archive.years || {};
+                S.suggestions = S.suggestions || []; 
+                S.todayTasks = S.todayTasks || []; 
+                S.goals = S.goals || [];
+                S.resources = S.resources || []; 
+                S.certificates = S.certificates || [];
+                S.tags = S.tags || ["تصميم", "ويب", "تعلم"];
+                S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
                 if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
-            } catch(e) { console.error("Local load error", e); }
+
+            } catch(e) {
+                console.error("Local load error", e);
+            }
         }
 
-        try { dailySweep(); window.renderAll(); } 
-        catch(err) { console.error("Render error during boot:", err); } 
-        finally { overlay.style.opacity = "0"; setTimeout(() => overlay.style.display="none", 500); }
+        try {
+            dailySweep(); 
+            window.renderAll(); 
+        } catch(err) {
+            console.error("Render error during boot:", err);
+        } finally {
+            overlay.style.opacity = "0"; 
+            setTimeout(() => overlay.style.display="none", 500);
+        }
 
         try {
             const snap = await getDoc(doc(db,"rehlaty_users",u.uid));
             if(snap.exists()) {
                 const cloudData = snap.data();
+                
                 if(cloudData && typeof cloudData === 'object'){
                    Object.keys(cloudData).forEach(key => {
-                       if(cloudData[key] !== undefined && cloudData[key] !== null) { S[key] = cloudData[key]; }
+                       if(cloudData[key] !== undefined && cloudData[key] !== null) {
+                           S[key] = cloudData[key];
+                       }
                    });
                 }
                 
                 S.tasks = (S.tasks || []).map(t => ({
-                    ...t, subtasks: t.subtasks || t.subs || [], files: t.files || [], 
-                    description: t.description || t.desc || "", type: t.type || "general"
+                    ...t, 
+                    subtasks: t.subtasks || t.subs || [], 
+                    files: t.files || [], 
+                    description: t.description || t.desc || "", 
+                    type: t.type || "general"
                 }));
                 S.archive = S.archive || {today:[], goals:[], years:{}};
-                S.archive.today = S.archive.today || []; S.archive.goals = S.archive.goals || [];
-                S.tags = S.tags || ["تصميم", "ويب", "تعلم"]; S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
+                S.archive.today = S.archive.today || []; 
+                S.archive.goals = S.archive.goals || [];
+                S.tags = S.tags || ["تصميم", "ويب", "تعلم"];
+                S.tagColors = S.tagColors || {"تصميم":"#ec4899", "ويب":"#3b82f6", "تعلم":"#10b981"};
                 if(!S.appBg) S.appBg = { baseType: 'none', baseVal: '', pattern: 'none' };
         
-                dailySweep(); window.saveDataSilently(); window.renderAll();
-                window.setOnlineUI(); // أونلاين أول ما يحمل
+                dailySweep(); 
+                window.saveDataSilently(); 
+                window.renderAll();
             } else {
                 await setDoc(doc(db,"rehlaty_users",u.uid), S);
             }
@@ -3179,15 +4047,17 @@ onAuthStateChanged(auth, async u => {
         }
     
         window.updateStreak();
-        window.checkSpecialEvents(); // فحص الأعياد وعيد الميلاد 🎂🌙
     } else {
         user = null;
-        overlay.style.display = "flex"; overlay.style.opacity = "1";
-        el("gLoginBtn").style.display = "flex"; el("loadingRow").style.display = "none";
+        overlay.style.display = "flex";
+        overlay.style.opacity = "1";
+        el("gLoginBtn").style.display = "flex";
+        el("loadingRow").style.display = "none";
     }
 });
 
 window.updateDate(); 
+window.initTheme(); 
 window.switchTab("today");
 
 </script>
