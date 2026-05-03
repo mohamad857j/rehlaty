@@ -131,6 +131,61 @@
             50% { transform: scale(1.08); }
         }
 
+        /* Animated Backgrounds */
+        .bg-anim-aurora {
+            background: linear-gradient(45deg, #0f2027, #203a43, #2c5364, #0f2027);
+            background-size: 400% 400%;
+            animation: gradientAnim 15s ease infinite;
+        }
+        .bg-anim-waves {
+            background: radial-gradient(circle at 50% 100%, #1a2a6c, #112240, #0a0f1c);
+            background-size: 100% 200%;
+            animation: waveAnim 8s alternate infinite;
+        }
+        .bg-anim-particles {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                radial-gradient(circle at 70% 60%, rgba(255,255,255,0.05) 2px, transparent 2px),
+                radial-gradient(circle at 40% 80%, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            animation: particlesAnim 20s linear infinite;
+        }
+
+        @keyframes gradientAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes waveAnim {
+            0% { background-position: center bottom; }
+            100% { background-position: center top; }
+        }
+        @keyframes particlesAnim {
+            0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
+            100% { background-position: 100px 100px, -150px 150px, 200px -200px; }
+        }
+
+        /* Custom Date/Time Picker */
+        .cdtp-day {
+            padding: 8px 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            color: var(--txt1);
+        }
+        .cdtp-day:hover { background: rgba(255,255,255,0.1); }
+        .cdtp-day.selected {
+            background: var(--cyan);
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+        }
+        .cdtp-day.faded { opacity: 0.3; }
+        .cdtp-am-pm { flex: 1; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--txt2); transition: all 0.2s; text-align: center;}
+        .cdtp-am-pm.active { background: var(--blue2); color: #fff; border-color: var(--blue2); }
+
         /* ════════════════════════════════════════
            5. الهيكل الأساسي للتطبيق
         ════════════════════════════════════════ */
@@ -1231,9 +1286,9 @@
                             <option value="3" style="background:var(--bg3); color:var(--txt1);" selected>🟡 متوسطة</option>
                             <option value="5" style="background:var(--bg3); color:var(--txt1);">🔴 عميقة</option>
                         </select>
-                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
+                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s;" onclick="window.openCdtp(val => { document.getElementById('newTodayDate').value = val; this.style.color = 'var(--cyan)'; })" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
                             📅 ⏰
-                            <input type="datetime-local" id="newTodayDate" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                            <input type="hidden" id="newTodayDate" value="">
                         </div>
                     </div>
 
@@ -1297,9 +1352,9 @@
                         </select>
 
                         <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
-                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s; display:flex; align-items:center;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
+                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s; display:flex; align-items:center;" onclick="window.openCdtp(val => { document.getElementById('newTaskDate').value = val; this.style.color = 'var(--cyan)'; })" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
                             📅
-                            <input type="datetime-local" id="newTaskDate" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                            <input type="hidden" id="newTaskDate" value="">
                         </div>
                         <button class="btn-primary" onclick="window.addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
                     </div>
@@ -1555,6 +1610,15 @@
                 <button onclick="document.getElementById('bgUploadIn').click()" style="width:100%;background:rgba(59,130,246,0.1);border:1px dashed var(--blue2);border-radius:10px;color:var(--blue2);font-weight:700;font-size:12px;padding:8px;cursor:pointer;">🖼️ رفع صورة من جهازك</button>
                 <input type="file" id="bgUploadIn" style="display:none;" accept="image/*" onchange="window.handleBgUpload(this)">
                 
+                <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
+                    <span>خلفيات متحركة 🎬</span>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+                    <button class="btn-ghost" onclick="window.changeBgBase('anim-aurora', '')" style="font-size:11px; padding:6px 10px;">شفق قطبي</button>
+                    <button class="btn-ghost" onclick="window.changeBgBase('anim-waves', '')" style="font-size:11px; padding:6px 10px;">أمواج الليل</button>
+                    <button class="btn-ghost" onclick="window.changeBgBase('anim-particles', '')" style="font-size:11px; padding:6px 10px;">جزيئات</button>
+                </div>
+
                 <div style="width:100%; height:1px; background:var(--border); margin:12px 0;"></div>
                 
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;display:flex;justify-content:space-between;">
@@ -1629,11 +1693,13 @@
                     <div style="display:flex;gap:10px;">
                         <label style="flex:1;">
                             <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">البداية 📅</div>
-                            <input type="datetime-local" id="mStartDate" onchange="window.saveTaskDates()" class="field" style="font-size:12px;">
+                            <div onclick="window.openCdtp(val => { document.getElementById('mStartDate').value = val; window.saveTaskDates(); document.getElementById('mStartDateLabel').textContent = window.formatCdtpLabel(val); }, document.getElementById('mStartDate').value)" class="field" style="font-size:12px; cursor:pointer; min-height: 38px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.05);" id="mStartDateLabel">اختر...</div>
+                            <input type="hidden" id="mStartDate" value="">
                         </label>
                         <label style="flex:1;">
                             <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">النهاية 🏁</div>
-                            <input type="datetime-local" id="mEndDate" onchange="window.saveTaskDates()" class="field" style="font-size:12px;">
+                            <div onclick="window.openCdtp(val => { document.getElementById('mEndDate').value = val; window.saveTaskDates(); document.getElementById('mEndDateLabel').textContent = window.formatCdtpLabel(val); }, document.getElementById('mEndDate').value)" class="field" style="font-size:12px; cursor:pointer; min-height: 38px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.05);" id="mEndDateLabel">اختر...</div>
+                            <input type="hidden" id="mEndDate" value="">
                         </label>
                     </div>
                     <label>
@@ -2504,41 +2570,52 @@ window.changeBgPattern = function(pattern) {
 window.applyBg = function() {
     if(!S.appBg) return;
     
+    document.body.classList.remove('bg-anim-aurora', 'bg-anim-waves', 'bg-anim-particles');
+
+    if(S.appBg.baseType && S.appBg.baseType.startsWith('anim-')) {
+        document.body.style.backgroundImage = 'none';
+        document.body.classList.add('bg-' + S.appBg.baseType);
+        return;
+    }
+    
     let bgImageLayers = [];
+    let bgSizes = [];
     let bgColor = 'var(--bg)';
     
     if(S.appBg.pattern === 'dots') {
         bgImageLayers.push('radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)');
-        document.body.style.backgroundSize = '15px 15px';
+        bgSizes.push('15px 15px');
     } else if(S.appBg.pattern === 'grid') {
         bgImageLayers.push('linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)');
-        document.body.style.backgroundSize = '20px 20px';
+        bgSizes.push('20px 20px, 20px 20px');
     } else if(S.appBg.pattern === 'stripes') {
         bgImageLayers.push('repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px)');
-        document.body.style.backgroundSize = 'auto'; 
-    } else {
-        document.body.style.backgroundSize = 'auto';
+        bgSizes.push('auto');
     }
 
     if(S.appBg.baseType === 'gradient') {
         bgImageLayers.push(S.appBg.baseVal);
+        bgSizes.push('100% 100%');
     } else if(S.appBg.baseType === 'image') {
         bgImageLayers.push(`linear-gradient(rgba(13, 20, 36, 0.85), rgba(13, 20, 36, 0.85))`); 
+        bgSizes.push('cover');
         bgImageLayers.push(`url(${S.appBg.baseVal})`);
+        bgSizes.push('cover');
     } else if(S.appBg.baseType === 'color') {
         bgColor = S.appBg.baseVal;
     }
 
     if(bgImageLayers.length > 0) {
         document.body.style.backgroundImage = bgImageLayers.join(', ');
+        document.body.style.backgroundSize = bgSizes.join(', ');
     } else {
         document.body.style.backgroundImage = 'none';
+        document.body.style.backgroundSize = 'auto';
     }
     
     document.body.style.backgroundColor = bgColor;
     
     if (S.appBg.baseType === 'image') {
-        document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundAttachment = 'fixed';
     } else if (S.appBg.pattern !== 'none') {
@@ -2734,15 +2811,13 @@ window.renderTodayTasks = function() {
         if(t.dueDate) {
             const d = new Date(t.dueDate);
             if(!isNaN(d.getTime())) {
-                dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--cyan); background:rgba(56,189,248,0.1); padding:4px 8px; border-radius:8px; border:1px solid rgba(56,189,248,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" title="تعديل الموعد: ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}">
+                dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--cyan); background:rgba(56,189,248,0.1); padding:4px 8px; border-radius:8px; border:1px solid rgba(56,189,248,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;" onclick="window.openCdtp(val => window.updateTodayDate('${t.id}', val), '${t.dueDate}')" title="تعديل الموعد: ${d.toLocaleString('ar-EG', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})}">
                     📅 ⏰
-                    <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" value="${t.dueDate}" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
                 </div>`;
             }
         } else {
-            dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--txt3); opacity:0.5; padding:4px 8px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="أضف تاريخ/وقت">
+            dateHtml = `<div style="position:relative; font-size:12px; font-weight:900; color:var(--txt3); opacity:0.5; padding:4px 8px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0;" onclick="window.openCdtp(val => window.updateTodayDate('${t.id}', val))" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="أضف تاريخ/وقت">
                 📅 ⏰
-                <input type="datetime-local" onchange="window.updateTodayDate('${t.id}', this.value)" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
             </div>`;
         }
 
@@ -3145,6 +3220,8 @@ window.openTaskModal = function(id) {
         el("mIcon").textContent = ICONS[t.type || "general"] || "📝";
         el("mStartDate").value = safeDateTime(t.startDate);
         el("mEndDate").value = safeDateTime(t.endDate);
+        el("mStartDateLabel").textContent = window.formatCdtpLabel(t.startDate);
+        el("mEndDateLabel").textContent = window.formatCdtpLabel(t.endDate);
         
         if(!t.files) t.files = [];
         window.renderSubtasks();
@@ -4120,6 +4197,176 @@ window.updateDate();
 window.checkSpecialEvents(); 
 window.switchTab("today");
 
+/* ════════════════════════════════════════
+   CDTP - CUSTOM DATE TIME PICKER LOGIC
+════════════════════════════════════════ */
+let cdtpCallback = null;
+let cdtpDate = new Date();
+let cdtpSelectedDate = new Date();
+let cdtpAmPm = 'AM';
+
+window.formatCdtpLabel = function(val) {
+    if(!val) return "اختر...";
+    const d = new Date(val);
+    if(isNaN(d.getTime())) return "اختر...";
+    return new Intl.DateTimeFormat("ar-EG", {year:'numeric', month:'short', day:'numeric', hour:'numeric', minute:'numeric'}).format(d);
+};
+
+window.openCdtp = function(callback, initVal) {
+    cdtpCallback = callback;
+    if(initVal) {
+        cdtpSelectedDate = new Date(initVal);
+        if(isNaN(cdtpSelectedDate.getTime())) cdtpSelectedDate = new Date();
+    } else {
+        cdtpSelectedDate = new Date();
+    }
+    cdtpDate = new Date(cdtpSelectedDate);
+    
+    let hrs = cdtpSelectedDate.getHours();
+    cdtpAmPm = hrs >= 12 ? 'PM' : 'AM';
+    hrs = hrs % 12 || 12;
+    
+    // populate hours
+    const hSel = el("cdtpHours");
+    hSel.innerHTML = "";
+    for(let i=1; i<=12; i++) {
+        const pad = i<10 ? '0'+i : i;
+        hSel.innerHTML += `<option value="${i}" ${i===hrs?'selected':''}>${pad}</option>`;
+    }
+    // populate minutes
+    const mSel = el("cdtpMinutes");
+    mSel.innerHTML = "";
+    const currentM = cdtpSelectedDate.getMinutes();
+    for(let i=0; i<60; i++) {
+        const pad = i<10 ? '0'+i : i;
+        mSel.innerHTML += `<option value="${i}" ${i===currentM?'selected':''}>${pad}</option>`;
+    }
+    
+    window.cdtpSetAmPm(cdtpAmPm);
+    window.cdtpRenderCalendar();
+    window.cdtpGoToDate();
+    el("customDateTimePicker").style.display = "flex";
+    el("customDateTimePicker").style.opacity = "1";
+};
+
+window.closeCdtp = function() {
+    el("customDateTimePicker").style.display = "none";
+};
+
+window.cdtpChangeMonth = function(dir) {
+    cdtpDate.setMonth(cdtpDate.getMonth() + dir);
+    window.cdtpRenderCalendar();
+};
+
+window.cdtpRenderCalendar = function() {
+    const y = cdtpDate.getFullYear();
+    const m = cdtpDate.getMonth();
+    const mNames = ["يناير","فبراير","مارس","إبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+    el("cdtpMonthLabel").textContent = `${mNames[m]} ${y}`;
+    
+    const firstDay = new Date(y, m, 1).getDay();
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+    const prevDaysInMonth = new Date(y, m, 0).getDate();
+    
+    const grid = el("cdtpDaysGrid");
+    grid.innerHTML = "";
+    
+    let html = "";
+    // previous month days
+    for(let i = firstDay - 1; i >= 0; i--) {
+        html += `<div class="cdtp-day faded">${prevDaysInMonth - i}</div>`;
+    }
+    // current month days
+    for(let i = 1; i <= daysInMonth; i++) {
+        const isSelected = i === cdtpSelectedDate.getDate() && m === cdtpSelectedDate.getMonth() && y === cdtpSelectedDate.getFullYear();
+        html += `<div class="cdtp-day ${isSelected ? 'selected' : ''}" onclick="window.cdtpSelectDay(${i}, ${m}, ${y})">${i}</div>`;
+    }
+    // next month days
+    let remaining = 42 - (firstDay + daysInMonth);
+    if(remaining >= 7) remaining -= 7;
+    for(let i = 1; i <= remaining; i++) {
+        html += `<div class="cdtp-day faded">${i}</div>`;
+    }
+    
+    grid.innerHTML = html;
+};
+
+window.cdtpSelectDay = function(d, m, y) {
+    cdtpSelectedDate.setFullYear(y, m, d);
+    window.cdtpRenderCalendar();
+};
+
+window.cdtpGoToTime = function() {
+    el("cdtpDateMode").style.display = "none";
+    el("cdtpTimeMode").style.display = "block";
+};
+
+window.cdtpGoToDate = function() {
+    el("cdtpDateMode").style.display = "block";
+    el("cdtpTimeMode").style.display = "none";
+};
+
+window.cdtpSetAmPm = function(mode) {
+    cdtpAmPm = mode;
+    el("cdtpAmBtn").className = "cdtp-am-pm" + (mode==='AM'?' active':'');
+    el("cdtPmBtn").className = "cdtp-am-pm" + (mode==='PM'?' active':'');
+};
+
+window.cdtpSave = function() {
+    let h = parseInt(el("cdtpHours").value);
+    const m = parseInt(el("cdtpMinutes").value);
+    if(cdtpAmPm === 'PM' && h < 12) h += 12;
+    if(cdtpAmPm === 'AM' && h === 12) h = 0;
+    
+    cdtpSelectedDate.setHours(h, m, 0, 0);
+    
+    const pad = n => n<10 ? '0'+n : n;
+    // YYYY-MM-DDTHH:mm
+    const val = cdtpSelectedDate.getFullYear() + '-' + pad(cdtpSelectedDate.getMonth()+1) + '-' + pad(cdtpSelectedDate.getDate()) + 'T' + pad(cdtpSelectedDate.getHours()) + ':' + pad(cdtpSelectedDate.getMinutes());
+    
+    if(cdtpCallback) cdtpCallback(val);
+    window.closeCdtp();
+};
+
 </script>
+
+<!-- CUSTOM DATE TIME PICKER MODAL -->
+<div id="customDateTimePicker" class="modal-bg" style="z-index: 999999;">
+    <div class="modal-box" style="width:340px; padding:20px; background:rgba(15,23,42,0.95); backdrop-filter:blur(20px);">
+        <h3 style="font-size:16px;font-weight:bold;margin-bottom:15px;color:#fff;text-align:center;">اختر التاريخ والوقت</h3>
+        
+        <div id="cdtpDateMode">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <button class="btn-ghost" onclick="window.cdtpChangeMonth(-1)" style="padding:4px 8px; width:auto; flex:none;">◀</button>
+                <div id="cdtpMonthLabel" style="font-weight:bold; color:var(--cyan); font-size:15px;"></div>
+                <button class="btn-ghost" onclick="window.cdtpChangeMonth(1)" style="padding:4px 8px; width:auto; flex:none;">▶</button>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center; font-size:12px; margin-bottom:8px; color:var(--txt3); font-weight:bold;">
+                <div>ح</div><div>ن</div><div>ث</div><div>ر</div><div>خ</div><div>ج</div><div>س</div>
+            </div>
+            <div id="cdtpDaysGrid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center; margin-bottom: 15px;"></div>
+            <button class="btn-primary" onclick="window.cdtpGoToTime()" style="width:100%;">التالي (تحديد الوقت) ⏰</button>
+        </div>
+
+        <div id="cdtpTimeMode" style="display:none;">
+            <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:20px; font-size:24px; font-weight:bold;" dir="ltr">
+                <select id="cdtpHours" class="field" style="width:70px; font-size:20px; padding:5px; text-align:center; appearance:none; outline:none; cursor:pointer; background:var(--bg4); border:1px solid var(--border);"></select>
+                <span style="color:var(--txt1);">:</span>
+                <select id="cdtpMinutes" class="field" style="width:70px; font-size:20px; padding:5px; text-align:center; appearance:none; outline:none; cursor:pointer; background:var(--bg4); border:1px solid var(--border);"></select>
+            </div>
+            <div style="display:flex; justify-content:center; gap:10px; margin-bottom:20px;">
+                <div id="cdtpAmBtn" class="cdtp-am-pm" onclick="window.cdtpSetAmPm('AM')">صباحاً (AM)</div>
+                <div id="cdtPmBtn" class="cdtp-am-pm" onclick="window.cdtpSetAmPm('PM')">مساءً (PM)</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-ghost" onclick="window.cdtpGoToDate()" style="flex:1;">السابق 📅</button>
+                <button class="btn-primary" onclick="window.cdtpSave()" style="flex:2;">حفظ ✅</button>
+            </div>
+        </div>
+
+        <button onclick="window.closeCdtp()" class="close-btn-high" style="position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:28px;height:28px;cursor:pointer;color:var(--txt2);display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+</div>
+
 </body>
 </html>
