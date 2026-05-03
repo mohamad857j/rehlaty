@@ -1286,6 +1286,10 @@
                         </select>
 
                         <select id="newTaskTag" class="field" style="width:auto;padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;"></select>
+                        <div style="position:relative; font-size:16px; cursor:pointer; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:10px; transition:0.2s; display:flex; align-items:center;" onclick="this.querySelector('input').showPicker()" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" title="التاريخ والوقت">
+                            📅
+                            <input type="datetime-local" id="newTaskDate" class="field" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+                        </div>
                         <button class="btn-primary" onclick="window.addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
                     </div>
                 </div>
@@ -1681,6 +1685,9 @@ const fbApp = initializeApp(FB);
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const gProv = new GoogleAuthProvider();
+
+// FIX: Attach login immediately to global scope
+window.loginWithGoogle = () => signInWithPopup(auth, gProv);
 
 let user = null;
 let activTask = null;
@@ -3011,6 +3018,9 @@ window.addTask = function() {
     const v = inp.value.trim();
     if(!v) return;
     
+    const dInp = el("newTaskDate");
+    const d = dInp ? safeDateTime(dInp.value) : "";
+    
     S.tasks.unshift({
         id: "t" + Date.now(), 
         text: v, 
@@ -3021,11 +3031,12 @@ window.addTask = function() {
         description: "", 
         pinned: false, 
         type: "general", 
-        startDate: "", 
-        endDate: ""
+        startDate: d, 
+        endDate: d
     });
     
     inp.value = "";
+    if(dInp) dInp.value = "";
     window.saveData();
 };
 
@@ -3948,7 +3959,6 @@ window.simulateYearEnd = function() {
 };
 
 /* ════════ FAST LOAD & SYNC ════════ */
-window.loginWithGoogle = () => signInWithPopup(auth, gProv);
 window.logoutUser = () => { if(confirm("تسجيل الخروج؟")) signOut(auth); };
 
 onAuthStateChanged(auth, async u => {
