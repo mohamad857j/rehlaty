@@ -38,39 +38,41 @@
         }
 
         /* ════════════════════════════════════════
-           2. الوضع الفاتح (Light Mode)
+           2. الأنماط الموسمية والإسلامية
         ════════════════════════════════════════ */
-        body.light {
-            --bg: #f1f5fb;
-            --bg2: #e8edf8;
-            --bg3: #ffffff;
-            --bg4: #f8faff;
-            --border: rgba(0, 0, 0, 0.08);
-            --border2: rgba(0, 0, 0, 0.15);
-            --txt1: #0f172a;
-            --txt2: #4a6080;
-            --txt3: #9ab0cc;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        body.theme-ramadan {
+            --bg: #1e1520;
+            --bg2: #2a1b2d;
+            --blue: #d4af37;
+            --blue2: #ffd700;
         }
+        body.theme-ramadan::before { background: radial-gradient(circle, rgba(212,175,55,0.1), transparent 70%); }
+        body.theme-ramadan::after { background: radial-gradient(circle, rgba(255,215,0,0.08), transparent 70%); }
 
-        body.light #sidebar {
-            background: linear-gradient(180deg, #fff, #f1f5fb);
+        body.theme-eid {
+            --bg: #0d1e1c;
+            --bg2: #142a27;
+            --green: #10b981;
+            --green2: #34d399;
         }
+        body.theme-eid::before { background: radial-gradient(circle, rgba(16,185,129,0.1), transparent 70%); }
+        
+        body.theme-friday {
+            --bg: #0f1c24;
+            --bg2: #162a35;
+        }
+        body.theme-friday::before { background: radial-gradient(circle, rgba(56,189,248,0.08), transparent 70%); }
 
-        body.light .glass {
-            background: rgba(255, 255, 255, 0.9);
+        body.theme-birthday {
+            --bg: #1c0f1e;
+            --bg2: #2d1633;
+            --blue: #ec4899;
+            --blue2: #f472b6;
+            --green: #8b5cf6;
+            --green2: #a78bfa;
         }
-
-        body.light .task-card {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-
-        body.light input, 
-        body.light textarea, 
-        body.light select {
-            color-scheme: light;
-        }
+        body.theme-birthday::before { background: radial-gradient(circle, rgba(236,72,153,0.1), transparent 70%); }
+        body.theme-birthday::after { background: radial-gradient(circle, rgba(139,92,246,0.1), transparent 70%); }
 
         /* ════════════════════════════════════════
            3. التنسيق الأساسي للمتصفح
@@ -642,11 +644,11 @@
            15. الشهادات (الإطار الذهبي)
         ════════════════════════════════════════ */
         .cert-card {
-            background: #1c1511; 
-            border: 14px solid transparent;
-            border-image: repeating-linear-gradient(45deg, #b8860b, #ffd700 8px, #daa520 16px, #b8860b 24px) 14;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.9);
-            border-radius: 4px;
+            background: rgba(30, 41, 59, 0.4); 
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 215, 0, 0.05);
+            border-radius: 12px;
             overflow: hidden;
             position: relative;
             height: 240px;
@@ -654,17 +656,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 14px;
             cursor: pointer;
         }
 
         .cert-card::before {
             content: ''; 
             position: absolute; 
-            inset: -6px; 
-            border: 2px solid rgba(255, 215, 0, 0.4); 
+            inset: 0; 
+            border: 2px solid rgba(255, 215, 0, 0.6); 
+            border-radius: 12px;
             pointer-events: none; 
             z-index: 2;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            padding: 4px;
+            background: linear-gradient(45deg, #b8860b, #ffd700, #daa520, #b8860b);
         }
 
         .cert-card:hover { 
@@ -1528,13 +1537,7 @@
         </div>
         <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;max-height:70vh;overflow-y:auto;">
             
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
-                <div>
-                    <div style="font-size:13px;font-weight:700;color:var(--txt1);">مظهر التطبيق</div>
-                    <div style="font-size:11px;color:var(--txt3);margin-top:2px;">داكن / فاتح</div>
-                </div>
-                <button class="btn-ghost" onclick="window.toggleTheme()" id="themeBtn" style="font-size:12px;">🌙 داكن</button>
-            </div>
+
 
             <!-- إعدادات الخلفية -->
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
@@ -1573,10 +1576,7 @@
                 <div id="tagsList" style="display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto;"></div>
             </div>
             
-            <div style="padding:14px 16px;border-radius:14px;background:rgba(245,158,11,0.05);border:1px dashed rgba(245,158,11,0.3); margin-bottom:16px;">
-                <div style="font-size:13px;font-weight:900;color:var(--amber);margin-bottom:6px;">أدوات المطور 🛠️</div>
-                <button class="btn-ghost" onclick="window.simulateYearEnd()" style="width:100%; border-color:rgba(245,158,11,0.3); color:var(--amber);">⏳ محاكاة نهاية العام (لاختبار الأرشيف)</button>
-            </div>
+
 
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div>
@@ -2437,19 +2437,45 @@ window.closeSidebar = function() {
     el("sbClose").style.display = "none";
 };
 
-window.initTheme = function() {
-    const light = localStorage.getItem("rehlaty_theme") === "light";
-    if(light){
-        document.body.classList.add("light");
-        el("themeBtn").textContent = "☀️ فاتح";
-    }
-};
+window.checkSpecialEvents = function() {
+    const today = new Date();
+    const m = today.getMonth() + 1;
+    const d = today.getDate();
+    const dayOfWeek = today.getDay(); // 0 is Sunday, 5 is Friday
 
-window.toggleTheme = function() {
-    document.body.classList.toggle("light");
-    const isL = document.body.classList.contains("light");
-    localStorage.setItem("rehlaty_theme", isL ? "light" : "dark");
-    el("themeBtn").textContent = isL ? "☀️ فاتح" : "🌙 داكن";
+    // Check Birthday (June 6)
+    if(m === 6 && d === 6) {
+        document.body.classList.add("theme-birthday");
+        return;
+    }
+
+    // Check Hijri dates for Ramadan and Eids
+    try {
+        const hijriStr = new Intl.DateTimeFormat('en-US-u-ca-islamic', {day: 'numeric', month: 'numeric'}).format(today);
+        const parts = hijriStr.split('/');
+        const hMonth = parseInt(parts[0], 10);
+        const hDay = parseInt(parts[1], 10);
+
+        if(hMonth === 9) { // Ramadan
+            document.body.classList.add("theme-ramadan");
+            return;
+        }
+        if(hMonth === 10 && hDay >= 1 && hDay <= 3) { // Eid Al-Fitr
+            document.body.classList.add("theme-eid");
+            return;
+        }
+        if(hMonth === 12 && hDay >= 10 && hDay <= 13) { // Eid Al-Adha
+            document.body.classList.add("theme-eid");
+            return;
+        }
+    } catch(e) {
+        console.error("Hijri date parsing failed", e);
+    }
+
+    // Check Friday
+    if(dayOfWeek === 5) {
+        document.body.classList.add("theme-friday");
+    }
 };
 
 /* ════════ BACKGROUND LOGIC ════════ */
@@ -4067,7 +4093,7 @@ onAuthStateChanged(auth, async u => {
 });
 
 window.updateDate(); 
-window.initTheme(); 
+window.checkSpecialEvents(); 
 window.switchTab("today");
 
 </script>
