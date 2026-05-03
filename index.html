@@ -4223,12 +4223,20 @@ window.openCdtp = function(callback, initVal) {
     window.cdtpSetAmPm(cdtpAmPm);
     window.cdtpRenderCalendar();
     window.cdtpGoToDate();
-    el("customDateTimePicker").style.display = "flex";
-    el("customDateTimePicker").style.opacity = "1";
+    
+    const m = el("customDateTimePicker");
+    m.style.display = "flex";
+    setTimeout(() => {
+        m.classList.add("show");
+    }, 10);
 };
 
 window.closeCdtp = function() {
-    el("customDateTimePicker").style.display = "none";
+    const m = el("customDateTimePicker");
+    m.classList.remove("show");
+    setTimeout(() => {
+        m.style.display = "none";
+    }, 300);
 };
 
 window.cdtpChangeMonth = function(dir) {
@@ -4313,7 +4321,7 @@ window.cdtpSave = function() {
 </script>
 
 <!-- CUSTOM DATE TIME PICKER MODAL -->
-<div id="customDateTimePicker" class="modal-bg" style="z-index: 999999;">
+<div id="customDateTimePicker" class="modal-bg" style="z-index: 999999; display:none;">
     <div class="modal-box" style="width:340px; padding:20px; background:rgba(15,23,42,0.95); backdrop-filter:blur(20px);">
         
         <div style="display:flex; gap:10px; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px;">
