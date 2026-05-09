@@ -629,7 +629,8 @@
             width: 280px;
             box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
-            background: var(--note-bg, #fde047);
+            background-color: var(--note-bg, #fde047);
+            background-image: repeating-linear-gradient(transparent, transparent 24px, rgba(0,0,0,0.1) 24px, rgba(0,0,0,0.1) 25px);
             color: #1f2937;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
@@ -651,11 +652,13 @@
             font-family: 'Cairo', sans-serif; 
             font-size: 13px; 
             font-weight: 600; 
-            line-height: 1.6;
+            line-height: 25px;
+            caret-color: #000;
         }
 
         .note-card input[type="text"] { 
             color: inherit; 
+            caret-color: #000;
         }
 
         .palette-row { 
@@ -687,8 +690,8 @@
             background: rgba(30, 41, 59, 0.4); 
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 215, 0, 0.05);
-            border-radius: 12px;
+            box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.05);
+            border-radius: 4px 24px 6px 18px; /* Sketched look */
             overflow: hidden;
             position: relative;
             height: auto;
@@ -705,8 +708,8 @@
             content: ''; 
             position: absolute; 
             inset: 0; 
-            border: 2px solid rgba(255, 215, 0, 0.6); 
-            border-radius: 12px;
+            border: 3px solid rgba(255, 215, 0, 0.6); 
+            border-radius: 18px 4px 24px 6px; /* Inverse sketched look */
             pointer-events: none; 
             z-index: 2;
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -775,24 +778,7 @@
             z-index: 99999 !important;
         }
 
-        #suggestionsPanel {
-            position: fixed; 
-            top: 0; 
-            left: -350px; 
-            width: 340px; 
-            height: 100%;
-            background: linear-gradient(180deg, #0d1527, #080c18);
-            border-right: 1px solid var(--border); 
-            z-index: 10000;
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.6); 
-            display: flex; 
-            flex-direction: column;
-        }
 
-        #suggestionsPanel.open { 
-            left: 0; 
-        }
 
         /* ════════════════════════════════════════
            17. متفرقات (أيقونات التحميل، الإشعارات)
@@ -1105,12 +1091,14 @@
 </head>
 <body>
 
-<div id="suggestionsPanel">
-    <div style="padding:24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="font-weight:900; color:var(--txt1); font-size:16px;">💡 مهام لم تكتمل</h3>
-        <button onclick="window.toggleSuggestionsPanel()" class="close-btn-high" style="background:rgba(255,255,255,0.05); border:none; width:30px; height:30px; border-radius:8px; color:var(--txt2); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;">✕</button>
+<div id="suggestionsModal" class="modal-bg" style="z-index: 100000;">
+    <div class="modal-box" style="width:100%;max-width:500px; height:70vh; display:flex; flex-direction:column;">
+        <div style="padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="font-weight:900; color:var(--txt1); font-size:18px;">💡 مقترحات ومهام متأخرة</h3>
+            <button onclick="window.closeSuggestionsModal()" class="close-btn-high" style="background:rgba(255,255,255,0.07); border:none; width:32px; height:32px; border-radius:9px; color:var(--txt2); cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center;">✕</button>
+        </div>
+        <div id="suggestionsList" style="flex:1; overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:12px;"></div>
     </div>
-    <div id="suggestionsList" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:12px;"></div>
 </div>
 
 <div class="confetti-wrap" id="confettiWrap"></div>
@@ -1225,7 +1213,7 @@
                     </div>
                     <div style="display:flex; gap:10px;">
                         <button class="btn-ghost close-btn-high" onclick="window.openScheduledModal()" style="background:var(--bg3); border-color:var(--border);">📅 المهام المجدولة</button>
-                        <button class="btn-ghost close-btn-high" onclick="window.toggleSuggestionsPanel()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
+                        <button class="btn-ghost close-btn-high" onclick="window.openSuggestionsModal()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
                         <button class="btn-ghost close-btn-high" onclick="window.openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
                     </div>
                 </div>
@@ -1243,9 +1231,9 @@
                         <div style="font-size:24px;font-weight:900;color:#a78bfa;" id="sKanban">0</div>
                         <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;">كورسات/مشاريع</div>
                     </div>
-                    <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--amber),#fbbf24);">
-                        <div class="streak" id="streakBadge">🔥 <span id="streakNum">0</span></div>
-                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:6px;">يوم متتالي</div>
+                    <div class="stat-card" style="--sc-grad:linear-gradient(90deg,var(--amber),#fbbf24); cursor:pointer;" onclick="window.toggleFocusTimer()" title="اضغط لبدء/إيقاف التركيز">
+                        <div style="font-size:24px;font-weight:900;color:var(--amber);" id="focusTimerDisplay">00:00</div>
+                        <div style="font-size:11px;color:var(--txt2);font-weight:600;margin-top:2px;" id="focusTimerLabel">وقت التركيز ⏳</div>
                     </div>
                 </div>
                 
@@ -1467,13 +1455,12 @@
                             <div id="heatmapGrid"></div>
                         </div>
                         <div id="heatmapLegend">
-                            <span>أقل</span>
-                            <div class="hm-swatch" style="opacity:0.15;"></div>
-                            <div class="hm-swatch" style="opacity:0.35;"></div>
-                            <div class="hm-swatch" style="opacity:0.6;"></div>
-                            <div class="hm-swatch" style="opacity:0.85;"></div>
-                            <div class="hm-swatch" style="opacity:1;"></div>
-                            <span>أكثر</span>
+                            <span>بدون</span>
+                            <div class="hm-swatch" style="background:#ef4444;" title="صفر إنجاز"></div>
+                            <div class="hm-swatch" style="background:#f59e0b;" title="إنجاز متوسط"></div>
+                            <div class="hm-swatch" style="background:#10b981;" title="إنجاز جيد"></div>
+                            <div class="hm-swatch" style="background:#059669;" title="إنجاز عظيم"></div>
+                            <span>عاش</span>
                         </div>
                     </div>
 
@@ -1591,6 +1578,10 @@
                     <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); border:2px solid var(--border);"></div>
                     <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #141e30, #243b55)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #141e30, #243b55); border:2px solid var(--border);"></div>
                     <div onclick="window.changeBgBase('gradient', 'radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #2b1055, #7597de)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #2b1055, #7597de); border:2px solid var(--border);" title="أرجواني وفاتح"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #1d2b64, #f8cdda)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #1d2b64, #f8cdda); border:2px solid var(--border);" title="أزرق ووردي"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #000428, #004e92)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #000428, #004e92); border:2px solid var(--border);" title="أزرق غامق"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); border:2px solid var(--border);" title="غروب"></div>
                 </div>
                 <button onclick="document.getElementById('bgUploadIn').click()" style="width:100%;background:rgba(59,130,246,0.1);border:1px dashed var(--blue2);border-radius:10px;color:var(--blue2);font-weight:700;font-size:12px;padding:8px;cursor:pointer;">🖼️ رفع صورة من جهازك</button>
                 <input type="file" id="bgUploadIn" style="display:none;" accept="image/*" onchange="window.handleBgUpload(this)">
@@ -1605,6 +1596,9 @@
                     <div onclick="window.changeBgPattern('dots')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="نقاط"></div>
                     <div onclick="window.changeBgPattern('grid')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="شبكة"></div>
                     <div onclick="window.changeBgPattern('stripes')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 8px); border:2px solid var(--border);" title="خطوط"></div>
+                    <div onclick="window.changeBgPattern('waves')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(circle at 100% 150%, rgba(255,255,255,0.1) 24%, transparent 25%),radial-gradient(circle at 0 150%, rgba(255,255,255,0.1) 24%, transparent 25%); background-size:40px 20px; border:2px solid var(--border);" title="أمواج"></div>
+                    <div onclick="window.changeBgPattern('zigzag')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%), linear-gradient(225deg, rgba(255,255,255,0.1) 25%, transparent 25%), linear-gradient(315deg, rgba(255,255,255,0.1) 25%, transparent 25%), linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%); background-size:20px 20px; background-position:10px 0, 10px 0, 0 0, 0 0; border:2px solid var(--border);" title="زجزاج"></div>
+                    <div onclick="window.changeBgPattern('paper')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:repeating-linear-gradient(transparent, transparent 19px, rgba(255,255,255,0.1) 19px, rgba(255,255,255,0.1) 20px); background-size:100% 20px; border:2px solid var(--border);" title="ورق مسطر"></div>
                 </div>
             </div>
 
@@ -2052,7 +2046,7 @@ window.restoreArchiveItem = function(type, idx) {
     else S.goals.unshift(item);
     window.saveData();
     window.closeArchiveModal();
-    window.showToast("تم الاسترجاع بنجاح!","success");
+    window.showToast("رجعنا الداتا بتاعتك يا ريس! 🔄","success");
 };
 
 window.simulateYearEnd = function() {
@@ -2336,7 +2330,7 @@ window.saveAsPDF = function() {
         jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
     
-    window.showToast("جاري تجهيز التقرير...", "loading");
+    window.showToast("ثواني بنجهز التقرير يا بطل...", "loading");
     
     html2pdf().set(opt).from(element).save().then(() => {
         element.style.backgroundColor = oldBg;
@@ -2345,19 +2339,18 @@ window.saveAsPDF = function() {
         element.querySelectorAll('.report-text').forEach(el => {
             el.style.color = el.getAttribute('data-old-color') || '';
         });
-        window.showToast("تم التحميل بنجاح! ✅", "success");
+        window.showToast("نزلناهولك يا كبير! ✅", "success");
     });
 };
 
 /* ════════ SUGGESTIONS PANEL LOGIC ════════ */
-window.toggleSuggestionsPanel = function() {
-    const panel = el("suggestionsPanel");
-    if (panel.classList.contains("open")) {
-        panel.classList.remove("open");
-    } else {
-        panel.classList.add("open");
-        window.renderSuggestions();
-    }
+window.openSuggestionsModal = function() {
+    el("suggestionsModal").classList.add("show");
+    window.renderSuggestions();
+};
+
+window.closeSuggestionsModal = function() {
+    el("suggestionsModal").classList.remove("show");
 };
 
 window.renderSuggestions = function() {
@@ -2384,7 +2377,7 @@ window.restoreSuggestion = function(i) {
     S.todayTasks.unshift(t);
     window.saveData();
     window.renderSuggestions();
-    window.showToast("تم إضافتها لمهام اليوم", "success");
+    window.showToast("ضيفناها لليوم.. شد حيلك! 💪", "success");
 };
 
 /* ════════ DATE / STATS (WITH EFFORT POINTS) ════════ */
@@ -2402,21 +2395,50 @@ window.updateDate = function() {
     `;
 }
 
+/* ════════ FOCUS TIMER LOGIC ════════ */
+let focusTimerInterval = null;
+let focusTimeSecs = 0;
+
+window.toggleFocusTimer = function() {
+    if(focusTimerInterval) {
+        clearInterval(focusTimerInterval);
+        focusTimerInterval = null;
+        el("focusTimerLabel").textContent = "وقت التركيز ⏳";
+        el("focusTimerLabel").style.color = "var(--txt2)";
+        const today = new Date().toDateString();
+        S.focusRecords = S.focusRecords || {};
+        S.focusRecords[today] = focusTimeSecs;
+        window.saveDataSilently();
+    } else {
+        el("focusTimerLabel").textContent = "شغال وبيركز 🔥";
+        el("focusTimerLabel").style.color = "#fff";
+        focusTimerInterval = setInterval(() => {
+            focusTimeSecs++;
+            window.renderFocusTimerDisplay();
+        }, 1000);
+    }
+};
+
+window.renderFocusTimerDisplay = function() {
+    const disp = el("focusTimerDisplay");
+    if(!disp) return;
+    const h = Math.floor(focusTimeSecs / 3600);
+    const m = Math.floor((focusTimeSecs % 3600) / 60);
+    const s = focusTimeSecs % 60;
+    if(h > 0) disp.textContent = `${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    else disp.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+};
+
 window.updateStreak = function() {
     const today = new Date().toDateString();
-    const yest = new Date(Date.now() - 86400000).toDateString();
     
-    if(!S.lastDate) S.streak = 1;
-    else if(S.lastDate === today) {}
-    else if(S.lastDate === yest) S.streak = (S.streak||0) + 1;
-    else S.streak = 1;
-    
-    S.lastDate = today;
-    const sn = el("streakNum"); 
-    if(sn) sn.textContent = S.streak || 0;
+    S.focusRecords = S.focusRecords || {};
+    focusTimeSecs = S.focusRecords[today] || 0;
+    window.renderFocusTimerDisplay();
     
     const curYear = new Date().getFullYear();
-    if (S.lastYearChecked && S.lastYearChecked < curYear) {
+    if (!S.lastYearChecked) S.lastYearChecked = curYear;
+    if (S.lastYearChecked < curYear) {
         if(!S.archive) S.archive = {today:[], goals:[], years:{}};
         S.archive.years[S.lastYearChecked] = { history: { ...S.history }, tasks: [...S.tasks] };
         S.history = {}; 
@@ -2704,7 +2726,7 @@ window.exportData = function() {
     a.href = URL.createObjectURL(b);
     a.download = "rehlaty_backup.json";
     a.click();
-    window.showToast("تم حفظ النسخة!","success");
+    window.showToast("سيفنا النسخة يا نجم! 💾","success");
 };
 
 window.importData = function(inp) {
@@ -2717,13 +2739,13 @@ window.importData = function(inp) {
             if(d && d.tasks){
                 S = d;
                 window.saveData();
-                window.showToast("تم الاسترجاع! 🔄","success");
+                window.showToast("رجعنا الداتا يا سيدي! 🔄","success");
                 window.closeSettings();
             } else {
-                window.showToast("الملف غير صالح!","error");
+                window.showToast("الملف ده مضروب يا ريس!","error");
             }
         } catch(err) {
-            window.showToast("خطأ في القراءة","error");
+            window.showToast("مش عارفين نقرا الملف، جرب تاني","error");
         }
         inp.value = "";
     };
@@ -2889,7 +2911,7 @@ window.toggleTodayTask = function(id) {
         }
     }
     if(t.done){
-        window.showToast("عاش يا بطل! 👏", "success");
+        window.showToast("عاش يا وحش! 👏", "success");
         window.playSound("ok");
     }
     window.saveData();
@@ -2999,7 +3021,7 @@ window.toggleGoal = function(id) {
     if(g) {
         g.done = !g.done;
         if(g.done){ 
-            window.showToast("إنجاز عظيم! 🏆", "success");
+            window.showToast("شابوووووو! إنجاز عظيم 🏆", "success");
             window.playSound("ok"); 
         }
         window.saveData();
@@ -3019,7 +3041,7 @@ window.goalToToday = function(id) {
     if(!g) return;
     if(!S.todayTasks) S.todayTasks = [];
     if(S.todayTasks.some(t => t.text === g.text && !t.done)){
-        window.showToast("موجود بالفعل!", "error");
+        window.showToast("موجود عندنا من بدري يا كبير!", "error");
         return;
     }
     
@@ -3028,7 +3050,7 @@ window.goalToToday = function(id) {
     
     S.todayTasks.unshift({id:"td"+Date.now(), text:g.text, done:false, parentName:"🏆 "+g.periodLabel, effort: parsedEff});
     window.saveData();
-    window.showToast("تم النقل لليومي! 🎯", "success");
+    window.showToast("اتنقلت ليومك.. ورينا هتعمل إيه! 🎯", "success");
 };
 
 /* ════════ 3. KANBAN ════════ */
@@ -3179,7 +3201,7 @@ window.drop = function(ev) {
     const t = S.tasks.find(x => x.id === id);
     if(t && t.status !== zone.id) {
         if(zone.id === "done"){
-            window.showToast("عاش يا بطل! 🏆", "success");
+            window.showToast("الله ينور يا وحش! 🏆", "success");
             window.playSound("ok");
         }
         t.status = zone.id;
@@ -3478,15 +3500,15 @@ window.addAttachment = async function(type) {
             const f = e.target.files[0];
             if(!f) return;
             const ext = f.name.split(".").pop().toLowerCase();
-            window.showToast("جاري الرفع...","loading");
+            window.showToast("بنرفعلك الشغل.. ثواني...","loading");
             try {
                 const url = await uploadCloud(f);
                 t.files.push({type:"file", name:f.name, data:url, ext});
                 window.saveData();
                 window.renderAttachments();
-                window.showToast("تم! ✅","success");
+                window.showToast("خلصانة بشياكة! ✅","success");
             } catch(e) {
-                window.showToast("فشل","error");
+                window.showToast("للأسف مجتش معانا، جرب تاني","error");
             }
         };
         inp.click();
@@ -3519,15 +3541,15 @@ window.addSubFile = async function(i) {
             const f = e.target.files[0];
             if(!f) return;
             const ext = f.name.split(".").pop().toLowerCase();
-            window.showToast("جاري الرفع...","loading");
+            window.showToast("بنرفعلك الشغل.. ثواني...","loading");
             try {
                 const url = await uploadCloud(f);
                 S.tasks.find(x => x.id === activTask).subtasks[i].files.push({type:"file", name:f.name, data:url, ext});
                 window.saveData();
                 window.renderSubtasks();
-                window.showToast("تم! ✅","success");
+                window.showToast("خلصانة بشياكة! ✅","success");
             } catch(e) {
-                window.showToast("فشل الرفع","error");
+                window.showToast("الرفع باظ، جرب تاني يا غالي","error");
             }
         };
         inp.click();
@@ -3553,7 +3575,7 @@ window.sendSubToToday = function(i) {
     const s = t.subtasks[i];
     if(!S.todayTasks) S.todayTasks = [];
     if(S.todayTasks.some(x => x.subIdx === i && x.parentId === activTask && !x.done)){
-        window.showToast("موجود بالفعل!","error");
+        window.showToast("موجود عندنا من بدري يا كبير!","error");
         return;
     }
     
@@ -3562,7 +3584,7 @@ window.sendSubToToday = function(i) {
 
     S.todayTasks.unshift({id:"td"+Date.now(), text:s.text, done:false, parentId:activTask, subIdx:i, parentName:t.text, effort: parsedEff});
     window.saveData();
-    window.showToast("تم النقل لليوم! 🎯","success");
+    window.showToast("اتنقلت لمهام اليوم يا نجم! 🎯","success");
 };
 
 window.sendSubToGoals = function(i) {
@@ -3662,11 +3684,12 @@ window.addResource = function() {
     const u = el("libUrl").value.trim();
     if(!t) return;
     if(!S.resources) S.resources = [];
-    S.resources.unshift({id:Date.now(), title:t, url:u, type:"link", folderId:S.activLibFolder});
+    S.resources.unshift({id:Date.now(), title:t, data:u, type:"link", folderId:S.activLibFolder});
     el("libTitle").value = "";
     el("libUrl").value = "";
     window.saveData();
-    window.showToast("تم الحفظ! ✅","success");
+    window.renderLib();
+    window.showToast("اتحفظت بسلام! ✅","success");
 };
 
 window.addLibText = function() {
@@ -3685,7 +3708,7 @@ window.saveLibText = function() {
     const title = el("libTextTitle").value.trim();
     const content = el("libTextContent").value.trim();
     
-    if(!title) return window.showToast("أدخل العنوان!", "error");
+    if(!title) return window.showToast("نسيت تكتب العنوان يا كبير!", "error");
     if(!S.resources) S.resources = [];
     
     if (idVal) {
@@ -3698,12 +3721,12 @@ window.saveLibText = function() {
     window.saveDataSilently(); 
     window.renderLib();
     window.closeLibTextModal();
-    window.showToast("تم الحفظ! ✅", "success");
+    window.showToast("اتحفظت بسلام! ✅", "success");
 };
 
 window.handleLibUpload = async function(inp) {
     if(!inp.files[0]) return;
-    window.showToast("جاري الرفع...","loading");
+    window.showToast("بنرفعلك الشغل.. ثواني...","loading");
     try {
         const f = inp.files[0];
         const url = await uploadCloud(f);
@@ -3711,9 +3734,9 @@ window.handleLibUpload = async function(inp) {
         S.resources.unshift({id:Date.now(), title:f.name, data:url, type:"file", ext:f.name.split(".").pop().toLowerCase(), folderId:S.activLibFolder});
         inp.value = "";
         window.saveData();
-        window.showToast("تم! ✅","success");
+        window.showToast("خلصانة بشياكة! ✅","success");
     } catch(e) {
-        window.showToast("فشل الرفع","error");
+        window.showToast("الرفع باظ، جرب تاني يا غالي","error");
     }
 };
 
@@ -3742,7 +3765,7 @@ window.dlLib = function(id) {
 };
 
 window.delLib = function(id) {
-    if(confirm("حذف؟")){
+    if(confirm("نطيرها؟")){
         window.playSound("del");
         S.resources = S.resources.filter(r => r.id !== id);
         window.saveData();
@@ -3870,7 +3893,10 @@ window.renderCerts = function() {
     
     list.innerHTML = certs.map(c => `
     <div class="cert-card" onclick="window.open('${c.url||c.data}','_blank')">
-        <img src="${c.data}" onerror="this.style.display='none'">
+        ${c.ext === 'pdf' 
+            ? `<embed src="${c.data}#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" style="width:100%; height:100%; max-height:400px; object-fit:contain; pointer-events:none; z-index:1;"></embed>`
+            : `<img src="${c.data}" onerror="this.style.display='none'">`
+        }
         <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);color:#fff;font-size:9px;font-weight:900;padding:3px 7px;border-radius:7px;z-index:3;">${c.ext.toUpperCase()}</div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);z-index:3;text-align:center;">
             <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
@@ -3883,12 +3909,13 @@ window.renderCerts = function() {
 window.handleCertUpload = async function(inp) {
     const f = inp.files[0];
     if(!f) return;
-    window.showToast("جاري المعالجة...","loading");
+    window.showToast("بنظبط الدنيا.. ثواني...","loading");
     const r = new FileReader();
     r.onload = e => {
         const name = prompt("اسم الشهادة:", f.name.split(".")[0]);
         if(!name){ inp.value=""; return; }
-        const url = prompt("الرابط المباشر للملف (Drive Link):");
+        const url = prompt("الرابط المباشر للملف (لو فيه):");
+        const customDate = prompt("تاريخ الشهادة (مثال: مايو 2024):", new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date()));
         if(!S.certificates) S.certificates = [];
         S.certificates.unshift({
             id: "cert"+Date.now(),
@@ -3896,11 +3923,11 @@ window.handleCertUpload = async function(inp) {
             data: e.target.result,
             url: url,
             ext: f.name.split(".").pop().toLowerCase(),
-            date: new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())
+            date: customDate || new Intl.DateTimeFormat("ar-EG",{year:"numeric",month:"short",day:"numeric"}).format(new Date())
         });
         inp.value = "";
         window.saveData();
-        window.showToast("تمت الإضافة! 🎓","success");
+        window.showToast("اتضافت لشهاداتك يا بطل! 🎓","success");
     };
     r.readAsDataURL(f);
 };
@@ -3947,11 +3974,11 @@ window.renderHeatmap = function() {
             let bg = "transparent";
        
             if(inYear) { 
-                if(pct === -1 || pct === 0) bg = "rgba(255,255,255,0.02)"; 
-                else if(pct < 30) bg = "#064e3b";
-                else if(pct < 60) bg = "#065f46";
-                else if(pct < 90) bg = "#047857";
-                else bg = "#10b981";
+                if(pct === -1) bg = "rgba(255,255,255,0.02)"; 
+                else if(pct === 0) bg = "#ef4444";
+                else if(pct < 50) bg = "#f59e0b";
+                else if(pct < 80) bg = "#10b981";
+                else bg = "#059669";
             }
        
             const isToday = ds === getLocalISO();
@@ -4002,7 +4029,7 @@ window.renderCharts = function() {
             datasets: [{
                 label: "نسبة الإنجاز %", 
                 data, 
-                backgroundColor: data.map(v => v < 30 ? "#ef4444" : (v < 70 ? "#f59e0b" : "#10b981")),
+                backgroundColor: data.map(v => v === 0 ? "#ef4444" : (v < 50 ? "#f59e0b" : "#10b981")),
                 borderRadius: 6
             }]
         },
@@ -4361,3 +4388,4 @@ window.cdtpSave = function() {
 
 </body>
 </html>
+
