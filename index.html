@@ -465,30 +465,25 @@
            11. تصميم كارت المهام (بورد المهام)
         ════════════════════════════════════════ */
         .task-card {
-            background: var(--bg4);
+            background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            border-right: none;
-            border-left: 4px solid var(--tc, var(--blue)); 
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 14px;
-            min-height: 100px;
+            border-right: 4px solid var(--tc, var(--blue)); 
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            min-height: 120px;
             transition: all 0.3s ease;
             cursor: grab;
             word-break: break-word;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
 
         .drop-zone {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
             transition: background 0.3s;
         }
         
         .drop-zone:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.01);
         }
 
         /* ════════════════════════════════════════
@@ -1345,7 +1340,7 @@
                         <button class="btn-primary" onclick="window.addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
                     </div>
                 </div>
-                <div style="display:flex;gap:24px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
+                <div id="kanbanBoard" style="display:flex;gap:24px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
                             <div style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;color:var(--txt2);">
@@ -1353,7 +1348,7 @@
                             </div>
                             <span id="cntTodo" style="background:rgba(74,96,128,0.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
                         </div>
-                        <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:12px 8px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
@@ -1362,7 +1357,7 @@
                             </div>
                             <span id="cntInprogress" style="background:rgba(245,158,11,0.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,0.2);">0</span>
                         </div>
-                        <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:12px 8px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
@@ -1371,7 +1366,7 @@
                             </div>
                             <span id="cntDone" style="background:rgba(16,185,129,0.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.2);">0</span>
                         </div>
-                        <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:12px 8px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                 </div>
             </div>
