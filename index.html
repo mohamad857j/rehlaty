@@ -465,17 +465,30 @@
            11. تصميم كارت المهام (بورد المهام)
         ════════════════════════════════════════ */
         .task-card {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--bg4);
             backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            border-right: 4px solid var(--tc, var(--blue)); 
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-            min-height: 120px;
+            border-right: none;
+            border-left: 4px solid var(--tc, var(--blue)); 
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
+            min-height: 100px;
             transition: all 0.3s ease;
             cursor: grab;
             word-break: break-word;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .drop-zone {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: background 0.3s;
+        }
+        
+        .drop-zone:hover {
+            background: rgba(255, 255, 255, 0.03);
         }
 
         /* ════════════════════════════════════════
@@ -1340,7 +1353,7 @@
                             </div>
                             <span id="cntTodo" style="background:rgba(74,96,128,0.15);color:var(--txt3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;">0</span>
                         </div>
-                        <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="todo" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:12px 8px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
@@ -1349,7 +1362,7 @@
                             </div>
                             <span id="cntInprogress" style="background:rgba(245,158,11,0.1);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(245,158,11,0.2);">0</span>
                         </div>
-                        <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="inprogress" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:12px 8px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px;">
@@ -1358,7 +1371,7 @@
                             </div>
                             <span id="cntDone" style="background:rgba(16,185,129,0.1);color:var(--green2);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.2);">0</span>
                         </div>
-                        <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:4px 4px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
+                        <div id="done" class="drop-zone" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:12px 8px 40px;" ondragover="window.allowDrop(event)" ondrop="window.drop(event)"></div>
                     </div>
                 </div>
             </div>
@@ -2397,13 +2410,14 @@ window.updateDate = function() {
 
 /* ════════ FOCUS TIMER LOGIC ════════ */
 let focusTimerInterval = null;
+let currentSessionRemaining = 1500; // 25 mins (Pomodoro)
 let focusTimeSecs = 0;
 
 window.toggleFocusTimer = function() {
     if(focusTimerInterval) {
         clearInterval(focusTimerInterval);
         focusTimerInterval = null;
-        el("focusTimerLabel").textContent = "وقت التركيز ⏳";
+        el("focusTimerLabel").textContent = "◀️ كمل تركيز";
         el("focusTimerLabel").style.color = "var(--txt2)";
         const today = new Date().toDateString();
         S.focusRecords = S.focusRecords || {};
@@ -2413,7 +2427,22 @@ window.toggleFocusTimer = function() {
         el("focusTimerLabel").textContent = "شغال وبيركز 🔥";
         el("focusTimerLabel").style.color = "#fff";
         focusTimerInterval = setInterval(() => {
+            currentSessionRemaining--;
             focusTimeSecs++;
+            
+            if (currentSessionRemaining <= 0) {
+                clearInterval(focusTimerInterval);
+                focusTimerInterval = null;
+                currentSessionRemaining = 1500;
+                window.playSound("ok");
+                el("focusTimerLabel").textContent = "عاش! خد بريك ☕";
+                el("focusTimerLabel").style.color = "var(--green2)";
+                
+                const today = new Date().toDateString();
+                S.focusRecords = S.focusRecords || {};
+                S.focusRecords[today] = focusTimeSecs;
+                window.saveDataSilently();
+            }
             window.renderFocusTimerDisplay();
         }, 1000);
     }
@@ -2422,11 +2451,9 @@ window.toggleFocusTimer = function() {
 window.renderFocusTimerDisplay = function() {
     const disp = el("focusTimerDisplay");
     if(!disp) return;
-    const h = Math.floor(focusTimeSecs / 3600);
-    const m = Math.floor((focusTimeSecs % 3600) / 60);
-    const s = focusTimeSecs % 60;
-    if(h > 0) disp.textContent = `${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-    else disp.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    const m = Math.floor(currentSessionRemaining / 60);
+    const s = currentSessionRemaining % 60;
+    disp.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
 };
 
 window.updateStreak = function() {
