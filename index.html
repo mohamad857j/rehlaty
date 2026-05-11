@@ -1499,15 +1499,15 @@
             </div>
 
         </div></div></div><div id="libTextModal" class="modal-bg" style="z-index: 105000;">
-    <div class="modal-box report-glass" style="width:100%; max-width:500px; display:flex; flex-direction:column; background:var(--bg2);">
+    <div class="modal-box report-glass" style="width:100%; max-width:800px; height:80vh; display:flex; flex-direction:column; background:var(--bg2);">
         <div style="padding:16px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
             <h3 style="font-size:16px; font-weight:900; color:#fff;">📝 ملاحظة / نص</h3>
             <button onclick="window.closeLibTextModal()" class="close-btn-high" style="background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:32px;height:32px;cursor:pointer;color:var(--txt2);font-size:15px; display:flex; justify-content:center; align-items:center;">✕</button>
         </div>
-        <div style="padding:20px; display:flex; flex-direction:column; gap:12px;">
+        <div style="padding:20px; flex:1; display:flex; flex-direction:column; gap:12px;">
             <input type="hidden" id="libTextId">
             <input type="text" id="libTextTitle" placeholder="عنوان الملاحظة..." class="field" style="font-size:14px; font-weight:bold;">
-            <textarea id="libTextContent" placeholder="اكتب التفاصيل هنا..." class="field" style="height:200px; resize:none; font-size:13px;"></textarea>
+            <textarea id="libTextContent" placeholder="اكتب التفاصيل هنا..." class="field" style="flex:1; min-height:400px; resize:none; font-size:13px;"></textarea>
             <div style="display:flex; justify-content:flex-end; margin-top:10px;">
                  <button class="btn-primary" onclick="window.saveLibText()">💾 حفظ الملاحظة</button>
             </div>
@@ -2611,6 +2611,12 @@ window.applyBg = function() {
         bgImageLayers.push('linear-gradient(135deg, rgba(255,255,255,0.05) 25%, transparent 25%), linear-gradient(225deg, rgba(255,255,255,0.05) 25%, transparent 25%), linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%), linear-gradient(315deg, rgba(255,255,255,0.05) 25%, transparent 25%)');
         bgSizes.push('20px 20px, 20px 20px, 20px 20px, 20px 20px');
         document.body.style.backgroundPosition = '10px 0, 10px 0, 0 0, 0 0';
+    } else if(S.appBg.pattern === 'waves') {
+        bgImageLayers.push('radial-gradient(circle at 100% 150%, rgba(255,255,255,0.05) 24%, transparent 25%), radial-gradient(circle at 0 150%, rgba(255,255,255,0.05) 24%, transparent 25%)');
+        bgSizes.push('40px 20px, 40px 20px');
+    } else if(S.appBg.pattern === 'paper') {
+        bgImageLayers.push('repeating-linear-gradient(transparent, transparent 19px, rgba(255,255,255,0.05) 19px, rgba(255,255,255,0.05) 20px)');
+        bgSizes.push('100% 20px');
     }
 
     if(S.appBg.baseType === 'gradient') {
@@ -3770,14 +3776,16 @@ window.openLib = function(id) {
         el("libTextContent").value = r.data;
         el("libTextModal").classList.add("show");
     } else { 
-        window.open(r.type==="link" ? (r.url.startsWith("http") ? r.url : "https://"+r.url) : r.data, "_blank"); 
+        const lnk = r.url || r.data || "";
+        window.open(r.type==="link" ? (lnk.startsWith("http") ? lnk : "https://"+lnk) : r.data, "_blank"); 
     }
 };
 
 window.dlLib = function(id) {
     const r = S.resources.find(x => x.id === id);
     if(r.type === "link") {
-        window.open(r.url.startsWith("http") ? r.url : "https://"+r.url, "_blank");
+        const lnk = r.url || r.data || "";
+        window.open(lnk.startsWith("http") ? lnk : "https://"+lnk, "_blank");
     } else {
         const a = document.createElement("a");
         a.href = r.data;
