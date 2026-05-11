@@ -3329,6 +3329,26 @@ window.renderSubtasks = function() {
         if(!s.links) s.links = [];
         if(typeof s.links === "string") s.links = s.links ? [s.links] : [];
         if(!s.notes) s.notes = []; 
+        if(!s.lessons) s.lessons = [];
+
+        const lessonsHtml = s.lessons.map((lsn, li) => {
+            const ytid = getYTid(lsn.video);
+            return `
+            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                        <input type="checkbox" ${lsn.done?"checked":""} onchange="window.toggleLesson(${i}, ${li})" class="cb" style="width:14px;height:14px;">
+                        <span style="font-size:12px;font-weight:700;${lsn.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}">${lsn.title}</span>
+                    </label>
+                    <button onclick="window.delLesson(${i}, ${li})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;">✕</button>
+                </div>
+                
+                <input type="text" placeholder="رابط يوتيوب..." value="${lsn.video||''}" onchange="window.updateLessonVid(${i}, ${li}, this.value)" class="field" style="width:100%;font-size:11px;padding:6px;margin-bottom:6px;direction:ltr;">
+                ${ytid ? `<div onclick="window.open('${lsn.video}','_blank')" style="margin-bottom:6px;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:16/9;height:auto;max-height:300px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:0.8;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,0.85);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;box-shadow:0 0 15px rgba(0,0,0,0.5);">▶</div></div></div>` : ""}
+                
+                <textarea placeholder="ملاحظات..." oninput="window.updateLessonNote(${i}, ${li}, this.value)" class="field" style="width:100%;height:50px;resize:none;font-size:11px;padding:6px;">${lsn.note||''}</textarea>
+            </div>`;
+        }).join("");
         
         const vids = s.links.map((lk,vi) => {
             const ytid = getYTid(lk);
@@ -3374,7 +3394,14 @@ window.renderSubtasks = function() {
                 <div style="padding:14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;">
                     <div style="margin-bottom:10px;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
-                            <span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.06em;text-transform:uppercase;">فيديوهات</span>
+                            <span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.06em;text-transform:uppercase;">المهام الداخلية</span>
+                            <button onclick="window.addLesson(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(139,92,246,0.1);color:var(--purple);border:1px solid rgba(139,92,246,0.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ مهمة داخلية</button>
+                        </div>
+                        ${lessonsHtml}
+                    </div>
+                    <div style="margin-bottom:10px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+                            <span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.06em;text-transform:uppercase;">فيديوهات (عامة للمهمة)</span>
                             <button onclick="window.addSubVid(${i})" style="font-size:9px;font-weight:900;padding:4px 8px;border-radius:7px;background:rgba(59,130,246,0.1);color:var(--blue2);border:1px solid rgba(59,130,246,0.2);cursor:pointer;font-family:'Cairo',sans-serif;">➕ فيديو</button>
                         </div>
                         ${vids}
@@ -3439,6 +3466,47 @@ window.toggleSubNotes = function(i) {
     const s = S.tasks.find(x => x.id === activTask).subtasks[i];
     s.panelOpen = !s.panelOpen;
     el(`snotes-${i}`).classList.toggle("open");
+};
+
+window.addLesson = function(i) {
+    const t = prompt("اسم المهمة الداخلية:");
+    if(t) {
+        const task = S.tasks.find(x => x.id === activTask);
+        if(!task.subtasks[i].lessons) task.subtasks[i].lessons = [];
+        task.subtasks[i].lessons.push({title: t, done: false, video: "", note: ""});
+        task.subtasks[i].panelOpen = true;
+        window.saveDataSilently();
+        window.renderSubtasks();
+    }
+};
+
+window.delLesson = function(i, li) {
+    if(confirm("حذف هذه المهمة الداخلية؟")) {
+        const task = S.tasks.find(x => x.id === activTask);
+        task.subtasks[i].lessons.splice(li, 1);
+        window.saveDataSilently();
+        window.renderSubtasks();
+    }
+};
+
+window.toggleLesson = function(i, li) {
+    const task = S.tasks.find(x => x.id === activTask);
+    task.subtasks[i].lessons[li].done = !task.subtasks[i].lessons[li].done;
+    window.saveDataSilently();
+    window.renderSubtasks();
+};
+
+window.updateLessonVid = function(i, li, val) {
+    const task = S.tasks.find(x => x.id === activTask);
+    task.subtasks[i].lessons[li].video = val;
+    window.saveDataSilently();
+    window.renderSubtasks();
+};
+
+window.updateLessonNote = function(i, li, val) {
+    const task = S.tasks.find(x => x.id === activTask);
+    task.subtasks[i].lessons[li].note = val;
+    window.saveDataSilently();
 };
 
 window.addSubVid = function(i) {
