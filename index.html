@@ -637,8 +637,7 @@
             width: 280px;
             box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
-            background-color: var(--note-bg, #fde047);
-            background-image: repeating-linear-gradient(transparent, transparent 24px, rgba(0,0,0,0.1) 24px, rgba(0,0,0,0.1) 25px);
+            background: var(--note-bg, #fde047);
             color: #1f2937;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
@@ -4042,13 +4041,50 @@ const NOTE_COLORS = [
     ['#d1fae5','#f1f5f9','#1e293b','#0f172a','#f8fafc','#475569'],
 ];
 
+const NOTE_GRADIENTS = [
+    {label:'غروب', bg:'linear-gradient(135deg,#f97316,#ec4899,#8b5cf6)'},
+    {label:'سماء', bg:'linear-gradient(135deg,#38bdf8,#6366f1)'},
+    {label:'غابة', bg:'linear-gradient(135deg,#064e3b,#10b981)'},
+    {label:'ليل', bg:'linear-gradient(135deg,#0f172a,#1e3a8a,#312e81)'},
+    {label:'ذهب', bg:'linear-gradient(135deg,#fde047,#f97316,#ef4444)'},
+    {label:'وردي', bg:'linear-gradient(135deg,#fbcfe8,#f472b6,#db2777)'},
+    {label:'ربيع', bg:'linear-gradient(135deg,#bbf7d0,#34d399,#0d9488)'},
+    {label:'بنفسجي', bg:'linear-gradient(135deg,#e9d5ff,#a855f7,#6d28d9)'},
+    {label:'برتقالي', bg:'linear-gradient(135deg,#fed7aa,#f97316,#c2410c)'},
+    {label:'بحر', bg:'linear-gradient(135deg,#cffafe,#22d3ee,#0e7490)'},
+    {label:'دخان', bg:'linear-gradient(160deg,#374151,#6b7280,#9ca3af)'},
+    {label:'حريق', bg:'linear-gradient(135deg,#fde047,#ef4444,#1e1b4b)'},
+];
+
+const NOTE_PATTERNS = [
+    {label:'خطوط', bg:'repeating-linear-gradient(transparent,transparent 24px,rgba(0,0,0,0.12) 24px,rgba(0,0,0,0.12) 25px)'},
+    {label:'مربعات', bg:'repeating-linear-gradient(90deg,rgba(0,0,0,0.06) 0,rgba(0,0,0,0.06) 1px,transparent 1px,transparent 30px),repeating-linear-gradient(rgba(0,0,0,0.06) 0,rgba(0,0,0,0.06) 1px,transparent 1px,transparent 30px)'},
+    {label:'نقاط', bg:'radial-gradient(circle,rgba(0,0,0,0.15) 1px,transparent 1px) 0 0/20px 20px'},
+    {label:'موجات', bg:'repeating-linear-gradient(45deg,rgba(255,255,255,0.08) 0,rgba(255,255,255,0.08) 10px,transparent 10px,transparent 20px)'},
+    {label:'ألماس', bg:'repeating-linear-gradient(45deg,rgba(0,0,0,0.06) 0,rgba(0,0,0,0.06) 1px,transparent 0,transparent 50%),repeating-linear-gradient(-45deg,rgba(0,0,0,0.06) 0,rgba(0,0,0,0.06) 1px,transparent 0,transparent 50%) 0 0/20px 20px'},
+    {label:'زجاج', bg:'repeating-linear-gradient(0deg,rgba(255,255,255,0.07),rgba(255,255,255,0.07) 2px,transparent 2px,transparent 8px)'},
+    {label:'حديث', bg:'radial-gradient(ellipse at top,rgba(255,255,255,0.18),transparent 60%)'},
+    {label:'نجوم', bg:'radial-gradient(circle,rgba(255,255,255,0.25) 1px,transparent 1px) 0 0/30px 30px,radial-gradient(circle,rgba(255,255,255,0.12) 1px,transparent 1px) 15px 15px/30px 30px'},
+    {label:'بدون', bg:'none'},
+];
+
 function getContrastColor(hexColor) {
+    if(!hexColor || hexColor.startsWith('linear') || hexColor.startsWith('radial') || hexColor === 'none') return null;
     const hex = hexColor.replace('#', '');
     const r = parseInt(hex.slice(0,2), 16);
     const g = parseInt(hex.slice(2,4), 16);
     const b = parseInt(hex.slice(4,6), 16);
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
     return luminance > 0.5 ? '#1f2937' : '#f8fafc';
+}
+
+function buildNoteBackground(n) {
+    const base = n.noteGradient || n.color || '#fde047';
+    const pattern = n.notePattern || '';
+    if (pattern && pattern !== 'none') {
+        return `${pattern}, ${base}`;
+    }
+    return base;
 }
 
 window.renderNotes = function() {
@@ -4072,15 +4108,36 @@ window.renderNotes = function() {
     }
   
     board.innerHTML = notes.map(n => {
-        const autoFontColor = n.fontColor || getContrastColor(n.color||'#fde047');
-        return `
-    <div id="note-${n.id}" class="note-card" style="--note-bg:${n.color||'#fde047'};color:${autoFontColor};">
-       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-          <div style="position:relative;display:inline-flex;" class="group" onmouseenter="this.querySelector('.palette-menu').style.display='flex'" onmouseleave="this.querySelector('.palette-menu').style.display='none'">
-             <span style="cursor:pointer;opacity:0.5;font-size:14px;" title="لون الخلفية">🎨</span>
-             <div class="palette-menu" style="display:none; flex-wrap:wrap; gap:5px; position:absolute; top:100%; right:0; background:var(--bg3); padding:10px; border-radius:10px; border:1px solid var(--border); z-index:100; width:170px; box-shadow:0 4px 16px rgba(0,0,0,0.6);">
+        const autoFontColor = n.fontColor || getContrastColor(n.color||'#fde047') || '#1f2937';
+        const noteBg = buildNoteBackground(n);
+        const paletteHtml = `
+            <div class="palette-menu" style="display:none;flex-wrap:wrap;gap:5px;position:absolute;top:100%;right:0;background:var(--bg3);padding:10px;border-radius:10px;border:1px solid var(--border);z-index:200;width:170px;box-shadow:0 4px 16px rgba(0,0,0,0.6);">
                 ${NOTE_COLORS.flat().map(c => `<div onclick="window.changeNoteColor('${n.id}', '${c}')" style="width:22px;height:22px;border-radius:50%;background:${c};cursor:pointer;border:2px solid ${(n.color||'#fde047')===c?'#fff':'transparent'};transition:transform 0.15s;flex-shrink:0;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'"></div>`).join('')}
-             </div>
+            </div>`;
+        const gradientHtml = `
+            <div class="gradient-menu" style="display:none;flex-direction:column;gap:4px;position:absolute;top:100%;right:0;background:var(--bg3);padding:10px;border-radius:10px;border:1px solid var(--border);z-index:200;width:160px;box-shadow:0 4px 16px rgba(0,0,0,0.6);">
+                ${NOTE_GRADIENTS.map(g => `<div onclick="window.changeNoteGradient('${n.id}', '${g.bg.replace(/'/g,'\\&apos;')}')" style="height:28px;border-radius:7px;background:${g.bg};cursor:pointer;border:2px solid ${(n.noteGradient||'')===g.bg?'#fff':'transparent'};transition:transform 0.15s;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.7);" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">${g.label}</div>`).join('')}
+            </div>`;
+        const patternHtml = `
+            <div class="pattern-menu" style="display:none;flex-direction:column;gap:4px;position:absolute;top:100%;right:0;background:var(--bg3);padding:10px;border-radius:10px;border:1px solid var(--border);z-index:200;width:160px;box-shadow:0 4px 16px rgba(0,0,0,0.6);">
+                ${NOTE_PATTERNS.map(p => `<div onclick="window.changeNotePattern('${n.id}', '${p.bg.replace(/'/g,'\\&apos;')}')" style="height:28px;border-radius:7px;background:${p.bg !== 'none' ? (n.color||'#fde047') : 'var(--bg2)'};background-image:${p.bg !== 'none' ? p.bg : 'none'};cursor:pointer;border:2px solid ${(n.notePattern||'')===p.bg?'#fff':'transparent'};transition:transform 0.15s;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${autoFontColor};" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">${p.label}</div>`).join('')}
+            </div>`;
+        return `
+    <div id="note-${n.id}" class="note-card" style="background:${noteBg};color:${autoFontColor};">
+       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+          <div style="display:flex;gap:5px;align-items:center;">
+              <div style="position:relative;display:inline-flex;" onmouseenter="this.querySelector('.palette-menu').style.display='flex'" onmouseleave="this.querySelector('.palette-menu').style.display='none'">
+                 <span style="cursor:pointer;opacity:0.6;font-size:15px;" title="لون الخلفية">🎨</span>
+                 ${paletteHtml}
+              </div>
+              <div style="position:relative;display:inline-flex;" onmouseenter="this.querySelector('.gradient-menu').style.display='flex'" onmouseleave="this.querySelector('.gradient-menu').style.display='none'">
+                 <span style="cursor:pointer;opacity:0.6;font-size:15px;" title="تدرجات">🌈</span>
+                 ${gradientHtml}
+              </div>
+              <div style="position:relative;display:inline-flex;" onmouseenter="this.querySelector('.pattern-menu').style.display='flex'" onmouseleave="this.querySelector('.pattern-menu').style.display='none'">
+                 <span style="cursor:pointer;opacity:0.6;font-size:15px;" title="نقوش">✨</span>
+                 ${patternHtml}
+              </div>
           </div>
           <button onclick="window.delNote('${n.id}')" style="background:transparent;border:none;cursor:pointer;font-size:14px;opacity:0.5;padding:0;transition:0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">✕</button>
        </div>
@@ -4135,13 +4192,31 @@ window.changeNoteColor = function(id, color) {
     const n = f?.notes.find(x => x.id === id);
     if(n){
         n.color = color;
+        n.noteGradient = null;
         n.fontColor = getContrastColor(color);
         window.saveDataSilently();
-        const c = el('note-'+id);
-        if(c) {
-            c.style.setProperty('--note-bg', color);
-            c.style.color = n.fontColor;
-        }
+        window.renderNotes();
+    }
+};
+
+window.changeNoteGradient = function(id, gradient) {
+    const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
+    const n = f?.notes.find(x => x.id === id);
+    if(n){
+        n.noteGradient = gradient;
+        n.fontColor = '#f8fafc';
+        window.saveDataSilently();
+        window.renderNotes();
+    }
+};
+
+window.changeNotePattern = function(id, pattern) {
+    const f = S.noteFolders.find(x => x.id === S.activNoteFolder);
+    const n = f?.notes.find(x => x.id === id);
+    if(n){
+        n.notePattern = pattern;
+        window.saveDataSilently();
+        window.renderNotes();
     }
 };
 
