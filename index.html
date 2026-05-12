@@ -1938,7 +1938,7 @@ function dailySweep() {
             const futureTasksKept = [];
 
             S.todayTasks.forEach(t => {
-                const isFuture = t.dueDate && (new Date(t.dueDate).getTime() > endOfLastDate.getTime());
+                const isFuture = !t.done && t.dueDate && (new Date(t.dueDate).getTime() > endOfLastDate.getTime());
                 if(isFuture) {
                     futureTasksKept.push(t);
                 } else {
