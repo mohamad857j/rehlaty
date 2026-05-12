@@ -2945,7 +2945,29 @@ window.toggleTodayTask = function(id) {
     if(t.parentId && t.subIdx !== undefined){
         const parent = S.tasks.find(x => x.id === t.parentId);
         if(parent && parent.subtasks && parent.subtasks[t.subIdx]){
-            parent.subtasks[t.subIdx].done = t.done;
+            if (t.lessonIdx !== undefined) {
+                // It's a lesson
+                parent.subtasks[t.subIdx].lessons[t.lessonIdx].done = t.done;
+                
+                // Cascade to subtask
+                const allLessonsDone = parent.subtasks[t.subIdx].lessons.every(l => l.done);
+                if(allLessonsDone && !parent.subtasks[t.subIdx].done) {
+                    parent.subtasks[t.subIdx].done = true;
+                } else if(!allLessonsDone && parent.subtasks[t.subIdx].done) {
+                    parent.subtasks[t.subIdx].done = false;
+                }
+            } else {
+                // It's a subtask
+                parent.subtasks[t.subIdx].done = t.done;
+            }
+            
+            // Cascade to main task
+            const allSubtasksDone = parent.subtasks.length > 0 && parent.subtasks.every(st => st.done);
+            if(allSubtasksDone && !parent.done) {
+                parent.done = true;
+            } else if(!allSubtasksDone && parent.done) {
+                parent.done = false;
+            }
         }
     }
     if(t.done){
@@ -3331,6 +3353,13 @@ function fileIcon(ext, type){
     return "📁";
 }
 
+window.renderLinkifyPreview = function(text) {
+    if(!text) return "";
+    const urls = text.match(/https?:\/\/[^\s]+/g);
+    if(!urls) return "";
+    return `<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;">` + urls.map(u => `<a href="${u}" target="_blank" style="font-size:11px;color:var(--blue2);text-decoration:none;background:rgba(59,130,246,0.1);padding:4px 8px;border-radius:6px;display:inline-block;word-break:break-all;border:1px solid rgba(59,130,246,0.2);">🔗 ${u}</a>`).join("") + `</div>`;
+};
+
 window.renderSubtasks = function() {
     const t = S.tasks.find(x => x.id === activTask);
     if(!t) return;
@@ -3350,13 +3379,18 @@ window.renderSubtasks = function() {
                         <input type="checkbox" ${lsn.done?"checked":""} onchange="window.toggleLesson(${i}, ${li})" class="cb" style="width:14px;height:14px;">
                         <span style="font-size:12px;font-weight:700;${lsn.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"}">${lsn.title}</span>
                     </label>
-                    <button onclick="window.delLesson(${i}, ${li})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;">✕</button>
+                    <div style="display:flex;gap:4px;">
+                        <button onclick="window.sendLessonToToday(${i}, ${li})" style="font-size:9px;font-weight:900;padding:3px 6px;border-radius:6px;background:rgba(16,185,129,0.1);color:var(--green2);border:1px solid rgba(16,185,129,0.2);cursor:pointer;font-family:'Cairo',sans-serif;">🎯 لليوم</button>
+                        <button onclick="window.toggleLessonDetails(${i}, ${li})" style="font-size:9px;font-weight:900;padding:3px 6px;border-radius:6px;background:rgba(59,130,246,0.1);color:var(--blue2);border:1px solid rgba(59,130,246,0.2);cursor:pointer;font-family:'Cairo',sans-serif;">📋 تفاصيل</button>
+                        <button onclick="window.delLesson(${i}, ${li})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;padding:0 2px;">✕</button>
+                    </div>
                 </div>
-                
-                <input type="text" placeholder="رابط يوتيوب..." value="${lsn.video||''}" onchange="window.updateLessonVid(${i}, ${li}, this.value)" class="field" style="width:100%;font-size:11px;padding:6px;margin-bottom:6px;direction:ltr;">
-                ${ytid ? `<div onclick="window.open('${lsn.video}','_blank')" style="margin-bottom:6px;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:16/9;height:auto;max-height:300px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:0.8;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,0.85);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;box-shadow:0 0 15px rgba(0,0,0,0.5);">▶</div></div></div>` : ""}
-                
-                <textarea placeholder="ملاحظات..." oninput="window.updateLessonNote(${i}, ${li}, this.value)" class="field" style="width:100%;height:50px;resize:none;font-size:11px;padding:6px;">${lsn.note||''}</textarea>
+                <div id="lesson-details-${i}-${li}" style="display:${lsn.panelOpen?'block':'none'};">
+                    <input type="text" placeholder="رابط يوتيوب أو موقع..." value="${lsn.video||''}" onchange="window.updateLessonVid(${i}, ${li}, this.value)" class="field" style="width:100%;font-size:11px;padding:6px;margin-bottom:6px;direction:ltr;">
+                    ${ytid ? `<div onclick="window.open('${lsn.video}','_blank')" style="margin-bottom:6px;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:16/9;height:auto;max-height:300px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:0.8;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,0.85);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;box-shadow:0 0 15px rgba(0,0,0,0.5);">▶</div></div></div>` : window.renderLinkifyPreview(lsn.video)}
+                    <textarea placeholder="ملاحظات..." oninput="window.updateLessonNote(${i}, ${li}, this.value)" class="field" style="width:100%;height:50px;resize:none;font-size:11px;padding:6px;">${lsn.note||''}</textarea>
+                    ${window.renderLinkifyPreview(lsn.note)}
+                </div>
             </div>`;
         }).join("");
         
@@ -3365,10 +3399,10 @@ window.renderSubtasks = function() {
             return `
             <div style="margin-bottom:8px;padding:8px;border-radius:12px;background:rgba(0,0,0,0.2);border:1px solid var(--border);">
                 <div style="display:flex;gap:6px;direction:ltr;">
-                    <input type="text" value="${lk}" onchange="window.updateSubVid(${i},${vi},this.value)" placeholder="Youtube Link..." class="field" style="flex:1;font-size:11px;padding:6px 10px;text-align:left;direction:ltr;">
+                    <input type="text" value="${lk}" onchange="window.updateSubVid(${i},${vi},this.value)" placeholder="Youtube Link or Any URL..." class="field" style="flex:1;font-size:11px;padding:6px 10px;text-align:left;direction:ltr;">
                     <button onclick="window.delSubVid(${i},${vi})" style="background:rgba(239,68,68,0.1);border:none;border-radius:8px;color:var(--red);cursor:pointer;padding:0 10px;font-size:12px;">✕</button>
                 </div>
-                ${ytid ? `<div onclick="window.open('${lk}','_blank')" style="margin-top:7px;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:16/9;height:auto;max-height:400px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:0.75;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,0.85);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;box-shadow:0 0 15px rgba(0,0,0,0.5);">▶</div></div></div>` : ""}
+                ${ytid ? `<div onclick="window.open('${lk}','_blank')" style="margin-top:7px;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:16/9;height:auto;max-height:400px;cursor:pointer;"><img src="https://img.youtube.com/vi/${ytid}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;opacity:0.75;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="background:rgba(220,38,38,0.85);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;box-shadow:0 0 15px rgba(0,0,0,0.5);">▶</div></div></div>` : window.renderLinkifyPreview(lk)}
             </div>`;
         }).join("");
         
@@ -3451,16 +3485,26 @@ window.toggleSub = function(i) {
     const parent = S.tasks.find(x => x.id === activTask);
     const s = parent.subtasks[i];
     s.done = !s.done;
+    
+    // Check cascading completion for main task
+    const allSubtasksDone = parent.subtasks.length > 0 && parent.subtasks.every(st => st.done);
+    if(allSubtasksDone && !parent.done) {
+        parent.done = true;
+    } else if(!allSubtasksDone && parent.done) {
+        parent.done = false;
+    }
+
     if(s.done) {
         window.showToast("خطوة كمان! 💪", "success");
         window.playSound("ok");
     }
     
-    const todayEq = S.todayTasks.find(x => x.parentId === activTask && x.subIdx === i);
+    const todayEq = S.todayTasks.find(x => x.parentId === activTask && x.subIdx === i && x.lessonIdx === undefined);
     if (todayEq) { todayEq.done = s.done; }
     
     window.renderSubtasks(); 
     window.saveDataSilently();
+    if(typeof window.renderTasks === "function") window.renderTasks();
 };
 
 window.delSub = function(i) {
@@ -3502,6 +3546,55 @@ window.delLesson = function(i, li) {
 window.toggleLesson = function(i, li) {
     const task = S.tasks.find(x => x.id === activTask);
     task.subtasks[i].lessons[li].done = !task.subtasks[i].lessons[li].done;
+    
+    // Check cascading completion for subtask
+    const allLessonsDone = task.subtasks[i].lessons.every(l => l.done);
+    if(allLessonsDone && !task.subtasks[i].done) {
+        task.subtasks[i].done = true;
+    } else if(!allLessonsDone && task.subtasks[i].done) {
+        task.subtasks[i].done = false;
+    }
+    
+    // Check cascading completion for main task
+    const allSubtasksDone = task.subtasks.length > 0 && task.subtasks.every(st => st.done);
+    if(allSubtasksDone && !task.done) {
+        task.done = true;
+    } else if(!allSubtasksDone && task.done) {
+        task.done = false;
+    }
+    
+    // Sync with today's tasks
+    const todayEq = S.todayTasks.find(x => x.parentId === activTask && x.subIdx === i && x.lessonIdx === li);
+    if (todayEq) { todayEq.done = task.subtasks[i].lessons[li].done; }
+    
+    window.saveDataSilently();
+    window.renderSubtasks();
+    if(typeof window.renderTasks === "function") window.renderTasks();
+};
+
+window.sendLessonToToday = function(subIdx, lessonIdx) {
+    const parent = S.tasks.find(x => x.id === activTask);
+    const lesson = parent.subtasks[subIdx].lessons[lessonIdx];
+    
+    const existing = S.todayTasks.find(x => x.parentId === activTask && x.subIdx === subIdx && x.lessonIdx === lessonIdx);
+    if(existing) return window.showToast("المهمة دي في يومك فعلاً! 🎯", "info");
+    
+    S.todayTasks.unshift({
+        id: "tt" + Date.now(),
+        text: `الدرس: ${lesson.title}`,
+        done: lesson.done,
+        parentId: activTask,
+        subIdx: subIdx,
+        lessonIdx: lessonIdx
+    });
+    
+    window.saveData();
+    window.showToast("تم الإضافة لمهام اليوم! 🎯", "success");
+};
+
+window.toggleLessonDetails = function(subIdx, lessonIdx) {
+    const task = S.tasks.find(x => x.id === activTask);
+    task.subtasks[subIdx].lessons[lessonIdx].panelOpen = !task.subtasks[subIdx].lessons[lessonIdx].panelOpen;
     window.saveDataSilently();
     window.renderSubtasks();
 };
