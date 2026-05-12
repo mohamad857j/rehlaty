@@ -1918,12 +1918,19 @@ function dailySweep() {
     const today = new Date().toDateString();
     let needsSave = false;
     
-    if (S.lastDate && S.lastDate !== today) {
+    if (S.lastDate !== today) {
         if (!S.archive) S.archive = { today: [], goals: [], years: {} };
         if (!S.suggestions) S.suggestions = [];
         
+        let archiveDate = S.lastDate;
+        if (!archiveDate) {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            archiveDate = yesterday.toDateString();
+        }
+        
         if (S.todayTasks && S.todayTasks.length > 0) {
-            const endOfLastDate = new Date(S.lastDate);
+            const endOfLastDate = new Date(archiveDate);
             endOfLastDate.setHours(23, 59, 59);
 
             const completedToday = [];
@@ -1946,11 +1953,11 @@ function dailySweep() {
                     let parent = S.tasks.find(x => x.id === t.parentId);
                     if(parent && parent.tag) finalTag = parent.tag;
                 }
-                S.archive.today.push({...t, archDate: S.lastDate, savedTag: finalTag});
+                S.archive.today.push({...t, archDate: archiveDate, savedTag: finalTag});
             });
             
             uncompletedToday.forEach(t => {
-                S.suggestions.unshift({...t, archDate: S.lastDate}); 
+                S.suggestions.unshift({...t, archDate: archiveDate}); 
             });
             
             S.todayTasks = futureTasksKept; 
@@ -1960,11 +1967,14 @@ function dailySweep() {
         if (S.goals && S.goals.length > 0) {
             const completedGoals = S.goals.filter(g => g && g.done);
             completedGoals.forEach(g => {
-                S.archive.goals.push({...g, archDate: S.lastDate});
+                S.archive.goals.push({...g, archDate: archiveDate});
             });
             S.goals = S.goals.filter(g => g && !g.done);
             if (completedGoals.length > 0) needsSave = true;
         }
+        
+        S.lastDate = today;
+        needsSave = true;
     }
     
     if (needsSave) {
