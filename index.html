@@ -989,7 +989,7 @@
         }
 
         .hm-today { 
-            outline: 2px solid var(--amber) !important; 
+            outline: 2px solid #ffffff !important; 
             border-radius: 2px; 
         }
 
@@ -1463,7 +1463,7 @@
                         </div>
                         <div id="heatmapLegend">
                             <span>بدون</span>
-                            <div class="hm-swatch" style="background:#ef4444;" title="صفر إنجاز"></div>
+                            <div class="hm-swatch" style="background:rgba(239, 68, 68, 0.3);" title="صفر إنجاز"></div>
                             <div class="hm-swatch" style="background:#f59e0b;" title="إنجاز متوسط"></div>
                             <div class="hm-swatch" style="background:#10b981;" title="إنجاز جيد"></div>
                             <div class="hm-swatch" style="background:#059669;" title="إنجاز عظيم"></div>
@@ -1483,7 +1483,10 @@
                             </div>
                             <div class="chart-wrap">
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                                    <div class="chart-label" style="margin-bottom:0;">الإنجاز الأسبوعي (%)</div>
+                                    <div style="display:flex;align-items:center;gap:8px;">
+                                        <div class="chart-label" style="margin-bottom:0;">الإنجاز الأسبوعي</div>
+                                        <span id="weeklyAchievementPct" style="font-size:12px;font-weight:900;color:var(--green2);background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);padding:2px 8px;border-radius:8px;">0%</span>
+                                    </div>
                                     <div style="display:flex; gap:6px;">
                                         <button onclick="window.changeChartWeek(-1)" title="الأسبوع التالي" style="background:var(--bg); border:1px solid var(--border); color:var(--txt2); border-radius:6px; cursor:pointer; padding:2px 8px; font-size:10px;">▶</button>
                                         <button onclick="window.changeChartWeek(1)" title="الأسبوع السابق" style="background:var(--bg); border:1px solid var(--border); color:var(--txt2); border-radius:6px; cursor:pointer; padding:2px 8px; font-size:10px;">◀</button>
@@ -1582,13 +1585,20 @@
                     <button onclick="window.changeBgBase('none', '')" style="background:transparent;border:none;color:var(--red);font-size:10px;font-weight:bold;cursor:pointer;">إزالة ✕</button>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); border:2px solid var(--border);"></div>
-                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #141e30, #243b55)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #141e30, #243b55); border:2px solid var(--border);"></div>
-                    <div onclick="window.changeBgBase('gradient', 'radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876); border:2px solid var(--border);"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); border:2px solid var(--border);" title="تيل داكن"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #141e30, #243b55)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #141e30, #243b55); border:2px solid var(--border);" title="أزرق ليلي"></div>
+                    <div onclick="window.changeBgBase('gradient', 'radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:radial-gradient(circle at top right, #1a2a6c, #112240, #2b5876); border:2px solid var(--border);" title="نجوم زرقاء"></div>
                     <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #2b1055, #7597de)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #2b1055, #7597de); border:2px solid var(--border);" title="أرجواني وفاتح"></div>
                     <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #1d2b64, #f8cdda)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #1d2b64, #f8cdda); border:2px solid var(--border);" title="أزرق ووردي"></div>
                     <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #000428, #004e92)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #000428, #004e92); border:2px solid var(--border);" title="أزرق غامق"></div>
                     <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); border:2px solid var(--border);" title="غروب"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #0d0d0d, #1a1a2e, #16213e)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0d0d0d, #1a1a2e, #16213e); border:2px solid var(--border);" title="فضاء عميق"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #0f0c29, #302b63, #24243e); border:2px solid var(--border);" title="بنفسجي ليلي"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #134e5e, #71b280)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #134e5e, #71b280); border:2px solid var(--border);" title="غابة خضراء"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(160deg, #0093e9, #80d0c7)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(160deg, #0093e9, #80d0c7); border:2px solid var(--border);" title="سماء صافية"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #2c003e, #6a0572, #ff6b6b)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #2c003e, #6a0572, #ff6b6b); border:2px solid var(--border);" title="غروب بنفسجي"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #1c1c1c, #4a4a4a)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #1c1c1c, #4a4a4a); border:2px solid var(--border);" title="رمادي راقي"></div>
+                    <div onclick="window.changeBgBase('gradient', 'linear-gradient(135deg, #870000, #190a05)')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg, #870000, #190a05); border:2px solid var(--border);" title="أحمر داكن"></div>
                 </div>
                 <button onclick="document.getElementById('bgUploadIn').click()" style="width:100%;background:rgba(59,130,246,0.1);border:1px dashed var(--blue2);border-radius:10px;color:var(--blue2);font-weight:700;font-size:12px;padding:8px;cursor:pointer;">🖼️ رفع صورة من جهازك</button>
                 <input type="file" id="bgUploadIn" style="display:none;" accept="image/*" onchange="window.handleBgUpload(this)">
@@ -1600,12 +1610,18 @@
                     <button onclick="window.changeBgPattern('none')" style="background:transparent;border:none;color:var(--red);font-size:10px;font-weight:bold;cursor:pointer;">بدون</button>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <div onclick="window.changeBgPattern('dots')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="نقاط"></div>
-                    <div onclick="window.changeBgPattern('grid')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="شبكة"></div>
-                    <div onclick="window.changeBgPattern('stripes')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 8px); border:2px solid var(--border);" title="خطوط"></div>
+                    <div onclick="window.changeBgPattern('dots')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="نقاط صغيرة"></div>
+                    <div onclick="window.changeBgPattern('dots-lg')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(rgba(255,255,255,0.35) 2px, transparent 2px); background-size:18px 18px; border:2px solid var(--border);" title="نقاط كبيرة"></div>
+                    <div onclick="window.changeBgPattern('grid')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px); background-size:10px 10px; border:2px solid var(--border);" title="شبكة صغيرة"></div>
+                    <div onclick="window.changeBgPattern('grid-lg')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px); background-size:30px 30px; border:2px solid var(--border);" title="شبكة كبيرة"></div>
+                    <div onclick="window.changeBgPattern('stripes')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 8px); border:2px solid var(--border);" title="خطوط مائلة"></div>
+                    <div onclick="window.changeBgPattern('stripes-v')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0, rgba(255,255,255,0.08) 2px, transparent 2px, transparent 20px); border:2px solid var(--border);" title="خطوط عمودية"></div>
                     <div onclick="window.changeBgPattern('waves')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(circle at 100% 150%, rgba(255,255,255,0.1) 24%, transparent 25%),radial-gradient(circle at 0 150%, rgba(255,255,255,0.1) 24%, transparent 25%); background-size:40px 20px; border:2px solid var(--border);" title="أمواج"></div>
                     <div onclick="window.changeBgPattern('zigzag')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%), linear-gradient(225deg, rgba(255,255,255,0.1) 25%, transparent 25%), linear-gradient(315deg, rgba(255,255,255,0.1) 25%, transparent 25%), linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%); background-size:20px 20px; background-position:10px 0, 10px 0, 0 0, 0 0; border:2px solid var(--border);" title="زجزاج"></div>
                     <div onclick="window.changeBgPattern('paper')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:repeating-linear-gradient(transparent, transparent 19px, rgba(255,255,255,0.1) 19px, rgba(255,255,255,0.1) 20px); background-size:100% 20px; border:2px solid var(--border);" title="ورق مسطر"></div>
+                    <div onclick="window.changeBgPattern('diamonds')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(45deg,rgba(255,255,255,0.07) 25%,transparent 25%,transparent 75%,rgba(255,255,255,0.07) 75%),linear-gradient(45deg,rgba(255,255,255,0.07) 25%,transparent 25%,transparent 75%,rgba(255,255,255,0.07) 75%); background-size:20px 20px; background-position:0 0,10px 10px; border:2px solid var(--border);" title="ماس"></div>
+                    <div onclick="window.changeBgPattern('cross')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:linear-gradient(rgba(255,255,255,0.12) 2px, transparent 2px),linear-gradient(90deg, rgba(255,255,255,0.12) 2px, transparent 2px),linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size:50px 50px,50px 50px,10px 10px,10px 10px; border:2px solid var(--border);" title="تقاطعات"></div>
+                    <div onclick="window.changeBgPattern('hexagon')" style="width:36px;height:36px;border-radius:10px;cursor:pointer;background:#0d1527; background-image:radial-gradient(circle at 0% 50%, transparent 20%, rgba(255,255,255,0.05) 21%, rgba(255,255,255,0.05) 34%, transparent 35%),radial-gradient(circle at 100% 50%, transparent 20%, rgba(255,255,255,0.05) 21%, rgba(255,255,255,0.05) 34%, transparent 35%); background-size:30px 15px; border:2px solid var(--border);" title="سداسيات"></div>
                 </div>
             </div>
 
@@ -2106,221 +2122,151 @@ function populateReportDropdown() {
 }
 
 window.renderSpecificReport = function() {
-    const area = el("reportContentArea");
-    const selVal = el("reportMonthSelect").value;
-    const now = new Date();
-    let title = "", dateRange = "", completedTasksCount = 0, completedGoalsCount = 0;
-    
-    const overlay = el("reportBlurOverlay");
-    let isCurrentPeriod = false;
-    let filteredTasks = []; 
-    
-    if (currentReportType === 'month') {
-        const [y, m] = selVal.split("-");
-        title = "تقرير الأداء الشهري";
+    var area = el("reportContentArea");
+    var selVal = el("reportMonthSelect").value;
+    var now = new Date();
+    var title = "", dateRange = "", completedTasksCount = 0, completedGoalsCount = 0;
+    var overlay = el("reportBlurOverlay");
+    var isCurrentPeriod = false;
+    var filteredTasks = [];
+
+    if (currentReportType === "month") {
+        var parts = selVal.split("-"); var y = parts[0]; var m = parts[1];
+        title = "\u062a\u0642\u0631\u064a\u0631 \u0627\u0644\u0623\u062f\u0627\u0621 \u0627\u0644\u0634\u0647\u0631\u064a";
         dateRange = new Intl.DateTimeFormat("ar-EG", { month: "long", year: "numeric" }).format(new Date(y, m, 1));
         isCurrentPeriod = (parseInt(y) === now.getFullYear() && parseInt(m) === now.getMonth());
-        
-        filteredTasks = (S.archive.today||[]).filter(t => {
-            if(!t.archDate) return false; 
-            let d = new Date(t.archDate);
+        filteredTasks = (S.archive.today||[]).filter(function(t) {
+            if(!t.archDate) return false;
+            var d = new Date(t.archDate);
             return d.getFullYear() == y && d.getMonth() == m;
         });
-        
         completedTasksCount = filteredTasks.length;
-        completedGoalsCount = (S.archive.goals||[]).filter(g => {
-            if(!g.archDate) return false; 
-            let d = new Date(g.archDate);
+        completedGoalsCount = (S.archive.goals||[]).filter(function(g) {
+            if(!g.archDate) return false;
+            var d = new Date(g.archDate);
             return d.getFullYear() == y && d.getMonth() == m;
         }).length;
     } else {
-        title = "التقرير السنوي الشامل";
-        dateRange = `عام ${selVal}`;
+        title = "\u0627\u0644\u062a\u0642\u0631\u064a\u0631 \u0627\u0644\u0633\u0646\u0648\u064a \u0627\u0644\u0634\u0627\u0645\u0644";
+        dateRange = "\u0639\u0627\u0645 " + selVal;
         isCurrentPeriod = (parseInt(selVal) === now.getFullYear());
-        
         if (isCurrentPeriod) {
-            filteredTasks = (S.archive.today||[]).filter(t => t.archDate && new Date(t.archDate).getFullYear() == selVal);
+            filteredTasks = (S.archive.today||[]).filter(function(t) { return t.archDate && new Date(t.archDate).getFullYear() == selVal; });
             completedTasksCount = filteredTasks.length;
-            completedGoalsCount = (S.archive.goals||[]).filter(g => g.archDate && new Date(g.archDate).getFullYear() == selVal).length;
+            completedGoalsCount = (S.archive.goals||[]).filter(function(g) { return g.archDate && new Date(g.archDate).getFullYear() == selVal; }).length;
         } else {
-            let hist = S.archive.years[selVal];
-            if(hist) { 
-                filteredTasks = hist.tasks ? hist.tasks.filter(t => t.status === 'done') : []; 
-                completedTasksCount = "تم حفظه بالأرشيف"; 
-                completedGoalsCount = "تم حفظه بالأرشيف"; 
+            var hist = S.archive.years[selVal];
+            if(hist) {
+                filteredTasks = hist.tasks ? hist.tasks.filter(function(t) { return t.status === "done"; }) : [];
+                completedTasksCount = "\u062a\u0645 \u062d\u0641\u0638\u0647 \u0628\u0627\u0644\u0623\u0631\u0634\u064a\u0641";
+                completedGoalsCount = "\u062a\u0645 \u062d\u0641\u0638\u0647 \u0628\u0627\u0644\u0623\u0631\u0634\u064a\u0641";
             }
         }
     }
 
     if (overlay) {
-        if (isCurrentPeriod && now.getDate() !== 1) overlay.style.display = "flex";
-        else overlay.style.display = "none";
+        overlay.style.display = (isCurrentPeriod && now.getDate() !== 1) ? "flex" : "none";
     }
 
-    let curWeekSum = 0, prevWeekSum = 0;
-    for(let i=0; i<7; i++) {
-        let d1 = new Date(now); d1.setDate(d1.getDate()-i);
+    var curWeekSum = 0, prevWeekSum = 0;
+    for(var i=0; i<7; i++) {
+        var d1 = new Date(now); d1.setDate(d1.getDate()-i);
         curWeekSum += (S.history[d1.toISOString().split("T")[0]] || 0);
-        let d2 = new Date(now); d2.setDate(d2.getDate()-(i+7));
+        var d2 = new Date(now); d2.setDate(d2.getDate()-(i+7));
         prevWeekSum += (S.history[d2.toISOString().split("T")[0]] || 0);
     }
-    const curAvg = Math.round(curWeekSum/7);
-    const prevAvg = Math.round(prevWeekSum/7);
-    const trend = curAvg - prevAvg;
-    const expected = Math.min(100, curAvg + (trend > 0 ? Math.ceil(trend/2) : 0));
+    var curAvg = Math.round(curWeekSum/7);
+    var prevAvg = Math.round(prevWeekSum/7);
+    var trend = curAvg - prevAvg;
+    var expected = Math.min(100, curAvg + (trend > 0 ? Math.ceil(trend/2) : 0));
 
-    let courseGroups = {};
-    let generalTasks = [];
-    
-    filteredTasks.forEach(t => {
-        if(t.parentName) {
-            let cleanName = t.parentName.replace("🏆 ", ""); 
-            if(!courseGroups[cleanName]) courseGroups[cleanName] = [];
-            courseGroups[cleanName].push(t);
-        } else {
-            generalTasks.push(t);
+    function buildAccordion(tasks, prefix) {
+        if(!tasks.length) return "<div style='padding:8px;font-size:11px;color:var(--txt3);text-align:center;'>\u0644\u0627 \u062a\u0648\u062c\u062f \u0645\u0647\u0627\u0645</div>";
+        var groups = {}; var gen = [];
+        tasks.forEach(function(t) {
+            if(t.parentName) { var cn = t.parentName.replace("\u{1F3C6} ",""); if(!groups[cn]) groups[cn]=[]; groups[cn].push(t); }
+            else gen.push(t);
+        });
+        var html = "";
+        for(var c in groups) {
+            var sid = "g_"+prefix+"_"+Math.random().toString(36).substr(2,5);
+            html += "<div style='margin-bottom:5px;border:1px solid var(--border);border-radius:8px;overflow:hidden;'><div onclick=\"const d=document.getElementById('"+sid+"');d.style.display=d.style.display==='none'?'block':'none';this.querySelector('.aw').textContent=d.style.display==='none'?'&#9660;':'&#9650;'\" style='padding:8px 10px;cursor:pointer;display:flex;justify-content:space-between;background:rgba(59,130,246,0.06);'><span style='font-size:11px;font-weight:700;color:var(--blue2);'>\uD83D\uDCDA "+c+" ("+groups[c].length+")</span><span class='aw' style='font-size:10px;color:var(--txt3);'>&#9660;</span></div><div id='"+sid+"' style='display:none;padding:6px 10px;'><ul style='list-style:inside;color:var(--txt2);line-height:1.8;font-size:10px;'>"+groups[c].map(function(t){return "<li>\u2705 "+t.text+"</li>";}).join("")+"</ul></div></div>";
         }
-    });
-
-    let accordionHtml = "";
-    if (filteredTasks.length > 0) {
-        accordionHtml += `
-        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
-            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:15px;">📋 تفاصيل المهام المنجزة (حسب الكورس/المشروع)</h4>`;
-            
-        for(let course in courseGroups) {
-            let tasks = courseGroups[course];
-            let safeId = "rep_grp_" + Math.random().toString(36).substr(2, 9);
-            accordionHtml += `
-            <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;">
-                <div onclick="document.getElementById('${safeId}').classList.toggle('hidden')" style="padding:14px; cursor:pointer; display:flex; justify-content:space-between; background:rgba(255,255,255,0.02);">
-                    <strong style="color:var(--blue2);">📚 ${course}</strong>
-                    <span style="font-size:11px; color:var(--txt2); font-weight:bold; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:6px;">${tasks.length} مهام 🔽</span>
-                </div>
-                <div id="${safeId}" class="hidden" style="padding:10px 14px; border-top:1px solid var(--border); font-size:12px; color:var(--txt1);">
-                    <ul style="list-style:inside; color:var(--txt2); line-height:1.8;">
-                        ${tasks.map(t => `<li style="margin-bottom:6px;">${t.text} <span style="color:var(--green2); font-size:10px;">(تم)</span></li>`).join('')}
-                    </ul>
-                </div>
-            </div>`;
+        if(gen.length) {
+            var sid2 = "g_"+prefix+"_gen_"+Math.random().toString(36).substr(2,4);
+            html += "<div style='margin-bottom:5px;border:1px solid var(--border);border-radius:8px;overflow:hidden;'><div onclick=\"const d=document.getElementById('"+sid2+"');d.style.display=d.style.display==='none'?'block':'none';this.querySelector('.aw').textContent=d.style.display==='none'?'&#9660;':'&#9650;'\" style='padding:8px 10px;cursor:pointer;display:flex;justify-content:space-between;background:rgba(16,185,129,0.06);'><span style='font-size:11px;font-weight:700;color:var(--green2);'>\uD83D\uDCDD \u0645\u0647\u0627\u0645 \u0639\u0627\u0645\u0629 ("+gen.length+")</span><span class='aw' style='font-size:10px;color:var(--txt3);'>&#9660;</span></div><div id='"+sid2+"' style='display:none;padding:6px 10px;'><ul style='list-style:inside;color:var(--txt2);line-height:1.8;font-size:10px;'>"+gen.map(function(t){return "<li>\u2705 "+t.text+"</li>";}).join("")+"</ul></div></div>";
         }
-        
-        if (generalTasks.length > 0) {
-            let safeId = "rep_grp_" + Math.random().toString(36).substr(2, 9);
-            accordionHtml += `
-            <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;">
-                <div onclick="document.getElementById('${safeId}').classList.toggle('hidden')" style="padding:14px; cursor:pointer; display:flex; justify-content:space-between; background:rgba(255,255,255,0.02);">
-                    <strong style="color:var(--green2);">📝 مهام عامة متفرقة</strong>
-                    <span style="font-size:11px; color:var(--txt2); font-weight:bold; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:6px;">${generalTasks.length} مهام 🔽</span>
-                </div>
-                <div id="${safeId}" class="hidden" style="padding:10px 14px; border-top:1px solid var(--border); font-size:12px; color:var(--txt1);">
-                    <ul style="list-style:inside; color:var(--txt2); line-height:1.8;">
-                        ${generalTasks.map(t => `<li style="margin-bottom:6px;">${t.text} <span style="color:var(--green2); font-size:10px;">(تم)</span></li>`).join('')}
-                    </ul>
-                </div>
-            </div>`;
-        }
-        accordionHtml += `</div>`;
+        return html;
     }
 
-    let coursesHtml = "";
-    if (currentReportType === 'year') {
-        const completedCourses = (S.tasks||[]).filter(t => t.type === 'course' && t.status === 'done');
-        if (completedCourses.length > 0) {
-            coursesHtml = `
-            <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
-                <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">🎓 كورسات تم إنجازها بنجاح</h4>
-                <ul style="font-size:13px; line-height:1.8; list-style:inside; padding-right:15px; color:var(--blue2);">
-                    ${completedCourses.map(c => `<li><span class="report-text">${c.text}</span></li>`).join('')}
-                </ul>
-            </div>`;
+    var wNames = ["\u0627\u0644\u0623\u0648\u0644","\u0627\u0644\u062b\u0627\u0646\u064a","\u0627\u0644\u062b\u0627\u0644\u062b","\u0627\u0644\u0631\u0627\u0628\u0639"];
+    var weeklyHtml = "";
+    if(currentReportType === "month") {
+        var py = selVal.split("-")[0]; var pm = selVal.split("-")[1];
+        var dInM = new Date(parseInt(py), parseInt(pm)+1, 0).getDate();
+        weeklyHtml = "<div style='background:rgba(255,255,255,0.03);padding:20px;border-radius:16px;border:1px solid var(--border);margin-bottom:20px;'><h4 class='report-text' style='font-size:14px;font-weight:900;margin-bottom:14px;'>\uD83D\uDCC5 \u0627\u0644\u0634\u0647\u0631 \u0645\u0642\u0633\u0645 \u0639\u0644\u0649 4 \u0623\u0633\u0627\u0628\u064a\u0639</h4>";
+        for(var w=0; w<4; w++) {
+            var ds = w*7+1; var de = Math.min(ds+6, dInM);
+            if(ds > dInM) break;
+            var ww = w; // capture
+            var wt = filteredTasks.filter(function(t) { var d=new Date(t.archDate); return d.getDate()>=ds&&d.getDate()<=de; });
+            var bid = "wb_"+w;
+            weeklyHtml += "<div style='border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;'><div onclick=\"const d=document.getElementById('"+bid+"');d.style.display=d.style.display==='none'?'block':'none';this.querySelector('.wa').textContent=d.style.display==='none'?'&#9660;':'&#9650;'\" style='padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.02);'><span style='font-size:13px;font-weight:900;color:var(--txt1);'>\u0627\u0644\u0623\u0633\u0628\u0648\u0639 "+wNames[w]+" <span style='font-size:10px;color:var(--txt3);font-weight:400;'>("+ds+"\u2013"+de+")</span></span><span style='display:flex;align-items:center;gap:8px;'><span style='padding:2px 10px;border-radius:8px;font-size:11px;font-weight:700;background:"+(wt.length?"rgba(16,185,129,0.15)":"rgba(255,255,255,0.04)")+";color:"+(wt.length?"var(--green2)":"var(--txt3)")+";'>"+wt.length+" \u0645\u0647\u0645\u0629</span><span class='wa'>&#9660;</span></span></div><div id='"+bid+"' style='display:none;padding:10px 14px;border-top:1px solid var(--border);'>"+buildAccordion(wt,"m"+w)+"</div></div>";
         }
+        weeklyHtml += "</div>";
     }
-    
-    // Accurate Pie Chart
-    const tCounts = {};
-    filteredTasks.forEach(t => {
-        let tag = t.savedTag || "مهام عامة"; 
-        tCounts[tag] = (tCounts[tag] || 0) + 1;
-    });
-    
-    let pieDetailsHtml = Object.keys(tCounts).map(tag => {
-        let col = S.tagColors?.[tag] || "#64748b";
-        return `
-        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-            <span style="color:${col}">● ${tag}</span>
-            <span class="report-text" style="color:var(--txt2)">${tCounts[tag]} مهمة/درس</span>
-        </div>`;
+
+    var yearlyHtml = "";
+    if(currentReportType === "year") {
+        var mAr = ["\u064a\u0646\u0627\u064a\u0631","\u0641\u0628\u0631\u0627\u064a\u0631","\u0645\u0627\u0631\u0633","\u0623\u0628\u0631\u064a\u0644","\u0645\u0627\u064a\u0648","\u064a\u0648\u0646\u064a\u0648","\u064a\u0648\u0644\u064a\u0648","\u0623\u063a\u0633\u0637\u0633","\u0633\u0628\u062a\u0645\u0628\u0631","\u0623\u0643\u062a\u0648\u0628\u0631","\u0646\u0648\u0641\u0645\u0628\u0631","\u062f\u064a\u0633\u0645\u0628\u0631"];
+        yearlyHtml = "<div style='background:rgba(255,255,255,0.03);padding:20px;border-radius:16px;border:1px solid var(--border);margin-bottom:20px;'><h4 class='report-text' style='font-size:14px;font-weight:900;margin-bottom:14px;'>\uD83D\uDCC5 \u0627\u0644\u0633\u0646\u0629 \u0645\u0642\u0633\u0645\u0629 \u0639\u0644\u0649 12 \u0634\u0647\u0631 (\u0643\u0644 \u0634\u0647\u0631 4 \u0623\u0633\u0627\u0628\u064a\u0639)</h4>";
+        for(var mo=0; mo<12; mo++) {
+            var moC = mo; // capture
+            var mt = filteredTasks.filter(function(t) { if(!t.archDate) return false; var d=new Date(t.archDate); return d.getFullYear()==selVal&&d.getMonth()===moC; });
+            var dInMo = new Date(parseInt(selVal), mo+1, 0).getDate();
+            var mbid = "mb_"+mo;
+            yearlyHtml += "<div style='border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;'><div onclick=\"const d=document.getElementById('"+mbid+"');d.style.display=d.style.display==='none'?'block':'none';this.querySelector('.ma').textContent=d.style.display==='none'?'&#9660;':'&#9650;'\" style='padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.02);'><span style='font-size:13px;font-weight:900;color:var(--txt1);'>\uD83D\uDDD3\uFE0F "+mAr[mo]+"</span><span style='display:flex;align-items:center;gap:8px;'><span style='padding:2px 10px;border-radius:8px;font-size:11px;font-weight:700;background:"+(mt.length?"rgba(59,130,246,0.15)":"rgba(255,255,255,0.04)")+";color:"+(mt.length?"var(--blue2)":"var(--txt3)")+";'>"+mt.length+" \u0645\u0647\u0645\u0629</span><span class='ma'>&#9660;</span></span></div><div id='"+mbid+"' style='display:none;padding:10px 14px;border-top:1px solid var(--border);'>";
+            for(var ww=0; ww<4; ww++) {
+                var wds = ww*7+1; var wde = Math.min(wds+6, dInMo);
+                if(wds > dInMo) break;
+                var wwC = ww; var wdsC = wds; var wdeC = wde;
+                var wt2 = mt.filter(function(t) { var d=new Date(t.archDate); return d.getDate()>=wdsC&&d.getDate()<=wdeC; });
+                var wbid = "yw_"+mo+"_"+ww;
+                yearlyHtml += "<div style='border:1px solid rgba(255,255,255,0.06);border-radius:9px;margin-bottom:7px;overflow:hidden;'><div onclick=\"const d=document.getElementById('"+wbid+"');d.style.display=d.style.display==='none'?'block':'none';this.querySelector('.ya').textContent=d.style.display==='none'?'&#9660;':'&#9650;'\" style='padding:9px 12px;cursor:pointer;display:flex;justify-content:space-between;'><span style='font-size:12px;font-weight:700;color:var(--txt2);'>\u0627\u0644\u0623\u0633\u0628\u0648\u0639 "+wNames[ww]+" ("+wds+"\u2013"+wde+")</span><span style='display:flex;align-items:center;gap:6px;'><span style='font-size:10px;color:var(--txt3);'>"+wt2.length+" \u0645\u0647\u0645\u0629</span><span class='ya'>&#9660;</span></span></div><div id='"+wbid+"' style='display:none;padding:8px 12px;border-top:1px solid rgba(255,255,255,0.04);'>"+buildAccordion(wt2,"y"+mo+"w"+ww)+"</div></div>";
+            }
+            yearlyHtml += "</div></div>";
+        }
+        yearlyHtml += "</div>";
+    }
+
+    var tCounts = {};
+    filteredTasks.forEach(function(t) { var tag=t.savedTag||"\u0645\u0647\u0627\u0645 \u0639\u0627\u0645\u0629"; tCounts[tag]=(tCounts[tag]||0)+1; });
+    var pieDetails = Object.keys(tCounts).map(function(tag) {
+        var col = (S.tagColors&&S.tagColors[tag])||"#64748b";
+        return "<div style='display:flex;justify-content:space-between;font-size:13px;font-weight:bold;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);'><span style='color:"+col+"'>\u25cf "+tag+"</span><span class='report-text' style='color:var(--txt2)'>"+tCounts[tag]+" \u0645\u0647\u0645\u0629</span></div>";
     }).join("");
+    var pieSection = Object.keys(tCounts).length > 0 ? "<div style='background:rgba(255,255,255,0.03);padding:20px;border-radius:16px;border:1px solid var(--border);margin-bottom:20px;text-align:center;'><h4 class='report-text' style='font-size:14px;font-weight:900;margin-bottom:15px;'>\u062a\u0648\u0632\u064a\u0639 \u0627\u0644\u0623\u0642\u0633\u0627\u0645</h4><div style='height:180px;position:relative;margin-bottom:20px;'><canvas id='reportPieChartCanvas'></canvas></div><div style='text-align:right;'>"+pieDetails+"</div></div>" : "";
 
-    let pieSection = "";
-    if (Object.keys(tCounts).length > 0) {
-        pieSection = `
-        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px; text-align:center;">
-            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:15px;">توزيع الأقسام (في هذا التقرير)</h4>
-            <div style="height:180px; position:relative; margin-bottom:20px;"><canvas id="reportPieChartCanvas"></canvas></div>
-            <div style="text-align:right;">${pieDetailsHtml}</div>
-        </div>`;
+    var coursesHtml = "";
+    if(currentReportType === "year") {
+        var cc = (S.tasks||[]).filter(function(t){ return t.type==="course"&&t.status==="done"; });
+        if(cc.length) coursesHtml = "<div style='background:rgba(255,255,255,0.03);padding:20px;border-radius:16px;border:1px solid var(--border);margin-bottom:20px;'><h4 class='report-text' style='font-size:14px;font-weight:900;margin-bottom:10px;'>\uD83C\uDF93 \u0643\u0648\u0631\u0633\u0627\u062a \u062a\u0645 \u0625\u0646\u062c\u0627\u0632\u0647\u0627</h4><ul style='font-size:13px;line-height:1.8;list-style:inside;color:var(--blue2);'>"+cc.map(function(c){return "<li><span class='report-text'>"+c.text+"</span></li>";}).join("")+"</ul></div>";
     }
 
-    area.innerHTML = `
-        <div style="text-align:center; margin-bottom:30px;">
-            <div style="font-size:40px; margin-bottom:10px;">🏆</div>
-            <h1 class="report-text" style="font-size:28px; font-weight:900; margin-bottom:5px;">${title}</h1>
-            <p class="report-text" style="font-size:14px; opacity:0.7;">${dateRange}</p>
-        </div>
-        
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:30px;">
-            <div style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.2); padding:20px; border-radius:16px; text-align:center;">
-                <div style="font-size:32px; font-weight:900; color:var(--green2);">${completedTasksCount}</div>
-                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">مهام تم إنجازها</div>
-            </div>
-            <div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.2); padding:20px; border-radius:16px; text-align:center;">
-                <div style="font-size:32px; font-weight:900; color:var(--blue2);">${completedGoalsCount}</div>
-                <div class="report-text" style="font-size:12px; font-weight:bold; margin-top:5px;">أهداف تم تحقيقها</div>
-            </div>
-        </div>
-        
-        ${pieSection}
+    var trendColor = trend >= 0 ? "var(--green2)" : "var(--red)";
+    var trendText = trend > 0 ? "\uD83D\uDCC8 \u062a\u0642\u062f\u0645\u062a "+trend+"%!" : trend < 0 ? "\uD83D\uDCC9 \u062a\u0631\u0627\u062c\u0639\u062a "+Math.abs(trend)+"%" : "\u2796 \u062b\u0627\u0628\u062a";
 
-        <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px;">
-            <h4 class="report-text" style="font-size:14px; font-weight:900; margin-bottom:10px;">📊 تحليل الأداء الأسبوعي</h4>
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
-              <span class="report-text">الأسبوع الحالي: <b style="color:var(--blue2)">${curAvg}%</b></span>
-              <span class="report-text">الأسبوع السابق: <b>${prevAvg}%</b></span>
-            </div>
-            <div style="font-size:13px; font-weight:bold; color:${trend>=0?'var(--green2)':'var(--red)'}; margin-bottom:10px;">
-              ${trend > 0 ? '📈 تقدمت بنسبة '+trend+'%!' : trend < 0 ? '📉 تراجعت بنسبة '+Math.abs(trend)+'%، شد حيلك!' : '➖ مستوى ثابت'}
-            </div>
-            <div class="report-text" style="font-size:12px; opacity:0.8;">النسبة المتوقعة الأسبوع القادم: <b>${expected}%</b> 🎯</div>
-        </div>
-        
-        ${accordionHtml}
-        ${coursesHtml}
-    `;
+    area.innerHTML = "<div style='text-align:center;margin-bottom:30px;'><div style='font-size:40px;margin-bottom:10px;'>\uD83C\uDFC6</div><h1 class='report-text' style='font-size:28px;font-weight:900;margin-bottom:5px;'>"+title+"</h1><p class='report-text' style='font-size:14px;opacity:0.7;'>"+dateRange+"</p></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px;'><div style='background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:20px;border-radius:16px;text-align:center;'><div style='font-size:32px;font-weight:900;color:var(--green2);'>"+completedTasksCount+"</div><div class='report-text' style='font-size:12px;font-weight:bold;margin-top:5px;'>\u0645\u0647\u0627\u0645 \u062a\u0645 \u0625\u0646\u062c\u0627\u0632\u0647\u0627</div></div><div style='background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:20px;border-radius:16px;text-align:center;'><div style='font-size:32px;font-weight:900;color:var(--blue2);'>"+completedGoalsCount+"</div><div class='report-text' style='font-size:12px;font-weight:bold;margin-top:5px;'>\u0623\u0647\u062f\u0627\u0641 \u062a\u0645 \u062a\u062d\u0642\u064a\u0642\u0647\u0627</div></div></div>"+pieSection+"<div style='background:rgba(255,255,255,0.03);padding:20px;border-radius:16px;border:1px solid var(--border);margin-bottom:20px;'><h4 class='report-text' style='font-size:14px;font-weight:900;margin-bottom:10px;'>\uD83D\uDCCA \u062a\u062d\u0644\u064a\u0644 \u0627\u0644\u0623\u062f\u0627\u0621</h4><div style='display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;'><span class='report-text'>\u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0627\u0644\u062d\u0627\u0644\u064a: <b style='color:var(--blue2)'>"+curAvg+"%</b></span><span class='report-text'>\u0627\u0644\u0633\u0627\u0628\u0642: <b>"+prevAvg+"%</b></span></div><div style='font-size:13px;font-weight:bold;color:"+trendColor+";margin-bottom:10px;'>"+trendText+"</div><div class='report-text' style='font-size:12px;opacity:0.8;'>\u0627\u0644\u0645\u062a\u0648\u0642\u0639: <b>"+expected+"%</b> \uD83C\uDFAF</div></div>"+weeklyHtml+yearlyHtml+coursesHtml;
 
-    setTimeout(() => {
-        const pCtx = el("reportPieChartCanvas");
+    setTimeout(function() {
+        var pCtx = el("reportPieChartCanvas");
         if(pCtx && typeof Chart !== "undefined" && Object.keys(tCounts).length > 0) {
-            const lbls = Object.keys(tCounts), dts = Object.values(tCounts);
-            const cols = lbls.map(tag => S.tagColors?.[tag] || "#64748b");
-            new Chart(pCtx, {
-                type: "doughnut",
-                data: {
-                    labels: lbls, 
-                    datasets: [{data:dts, backgroundColor:cols, borderColor:"transparent", borderWidth:2}]
-                },
-                options: {
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    cutout: "60%", 
-                    plugins: {legend: {display: false}}
-                }
-            });
+            var lbls=Object.keys(tCounts), dts=Object.values(tCounts);
+            var cols=lbls.map(function(tag){return (S.tagColors&&S.tagColors[tag])||"#64748b";});
+            new Chart(pCtx, { type:"doughnut", data:{labels:lbls,datasets:[{data:dts,backgroundColor:cols,borderColor:"transparent",borderWidth:2}]}, options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{display:false}}} });
         }
     }, 200);
 };
-
 window.closeReportModal = function() {
     el("reportViewModal").classList.remove("show");
 };
@@ -2606,11 +2552,20 @@ window.applyBg = function() {
     if(S.appBg.pattern === 'dots') {
         bgImageLayers.push('radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)');
         bgSizes.push('15px 15px');
+    } else if(S.appBg.pattern === 'dots-lg') {
+        bgImageLayers.push('radial-gradient(rgba(255,255,255,0.15) 2px, transparent 2px)');
+        bgSizes.push('25px 25px');
     } else if(S.appBg.pattern === 'grid') {
         bgImageLayers.push('linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)');
         bgSizes.push('20px 20px, 20px 20px');
+    } else if(S.appBg.pattern === 'grid-lg') {
+        bgImageLayers.push('linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)');
+        bgSizes.push('40px 40px, 40px 40px');
     } else if(S.appBg.pattern === 'stripes') {
         bgImageLayers.push('repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px)');
+        bgSizes.push('auto');
+    } else if(S.appBg.pattern === 'stripes-v') {
+        bgImageLayers.push('repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 20px)');
         bgSizes.push('auto');
     } else if(S.appBg.pattern === 'diamonds') {
         bgImageLayers.push('linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.05) 75%, rgba(255,255,255,0.05)), linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.05) 75%, rgba(255,255,255,0.05))');
@@ -2626,6 +2581,12 @@ window.applyBg = function() {
     } else if(S.appBg.pattern === 'paper') {
         bgImageLayers.push('repeating-linear-gradient(transparent, transparent 19px, rgba(255,255,255,0.05) 19px, rgba(255,255,255,0.05) 20px)');
         bgSizes.push('100% 20px');
+    } else if(S.appBg.pattern === 'cross') {
+        bgImageLayers.push('linear-gradient(rgba(255,255,255,0.08) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,0.08) 2px, transparent 2px), linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)');
+        bgSizes.push('50px 50px, 50px 50px, 10px 10px, 10px 10px');
+    } else if(S.appBg.pattern === 'hexagon') {
+        bgImageLayers.push('radial-gradient(circle at 0% 50%, transparent 20%, rgba(255,255,255,0.04) 21%, rgba(255,255,255,0.04) 34%, transparent 35%), radial-gradient(circle at 100% 50%, transparent 20%, rgba(255,255,255,0.04) 21%, rgba(255,255,255,0.04) 34%, transparent 35%)');
+        bgSizes.push('30px 15px, 30px 15px');
     }
 
     if(S.appBg.baseType === 'gradient') {
@@ -4323,7 +4284,7 @@ window.renderHeatmap = function() {
        
             if(inYear) { 
                 if(pct === -1) bg = "rgba(255,255,255,0.02)"; 
-                else if(pct === 0) bg = "#ef4444";
+                else if(pct === 0) bg = "rgba(239, 68, 68, 0.3)";
                 else if(pct < 50) bg = "#f59e0b";
                 else if(pct < 80) bg = "#10b981";
                 else bg = "#059669";
@@ -4382,13 +4343,52 @@ window.renderCharts = function() {
             }]
         },
         options: {
-            responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+            responsive:true, maintainAspectRatio:false,
+            plugins:{
+                legend:{display:false},
+                tooltip: {
+                    callbacks: {
+                        afterBody: function(context) {
+                            const idx = context[0].dataIndex;
+                            const d = new Date(baseDate);
+                            d.setDate(d.getDate() - (6 - idx));
+                            const dayKey = getLocalISO(d);
+                            const dayTasks = (S.archive.today || []).filter(t => {
+                                if(!t.archDate) return false;
+                                const taskD = new Date(t.archDate);
+                                return getLocalISO(taskD) === dayKey;
+                            });
+                            // also check current todayTasks if it's today
+                            const todayKey = getLocalISO(new Date());
+                            let extra = [];
+                            if(dayKey === todayKey && chartWeekOffset === 0) {
+                                extra = (S.todayTasks || []).filter(t => t.done);
+                            }
+                            const all = [...dayTasks, ...extra];
+                            if(!all.length) return ['لا توجد مهام منجزة'];
+                            return ['المهام المنجزة:', ...all.slice(0,6).map(t => '\u2713 ' + t.text), all.length > 6 ? `... و${all.length - 6} أخرى` : ''];
+                        }
+                    }
+                }
+            },
             scales: {
                 y: {min:0, max:100, ticks:{color:"#46607a",font:{family:"Cairo"}}, grid:{color:"rgba(255,255,255,0.04)"}},
                 x: {ticks:{color:"#46607a",font:{family:"Cairo"}}, grid:{display:false}}
             }
         }
     });
+
+    // Update weekly achievement percentage badge
+    const weeklyPctEl = document.getElementById('weeklyAchievementPct');
+    if(weeklyPctEl) {
+        const weekAvg = data.length > 0 ? Math.round(data.reduce((a, b) => a + b, 0) / data.filter(v => v > 0).length || 0) : 0;
+        const validDays = data.filter(v => v > 0);
+        const pctVal = Math.round(data.reduce((a,b) => a+b, 0) / 7);
+        weeklyPctEl.textContent = pctVal + '%';
+        weeklyPctEl.style.color = pctVal >= 70 ? 'var(--green2)' : pctVal >= 40 ? 'var(--amber)' : 'var(--red)';
+        weeklyPctEl.style.background = pctVal >= 70 ? 'rgba(16,185,129,0.12)' : pctVal >= 40 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
+        weeklyPctEl.style.borderColor = pctVal >= 70 ? 'rgba(16,185,129,0.25)' : pctVal >= 40 ? 'rgba(245,158,11,0.25)' : 'rgba(239,68,68,0.25)';
+    }
   
     const tagCounts = {};
     const stDate = new Date(baseDate); stDate.setDate(stDate.getDate()-6); stDate.setHours(0,0,0,0);
