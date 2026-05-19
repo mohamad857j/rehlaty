@@ -1218,10 +1218,12 @@
                         <h2 style="font-size:28px;font-weight:900;color:var(--txt1);letter-spacing:-0.5px;margin-bottom:4px;">هنعمل إيه النهارده 🎯</h2>
                         <div id="dateDisplay"></div>
                     </div>
-                    <div style="display:flex; gap:10px;">
+                    <div style="display:flex; gap:10px; align-items: center;">
                         <button class="btn-ghost close-btn-high" onclick="window.openScheduledModal()" style="background:var(--bg3); border-color:var(--border);">📅 المهام المجدولة</button>
                         <button class="btn-ghost close-btn-high" onclick="window.openSuggestionsModal()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
                         <button class="btn-ghost close-btn-high" onclick="window.openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
+                        <button id="btnPendingReflections" class="btn-ghost close-btn-high" onclick="window.openPendingReflections()" style="background:rgba(245,158,11,0.15); border-color:rgba(245,158,11,0.3); color:var(--amber); display:none; position:relative; gap: 8px; align-items: center; font-weight: bold;">⏳ تقييمات معلقة <span id="pendingCount" style="background:var(--red); color:white; border-radius:50%; width:18px; height:18px; font-size:10px; display:flex; align-items:center; justify-content:center; font-weight:bold;">0</span></button>
+                        <button class="btn-primary close-btn-high" onclick="window.endDayPrompt()" style="background: linear-gradient(135deg, var(--purple), var(--blue)); box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);">🏁 إنهاء اليوم</button>
                     </div>
                 </div>
                 
@@ -1928,6 +1930,154 @@ window.saveDataSilently = function() {
     }
 };
 
+/* ════════ REFLECTION & EVALUATION LOGIC ════════ */
+let activeReflectionTaskId = null;
+let currentTrRating = 0;
+
+window.setTrRating = function(r) {
+    currentTrRating = r;
+    const stars = el("trStars").children;
+    for(let i=0; i<5; i++) {
+        stars[i].style.opacity = i < r ? "1" : "0.3";
+        stars[i].style.filter = i < r ? "drop-shadow(0 0 8px rgba(255, 215, 0, 0.7))" : "none";
+    }
+};
+
+window.openTaskReflection = function(id) {
+    const t = S.todayTasks.find(x => x.id === id);
+    if(!t) return;
+    activeReflectionTaskId = id;
+    el("trTaskName").textContent = t.text;
+    el("trNote").value = "";
+    window.setTrRating(0);
+    el("taskReflectionModal").classList.add("show");
+};
+
+window.skipTaskReflection = function() {
+    el("taskReflectionModal").classList.remove("show");
+    window.checkPendingReflections();
+    window.showToast("المهمة اكتملت! التقييم معلق مؤقتاً ⏳", "success");
+};
+
+window.submitTaskReflection = function() {
+    if(currentTrRating === 0) {
+        window.showToast("كيف كان تركيزك؟ اختر التقييم بالنجوم أولاً!", "error");
+        return;
+    }
+    const t = S.todayTasks.find(x => x.id === activeReflectionTaskId);
+    if(t) {
+        t.reflection = {
+            rating: currentTrRating,
+            note: el("trNote").value.trim()
+        };
+        window.saveData();
+        window.showToast("حفظنا تقييمك يا بطل! 🌟", "success");
+    }
+    el("taskReflectionModal").classList.remove("show");
+    window.checkPendingReflections();
+    
+    if(el("pendingReflectionsModal").classList.contains("show")) {
+        window.renderPendingReflections();
+    }
+};
+
+window.checkPendingReflections = function() {
+    if(!S.todayTasks) return;
+    const pendingTasks = S.todayTasks.filter(t => t.done && !t.reflection);
+    const count = pendingTasks.length;
+    const btn = el("btnPendingReflections");
+    const cnt = el("pendingCount");
+    
+    if(count > 0) {
+        btn.style.display = "inline-flex";
+        cnt.textContent = count;
+    } else {
+        btn.style.display = "none";
+        if(el("pendingReflectionsModal").classList.contains("show")) {
+            window.closePendingReflections();
+        }
+    }
+};
+
+window.openPendingReflections = function() {
+    window.renderPendingReflections();
+    el("pendingReflectionsModal").classList.add("show");
+};
+
+window.closePendingReflections = function() {
+    el("pendingReflectionsModal").classList.remove("show");
+};
+
+window.renderPendingReflections = function() {
+    const pendingTasks = S.todayTasks.filter(t => t.done && !t.reflection);
+    const list = el("prList");
+    
+    if(pendingTasks.length === 0) {
+        list.innerHTML = "<p style='text-align:center;opacity:0.4;font-weight:bold;padding:20px;'>كل مهامك تم تقييمها بنجاح! 🎉</p>";
+        return;
+    }
+    
+    list.innerHTML = pendingTasks.map(t => `
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:16px; border-radius:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:13px; font-weight:bold; color:var(--txt1);">${t.text}</div>
+            <button onclick="window.openTaskReflection('${t.id}')" style="background:rgba(59,130,246,0.15); color:var(--blue2); border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:bold; cursor:pointer;">تقييم الآن ⭐</button>
+        </div>
+    `).join("");
+};
+
+window.endDayPrompt = function() {
+    const pendingTasks = S.todayTasks.filter(t => t.done && !t.reflection);
+    if(pendingTasks.length > 0) {
+        window.showToast("أنهِ تقييمات المهام المعلقة أولاً! ⏳", "error");
+        window.openPendingReflections();
+        return;
+    }
+    
+    // Day End Evaluation Modal
+    el("dayRefNote").value = "";
+    window.setDayRating(0);
+    el("dayReflectionModal").classList.add("show");
+};
+
+let currentDayRating = 0;
+window.setDayRating = function(r) {
+    currentDayRating = r;
+    const stars = el("dayStars").children;
+    for(let i=0; i<5; i++) {
+        stars[i].style.opacity = i < r ? "1" : "0.3";
+        stars[i].style.filter = i < r ? "drop-shadow(0 0 8px rgba(255, 215, 0, 0.7))" : "none";
+    }
+};
+
+window.skipDayReflection = function() {
+    el("dayReflectionModal").classList.remove("show");
+};
+
+window.submitDayReflection = function() {
+    if(currentDayRating === 0) {
+        window.showToast("يرجى تقييم يومك بالنجوم أولاً!", "error");
+        return;
+    }
+    
+    const todayStr = getLocalISO();
+    if(!S.reflections) S.reflections = {};
+    S.reflections[todayStr] = {
+        rating: currentDayRating,
+        note: el("dayRefNote").value.trim(),
+        date: todayStr
+    };
+    
+    el("dayReflectionModal").classList.remove("show");
+    
+    // Trigger daily sweep and archive
+    S.lastDate = "ForcedEnd"; 
+    dailySweep();
+    window.updateDate();
+    window.saveData();
+    window.showToast("تم حفظ تقييم اليوم وأرشفة المهام بنجاح! غداً يوم جديد ومثمر 🏆", "success");
+};
+
+
 /* ════════ DAILY MAINTENANCE & REPORTS ════════ */
 function dailySweep() {
     const today = new Date().toDateString();
@@ -2497,6 +2647,8 @@ window.updateStats = function() {
     const todayDateKey = getLocalISO();
     if(!S.history) S.history = {};
     S.history[todayDateKey] = pct;
+    
+    if(window.checkPendingReflections) window.checkPendingReflections();
 }
 
 /* ════════ TABS / SIDEBAR / THEME / PERIODS ════════ */
@@ -2956,6 +3108,13 @@ window.toggleTodayTask = function(id) {
     if(!t) return;
     
     t.done = !t.done;
+    if(t.done) {
+        window.openTaskReflection(id);
+    } else {
+        delete t.reflection;
+        if(window.checkPendingReflections) window.checkPendingReflections();
+    }
+    
     if(t.parentId && t.subIdx !== undefined){
         const parent = S.tasks.find(x => x.id === t.parentId);
         if(parent && parent.subtasks && parent.subtasks[t.subIdx]){
@@ -2985,10 +3144,10 @@ window.toggleTodayTask = function(id) {
         }
     }
     if(t.done){
-        window.showToast("عاش يا وحش! 👏", "success");
         window.playSound("ok");
     }
     window.saveData();
+    window.renderTodayTasks(); 
 };
 
 window.delTodayTask = function(id) {
@@ -4735,6 +4894,69 @@ window.cdtpSave = function() {
 };
 
 </script>
+
+<!-- TASK REFLECTION MODAL -->
+<div id="taskReflectionModal" class="modal-bg" style="z-index: 110000;">
+    <div class="modal-box" style="width: 400px; padding: 25px; text-align: center; background: linear-gradient(145deg, #0d1527, #080c18); border: 1px solid rgba(59, 130, 246, 0.2);">
+        <h3 style="font-size: 20px; font-weight: 900; color: var(--txt1); margin-bottom: 10px;">تقييم المهمة 🎯</h3>
+        <p id="trTaskName" style="font-size: 14px; color: var(--blue2); margin-bottom: 20px; font-weight: bold;"></p>
+        
+        <div style="margin-bottom: 20px;">
+            <div style="font-size: 13px; color: var(--txt2); margin-bottom: 8px;">كيف تقيم أداءك وتركيزك في هذه المهمة؟</div>
+            <div id="trStars" style="display:flex; justify-content:center; gap:8px; font-size:28px; cursor:pointer;">
+                <span onclick="window.setTrRating(1)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setTrRating(2)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setTrRating(3)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setTrRating(4)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setTrRating(5)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+            </div>
+        </div>
+        
+        <textarea id="trNote" class="field" placeholder="ملاحظة سريعة حول ما تعلمته أو واجهته (اختياري)..." style="height: 80px; margin-bottom: 20px; resize:none; background: rgba(0,0,0,0.3); border-color: var(--border);"></textarea>
+        
+        <div style="display: flex; gap: 10px;">
+            <button onclick="window.skipTaskReflection()" style="flex: 1; background: transparent; border: 1px solid var(--border); color: var(--txt2); padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px;">تخطي مؤقتاً ⏭️</button>
+            <button onclick="window.submitTaskReflection()" style="flex: 2; background: linear-gradient(135deg, var(--green), var(--green2)); color: white; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">حفظ التقييم ✅</button>
+        </div>
+    </div>
+</div>
+
+<!-- PENDING REFLECTIONS MODAL -->
+<div id="pendingReflectionsModal" class="modal-bg" style="z-index: 110000;">
+    <div class="modal-box" style="width: 450px; padding: 25px; background: linear-gradient(145deg, #0d1527, #080c18); border: 1px solid rgba(59, 130, 246, 0.2);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="font-size: 20px; font-weight: 900; color: var(--txt1);">تقييمات معلقة ⏳</h3>
+            <button onclick="window.closePendingReflections()" style="background: transparent; border: none; font-size: 20px; color: var(--txt3); cursor: pointer;">✕</button>
+        </div>
+        <div id="prList" style="max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
+    </div>
+</div>
+
+<!-- DAY REFLECTION MODAL -->
+<div id="dayReflectionModal" class="modal-bg" style="z-index: 110000;">
+    <div class="modal-box" style="width: 420px; padding: 25px; text-align: center; background: linear-gradient(145deg, #0d1527, #080c18); border: 1px solid rgba(139, 92, 246, 0.3);">
+        <h3 style="font-size: 22px; font-weight: 900; color: var(--txt1); margin-bottom: 10px;">🏁 إنهاء وتقييم اليوم</h3>
+        <p style="font-size: 13px; color: var(--txt2); margin-bottom: 20px;">عاش يا بطل على مجهودك اليوم! قيم يومك إجمالاً قبل إغلاقه.</p>
+        
+        <div style="margin-bottom: 20px;">
+            <div style="font-size: 13px; color: var(--txt2); margin-bottom: 8px;">كيف تقيم إنتاجيتك الإجمالية اليوم؟</div>
+            <div id="dayStars" style="display:flex; justify-content:center; gap:8px; font-size:30px; cursor:pointer;">
+                <span onclick="window.setDayRating(1)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(2)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(3)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(4)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(5)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+            </div>
+        </div>
+        
+        <textarea id="dayRefNote" class="field" placeholder="ما هي التحديات التي واجهتك؟ وكيف ستجعل يوم الغد أفضل؟" style="height: 100px; margin-bottom: 20px; resize:none; background: rgba(0,0,0,0.3); border-color: var(--border);"></textarea>
+        
+        <div style="display: flex; gap: 10px;">
+            <button onclick="window.skipDayReflection()" style="flex: 1; background: transparent; border: 1px solid var(--border); color: var(--txt2); padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px;">تخطي مؤقتاً ⏭️</button>
+            <button onclick="window.submitDayReflection()" style="flex: 2; background: linear-gradient(135deg, var(--purple), var(--blue)); color: white; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);">حفظ وإنهاء اليوم 🏆</button>
+        </div>
+    </div>
+</div>
 
 <!-- CUSTOM DATE TIME PICKER MODAL -->
 <div id="customDateTimePicker" class="modal-bg" style="z-index: 999999; display:none;">
