@@ -1223,7 +1223,7 @@
                         <button class="btn-ghost close-btn-high" onclick="window.openSuggestionsModal()" style="background:var(--bg3); border-color:var(--border);">💡 مقترحات</button>
                         <button class="btn-ghost close-btn-high" onclick="window.openArchiveModal('today')" style="background:var(--bg3); border-color:var(--border);">📦 سجل الإنجازات</button>
                         <button id="btnPendingReflections" class="btn-ghost close-btn-high" onclick="window.openPendingReflections()" style="background:rgba(245,158,11,0.15); border-color:rgba(245,158,11,0.3); color:var(--amber); display:none; position:relative; gap: 8px; align-items: center; font-weight: bold;">⏳ تقييمات معلقة <span id="pendingCount" style="background:var(--red); color:white; border-radius:50%; width:18px; height:18px; font-size:10px; display:flex; align-items:center; justify-content:center; font-weight:bold;">0</span></button>
-                        <button class="btn-primary close-btn-high" onclick="window.endDayPrompt()" style="background: linear-gradient(135deg, var(--purple), var(--blue)); box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);">🏁 إنهاء اليوم</button>
+                        <button class="btn-primary close-btn-high" onclick="if(confirm('هل أنت متأكد من إنهاء اليوم يدوياً وأرشفة المهام؟')) { dailySweep(); window.updateStats(); window.showToast('تم أرشفة مهام اليوم بنجاح ✅', 'success'); window.renderTodayTasks(); }" style="background: linear-gradient(135deg, var(--purple), var(--blue)); box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);">🏁 إنهاء اليوم</button>
                     </div>
                 </div>
                 
@@ -2159,151 +2159,6 @@ window.saveDataSilently = function() {
 };
 
 
-};
-
-let currentDayRating = 0;
-let currentInlineDayRating = 0; // للكارد المدمج
-
-window.setInlineDayRating = function(r) {
-    currentInlineDayRating = r;
-    const starsEl = document.getElementById('inlineDayStars');
-    if(!starsEl) return;
-    const stars = starsEl.children;
-    for(let i=0; i<5; i++) {
-        stars[i].style.opacity = i < r ? '1' : '0.3';
-        stars[i].style.filter = i < r ? 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.8))' : 'none';
-        stars[i].style.transform = i < r ? 'scale(1.1)' : 'scale(1)';
-    }
-};
-
-window.skipInlineDayEnd = function() {
-    const card = document.getElementById('inlineDayEndCard');
-    if(card) card.remove();
-    window.showToast('تم تخطي تقييم اليوم • يمكنك إنهاء اليوم لاحقاً من زر إنهاء اليوم &#9203;', 'info');
-};
-
-window.submitInlineDayEnd = function() {
-    if(currentInlineDayRating === 0) {
-        window.showToast('اختر تقييمك بالنجوم أولاً!', 'error');
-        return;
-    }
-    const noteEl = document.getElementById('inlineDayNote');
-    const note = noteEl ? noteEl.value.trim() : '';
-    const today = getLocalISO();
-    
-    // حفظ التقييم اليومي
-    if(!S.reflections) S.reflections = {};
-    S.reflections[today] = { rating: currentInlineDayRating, note: note, date: today };
-    
-    // أرشفة المهام المنجزة بشكل آمن – بدون حيلة ForcedEnd
-    if(!S.archive) S.archive = { today: [], goals: [], years: {} };
-    const now = new Date();
-    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-    const toArchive = [];
-    const toKeep = [];
-    
-    (S.todayTasks || []).forEach(t => {
-        const isFuture = !t.done && t.dueDate && new Date(t.dueDate) > endOfToday;
-        if(isFuture) {
-            toKeep.push(t);
-        } else if(t.done) {
-            let finalTag = "بدون قسم";
-            if(t.parentId) {
-                const parent = S.tasks.find(x => x.id === t.parentId);
-                if(parent && parent.tag) finalTag = parent.tag;
-            }
-            S.archive.today.push({...t, archDate: today, savedTag: finalTag});
-        } else {
-            S.suggestions.unshift({...t, archDate: today});
-        }
-    });
-    S.todayTasks = toKeep;
-    S.lastDate = today; // حفظ بصيغة ISO الصحيحة
-    
-    currentInlineDayRating = 0;
-    window.saveData();
-    window.showToast('رائع يا بطل! تم حفظ تقييم اليوم وأرشفة المهام ✅', 'success');
-    setTimeout(window.renderTodayTasks, 100);
-};
-
-window.setDayRating = function(r) {
-    currentDayRating = r;
-    const stars = el("dayStars").children;
-    for(let i=0; i<5; i++) {
-        stars[i].style.opacity = i < r ? "1" : "0.3";
-        stars[i].style.filter = i < r ? "drop-shadow(0 0 8px rgba(255, 215, 0, 0.7))" : "none";
-    }
-};
-
-window.skipDayReflection = function() {
-    el("dayReflectionModal").classList.remove("show");
-    if(autoSweepPending) {
-        dailySweep();
-        window.updateDate();
-        window.saveData();
-        setTimeout(window.renderTodayTasks, 0);
-        window.showToast("تم أرشفة مهام الأمس تلقائياً. يمكنك مراجعتها بالأرشيف! ⏳", "info");
-        autoSweepPending = false;
-    }
-};
-
-window.submitDayReflection = function() {
-    if(currentDayRating === 0) {
-        window.showToast("يرجى تقييم يومك بالنجوم أولاً!", "error");
-        return;
-    }
-    
-    const targetDate = prevDayToReflect || getLocalISO();
-    if(!S.reflections) S.reflections = {};
-    S.reflections[targetDate] = {
-        rating: currentDayRating,
-        note: el("dayRefNote").value.trim(),
-        date: targetDate
-    };
-    
-    el("dayReflectionModal").classList.remove("show");
-    
-    if(autoSweepPending || targetDate !== getLocalISO()) {
-        // تقييم يوم أمس – أرشفة تلقائية من مبدأ dailySweep
-        dailySweep();
-        window.updateDate();
-        window.saveData();
-        setTimeout(window.renderTodayTasks, 0);
-        window.showToast("تم حفظ التقييم وأرشفة يوم الأمس بنجاح! 🏆", "success");
-        autoSweepPending = false;
-    } else {
-        // إنهاء اليوم الحالي – أرشفة مباشرة بدون حيلة
-        if(!S.archive) S.archive = { today: [], goals: [], years: {} };
-        const today = getLocalISO();
-        const now = new Date();
-        const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-        const toKeep = [];
-        
-        (S.todayTasks || []).forEach(t => {
-            const isFuture = !t.done && t.dueDate && new Date(t.dueDate) > endOfToday;
-            if(isFuture) {
-                toKeep.push(t);
-            } else if(t.done) {
-                let finalTag = "بدون قسم";
-                if(t.parentId) {
-                    const parent = S.tasks.find(x => x.id === t.parentId);
-                    if(parent && parent.tag) finalTag = parent.tag;
-                }
-                S.archive.today.push({...t, archDate: today, savedTag: finalTag});
-            } else {
-                S.suggestions.unshift({...t, archDate: today});
-            }
-        });
-        S.todayTasks = toKeep;
-        S.lastDate = today;
-        
-        window.saveData();
-        setTimeout(window.renderTodayTasks, 0);
-        window.showToast("تم حفظ تقييم اليوم وأرشفة المهام بنجاح! غداً يوم جديد ومثمر 🏆", "success");
-    }
-};
-
-
 /* ════════ DAILY MAINTENANCE & REPORTS ════════ */
 function dailySweep() {
     const today = getLocalISO();
@@ -2950,15 +2805,12 @@ window.updateStats = function() {
     const todayISO = getLocalISO(); // صيغة ISO موحدة للمقارنة
     
     // اكتشاف يوم جديد تلقائياً: إذا كان lastDate بتاريخ آخر (ISO) ومش اليوم
-    if(S.lastDate && !autoPromptedThisSession) {
+    if(S.lastDate) {
         const lastISO = S.lastDate.includes('-') 
             ? S.lastDate 
             : getLocalISO(new Date(S.lastDate)); // تحويل صيغ قديمة
         if(lastISO && lastISO !== todayISO) {
-            autoPromptedThisSession = true;
-            setTimeout(() => {
-                window.endDayPrompt(true);
-            }, 1000);
+            dailySweep();
         }
     }
 
