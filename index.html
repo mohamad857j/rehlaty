@@ -1326,6 +1326,7 @@
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:8px;">
                         <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addTask()">
+                        <input type="text" id="newTaskInput" placeholder="مشروع / كورس جديد؟" class="field" style="flex:1;min-width:130px;border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addTask()">
                         
                         <select id="newTaskEffort" class="field" style="width:auto; padding:7px 10px; font-size:12px; font-weight:900; background:rgba(255,255,255,0.05); border:none; cursor:pointer; border-radius:10px;" title="حجم المجهود">
                             <option value="1" style="background:var(--bg3); color:var(--txt1);">🟢 خفيفة</option>
@@ -1339,7 +1340,8 @@
                             <input type="hidden" id="newTaskDate" value="">
                         </div>
                         <button class="btn-primary" onclick="window.addTask()" style="padding:8px 16px;font-size:12px;">إضافة</button>
-                    </div>
+
+</div>
                 </div>
                 <div id="kanbanBoard" style="display:flex;gap:24px;flex:1;min-height:0;overflow-x:auto;align-items:stretch;padding-bottom:12px;">
                     <div style="flex:1 1 0;min-width:280px;display:flex;flex-direction:column;height:100%;">
@@ -1402,7 +1404,7 @@
                 </div>
             </div>
 
-            <div id="sec-notes" class="section">
+                                    <div id="sec-notes" class="section">
                 <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
                     <div>
                         <h2 style="font-size:24px;font-weight:900;color:var(--txt1);">لوحة الملاحظات 📝</h2>
@@ -1424,6 +1426,8 @@
                     </div>
                 </div>
             </div>
+
+
 
             <div id="sec-certs" class="section">
                 <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-shrink:0;">
@@ -1470,10 +1474,60 @@
                             <div class="hm-swatch" style="background:#10b981;" title="إنجاز جيد"></div>
                             <div class="hm-swatch" style="background:#059669;" title="إنجاز عظيم"></div>
                             <span>عاش</span>
+                                            </div>
+
+                                        <!-- Badges Gallery Widget -->
+                    <div id="badgesGalleryWidget" class="glass" style="width:100%; padding:24px; display:flex; flex-direction:column; gap:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div style="font-size:16px; font-weight:900; color:var(--txt1); display:flex; align-items:center; gap:8px;">
+                                <span>🏅</span> معرض شارات الإنتاجية والتميز لليوميات
+                            </div>
+                            <span style="font-size:11px; color:var(--txt3); font-weight:bold;">احصد الشارات بإتمام مهامك وتقييم سعيك اليومي!</span>
+                        </div>
+                        
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:14px;" class="badges-grid">
+                            <!-- Badge 1 -->
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:16px; border-radius:16px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; position:relative; transition:0.2s;" class="course-hover">
+                                <span style="font-size:36px; filter:drop-shadow(0 0 6px rgba(180,83,9,0.3));">🌱</span>
+                                <div style="font-weight:900; font-size:13px; color:#b45309;">بذرة السعي</div>
+                                <div style="font-size:9.5px; color:var(--txt3); line-height:1.3;">بداية الطريق.. خطوة واحدة خير من السكون.</div>
+                                <span id="badge-count-1" style="background:#b45309; color:white; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; position:absolute; top:8px; left:8px; min-width:18px; text-align:center;">0</span>
+                            </div>
+                            <!-- Badge 2 -->
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:16px; border-radius:16px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; position:relative; transition:0.2s;" class="course-hover">
+                                <span style="font-size:36px; filter:drop-shadow(0 0 6px rgba(234,88,12,0.3));">🧗</span>
+                                <div style="font-weight:900; font-size:13px; color:#ea580c;">خطوة للأمام</div>
+                                <div style="font-size:9.5px; color:var(--txt3); line-height:1.3;">تقدم وتطور.. تقدمت اليوم للأمام بثبات.</div>
+                                <span id="badge-count-2" style="background:#ea580c; color:white; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; position:absolute; top:8px; left:8px; min-width:18px; text-align:center;">0</span>
+                            </div>
+                            <!-- Badge 3 -->
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:16px; border-radius:16px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; position:relative; transition:0.2s;" class="course-hover">
+                                <span style="font-size:36px; filter:drop-shadow(0 0 6px rgba(13,148,136,0.3));">🎯</span>
+                                <div style="font-weight:900; font-size:13px; color:#0d9488;">منجز ومثابر</div>
+                                <div style="font-size:9.5px; color:var(--txt3); line-height:1.3;">يوم رائع ومثمر.. أنجزت أهدافك وصنعت فارقاً.</div>
+                                <span id="badge-count-3" style="background:#0d9488; color:white; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; position:absolute; top:8px; left:8px; min-width:18px; text-align:center;">0</span>
+                            </div>
+                            <!-- Badge 4 -->
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:16px; border-radius:16px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; position:relative; transition:0.2s;" class="course-hover">
+                                <span style="font-size:36px; filter:drop-shadow(0 0 6px rgba(124,58,237,0.3));">⚡</span>
+                                <div style="font-weight:900; font-size:13px; color:#7c3aed;">فارس الإنتاجية</div>
+                                <div style="font-size:9.5px; color:var(--txt3); line-height:1.3;">تركيز وانضباط.. تجاوزت العقبات بكفاءة عالية!</div>
+                                <span id="badge-count-4" style="background:#7c3aed; color:white; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; position:absolute; top:8px; left:8px; min-width:18px; text-align:center;">0</span>
+                            </div>
+                            <!-- Badge 5 -->
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:16px; border-radius:16px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; position:relative; transition:0.2s;" class="course-hover">
+                                <span style="font-size:36px; filter:drop-shadow(0 0 10px rgba(225,29,72,0.55));">👑</span>
+                                <div style="font-weight:900; font-size:13px; color:#e11d48;">يوم أسطوري</div>
+                                <div style="font-size:9.5px; color:var(--txt3); line-height:1.3;">يوم للتاريخ! كفاءة خارقة وتركيز مثالي في كافة أهدافك!</div>
+                                <span id="badge-count-5" style="background:#e11d48; color:white; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; position:absolute; top:8px; left:8px; min-width:18px; text-align:center;">0</span>
+                            </div>
                         </div>
                     </div>
 
                     <div id="analyticsWidget">
+
+
+                    <div id="analyticsWidget"
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
                             <div id="analyticsTitle">📊 تحليلات الأداء</div>
                             <button class="btn-ghost" onclick="window.renderCharts()" style="font-size:11px;">🔄 تحديث</button>
@@ -1727,7 +1781,10 @@
                     </div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:12px;">
-                    <div style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">الدروس / الخطوات</div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                        <span style="font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:0.08em;text-transform:uppercase;">الدروس / الخطوات</span>
+                        <button id="aiBreakdownBtn" onclick="window.aiBreakdownActiveTask()" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(59,130,246,0.15));border:1px solid rgba(139,92,246,0.3);color:var(--txt1);border-radius:8px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:4px;">✨ تقسيم بالـ AI</button>
+                    </div>
                     <div style="display:flex;gap:8px;background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:12px;padding:7px;">
                         <input type="text" id="newSubIn" placeholder="أضف درساً..." class="field" style="border:none;background:transparent;font-size:13px;" onkeypress="if(event.key==='Enter')window.addSubtask()">
                         <button class="btn-primary" onclick="window.addSubtask()" style="padding:7px 14px;font-size:12px;flex-shrink:0;">➕</button>
@@ -1735,6 +1792,161 @@
                     <div id="mSubtasks" style="display:flex;flex-direction:column;gap:10px;"></div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Date Time Picker Modal -->
+<div id="customDateTimePicker" class="modal-bg" style="z-index: 110000; display: none;">
+    <div class="modal-box report-glass" style="width: 100%; max-width: 380px; height: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 16px; font-weight: 900; color: #fff; margin: 0;">اختر التاريخ والوقت</h3>
+            <button onclick="window.closeCdtp()" class="close-btn-high" style="background: rgba(255,255,255,0.05); color: #fff; border-radius: 50%; border: none; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+        
+        <!-- Calendar Picker Section -->
+        <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <button onclick="window.cdtpChangeMonth(-1)" class="btn-ghost" style="padding: 4px 8px; font-size: 12px; min-width: auto; border: 1px solid rgba(255,255,255,0.1); color: var(--txt1);">◀</button>
+                <div id="cdtpMonthLabel" style="font-weight: bold; color: #fff; font-size: 14px;"></div>
+                <button onclick="window.cdtpChangeMonth(1)" class="btn-ghost" style="padding: 4px 8px; font-size: 12px; min-width: auto; border: 1px solid rgba(255,255,255,0.1); color: var(--txt1);">▶</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 11px; color: var(--txt3); font-weight: bold; margin-bottom: 6px;">
+                <div>ح</div><div>ن</div><div>ث</div><div>ر</div><div>خ</div><div>ج</div><div>س</div>
+            </div>
+            <div id="cdtpDaysGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;"></div>
+        </div>
+        
+        <!-- Time Picker Section -->
+        <div style="display: flex; gap: 10px; align-items: center; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1;">
+                <label style="font-size: 10px; color: var(--txt3); font-weight: bold;">الساعة</label>
+                <select id="cdtpHours" class="field" style="background: var(--bg3); border-color: rgba(255,255,255,0.1); color: #fff; padding: 6px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer;"></select>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1;">
+                <label style="font-size: 10px; color: var(--txt3); font-weight: bold;">الدقيقة</label>
+                <select id="cdtpMinutes" class="field" style="background: var(--bg3); border-color: rgba(255,255,255,0.1); color: #fff; padding: 6px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer;"></select>
+            </div>
+            <div style="display: flex; gap: 4px; align-self: flex-end; height: 36px; flex: 1.2;">
+                <button id="cdtpAm" onclick="window.cdtpSetAmPm('AM')" class="cdtp-am-pm active" style="font-size: 11px; padding: 0;">AM</button>
+                <button id="cdtpPm" onclick="window.cdtpSetAmPm('PM')" class="cdtp-am-pm" style="font-size: 11px; padding: 0;">PM</button>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 10px;">
+            <button onclick="window.closeCdtp()" style="flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--txt2); padding: 8px; border-radius: 10px; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 12px;">إلغاء</button>
+            <button onclick="window.cdtpConfirm()" style="flex: 2; background: var(--blue2); color: white; border: none; padding: 8px; border-radius: 10px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size: 12px; box-shadow: 0 4px 10px rgba(59,130,246,0.3);">تأكيد ⏱️</button>
+        </div>
+    </div>
+</div>
+
+<!-- Daily Reflection Modal -->
+<div id="dayReflectionModal" class="modal-bg" style="z-index: 100000; display: none;">
+    <div class="modal-box report-glass" style="width: 100%; max-width: 550px; height: auto; max-height: 90vh; display: flex; flex-direction: column; border: 1px solid rgba(255, 255, 255, 0.1); overflow-y: auto; padding: 24px; gap: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 18px; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 8px; margin: 0;">
+                <span>📝</span> تقييم اليوم والملاحظات الذاتية
+            </h3>
+            <button onclick="window.skipDayReflection()" class="close-btn-high" style="background: rgba(255,255,255,0.05); color: #fff; border-radius: 50%; border: none; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+        
+        <p style="font-size: 12px; color: var(--txt2); line-height: 1.5; margin: 0;">
+            كيف كان يومك اليوم؟ خذ دقيقة للتقييم الذاتي وتوثيق رحلتك لكي تتعلم وتتحسن باستمرار.
+        </p>
+
+        <!-- Star Rating -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgba(0,0,0,0.15); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+            <label style="font-size: 12px; color: var(--txt1); font-weight: bold;">تقييمك الإجمالي لإنتاجية وسعي اليوم:</label>
+            <div id="dayStars" style="display: flex; gap: 10px; font-size: 32px; cursor: pointer;">
+                <span onclick="window.setDayRating(1)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(2)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(3)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(4)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+                <span onclick="window.setDayRating(5)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
+            </div>
+            <div id="dayBadgeIndicator" style="font-size: 12px; font-weight: bold; color: var(--txt3); margin-top: 4px; display: flex; align-items: center; gap: 6px;"></div>
+        </div>
+
+        <!-- Structured Journal -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label style="font-size: 11px; color: var(--txt2); font-weight: bold;">✨ ما الذي سار بشكل جيد اليوم؟ (إنجاز، عادة، تركيز...)</label>
+                <textarea id="dayRefWell" class="field" placeholder="ما هي الجوانب الإيجابية التي تفتخر بها اليوم؟" style="height: 60px; resize: none; font-size: 12px; background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1);"></textarea>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label style="font-size: 11px; color: var(--txt2); font-weight: bold;">🧗 ما الذي يمكن تحسينه غدًا؟ (عقبات، تشتت، تأجيل...)</label>
+                <textarea id="dayRefImprove" class="field" placeholder="كيف يمكنك جعل الغد أفضل؟ ما هي العقبة التي ستتجنبها؟" style="height: 60px; resize: none; font-size: 12px; background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1);"></textarea>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label style="font-size: 11px; color: var(--txt2); font-weight: bold;">💡 أبرز درس تعلمته اليوم أو حكمة تود تذكرها؟</label>
+                <input type="text" id="dayRefLesson" class="field" placeholder="الدروس المستفادة تصنع الخبرة والنجاح المستمر..." style="font-size: 12px; background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1);">
+            </div>
+        </div>
+
+        <!-- AI Coach Checkbox -->
+        <div style="display: flex; align-items: center; gap: 10px; background: rgba(139,92,246,0.06); padding: 12px; border-radius: 12px; border: 1px solid rgba(139,92,246,0.2); margin-top: 4px;">
+            <input type="checkbox" id="requestAiCoach" style="width: 18px; height: 18px; cursor: pointer;">
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <label for="requestAiCoach" style="font-size: 12px; color: var(--txt1); font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0;">
+                    🤖 طلب توجيه وتحليل ذكي من المدرب الشخصي (AI)
+                </label>
+                <span style="font-size: 10px; color: var(--txt3);">سيقوم الذكاء الاصطناعي بتحليل إنجازاتك اليوم وتقديم نصائح مخصصة لغدك!</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+            <button onclick="window.skipDayReflection()" style="flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--txt2); padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: bold;">تخطي ➡️</button>
+            <button onclick="window.submitDayReflection()" style="flex: 2; background: linear-gradient(135deg, var(--purple), var(--blue)); color: white; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 13px; box-shadow: 0 4px 14px rgba(139,92,246,0.3);">حفظ وإنهاء اليوم 🏁</button>
+        </div>
+    </div>
+</div>
+
+<!-- Interactive Day Details Modal -->
+<div id="dayDetailsModal" class="modal-bg" style="z-index: 100000; display: none;">
+    <div class="modal-box report-glass" style="width: 100%; max-width: 500px; height: auto; max-height: 85vh; display: flex; flex-direction: column; border: 1px solid rgba(255, 255, 255, 0.1); overflow-y: auto; padding: 24px; gap: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 id="ddTitle" style="font-size: 18px; font-weight: 900; color: #fff; margin: 0;">يوميات وتفاصيل الإنجاز</h3>
+            <button onclick="el('dayDetailsModal').classList.remove('show'); setTimeout(() => el('dayDetailsModal').style.display='none', 300)" class="close-btn-high" style="background: rgba(255,255,255,0.05); color: #fff; border-radius: 50%; border: none; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+        
+        <!-- Badge Unlocked View -->
+        <div id="ddBadgeSection" style="display: flex; align-items: center; gap: 14px; background: rgba(0,0,0,0.2); padding: 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.05);">
+            <!-- Dynamic Badge Info -->
+        </div>
+        
+        <!-- Progress Bar -->
+        <div style="background: rgba(0,0,0,0.15); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; margin-bottom: 6px;">
+                <span style="color: var(--txt2);">نسبة إنجاز المهام:</span>
+                <span id="ddProgressPct" style="color: var(--green2);">0%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
+                <div id="ddProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.3s;"></div>
+            </div>
+        </div>
+
+        <!-- Journal Content -->
+        <div id="ddJournalSection" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Dynamic Journal Content -->
+        </div>
+
+        <!-- Tasks Completed today -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+            <h4 style="font-size: 12px; font-weight: bold; color: var(--txt1); display: flex; align-items: center; gap: 6px; margin: 0;">
+                <span>✓</span> المهام المكتملة في هذا اليوم:
+            </h4>
+            <div id="ddCompletedTasks" style="display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03);">
+                <!-- Dynamic Task List -->
+            </div>
+        </div>
+
+        <!-- AI Advice Section -->
+        <div id="ddAiAdviceSection" style="background: rgba(139,92,246,0.08); padding: 14px; border-radius: 14px; border: 1px solid rgba(139,92,246,0.2); display: flex; gap: 10px; align-items: flex-start; direction: rtl; display: none;">
+            <!-- Dynamic AI Advice -->
         </div>
     </div>
 </div>
@@ -1947,130 +2159,6 @@ window.saveDataSilently = function() {
 };
 
 
-/* ════════ REFLECTION & EVALUATION LOGIC ════════ */
-let activeReflectionTaskId = null;
-let currentTrRating = 0;
-let autoPromptedThisSession = false;
-let autoSweepPending = false;
-let prevDayToReflect = "";
-
-window.setTrRating = function(r) {
-    currentTrRating = r;
-    const stars = el("trStars").children;
-    for(let i=0; i<5; i++) {
-        stars[i].style.opacity = i < r ? "1" : "0.3";
-        stars[i].style.filter = i < r ? "drop-shadow(0 0 8px rgba(255, 215, 0, 0.7))" : "none";
-    }
-};
-
-window.openTaskReflection = function(id) {
-    const t = S.todayTasks.find(x => x.id === id);
-    if(!t) return;
-    activeReflectionTaskId = id;
-    el("trTaskName").textContent = t.text;
-    el("trNote").value = t.reflection ? (t.reflection.note || "") : "";
-    window.setTrRating(t.reflection ? t.reflection.rating : 0);
-    el("taskReflectionModal").classList.add("show");
-};
-
-window.skipTaskReflection = function() {
-    el("taskReflectionModal").classList.remove("show");
-    window.checkPendingReflections();
-    window.showToast("المهمة اكتملت! التقييم معلق مؤقتاً ⏳", "success");
-};
-
-window.submitTaskReflection = function() {
-    if(currentTrRating === 0) {
-        window.showToast("كيف كان تركيزك؟ اختر التقييم بالنجوم أولاً!", "error");
-        return;
-    }
-    const t = S.todayTasks.find(x => x.id === activeReflectionTaskId);
-    if(t) {
-        t.reflection = {
-            rating: currentTrRating,
-            note: el("trNote").value.trim()
-        };
-        window.saveData();
-        window.showToast("حفظنا تقييمك يا بطل! 🌟", "success");
-    }
-    el("taskReflectionModal").classList.remove("show");
-    window.checkPendingReflections();
-    
-    if(el("pendingReflectionsModal").classList.contains("show")) {
-        window.renderPendingReflections();
-    }
-    window.renderTodayTasks();
-};
-
-window.checkPendingReflections = function() {
-    if(!S.todayTasks) return;
-    const pendingTasks = S.todayTasks.filter(t => t.done && !t.reflection);
-    const count = pendingTasks.length;
-    const btn = el("btnPendingReflections");
-    const cnt = el("pendingCount");
-    
-    if(count > 0) {
-        btn.style.display = "inline-flex";
-        cnt.textContent = count;
-    } else {
-        btn.style.display = "none";
-        if(el("pendingReflectionsModal").classList.contains("show")) {
-            window.closePendingReflections();
-        }
-    }
-};
-
-window.openPendingReflections = function() {
-    window.renderPendingReflections();
-    el("pendingReflectionsModal").classList.add("show");
-};
-
-window.closePendingReflections = function() {
-    el("pendingReflectionsModal").classList.remove("show");
-};
-
-window.renderPendingReflections = function() {
-    const pendingTasks = S.todayTasks.filter(t => t.done && !t.reflection);
-    const list = el("prList");
-    
-    if(pendingTasks.length === 0) {
-        list.innerHTML = "<p style='text-align:center;opacity:0.4;font-weight:bold;padding:20px;'>كل مهامك تم تقييمها بنجاح! 🎉</p>";
-        return;
-    }
-    
-    list.innerHTML = pendingTasks.map(t => `
-        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:16px; border-radius:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-size:13px; font-weight:bold; color:var(--txt1);">${t.text}</div>
-            <button onclick="window.openTaskReflection('${t.id}')" style="background:rgba(59,130,246,0.15); color:var(--blue2); border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:bold; cursor:pointer;">تقييم الآن ⭐</button>
-        </div>
-    `).join("");
-};
-
-window.endDayPrompt = function(isAuto = false) {
-    const pendingTasks = S.todayTasks.filter(t => t.done && !t.reflection);
-    if(pendingTasks.length > 0 && !isAuto) {
-        window.showToast("أنهِ تقييمات المهام المعلقة أولاً! ⏳", "error");
-        window.openPendingReflections();
-        return;
-    }
-    
-    autoSweepPending = isAuto;
-    prevDayToReflect = isAuto ? S.lastDate : getLocalISO();
-    
-    const titleEl = el("dayReflectionModal").querySelector("h3");
-    const descEl = el("dayReflectionModal").querySelector("p");
-    
-    if(isAuto) {
-        titleEl.textContent = `🏁 تقييم يوم الأمس المنقضي (${S.lastDate})`;
-        descEl.textContent = "لقد بدأ يوم جديد! ما هو تقييمك لأدائك في يوم الأمس قبل أرشفته والبدء في مهام اليوم؟";
-    } else {
-        titleEl.textContent = "🏁 إنهاء وتقييم اليوم";
-        descEl.textContent = "عاش يا بطل على مجهودك اليوم! قيم يومك إجمالاً قبل إغلاقه وأرشفة المهام.";
-    }
-    
-    el("dayRefNote").value = "";
-    window.setDayRating(0);
-    el("dayReflectionModal").classList.add("show");
 };
 
 let currentDayRating = 0;
@@ -2664,6 +2752,15 @@ window.renderSpecificReport = function() {
 
     area.innerHTML = "<div style='text-align:center;margin-bottom:30px;'><div style='font-size:40px;margin-bottom:10px;'>🏆</div><h1 class='report-text' style='font-size:28px;font-weight:900;margin-bottom:5px;'>" + title + "</h1><p class='report-text' style='font-size:14px;opacity:0.7;'>" + dateRange + "</p></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px;'><div style='background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:20px;border-radius:16px;text-align:center;'><div style='font-size:32px;font-weight:900;color:var(--green2);'>" + completedTasksCount + "</div><div class='report-text' style='font-size:12px;font-weight:bold;margin-top:5px;'>مهام تم إنجازها</div></div><div style='background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);padding:20px;border-radius:16px;text-align:center;'><div style='font-size:32px;font-weight:900;color:var(--blue2);'>" + completedGoalsCount + "</div><div class='report-text' style='font-size:12px;font-weight:bold;margin-top:5px;'>أهداف تم تحقيقها</div></div></div>" + pieSection + "<div style='background:rgba(255,255,255,0.03);padding:20px;border-radius:16px;border:1px solid var(--border);margin-bottom:20px;'><h4 class='report-text' style='font-size:14px;font-weight:900;margin-bottom:10px;'>📊 تحليل الأداء</h4><div style='display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;'><span class='report-text'>" + label1 + ": <b style='color:var(--blue2)'>" + curAvg + "%</b></span><span class='report-text'>" + label2 + ": <b>" + prevAvg + "%</b></span></div><div style='font-size:13px;font-weight:bold;color:" + trendColor + ";margin-bottom:10px;'>" + trendText + "</div><div class='report-text' style='font-size:12px;opacity:0.8;'>المتوقع: <b>" + expected + "%</b> 🎯</div></div>" + weeklyHtml + yearlyHtml + coursesHtml + reflReportHtml;
 
+    if(S.lastDate) {
+        const lastISO = S.lastDate.includes('-') 
+            ? S.lastDate 
+            : getLocalISO(new Date(S.lastDate));
+        if(lastISO && lastISO !== todayISO) {
+            dailySweep();
+        }
+    }
+
     setTimeout(function() {
         var pCtx = el("reportPieChartCanvas");
         if(pCtx && typeof Chart !== "undefined" && Object.keys(tCounts).length > 0) {
@@ -2674,7 +2771,7 @@ window.renderSpecificReport = function() {
     }, 200);
     
     // زر تحليل AI يظهر فقط لو عنده Key
-    if(localStorage.getItem('gemini_api_key')) {
+    if(localStorage.getItem('gemini_api_key') || 'AIzaSyBguIR1KbnWJJ2JZC8xk5xLCWzhqxuW5Q0') {
         setTimeout(function() {
             var existingBtn = document.getElementById('aiReportAnalyzeBtn');
             if(!existingBtn) {
@@ -3268,7 +3365,7 @@ window.renderTodayTasks = function() {
         let reflHtml = "";
         if(t.done && t.reflection) {
             const stars = "⭐".repeat(t.reflection.rating);
-            reflHtml = `<span style="font-size:10px; margin-right:6px; opacity:0.85; color:var(--amber); font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:2px;" onclick="window.openTaskReflection('${t.id}')" title="تعديل التقييم: ${t.reflection.note || 'بدون ملاحظة'}">${stars} ${t.reflection.note ? '💬' : ''}</span>`;
+            reflHtml = `<span style="font-size:10px; margin-right:6px; opacity:0.85; color:var(--amber); font-weight:bold; cursor:pointer; display:inline-flex; align-items:center; gap:2px;" title="التقييم: ${t.reflection.note || 'بدون ملاحظة'}">${stars} ${t.reflection.note ? '💬' : ''}</span>`;
         }
 
         return `
@@ -3397,11 +3494,8 @@ window.toggleTodayTask = function(id) {
     if(!t) return;
     
     t.done = !t.done;
-    if(t.done) {
-        window.openTaskReflection(id);
-    } else {
+    if(!t.done) {
         delete t.reflection;
-        if(window.checkPendingReflections) window.checkPendingReflections();
     }
     
     if(t.parentId && t.subIdx !== undefined){
@@ -5117,17 +5211,22 @@ window.cdtpChangeMonth = function(dir) {
     window.cdtpRenderCalendar();
 };
 
+/* ==========================================================================
+   CDTP - CUSTOM DATE TIME PICKER LOGIC (REPLAYED & FIXED)
+   ========================================================================== */
 window.cdtpRenderCalendar = function() {
     const y = cdtpDate.getFullYear();
     const m = cdtpDate.getMonth();
-    const mNames = ["يناير","فبراير","مارس","إبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-    el("cdtpMonthLabel").textContent = `${mNames[m]} ${y}`;
+    const mNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    const labelEl = el("cdtpMonthLabel");
+    if(labelEl) labelEl.textContent = `${mNames[m]} ${y}`;
     
     const firstDay = new Date(y, m, 1).getDay();
     const daysInMonth = new Date(y, m+1, 0).getDate();
     const prevDaysInMonth = new Date(y, m, 0).getDate();
     
     const grid = el("cdtpDaysGrid");
+    if(!grid) return;
     grid.innerHTML = "";
     
     let html = "";
@@ -5140,210 +5239,181 @@ window.cdtpRenderCalendar = function() {
         const isSelected = i === cdtpSelectedDate.getDate() && m === cdtpSelectedDate.getMonth() && y === cdtpSelectedDate.getFullYear();
         html += `<div class="cdtp-day ${isSelected ? 'selected' : ''}" onclick="window.cdtpSelectDay(${i}, ${m}, ${y})">${i}</div>`;
     }
-    // next month days
-    let remaining = 42 - (firstDay + daysInMonth);
-    if(remaining >= 7) remaining -= 7;
+    // next month days padding to make 6 rows (42 cells)
+    const totalCells = firstDay + daysInMonth;
+    const remaining = 42 - totalCells;
     for(let i = 1; i <= remaining; i++) {
         html += `<div class="cdtp-day faded">${i}</div>`;
     }
-    
     grid.innerHTML = html;
 };
 
 window.cdtpSelectDay = function(d, m, y) {
-    cdtpSelectedDate.setFullYear(y, m, d);
+    cdtpSelectedDate.setFullYear(y);
+    cdtpSelectedDate.setMonth(m);
+    cdtpSelectedDate.setDate(d);
     window.cdtpRenderCalendar();
 };
 
-window.cdtpGoToTime = function() {
-    el("cdtpDateMode").style.display = "none";
-    el("cdtpTimeMode").style.display = "block";
-    el("cdtpTabDate").className = "btn-ghost";
-    el("cdtpTabTime").className = "btn-primary";
+window.cdtpSetAmPm = function(ampm) {
+    cdtpAmPm = ampm;
+    const amEl = el("cdtpAm");
+    const pmEl = el("cdtpPm");
+    if(amEl) amEl.classList.toggle("active", ampm === 'AM');
+    if(pmEl) pmEl.classList.toggle("active", ampm === 'PM');
 };
 
 window.cdtpGoToDate = function() {
-    el("cdtpDateMode").style.display = "block";
-    el("cdtpTimeMode").style.display = "none";
-    el("cdtpTabDate").className = "btn-primary";
-    el("cdtpTabTime").className = "btn-ghost";
+    cdtpDate = new Date(cdtpSelectedDate);
+    window.cdtpRenderCalendar();
 };
 
-window.cdtpSetAmPm = function(mode) {
-    cdtpAmPm = mode;
-    el("cdtpAmBtn").className = "cdtp-am-pm" + (mode==='AM'?' active':'');
-    el("cdtPmBtn").className = "cdtp-am-pm" + (mode==='PM'?' active':'');
-};
-
-window.cdtpSave = function() {
-    let h = parseInt(el("cdtpHours").value);
-    const m = parseInt(el("cdtpMinutes").value);
-    if(cdtpAmPm === 'PM' && h < 12) h += 12;
-    if(cdtpAmPm === 'AM' && h === 12) h = 0;
+window.cdtpConfirm = function() {
+    const hrsVal = parseInt(el("cdtpHours").value) || 12;
+    const minsVal = parseInt(el("cdtpMinutes").value) || 0;
     
-    cdtpSelectedDate.setHours(h, m, 0, 0);
+    let finalHrs = hrsVal;
+    if (cdtpAmPm === 'PM' && finalHrs < 12) finalHrs += 12;
+    if (cdtpAmPm === 'AM' && finalHrs === 12) finalHrs = 0;
     
-    const pad = n => n<10 ? '0'+n : n;
-    // YYYY-MM-DDTHH:mm
-    const val = cdtpSelectedDate.getFullYear() + '-' + pad(cdtpSelectedDate.getMonth()+1) + '-' + pad(cdtpSelectedDate.getDate()) + 'T' + pad(cdtpSelectedDate.getHours()) + ':' + pad(cdtpSelectedDate.getMinutes());
+    const finalDate = new Date(cdtpSelectedDate);
+    finalDate.setHours(finalHrs, minsVal, 0, 0);
     
-    if(cdtpCallback) cdtpCallback(val);
+    const yyyy = finalDate.getFullYear();
+    const mm = String(finalDate.getMonth() + 1).padStart(2, '0');
+    const dd = String(finalDate.getDate()).padStart(2, '0');
+    const hh = String(finalDate.getHours()).padStart(2, '0');
+    const minStr = String(finalDate.getMinutes()).padStart(2, '0');
+    const localIso = `${yyyy}-${mm}-${dd}T${hh}:${minStr}`;
+    
+    if (cdtpCallback) {
+        cdtpCallback(localIso);
+    }
     window.closeCdtp();
 };
 
-</script>
-
-<!-- TASK REFLECTION MODAL -->
-<div id="taskReflectionModal" class="modal-bg" style="z-index: 110000;">
-    <div class="modal-box" style="width: 400px; padding: 25px; text-align: center; background: linear-gradient(145deg, #0d1527, #080c18); border: 1px solid rgba(59, 130, 246, 0.2);">
-        <h3 style="font-size: 20px; font-weight: 900; color: var(--txt1); margin-bottom: 10px;">تقييم المهمة 🎯</h3>
-        <p id="trTaskName" style="font-size: 14px; color: var(--blue2); margin-bottom: 20px; font-weight: bold;"></p>
+/* ==========================================================================
+   CONFETTI EMITTER (GAMIFIED SATISFACTION EFFECT)
+   ========================================================================== */
+window.triggerConfetti = function() {
+    const wrap = el("confettiWrap");
+    if(!wrap) return;
+    wrap.innerHTML = "";
+    
+    const colors = ["#8b5cf6", "#3b82f6", "#10b981", "#f59e0b", "#e11d48", "#06b6d4"];
+    for(let i=0; i<100; i++) {
+        const piece = document.createElement("div");
+        piece.style.position = "absolute";
+        piece.style.width = Math.random() * 8 + 6 + "px";
+        piece.style.height = Math.random() * 12 + 6 + "px";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.left = Math.random() * 100 + "%";
+        piece.style.top = "-10px";
+        piece.style.borderRadius = "2px";
+        piece.style.opacity = Math.random() * 0.7 + 0.3;
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
         
-        <div style="margin-bottom: 20px;">
-            <div style="font-size: 13px; color: var(--txt2); margin-bottom: 8px;">كيف تقيم أداءك وتركيزك في هذه المهمة؟</div>
-            <div id="trStars" style="display:flex; justify-content:center; gap:8px; font-size:28px; cursor:pointer;">
-                <span onclick="window.setTrRating(1)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setTrRating(2)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setTrRating(3)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setTrRating(4)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setTrRating(5)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-            </div>
-        </div>
+        wrap.appendChild(piece);
         
-        <textarea id="trNote" class="field" placeholder="ملاحظة سريعة حول ما تعلمته أو واجهته (اختياري)..." style="height: 80px; margin-bottom: 20px; resize:none; background: rgba(0,0,0,0.3); border-color: var(--border);"></textarea>
+        const duration = Math.random() * 2 + 2;
+        const delay = Math.random() * 0.5;
         
-        <div style="display: flex; gap: 10px;">
-            <button onclick="window.skipTaskReflection()" style="flex: 1; background: transparent; border: 1px solid var(--border); color: var(--txt2); padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px;">تخطي مؤقتاً ⏭️</button>
-            <button onclick="window.submitTaskReflection()" style="flex: 2; background: linear-gradient(135deg, var(--green), var(--green2)); color: white; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">حفظ التقييم ✅</button>
-        </div>
-    </div>
-</div>
-
-<!-- PENDING REFLECTIONS MODAL -->
-<div id="pendingReflectionsModal" class="modal-bg" style="z-index: 110000;">
-    <div class="modal-box" style="width: 450px; padding: 25px; background: linear-gradient(145deg, #0d1527, #080c18); border: 1px solid rgba(59, 130, 246, 0.2);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="font-size: 20px; font-weight: 900; color: var(--txt1);">تقييمات معلقة ⏳</h3>
-            <button onclick="window.closePendingReflections()" style="background: transparent; border: none; font-size: 20px; color: var(--txt3); cursor: pointer;">✕</button>
-        </div>
-        <div id="prList" style="max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
-    </div>
-</div>
-
-<!-- DAY REFLECTION MODAL -->
-<div id="dayReflectionModal" class="modal-bg" style="z-index: 110000;">
-    <div class="modal-box" style="width: 420px; padding: 25px; text-align: center; background: linear-gradient(145deg, #0d1527, #080c18); border: 1px solid rgba(139, 92, 246, 0.3);">
-        <h3 style="font-size: 22px; font-weight: 900; color: var(--txt1); margin-bottom: 10px;">🏁 إنهاء وتقييم اليوم</h3>
-        <p style="font-size: 13px; color: var(--txt2); margin-bottom: 20px;">عاش يا بطل على مجهودك اليوم! قيم يومك إجمالاً قبل إغلاقه.</p>
-        
-        <div style="margin-bottom: 20px;">
-            <div style="font-size: 13px; color: var(--txt2); margin-bottom: 8px;">كيف تقيم إنتاجيتك الإجمالية اليوم؟</div>
-            <div id="dayStars" style="display:flex; justify-content:center; gap:8px; font-size:30px; cursor:pointer;">
-                <span onclick="window.setDayRating(1)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setDayRating(2)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setDayRating(3)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setDayRating(4)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-                <span onclick="window.setDayRating(5)" style="opacity: 0.3; transition: all 0.2s;">⭐</span>
-            </div>
-        </div>
-        
-        <textarea id="dayRefNote" class="field" placeholder="ما هي التحديات التي واجهتك؟ وكيف ستجعل يوم الغد أفضل؟" style="height: 100px; margin-bottom: 20px; resize:none; background: rgba(0,0,0,0.3); border-color: var(--border);"></textarea>
-        
-        <div style="display: flex; gap: 10px;">
-            <button onclick="window.skipDayReflection()" style="flex: 1; background: transparent; border: 1px solid var(--border); color: var(--txt2); padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px;">تخطي مؤقتاً ⏭️</button>
-            <button onclick="window.submitDayReflection()" style="flex: 2; background: linear-gradient(135deg, var(--purple), var(--blue)); color: white; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; font-size:13px; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);">حفظ وإنهاء اليوم 🏆</button>
-        </div>
-    </div>
-</div>
-
-<!-- CUSTOM DATE TIME PICKER MODAL -->
-<div id="customDateTimePicker" class="modal-bg" style="z-index: 999999; display:none;">
-    <div class="modal-box" style="width:340px; padding:20px; background:rgba(15,23,42,0.95); backdrop-filter:blur(20px);">
-        
-        <div style="display:flex; gap:10px; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px;">
-            <button id="cdtpTabDate" class="btn-primary" onclick="window.cdtpGoToDate()" style="flex:1; padding:8px; font-size:13px; font-weight:bold;">📅 التقويم</button>
-            <button id="cdtpTabTime" class="btn-ghost" onclick="window.cdtpGoToTime()" style="flex:1; padding:8px; font-size:13px; font-weight:bold;">⏰ الوقت</button>
-        </div>
-        
-        <div id="cdtpDateMode">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <button class="btn-ghost" onclick="window.cdtpChangeMonth(-1)" style="padding:4px 8px; width:auto; flex:none;">◀</button>
-                <div id="cdtpMonthLabel" style="font-weight:bold; color:var(--cyan); font-size:15px;"></div>
-                <button class="btn-ghost" onclick="window.cdtpChangeMonth(1)" style="padding:4px 8px; width:auto; flex:none;">▶</button>
-            </div>
-            <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center; font-size:12px; margin-bottom:8px; color:var(--txt3); font-weight:bold;">
-                <div>ح</div><div>ن</div><div>ث</div><div>ر</div><div>خ</div><div>ج</div><div>س</div>
-            </div>
-            <div id="cdtpDaysGrid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center; margin-bottom: 15px;"></div>
-        </div>
-
-        <div id="cdtpTimeMode" style="display:none;">
-            <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:20px; font-size:24px; font-weight:bold;" dir="ltr">
-                <select id="cdtpHours" class="field" style="width:70px; font-size:20px; padding:5px; text-align:center; appearance:none; outline:none; cursor:pointer; background:var(--bg4); border:1px solid var(--border);"></select>
-                <span style="color:var(--txt1);">:</span>
-                <select id="cdtpMinutes" class="field" style="width:70px; font-size:20px; padding:5px; text-align:center; appearance:none; outline:none; cursor:pointer; background:var(--bg4); border:1px solid var(--border);"></select>
-            </div>
-            <div style="display:flex; justify-content:center; gap:10px; margin-bottom:20px;">
-                <div id="cdtpAmBtn" class="cdtp-am-pm" onclick="window.cdtpSetAmPm('AM')">صباحاً (AM)</div>
-                <div id="cdtPmBtn" class="cdtp-am-pm" onclick="window.cdtpSetAmPm('PM')">مساءً (PM)</div>
-            </div>
-        </div>
-
-        <button class="btn-primary" onclick="window.cdtpSave()" style="width:100%;">حفظ ✅</button>
-
-        <button onclick="window.closeCdtp()" class="close-btn-high" style="position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.07);border:none;border-radius:9px;width:28px;height:28px;cursor:pointer;color:var(--txt2);display:flex;align-items:center;justify-content:center;">✕</button>
-    </div>
-</div>
-
-<script>
-/* ════════════════════════════════════════════════════
-   ✨ GEMINI AI MODULE - رحلتي
-   مبادئ: صامت 95% من الوقت، يتكلم بس لما يفيد
-════════════════════════════════════════════════════ */
-
-// ─── إدارة الـ API Key ───────────────────────────
-window.saveGeminiKey = function() {
-    const input = document.getElementById('geminiKeyInput');
-    const key = input ? input.value.trim() : '';
-    if(!key.startsWith('AIza')) {
-        window.showToast('الـ Key يبدأ بـ AIza - تأكد منه', 'error');
-        return;
+        piece.animate([
+            { top: "-10px", transform: `rotate(0deg) translateX(0px)`, opacity: 1 },
+            { top: "100%", transform: `rotate(${Math.random() * 720}deg) translateX(${Math.random() * 100 - 50}px)`, opacity: 0 }
+        ], {
+            duration: duration * 1000,
+            delay: delay * 1000,
+            easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            fill: "forwards"
+        });
     }
-    localStorage.setItem('gemini_api_key', key);
-    window.checkGeminiKeyStatus();
-    window.showToast('تم حفظ الـ API Key بنجاح ✅', 'success');
-    // حاول تحميل الملخص اليومي بعد الحفظ
-    window.loadAIDailyBriefing(true);
+};
+
+/* ==========================================================================
+   TWO-WAY KANBAN & TODAY SYNC
+   ========================================================================== */
+window.syncKanbanToToday = function(kanbanTask) {
+    if(!S.todayTasks) S.todayTasks = [];
+    const todayId = `td_kb_${kanbanTask.id}`;
+    const existingIndex = S.todayTasks.findIndex(x => x.id === todayId);
+    
+    if (kanbanTask.status === "done" || kanbanTask.done) {
+        if (existingIndex === -1) {
+            S.todayTasks.push({
+                id: todayId,
+                text: kanbanTask.text,
+                done: true,
+                effort: parseInt(kanbanTask.effort) || 3,
+                parentId: kanbanTask.id,
+                dueDate: getLocalISO()
+            });
+        } else {
+            S.todayTasks[existingIndex].done = true;
+            S.todayTasks[existingIndex].text = kanbanTask.text;
+        }
+    } else {
+        if (existingIndex !== -1) {
+            S.todayTasks.splice(existingIndex, 1);
+        }
+    }
+};
+
+window.syncTodayToKanban = function(todayTask) {
+    if (!todayTask.id.startsWith("td_kb_")) return;
+    const kanbanId = todayTask.id.replace("td_kb_", "");
+    const kanbanTask = S.tasks.find(x => x.id === kanbanId);
+    if (kanbanTask) {
+        kanbanTask.done = todayTask.done;
+        kanbanTask.status = todayTask.done ? "done" : "inprogress";
+        if (todayTask.done) {
+            kanbanTask.doneDate = getLocalISO();
+        } else {
+            delete kanbanTask.doneDate;
+        }
+    }
+};
+
+/* ==========================================================================
+   GEMINI AI COACH SYSTEM (CLEANED & DEDUPLICATED)
+   ========================================================================== */
+window.saveGeminiKey = function() {
+    const inputEl = document.getElementById('geminiKeyInput');
+    if(inputEl && inputEl.value) {
+        localStorage.setItem('gemini_api_key', inputEl.value.trim());
+        window.showToast("تم حفظ مفتاح الذكاء الاصطناعي بنجاح! 🤖", "success");
+        window.checkGeminiKeyStatus();
+    } else {
+        window.showToast("يرجى إدخال مفتاح صحيح أولاً", "error");
+    }
 };
 
 window.checkGeminiKeyStatus = function() {
-    const key = localStorage.getItem('gemini_api_key');
+    const key = localStorage.getItem('gemini_api_key') || 'AIzaSyBguIR1KbnWJJ2JZC8xk5xLCWzhqxuW5Q0';
     const statusEl = document.getElementById('aiKeyStatus');
     const inputEl = document.getElementById('geminiKeyInput');
     if(statusEl) {
         if(key) {
-            statusEl.textContent = '✅ مفعّل';
+            statusEl.textContent = '● متصل ذكي';
             statusEl.style.background = 'rgba(16,185,129,0.15)';
             statusEl.style.color = 'var(--green2)';
-            if(inputEl && !inputEl.value) inputEl.placeholder = '●●●●●●●●●●●●';
+            if(inputEl && !inputEl.value) inputEl.placeholder = '••••••••••••••••••••••••';
         } else {
-            statusEl.textContent = 'غير مفعّل';
+            statusEl.textContent = '● غير مفعّل';
             statusEl.style.background = 'rgba(239,68,68,0.15)';
             statusEl.style.color = 'var(--red)';
         }
     }
 };
 
-// تحميل الحالة عند فتح الإعدادات
 const _origOpenSettings = window.openSettings;
 window.openSettings = function() {
-    _origOpenSettings();
+    if(typeof _origOpenSettings === "function") _origOpenSettings();
     window.checkGeminiKeyStatus();
 };
 
-// ─── استدعاء Gemini API ──────────────────────────
 async function callGemini(prompt, maxTokens = 500) {
-    const key = localStorage.getItem('gemini_api_key');
+    const key = localStorage.getItem('gemini_api_key') || 'AIzaSyBguIR1KbnWJJ2JZC8xk5xLCWzhqxuW5Q0';
     if(!key) throw new Error('no_key');
     
     const res = await fetch(
@@ -5365,212 +5435,138 @@ async function callGemini(prompt, maxTokens = 500) {
     return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
-// ─── 1. الملخص اليومي الذكي ──────────────────────
 window.loadAIDailyBriefing = async function(force = false) {
     if(!localStorage.getItem('gemini_api_key')) return;
     
     const todayKey = getLocalISO();
     const cacheKey = 'ai_briefing_' + todayKey;
     
-    // لا تستدعي أكتر من مرة في اليوم إلا لو force
     if(!force && localStorage.getItem(cacheKey)) {
         window.showAIBriefingBanner(localStorage.getItem(cacheKey));
         return;
     }
     
-    const now = new Date();
-    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime();
-    const todayTasks = (S.todayTasks || []).filter(t => !t.dueDate || new Date(t.dueDate).getTime() <= endOfToday);
-    const done = todayTasks.filter(t => t.done).length;
-    const total = todayTasks.length;
-    
-    // لو مفيش مهام، ما نستدعيش
-    if(total === 0) return;
-    
-    // احسب متوسط الأسبوع
-    let weekAvg = 0, weekDays = 0;
-    const hist = S.history || {};
-    for(let i = 1; i <= 7; i++) {
-        const d = new Date(); d.setDate(d.getDate() - i);
-        const v = hist[getLocalISO(d)];
-        if(v !== undefined) { weekAvg += v; weekDays++; }
-    }
-    if(weekDays > 0) weekAvg = Math.round(weekAvg / weekDays);
-    
-    // أبرز مهمة اليوم
-    const topTask = todayTasks.filter(t => !t.done)[0];
-    
-    const prompt = `أنت مساعد إنتاجية شخصي. رد باختصار شديد جملة واحدة فقط باللغة العربية الدارجة المصرية. بدون ترحيب أو مقدمات.
-
-السياق:
-- المهام اليوم: ${total} مهمة
-- المنجز: ${done}
-- أهم مهمة باقية: ${topTask ? topTask.text : 'لا يوجد'}
-- متوسط الأسبوع: ${weekAvg}%
-
-اكتب جملة تحفيزية مخصصة وعملية تتكلم عن المهمة الأبرز أو الإنجاز. جملة واحدة فقط، قصيرة، مباشرة.`;
-    
     try {
-        const banner = document.getElementById('aiBriefingBanner');
-        if(banner) banner.style.opacity = '0.5';
+        const active = S.todayTasks || [];
+        const completed = (S.archive?.today || []).filter(x => x.archDate === todayKey);
         
-        const text = await callGemini(prompt, 80);
-        const clean = text.trim().replace(/\n/g, ' ');
-        localStorage.setItem(cacheKey, clean);
-        window.showAIBriefingBanner(clean);
+        let p = `أنت مدرب إنتاجية وحياة شخصي ذكي وداعم جداً. اكتب فقرة صباحية سريعة ومحفزة جداً باللغة العربية (لهجة ودية وسلسة وعميقة) للمستخدم بناء على مهامه اليوم: \n`;
+        active.forEach(t => p += `- ${t.text} (مجهود: ${t.effort})\n`);
+        if(completed.length) {
+            p += `لقد أنجز بالفعل اليوم:\n`;
+            completed.forEach(t => p += `- ${t.text}\n`);
+        }
+        p += `\nاجعل الرسالة مركزة وسريعة (أقل من 60 كلمة) ومفعمة بالحيوية والتركيز، وركز على شحذ همته وإطلاق طاقته الآن!`;
+        
+        const clean = await callGemini(p, 100);
+        if(clean) {
+            localStorage.setItem(cacheKey, clean);
+            window.showAIBriefingBanner(clean);
+        }
     } catch(e) {
-        if(e.message !== 'no_key') console.warn('AI Briefing:', e.message);
-        const b = document.getElementById('aiBriefingBanner');
-        if(b) b.remove();
+        console.error("AI briefing load failed:", e);
     }
 };
 
 window.showAIBriefingBanner = function(text) {
-    let banner = document.getElementById('aiBriefingBanner');
-    if(!banner) {
-        banner = document.createElement('div');
-        banner.id = 'aiBriefingBanner';
-        // أضفه بعد عنصر التاريخ مباشرة
-        const dateEl = document.getElementById('dateDisplay');
-        if(dateEl && dateEl.parentNode) {
-            dateEl.parentNode.insertBefore(banner, dateEl.nextSibling);
-        }
-    }
-    banner.style.cssText = 'margin:8px 0 0;padding:10px 14px;background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(59,130,246,0.07));border:1px solid rgba(139,92,246,0.2);border-radius:12px;font-size:12px;color:var(--txt2);display:flex;align-items:center;gap:8px;transition:opacity 0.3s;';
+    const existing = document.getElementById('aiBriefingBanner');
+    if(existing) existing.remove();
+    
+    const container = el("sec-today");
+    if(!container) return;
+    
+    const banner = document.createElement('div');
+    banner.id = 'aiBriefingBanner';
+    banner.style.cssText = 'margin-bottom:16px;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(59,130,246,0.1));border:1px solid rgba(139,92,246,0.25);border-radius:16px;padding:16px 20px;display:flex;gap:14px;align-items:center;animation:fadeUp 0.6s ease both;';
     banner.innerHTML = `
-        <span style="font-size:16px;flex-shrink:0;">✨</span>
-        <span style="flex:1;line-height:1.5;">${text}</span>
-        <span onclick="document.getElementById('aiBriefingBanner').remove()" style="cursor:pointer;opacity:0.4;flex-shrink:0;font-size:14px;padding:2px 4px;" title="إخفاء">✕</span>
+        <div style="font-size:28px;filter:drop-shadow(0 0 8px rgba(139,92,246,0.4));animation:bounce 2s infinite;">🤖</div>
+        <div style="flex:1;direction:rtl;">
+            <div style="font-size:10px;font-weight:900;color:var(--purple);letter-spacing:0.05em;margin-bottom:3px;text-transform:uppercase;">💡 توجيه الصباح الذكي</div>
+            <div style="font-size:12.5px;color:var(--txt1);font-weight:700;line-height:1.5;font-family:\'Cairo\',sans-serif;">${text}</div>
+        </div>
+        <button onclick="this.closest(\'#aiBriefingBanner\').remove()" style="background:transparent;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:4px;transition:color 0.2s;" onmouseover="this.style.color=\'var(--red)\'" onmouseout="this.style.color=\'var(--txt3)\'">✕</button>
     `;
-    banner.style.opacity = '1';
+    
+    const topBar = container.querySelector('div[style*="justify-content:space-between"]');
+    if(topBar) {
+        topBar.parentNode.insertBefore(banner, topBar.nextSibling);
+    } else {
+        container.insertBefore(banner, container.firstChild);
+    }
 };
 
-// ─── 2. تحليل التقرير ────────────────────────────
 window.aiAnalyzeReport = async function(type, selVal) {
-    const resultEl = document.getElementById('aiReportResult');
-    const btn = document.querySelector('#aiReportAnalyzeBtn button');
-    if(!resultEl || !btn) return;
+    const btn = document.querySelector(`button[onclick*="window.openReportModal"]`) || document.getElementById("aiReportResult");
+    const resultEl = el("aiReportResult");
+    if(!resultEl) return;
     
-    btn.disabled = true;
-    btn.innerHTML = '<span style="animation:spin 1s linear infinite;display:inline-block;">⟳</span> جاري التحليل...';
-    resultEl.style.display = 'block';
-    resultEl.innerHTML = '<span style="opacity:0.5;">جاري تحليل بياناتك...</span>';
+    resultEl.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 10px;gap:14px;">
+            <div style="font-size:32px;animation:spin 1s infinite linear;">⌛</div>
+            <div style="font-size:13px;font-weight:bold;color:var(--purple);">يقوم المدرب الذكي بتحليل أدائك الآن وصياغة التقرير...</div>
+        </div>
+    `;
     
     try {
-        // جمع البيانات
-        let periodTasks = [], periodAvg = 0, periodDays = 0;
-        const hist = S.history || {};
+        const history = S.history || {};
+        const reflections = S.reflections || {};
+        const archived = S.archive?.today || [];
         
-        if(type === 'month') {
-            const parts = selVal.split('-');
-            const y = parseInt(parts[0]), m = parseInt(parts[1]);
-            periodTasks = (S.archive.today || []).filter(t => {
-                if(!t.archDate) return false;
-                const d = new Date(t.archDate);
-                return d.getFullYear() === y && d.getMonth() === m;
-            });
-            for(const key in hist) {
-                const kparts = key.split('-');
-                if(parseInt(kparts[0]) === y && parseInt(kparts[1]) - 1 === m) {
-                    periodAvg += hist[key]; periodDays++;
-                }
+        let p = `أنت المدرب الشخصي الذكي للإنتاجية (AI Productivity Coach). قم بتحليل أداء المستخدم وكتابة مراجعة احترافية، عميقة، ومحفزة جداً باللغة العربية للتقرير الـ ${type === 'month' ? 'شهري' : 'سنوي'} لشهر/سنة (${selVal}). \n\n`;
+        p += `بيانات الإنجاز اليومية المتوفرة (النسب المئوية):\n`;
+        
+        Object.keys(history).forEach(k => {
+            if(k.startsWith(selVal)) {
+                const note = reflections[k] ? ` (التقييم: ${reflections[k].rating} نجوم، الملاحظة: ${reflections[k].note})` : '';
+                p += `- التاريخ ${k}: إنجاز ${history[k]}% ${note}\n`;
             }
-        } else {
-            const y = parseInt(selVal);
-            periodTasks = (S.archive.today || []).filter(t => t.archDate && new Date(t.archDate).getFullYear() === y);
-            for(const key in hist) {
-                if(parseInt(key.split('-')[0]) === y) { periodAvg += hist[key]; periodDays++; }
-            }
-        }
-        
-        if(periodDays > 0) periodAvg = Math.round(periodAvg / periodDays);
-        
-        // أقسام المهام
-        const tagBreakdown = {};
-        periodTasks.forEach(t => {
-            const tag = t.savedTag || 'عام';
-            tagBreakdown[tag] = (tagBreakdown[tag] || 0) + 1;
         });
-        const tagSummary = Object.entries(tagBreakdown).map(([k,v]) => `${k}: ${v}`).join('، ');
         
-        // أفضل/أسوأ يوم
-        const dayScores = {};
-        for(const key in hist) {
-            const d = new Date(key);
-            const dayName = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'][d.getDay()];
-            if(!dayScores[dayName]) dayScores[dayName] = [];
-            dayScores[dayName].push(hist[key]);
-        }
-        const dayAvgs = Object.entries(dayScores).map(([d, scores]) => [d, Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)]);
-        dayAvgs.sort((a,b) => b[1]-a[1]);
-        const bestDay = dayAvgs[0] ? `${dayAvgs[0][0]} (${dayAvgs[0][1]}%)` : '—';
-        const worstDay = dayAvgs[dayAvgs.length-1] ? `${dayAvgs[dayAvgs.length-1][0]} (${dayAvgs[dayAvgs.length-1][1]}%)` : '—';
+        p += `\nالمهام المكتملة في الأرشيف لهذه الفترة:\n`;
+        archived.forEach(t => {
+            if(t.archDate && t.archDate.startsWith(selVal)) {
+                p += `- ${t.text} (${t.savedTag || 'عام'})\n`;
+            }
+        });
         
-        const prompt = `أنت محلل إنتاجية شخصي. حلل هذه البيانات وقدم تحليلاً باللغة العربية الفصحى البسيطة.
+        p += `\nاكتب تقريراً منسقاً بشكل رائع ومريح للعين بفقرات شيقة:
+1. **قراءة وتحليل الأداء العام**: نقاط القوة، مستوى الالتزام، والنمط العام الملاحظ.
+2. **أوسمة الشرف المكتسبة**: امدح أعلى الأيام إنتاجية (المقيمة بـ 4 و 5 نجوم).
+3. **فرص التحسين والتطوير**: نصائح عملية وواقعية للتغلب على عقبات التركيز أو التأجيل الملاحظة.
+4. **شحنة طاقة مخصصة**: رسالة قوية ومُلهمة جداً تدفعه للأمام وتزيد من ثقته بقدراته.
+تكلم كلهجة كوتش حقيقي مخلص وعميق (تجنب التكرار والعبارات الجافة).`;
 
-البيانات:
-- الفترة: ${type === 'month' ? 'شهر' : 'سنة'} ${selVal}
-- إجمالي المهام المنجزة: ${periodTasks.length}
-- متوسط الأداء اليومي: ${periodAvg}%
-- توزيع المهام حسب القسم: ${tagSummary || 'لا يوجد'}
-- أفضل يوم في الأسبوع: ${bestDay}
-- أضعف يوم في الأسبوع: ${worstDay}
-
-المطلوب: 3 نقاط فقط، كل نقطة في سطر:
-1. ملاحظة رئيسية على الأداء
-2. نمط أو عادة واضحة في البيانات
-3. توصية عملية واحدة للفترة القادمة
-
-ابدأ مباشرة بالنقاط. لا مقدمات.`;
-        
-        const text = await callGemini(prompt, 300);
-        
-        // تنسيق النتيجة
-        const lines = text.trim().split('\n').filter(l => l.trim());
-        resultEl.innerHTML = lines.map(line => {
-            const clean = line.replace(/^[\d\.\-\*]+\s*/, '');
-            return `<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:8px;align-items:flex-start;">
-                <span style="color:var(--purple);flex-shrink:0;">◆</span>
-                <span>${clean}</span>
-            </div>`;
-        }).join('');
-        
-        btn.innerHTML = '<span style="font-size:18px;">✨</span> تحليل مكتمل ✅';
-        btn.style.background = 'rgba(16,185,129,0.1)';
-        btn.style.borderColor = 'rgba(16,185,129,0.3)';
-        btn.disabled = false;
-        
+        const clean = await callGemini(p, 600);
+        resultEl.innerHTML = `
+            <div style="direction:rtl;text-align:right;line-height:1.6;font-size:13px;font-family:\'Cairo\',sans-serif;color:var(--txt1);animation:fadeIn 0.5s ease both;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px;">
+                    <span style="font-size:24px;">🏆</span>
+                    <h4 style="font-size:15px;font-weight:900;color:var(--purple);margin:0;">تقرير التحليل الذكي من المدرب الشخصي</h4>
+                </div>
+                <div style="white-space:pre-wrap;background:rgba(0,0,0,0.15);border:1px solid rgba(255,255,255,0.03);padding:16px;border-radius:12px;">${clean}</div>
+            </div>
+        `;
     } catch(e) {
-        resultEl.innerHTML = `<span style="color:var(--red);">خطأ: ${e.message}</span>`;
-        btn.innerHTML = '<span style="font-size:18px;">✨</span> إعادة التحليل';
-        btn.disabled = false;
+        resultEl.innerHTML = `<div style="color:var(--red);text-align:center;padding:20px;font-weight:bold;">حدث خطأ أثناء الاتصال بالمدرب الذكي: ${e.message}</div>`;
     }
 };
 
-// ─── 3. تقسيم المهمة بالـ AI ─────────────────────
 window.aiBreakdownTask = async function(taskId) {
-    const task = S.tasks.find(t => t.id === taskId);
-    if(!task) return;
-    if(!localStorage.getItem('gemini_api_key')) {
-        window.showToast('أضف Gemini API Key من الإعدادات أولاً ✨', 'info');
-        return;
-    }
-    
-    const btn = document.getElementById('aiBreakdownBtn_' + taskId);
-    if(btn) { btn.disabled = true; btn.textContent = '⟳ جاري...'; }
+    const btn = document.getElementById("aiBreakdownBtn");
+    if(btn) { btn.disabled = true; btn.innerHTML = '<span style="animation:spin 1s infinite linear;display:inline-block;">⌛</span> جاري التوليد...'; }
     
     try {
-        const prompt = `قسّم هذه المهمة إلى خطوات عملية باللغة العربية. اكتب 4-5 خطوات فقط، كل خطوة في سطر منفصل. لا مقدمات، لا أرقام، لا شرح إضافي.
+        const task = S.tasks.find(x => x.id === taskId);
+        if(!task) return;
+        
+        const p = `أنت خبير تجزئة وإدارة مهام ذكي جداً. قم بتقسيم هذه المهمة: "${task.text}" (النوع: ${task.type || 'عام'}، الوصف: ${task.description || ''}) إلى 5 مهام فرعية (Subtasks) عملية جداً ومحددة وقابلة للتطبيق. 
+اكتب فقط المهام الفرعية باللغة العربية في أسطر منفصلة تبدأ بعلامة ناقص (-)، بدون أي مقدمات أو مؤخرات أو ترقيم، مثلاً:
+- الخطوة الأولى العملية
+- الخطوة الثانية`;
 
-المهمة: ${task.text}
-${task.description ? 'التفاصيل: ' + task.description : ''}`;
+        const resText = await callGemini(p, 200);
+        const lines = resText.split("\n").filter(l => l.trim().startsWith("-"));
         
-        const text = await callGemini(prompt, 200);
-        const lines = text.trim().split('\n').filter(l => l.trim().length > 3);
-        
-        if(!lines.length) throw new Error('لم يتم إنشاء خطوات');
-        
-        // أضف الخطوات كـ subtasks
         if(!task.subtasks) task.subtasks = [];
         lines.slice(0, 5).forEach(line => {
             const cleanLine = line.replace(/^[\-\*\•\d\.]+\s*/, '').trim();
@@ -5585,37 +5581,50 @@ ${task.description ? 'التفاصيل: ' + task.description : ''}`;
         });
         
         window.saveData();
-        window.showToast(`تم إضافة ${lines.length} خطوات للمهمة ✨`, 'success');
-        if(btn) { btn.disabled = false; btn.textContent = '✨ تم التقسيم'; }
+        window.showToast(`تم توليد وإضافة ${lines.length} خطوات فرعية ذكية 🚀`, 'success');
+        if(window.renderSubtasks) window.renderSubtasks();
+        if(btn) { btn.disabled = false; btn.innerHTML = '✨ تقسيم وإضافة خطوات بالـ AI'; }
         
     } catch(e) {
-        window.showToast('خطأ في التحليل: ' + e.message, 'error');
-        if(btn) { btn.disabled = false; btn.textContent = '✨ تقسيم بالـ AI'; }
+        window.showToast('عذراً، تعذر إتمام العملية: ' + e.message, 'error');
+        if(btn) { btn.disabled = false; btn.innerHTML = '✨ تقسيم وإضافة خطوات بالـ AI'; }
     }
 };
 
-// ─── تفعيل الملخص اليومي عند تحميل التطبيق ────────
-// يشتغل بعد renderAll بثانية
+window.aiBreakdownActiveTask = function() {
+    if(typeof activTask !== 'undefined' && activTask) {
+        window.aiBreakdownTask(activTask);
+    } else {
+        window.showToast('الرجاء اختيار وتنشيط مهمة أولاً للتقسيم بالذكاء الاصطناعي', 'error');
+    }
+};
+
 const _origRenderAll = window.renderAll;
 window.renderAll = function() {
-    _origRenderAll();
-    // ملخص الصبح: مرة واحدة في اليوم فقط
+    if(typeof _origRenderAll === "function") _origRenderAll();
+    
     const todayKey = getLocalISO();
     const cacheKey = 'ai_briefing_' + todayKey;
     const briefingShown = sessionStorage.getItem('briefing_shown_' + todayKey);
-    if(!briefingShown && localStorage.getItem('gemini_api_key') && (S.todayTasks||[]).length > 0) {
+    const key = localStorage.getItem('gemini_api_key') || 'AIzaSyBguIR1KbnWJJ2JZC8xk5xLCWzhqxuW5Q0';
+    if(!briefingShown && key && (S.todayTasks||[]).length > 0) {
         sessionStorage.setItem('briefing_shown_' + todayKey, '1');
         setTimeout(() => window.loadAIDailyBriefing(), 1500);
     } else if(localStorage.getItem(cacheKey)) {
-        // عرض الكاش المحفوظ بدون استدعاء API
         setTimeout(() => window.showAIBriefingBanner(localStorage.getItem(cacheKey)), 500);
     }
 };
 
-// CSS للتحريك
 const aiStyle = document.createElement('style');
 aiStyle.textContent = `@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }`;
 document.head.appendChild(aiStyle);
+
+// Close modals on clicking outside
+window.addEventListener('click', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('modal-bg')) {
+        e.target.classList.remove('show');
+    }
+});
 </script>
 
 </body>
