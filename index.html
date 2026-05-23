@@ -1708,6 +1708,20 @@
                     <button onclick="window.saveGeminiKey()" style="background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;border-radius:10px;padding:8px 14px;font-weight:900;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;white-space:nowrap;">&#x062d;&#x0641;&#x0638; &#x2713;</button>
                 </div>
             </div>
+            
+            <!-- RescueTime API Key -->
+            <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border); margin-top: 16px;">
+                <div style="display:flex;align-items:center;margin-bottom:8px;">
+                    <span style="font-size:20px;margin-left:8px;">⏱️</span>
+                    <div style="font-size:13px;font-weight:900;color:var(--txt1);">RescueTime (تتبع الهاتف)</div>
+                    <div id="rescueKeyStatus" style="margin-right:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(239,68,68,0.15);color:var(--red);">غير مفعّل</div>
+                </div>
+                <div style="font-size:11px;color:var(--txt2);margin-bottom:10px;">أدخل API Key من إعدادات RescueTime</div>
+                <div style="display:flex;gap:8px;">
+                    <input type="password" id="rescueKeyInput" placeholder="RescueTime API..." class="field" style="flex:1;font-size:12px;padding:8px 12px;font-family:monospace;" oninput="window.checkRescueKeyStatus()">
+                    <button onclick="window.saveRescueKey()" style="background:linear-gradient(135deg,var(--cyan),var(--blue2));color:#fff;border:none;border-radius:10px;padding:8px 14px;font-weight:900;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;white-space:nowrap;">حفظ ✓</button>
+                </div>
+            </div>
 
             <div style="padding:14px 16px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);">
                 <div style="font-size:13px;font-weight:700;color:var(--txt1);margin-bottom:10px;">النسخ الاحتياطي</div>
@@ -1960,7 +1974,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // Firebase Config
 const FB = {
@@ -1975,6 +1989,10 @@ const FB = {
 const fbApp = initializeApp(FB);
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
+enableIndexedDbPersistence(db).catch((err) => {
+    if (err.code == 'failed-precondition') console.warn('Multiple tabs open');
+    else if (err.code == 'unimplemented') console.warn('Browser not supported');
+});
 const gProv = new GoogleAuthProvider();
 
 // FIX: Attach login immediately to global scope
@@ -2208,6 +2226,23 @@ function dailySweep() {
             uncompletedToday.forEach(t => {
                 S.suggestions.unshift({...t, archDate: archiveDate}); 
             });
+            
+            // Auto calculate XP for the archived day
+            let totalArchivedXP = 0;
+            completedToday.forEach(t => {
+                let e = parseInt(t.effort) || 10;
+                if(e === 1) e = 10; else if(e === 3) e = 30; else if(e === 5) e = 50;
+                totalArchivedXP += e;
+            });
+            
+            if(!S.reflections) S.reflections = {};
+            S.reflections[archiveDate] = {
+                xp: totalArchivedXP,
+                target: 100,
+                rating: totalArchivedXP >= 100 ? 5 : (totalArchivedXP >= 80 ? 4 : (totalArchivedXP >= 50 ? 3 : (totalArchivedXP >= 20 ? 2 : 1))),
+                date: archiveDate
+            };
+            
             S.todayTasks = futureTasksKept; 
             needsSave = true;
         }
@@ -2360,6 +2395,51 @@ function populateReportDropdown() {
         });
     }
 }
+
+window.fetchRescueTime = async function() {
+    const key = localStorage.getItem("rescuetime_api_key");
+    if(!key) { window.showToast("لا يوجد مفتاح RescueTime! أضفه من الإعدادات", "error"); return; }
+    
+    const resEl = document.getElementById("rescueTimeResult");
+    if(resEl) { resEl.style.display = "block"; resEl.innerHTML = "<div style='text-align:center;padding:10px;opacity:0.7;'>جاري جلب البيانات... ⏳</div>"; }
+    
+    try {
+        const today = new Date().toISOString().split("T")[0];
+        const url = `https://www.rescuetime.com/anapi/data?key=${key}&perspective=interval&restrict_kind=productivity&restrict_begin=${today}&restrict_end=${today}&format=json`;
+        const req = await fetch(url);
+        const data = await req.json();
+        
+        if(data && data.rows) {
+            let productiveTime = 0;
+            let distractingTime = 0;
+            data.rows.forEach(r => {
+                if(r[3] > 0) productiveTime += r[1]; // Productivity score > 0
+                else if(r[3] < 0) distractingTime += r[1];
+            });
+            
+            let pMins = Math.round(productiveTime / 60);
+            let dMins = Math.round(distractingTime / 60);
+            
+            if(resEl) {
+                resEl.innerHTML = `
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+                        <div style="background:rgba(16,185,129,0.1);padding:10px;border-radius:10px;text-align:center;border:1px solid rgba(16,185,129,0.2);">
+                            <div style="font-size:18px;font-weight:bold;color:var(--green2);">${pMins} دقيقة</div>
+                            <div style="font-size:10px;color:var(--txt2);">وقت منتج (الهاتف)</div>
+                        </div>
+                        <div style="background:rgba(239,68,68,0.1);padding:10px;border-radius:10px;text-align:center;border:1px solid rgba(239,68,68,0.2);">
+                            <div style="font-size:18px;font-weight:bold;color:var(--red);">${dMins} دقيقة</div>
+                            <div style="font-size:10px;color:var(--txt2);">وقت مشتت (الهاتف)</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    } catch(e) {
+        console.error(e);
+        if(resEl) resEl.innerHTML = `<div style="color:var(--red);font-size:11px;padding:10px;text-align:center;">حدث خطأ أثناء جلب البيانات أو CORS Error.</div>`;
+    }
+};
 
 window.renderSpecificReport = function() {
     var area = el("reportContentArea");
@@ -2823,18 +2903,19 @@ window.updateStats = function() {
     let doneEffort = 0;
     
     currentItems.forEach(t => {
-        let e = parseInt(t.effort) || 1; 
+        let e = parseInt(t.effort) || 10; 
+        if(e === 1) e = 10; else if(e === 3) e = 30; else if(e === 5) e = 50;
         totalEffort += e;
         if(t.done) doneEffort += e;
     });
     
-    const pct = totalEffort > 0 ? Math.round(doneEffort/totalEffort*100) : 0;
+    const pct = doneEffort;
     
     el("sTotalToday").textContent = currentItems.length;
     el("sDoneToday").textContent = currentItems.filter(t=>t.done).length;
     el("sKanban").textContent = (S.tasks||[]).length;
-    el("progressBar").style.width = pct + "%";
-    el("progressPct").textContent = pct + "%";
+    el("progressBar").style.width = Math.min(pct, 100) + "%";
+    el("progressPct").textContent = pct + " XP";
     el("moodEmoji").textContent = pct === 0 ? "😴" : pct < 30 ? "🌱" : pct < 60 ? "💪" : pct < 90 ? "🔥" : "🏆";
     
     const sn = el("streakNum"); 
@@ -3165,6 +3246,33 @@ window.renderAll = function() {
 };
 
 /* ════════ 1. TODAY (NO GROUPS, SLEEK UI) ════════ */
+window.activeTimers = window.activeTimers || {};
+window.toggleTimer = function(id) {
+    let t = S.todayTasks.find(x => x.id === id);
+    if(!t) return;
+    if(!t.timeSpent) t.timeSpent = 0;
+    
+    if(window.activeTimers[id]) {
+        clearInterval(window.activeTimers[id].interval);
+        t.timeSpent += Math.floor((Date.now() - window.activeTimers[id].start) / 1000);
+        delete window.activeTimers[id];
+        window.saveData();
+        window.renderTodayTasks();
+    } else {
+        window.activeTimers[id] = { start: Date.now(), interval: null };
+        window.activeTimers[id].interval = setInterval(() => {
+            let el = document.getElementById("timer_disp_" + id);
+            if(el) {
+                let currentSecs = t.timeSpent + Math.floor((Date.now() - window.activeTimers[id].start) / 1000);
+                let m = Math.floor(currentSecs / 60);
+                let s = currentSecs % 60;
+                el.textContent = `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+            }
+        }, 1000);
+        window.renderTodayTasks();
+    }
+};
+
 window.renderTodayTasks = function() {
     const list = el("todayList");
     const schedList = el("scheduledList");
@@ -3228,6 +3336,23 @@ window.renderTodayTasks = function() {
                 <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
                     ${effBadge}
                     <span style="font-size:14px; font-weight:700; ${t.done?"text-decoration:line-through;color:var(--txt3);":"color:var(--txt1);"} overflow:hidden; text-overflow:ellipsis;" title="${t.text}">${t.text}</span>
+                    
+                    <!-- Timer UI -->
+                    ${(() => {
+                        let isRunning = window.activeTimers && window.activeTimers[t.id];
+                        let totalSecs = (t.timeSpent || 0) + (isRunning ? Math.floor((Date.now() - window.activeTimers[t.id].start)/1000) : 0);
+                        let m = Math.floor(totalSecs / 60);
+                        let s = totalSecs % 60;
+                        let disp = `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+                        let btnColor = isRunning ? "var(--red)" : "var(--cyan)";
+                        let btnIcon = isRunning ? "⏸" : "▶";
+                        let btnBg = isRunning ? "rgba(239,68,68,0.1)" : "rgba(6,182,212,0.1)";
+                        
+                        return `<div style="margin-left:auto; display:flex; align-items:center; gap:6px; background:var(--bg2); padding:2px 8px; border-radius:8px; border:1px solid var(--border);">
+                            <span id="timer_disp_${t.id}" style="font-size:11px; font-weight:900; font-family:monospace; color:var(--txt2); min-width:36px; text-align:center;">${disp}</span>
+                            <button onclick="window.toggleTimer('${t.id}')" style="background:${btnBg}; color:${btnColor}; border:none; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:10px; cursor:pointer; padding:0;">${btnIcon}</button>
+                        </div>`;
+                    })()}
                     ${reflHtml}
                 </div>
                 ${(() => {
@@ -4246,6 +4371,56 @@ window.sendSubToToday = function(i) {
     window.showToast("اتنقلت لمهام اليوم يا نجم! 🎯","success");
 };
 
+window.aiParseCourse = async function() {
+    const key = localStorage.getItem("gemini_api_key");
+    if(!key) { window.showToast("يرجى إدخال API Key للذكاء الاصطناعي في الإعدادات أولاً", "error"); return; }
+    
+    const input = prompt("قم بلصق نص قائمة دروس الكورس (Playlist) أو مسار التعلم ليقوم الذكاء الاصطناعي بتقسيمها:");
+    if(!input || !input.trim()) return;
+    
+    window.showToast("جاري تحليل الكورس وبناء المهام... ⏳", "loading");
+    
+    try {
+        const promptText = `أنت مساعد إنتاجية. لقد أعطاك المستخدم نصاً يحتوي على دروس أو محتوى كورس. 
+استخرج اسم الكورس ليكون المهمة الرئيسية، ثم استخرج الدروس واجعلها مهام فرعية.
+يجب أن يكون الرد بصيغة JSON حصراً بهذا الشكل:
+{
+  "title": "اسم الكورس المستنتج",
+  "effort": 50,
+  "subtasks": [
+    {"text": "اسم الدرس الأول", "done": false},
+    {"text": "اسم الدرس الثاني", "done": false}
+  ]
+}
+النص هو:
+${input}`;
+        
+        const resText = await callGemini(promptText, 800);
+        const jsonMatch = resText.match(/\{[\s\S]*\}/);
+        if(jsonMatch) {
+            const courseData = JSON.parse(jsonMatch[0]);
+            
+            if(!S.tasks) S.tasks = [];
+            S.tasks.push({
+                id: "t" + Date.now(),
+                text: courseData.title || "كورس جديد",
+                desc: "تم توليده بواسطة الذكاء الاصطناعي",
+                effort: courseData.effort || 50,
+                tag: "بدون قسم",
+                subtasks: courseData.subtasks || []
+            });
+            window.saveData();
+            window.renderTasks();
+            window.showToast("تم بناء الكورس بنجاح! ✨", "success");
+        } else {
+            throw new Error("Invalid JSON from AI");
+        }
+    } catch(e) {
+        console.error(e);
+        window.showToast("حدث خطأ أثناء تحليل الكورس. حاول توفير نص أوضح.", "error");
+    }
+};
+
 window.sendSubToGoals = function(i) {
     const t = S.tasks.find(x => x.id === activTask);
     const s = t.subtasks[i];
@@ -5240,6 +5415,35 @@ window.saveGeminiKey = function() {
     }
 };
 
+window.saveRescueKey = function() {
+    const inputEl = document.getElementById('rescueKeyInput');
+    if(inputEl && inputEl.value) {
+        localStorage.setItem('rescuetime_api_key', inputEl.value.trim());
+        window.showToast("تم حفظ مفتاح RescueTime بنجاح! ⏱️", "success");
+        window.checkRescueKeyStatus();
+    } else {
+        window.showToast("يرجى إدخال المفتاح أولاً", "error");
+    }
+};
+
+window.checkRescueKeyStatus = function() {
+    const key = localStorage.getItem('rescuetime_api_key');
+    const statusEl = document.getElementById('rescueKeyStatus');
+    const inputEl = document.getElementById('rescueKeyInput');
+    if(statusEl) {
+        if(key) {
+            statusEl.textContent = '✓ مفعّل ومرتبط';
+            statusEl.style.background = 'rgba(16,185,129,0.15)';
+            statusEl.style.color = 'var(--green2)';
+            if(inputEl && !inputEl.value) inputEl.placeholder = '****************';
+        } else {
+            statusEl.textContent = 'غير مفعّل';
+            statusEl.style.background = 'rgba(239,68,68,0.15)';
+            statusEl.style.color = 'var(--red)';
+        }
+    }
+};
+
 window.checkGeminiKeyStatus = function() {
     const key = localStorage.getItem('gemini_api_key') || 'AIzaSyBguIR1KbnWJJ2JZC8xk5xLCWzhqxuW5Q0';
     const statusEl = document.getElementById('aiKeyStatus');
@@ -5262,6 +5466,7 @@ const _origOpenSettings = window.openSettings;
 window.openSettings = function() {
     if(typeof _origOpenSettings === "function") _origOpenSettings();
     window.checkGeminiKeyStatus();
+    if(window.checkRescueKeyStatus) window.checkRescueKeyStatus();
 };
 
 async function callGemini(prompt, maxTokens = 500) {
@@ -5345,6 +5550,49 @@ window.showAIBriefingBanner = function(text) {
     } else {
         container.insertBefore(banner, container.firstChild);
     }
+};
+
+
+window.toggleAIChat = function() {
+    const el = document.getElementById("aiChatWindow");
+    el.style.display = el.style.display === "none" ? "flex" : "none";
+};
+
+window.sendAIChat = async function() {
+    const inp = document.getElementById("aiChatInput");
+    const msgs = document.getElementById("aiChatMsgs");
+    const val = inp.value.trim();
+    if(!val) return;
+    
+    inp.value = "";
+    
+    // User message
+    msgs.innerHTML += `<div style="background:linear-gradient(135deg,var(--blue),var(--cyan)); padding:10px 12px; border-radius:12px 12px 0 12px; align-self:flex-end; max-width:85%; color:#fff; font-weight:bold;">${val}</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+    
+    // Typing indicator
+    const typingId = "typ" + Date.now();
+    msgs.innerHTML += `<div id="${typingId}" style="background:var(--bg3); padding:10px 12px; border-radius:12px 12px 12px 0; align-self:flex-start; color:var(--txt3); font-style:italic;">جاري التفكير...</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+    
+    try {
+        const key = localStorage.getItem("gemini_api_key");
+        if(!key) { throw new Error("no_key"); }
+        
+        let systemPrompt = `أنت مساعد إنتاجية احترافي مدمج داخل تطبيق Life Management System. اسم التطبيق "رحلتي". أجب باختصار وبشكل عملي.\n\nرسالة المستخدم: ${val}`;
+        const resText = await callGemini(systemPrompt, 300);
+        
+        document.getElementById(typingId).remove();
+        msgs.innerHTML += `<div style="background:var(--bg3); padding:10px 12px; border-radius:12px 12px 12px 0; align-self:flex-start; max-width:85%; color:var(--txt1);">${resText.replace(/\n/g, "<br>")}</div>`;
+    } catch(e) {
+        document.getElementById(typingId).remove();
+        if(e.message === "no_key") {
+            msgs.innerHTML += `<div style="background:rgba(239,68,68,0.1); color:var(--red); padding:10px 12px; border-radius:12px 12px 12px 0; align-self:flex-start;">يرجى إضافة مفتاح API من الإعدادات!</div>`;
+        } else {
+            msgs.innerHTML += `<div style="background:rgba(239,68,68,0.1); color:var(--red); padding:10px 12px; border-radius:12px 12px 12px 0; align-self:flex-start;">حدث خطأ في الاتصال.</div>`;
+        }
+    }
+    msgs.scrollTop = msgs.scrollHeight;
 };
 
 window.aiAnalyzeReport = async function(type, selVal) {
@@ -5478,6 +5726,29 @@ window.addEventListener('click', function(e) {
     }
 });
 </script>
+
+
+<!-- AI Floating Chat -->
+<div id="aiChatWindow" style="display:none; position:fixed; bottom:80px; left:20px; width:320px; height:450px; background:var(--bg1); border:1px solid var(--border); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.5); z-index:1000; flex-direction:column; overflow:hidden;">
+    <div style="padding:15px; background:var(--bg2); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:20px;">✨</span>
+            <span style="font-weight:bold; color:var(--txt1);">المساعد الذكي</span>
+        </div>
+        <button onclick="window.toggleAIChat()" style="background:transparent; border:none; color:var(--txt2); font-size:16px; cursor:pointer;">✖</button>
+    </div>
+    <div id="aiChatMsgs" style="flex:1; padding:15px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; font-size:13px; line-height:1.6;">
+        <div style="background:var(--bg3); padding:10px 12px; border-radius:12px 12px 12px 0; align-self:flex-start; max-width:85%; color:var(--txt1);">
+            أهلاً بك! أنا مساعدك الذكي. كيف يمكنني تنظيم وقتك أو مساعدتك اليوم؟
+        </div>
+    </div>
+    <div style="padding:10px; border-top:1px solid var(--border); display:flex; gap:8px; background:var(--bg2);">
+        <input type="text" id="aiChatInput" placeholder="اسألني أي شيء..." style="flex:1; background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:8px 12px; color:var(--txt1); font-size:12px; outline:none;" onkeypress="if(event.key==='Enter') window.sendAIChat()">
+        <button onclick="window.sendAIChat()" style="background:linear-gradient(135deg,var(--purple),var(--blue)); border:none; border-radius:10px; padding:0 12px; color:#fff; cursor:pointer; font-weight:bold;">➤</button>
+    </div>
+</div>
+
+<button onclick="window.toggleAIChat()" style="position:fixed; bottom:20px; left:20px; width:50px; height:50px; border-radius:25px; background:linear-gradient(135deg,var(--purple),var(--blue)); border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow:0 5px 15px rgba(139,92,246,0.4); z-index:999; display:flex; justify-content:center; align-items:center;">✨</button>
 
 </body>
 </html>
